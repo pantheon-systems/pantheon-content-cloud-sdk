@@ -97,5 +97,8 @@ export const useArticle = (id: string) => {
     logger.info('%cSuccessfully fetched updated content', 'color: lime;');
   }, [queryData.data]);
 
-  return queryData;
+  return {
+    ...queryData,
+    article: queryData.data?.article,
+  };
 };
