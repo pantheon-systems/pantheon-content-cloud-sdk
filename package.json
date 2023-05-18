@@ -87,6 +87,7 @@
     "@babel/preset-typescript": "7.21.5",
     "@commitlint/cli": "17.6.3",
     "@commitlint/config-conventional": "17.6.3",
+    "@pantheon-systems/eslint-config-pantheon": "^1.0.6",
     "@ryansonshine/commitizen": "4.2.8",
     "@ryansonshine/cz-conventional-changelog": "3.3.4",
     "@types/jest": "29.5.1",

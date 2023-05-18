@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
 import { ApolloProvider } from '@apollo/client';
+import React, { PropsWithChildren } from 'react';
 
 import { PantheonClient } from './pantheon-client';
 

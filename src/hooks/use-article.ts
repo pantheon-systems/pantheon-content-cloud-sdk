@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useRef } from 'react';
+
 import { usePantheonClient } from '../core/pantheon-context';
 import { Article } from '../types';
 
@@ -43,7 +44,7 @@ export const useArticle = (id: string) => {
         JSON.stringify({
           Command: 'subchanges',
           Id: id,
-        })
+        }),
       );
     });
 
@@ -59,7 +60,7 @@ export const useArticle = (id: string) => {
           if (json.Id === idRef.current) {
             logger.info(
               '%cNew content is available - refetching...',
-              'color: yellow;'
+              'color: yellow;',
             );
             queryData.refetch();
           }
@@ -84,13 +85,14 @@ export const useArticle = (id: string) => {
   }, []);
 
   useEffect(() => {
-    if (socketRef.current?.readyState === WebSocket.OPEN)
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
       socketRef.current.send(
         JSON.stringify({
           Command: 'subchanges',
           Id: id,
-        })
+        }),
       );
+    }
   }, [id]);
 
   useEffect(() => {

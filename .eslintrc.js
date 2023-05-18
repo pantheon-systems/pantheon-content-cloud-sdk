@@ -4,7 +4,12 @@ module.exports = {
     es2021: true,
     jest: true,
   },
-  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+    'prettier',
+    '@pantheon-systems/eslint-config-pantheon/configurations/node',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -20,6 +25,7 @@ module.exports = {
     'unused-imports',
     'prettier',
     'prefer-arrow',
+    'import',
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': 'error',
@@ -33,7 +39,12 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-console': 'error',
     'no-use-before-define': 'off',
-    'prettier/prettier': 'error',
+    'prettier/prettier': [
+      'error',
+      {
+        trailingComma: 'all',
+      },
+    ],
     'react/destructuring-assignment': 'off',
     'react/function-component-definition': 'off',
     'react/jsx-filename-extension': 'off',
@@ -50,5 +61,12 @@ module.exports = {
         classPropertiesAllowed: false,
       },
     ],
+    // Seems to be in conflict with prettier
+    // https://github.com/prettier/prettier/issues/3806
+    'operator-linebreak': 0,
   },
+  ignorePatterns: [
+    // Ignore built files.
+    '/dist/**/*',
+  ],
 };

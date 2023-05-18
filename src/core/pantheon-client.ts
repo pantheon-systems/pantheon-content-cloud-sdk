@@ -3,6 +3,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from '@apollo/client';
+
 import { DefaultLogger, Logger, NoopLogger } from '../utils/logger';
 
 interface PantheonClientConfig {
