@@ -27,6 +27,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
+    'lines-between-class-members': 'off',
     'no-nested-ternary': 'off',
     'no-plusplus': 'off',
     'no-unused-vars': 'off',

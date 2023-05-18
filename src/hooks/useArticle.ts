@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useRef } from 'react';
+import { usePantheonClient } from '../core/pantheon-context';
 
 const GET_ARTICLE_QUERY = gql`
   query GetArticle($id: String!) {
@@ -15,11 +16,23 @@ const GET_ARTICLE_QUERY = gql`
   }
 `;
 
+export interface PCCArticle {
+  content: string;
+  id: string;
+  keywords: string[];
+  publishedDate: string;
+  source: string;
+  sourceURL: string;
+  title: string;
+}
+
 export const useArticle = (id: string) => {
   const socketRef = useRef<WebSocket>();
   const idRef = useRef<string>();
 
-  const queryData = useQuery(GET_ARTICLE_QUERY, {
+  const { wsHost } = usePantheonClient();
+
+  const queryData = useQuery<PCCArticle>(GET_ARTICLE_QUERY, {
     variables: { id },
   });
 
@@ -27,22 +40,11 @@ export const useArticle = (id: string) => {
     idRef.current = id;
   }, [id]);
 
-  // TODO: JUST FOR DEMO PURPOSES, BECAUSE FIREBASE SNAPSHOT SUDDENLY STOPPED WORKING.
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      queryData.refetch();
-    }, 250);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
   // Don't connect to websocket during SSR.
   useEffect(() => {
     if (typeof window === 'undefined' || socketRef.current != null) return;
 
-    const socket = new WebSocket(
-      `${process.env.NEXT_PUBLIC_WEBSOCKET_ENDPOINT}/ws`
-    );
+    const socket = new WebSocket(`${wsHost}/ws`);
     socketRef.current = socket;
 
     socket.addEventListener('open', () => {
