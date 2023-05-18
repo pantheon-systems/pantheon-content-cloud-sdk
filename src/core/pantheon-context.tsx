@@ -7,19 +7,23 @@ interface PantheonProviderProps extends PropsWithChildren<any> {
   client: PantheonClient;
 }
 
+const PantheonContext = React.createContext<PantheonClient | null>(null);
+
 export const PantheonProvider = ({
   client,
   children,
 }: PantheonProviderProps) => (
-  <ApolloProvider client={client.apolloClient}>{children}</ApolloProvider>
+  <PantheonContext.Provider value={client}>
+    <ApolloProvider client={client.apolloClient}>{children}</ApolloProvider>
+  </PantheonContext.Provider>
 );
 
-const PantheonContext = React.createContext<PantheonProviderProps | null>(null);
-
 export const usePantheonClient = () => {
-  const context = React.useContext(PantheonContext);
-  if (!context) {
+  const client = React.useContext(PantheonContext);
+
+  if (!client) {
     throw new Error('Cannot use outside of a PantheonProvider');
   }
-  return context.client;
+
+  return client;
 };

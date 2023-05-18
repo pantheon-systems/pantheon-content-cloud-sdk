@@ -1,1 +1,1 @@
-export * from './useArticle';
+export { useArticle } from './useArticle';

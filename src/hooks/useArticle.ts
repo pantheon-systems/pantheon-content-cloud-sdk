@@ -32,7 +32,7 @@ export const useArticle = (id: string) => {
 
   const { wsHost } = usePantheonClient();
 
-  const queryData = useQuery<PCCArticle>(GET_ARTICLE_QUERY, {
+  const queryData = useQuery<{ article: PCCArticle }>(GET_ARTICLE_QUERY, {
     variables: { id },
   });
 
