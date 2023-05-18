@@ -1,7 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useRef } from 'react';
 
-const GET_ARTICLE = gql`
+const GET_ARTICLE_QUERY = gql`
   query GetArticle($id: String!) {
     article(id: $id) {
       id
@@ -19,8 +19,8 @@ export const useArticle = (id: string) => {
   const socketRef = useRef<WebSocket>();
   const idRef = useRef<string>();
 
-  const queryData = useQuery(GET_ARTICLE, {
-    variables: { id: id || '' },
+  const queryData = useQuery(GET_ARTICLE_QUERY, {
+    variables: { id },
   });
 
   useEffect(() => {
