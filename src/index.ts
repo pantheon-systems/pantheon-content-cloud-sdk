@@ -6,3 +6,5 @@ export { PantheonClient } from './core/pantheon-client';
 // entry points.
 // https://github.com/facebook/react/issues/19541
 export * from './hooks';
+
+export * from './types';

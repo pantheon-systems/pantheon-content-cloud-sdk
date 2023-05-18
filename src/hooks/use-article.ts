@@ -1,6 +1,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { useEffect, useRef } from 'react';
 import { usePantheonClient } from '../core/pantheon-context';
+import { Article } from '../types';
 
 const GET_ARTICLE_QUERY = gql`
   query GetArticle($id: String!) {
@@ -16,81 +17,68 @@ const GET_ARTICLE_QUERY = gql`
   }
 `;
 
-export interface PCCArticle {
-  content: string;
-  id: string;
-  keywords: string[];
-  publishedDate: string;
-  source: string;
-  sourceURL: string;
-  title: string;
-}
-
 export const useArticle = (id: string) => {
-  const socketRef = useRef<WebSocket>();
-  const idRef = useRef<string>();
-
-  const { wsHost } = usePantheonClient();
-
-  const queryData = useQuery<{ article: PCCArticle }>(GET_ARTICLE_QUERY, {
+  const { wsHost, logger } = usePantheonClient();
+  const queryData = useQuery<{ article: Article }>(GET_ARTICLE_QUERY, {
     variables: { id },
   });
+
+  const socketRef = useRef<WebSocket>();
+  const idRef = useRef<string>();
 
   useEffect(() => {
     idRef.current = id;
   }, [id]);
 
-  // Don't connect to websocket during SSR.
   useEffect(() => {
-    if (typeof window === 'undefined' || socketRef.current != null) return;
+    if (socketRef.current != null) return;
 
     const socket = new WebSocket(`${wsHost}/ws`);
     socketRef.current = socket;
 
     socket.addEventListener('open', () => {
-      console.log('We have connected to the GraphQL backend.');
+      logger.info('Connected to the GraphQL backend.');
 
-      if (id != null) {
-        console.log(
-          'We have asked the GraphQL backend to notify us whenever the article content changes.'
-        );
-        socket.send(
-          JSON.stringify({
-            Command: 'subchanges',
-            Id: id,
-          })
-        );
-      }
+      socket.send(
+        JSON.stringify({
+          Command: 'subchanges',
+          Id: id,
+        })
+      );
     });
 
     socket.addEventListener('close', () => {
-      console.log('%cDisconnected and lonely', 'color: red;');
+      logger.info('%cDisconnected and lonely', 'color: red;');
     });
 
     socket.addEventListener('message', (e) => {
       const json = JSON.parse(e.data);
 
       switch (json.Command) {
-        case 'refetch':
+        case 'refetch': {
           if (json.Id === idRef.current) {
-            console.log(
-              '%cGraphQL server has told us new content is available - refetching...',
+            logger.info(
+              '%cNew content is available - refetching...',
               'color: yellow;'
             );
             queryData.refetch();
           }
           break;
-        case 'doc_gone':
+        }
+        case 'doc_gone': {
           if (json.Id === idRef.current) {
             // TODO: Handle case when doc we are watching has been deleted.
-            console.error('Doc is gone');
+            logger.error('Document has been deleted');
           }
           break;
-        case 'debug':
-          console.info({ json });
+        }
+        case 'debug': {
+          logger.info({ json });
           break;
-        default:
-          console.error(`Unrecognized command ${json.Command}`, json);
+        }
+        default: {
+          logger.error(`Unrecognized command ${json.Command}`, json);
+        }
       }
     });
   }, []);
@@ -106,7 +94,7 @@ export const useArticle = (id: string) => {
   }, [id]);
 
   useEffect(() => {
-    console.log('%cSuccessfully fetched updated content', 'color: lime;');
+    logger.info('%cSuccessfully fetched updated content', 'color: lime;');
   }, [queryData.data]);
 
   return queryData;
