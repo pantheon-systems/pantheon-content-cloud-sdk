@@ -1,5 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
-
+import { gql, useQuery } from '../lib/apollo-client';
 import { Article } from '../types';
 
 const LIST_ARTICLES_QUERY = gql`

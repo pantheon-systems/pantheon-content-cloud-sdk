@@ -34,6 +34,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
+    'object-curly-newline': 'off',
     'no-nested-ternary': 'off',
     'no-plusplus': 'off',
     'no-unused-vars': 'off',
