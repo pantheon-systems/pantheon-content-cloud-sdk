@@ -1,7 +1,7 @@
-import { gql, useQuery } from '@apollo/client';
 import { useEffect, useRef } from 'react';
 
 import { usePantheonClient } from '../core/pantheon-context';
+import { gql, useQuery } from '../lib/apollo-client';
 import { Article } from '../types';
 
 const GET_ARTICLE_QUERY = gql`
