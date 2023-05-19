@@ -7,8 +7,8 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
-    'prettier',
     '@pantheon-systems/eslint-config-pantheon/configurations/node',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
