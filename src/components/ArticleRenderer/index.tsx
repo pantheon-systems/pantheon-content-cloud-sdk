@@ -25,7 +25,7 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      <div id="elem" className={headerClassName}>
+      <div className={headerClassName}>
         {titleElement ? (
           <ArticleComponent x={titleElement.children} />
         ) : (
