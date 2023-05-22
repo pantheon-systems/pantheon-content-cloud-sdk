@@ -1,21 +1,9 @@
-import { gql, useQuery } from '../lib/apollo-client';
-import { Article } from '../types';
-
-const LIST_ARTICLES_QUERY = gql`
-  query ListArticles {
-    articles {
-      id
-      title
-      source
-      sourceURL
-      keywords
-      publishedDate
-    }
-  }
-`;
+import { useQuery } from '../lib/apollo-client';
+import { LIST_ARTICLES_QUERY } from '../lib/articles';
+import { ArticleWithoutContent } from '../types';
 
 type ListArticlesResponse = {
-  articles: Omit<Article, 'content'>[];
+  articles: ArticleWithoutContent[];
 };
 
 export const useArticles = () => {

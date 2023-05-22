@@ -1,22 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 import { usePantheonClient } from '../core/pantheon-context';
-import { gql, useQuery } from '../lib/apollo-client';
+import { useQuery } from '../lib/apollo-client';
+import { GET_ARTICLE_QUERY } from '../lib/articles';
 import { Article } from '../types';
-
-const GET_ARTICLE_QUERY = gql`
-  query GetArticle($id: String!) {
-    article(id: $id) {
-      id
-      title
-      content
-      source
-      sourceURL
-      keywords
-      publishedDate
-    }
-  }
-`;
 
 export const useArticle = (id: string) => {
   const { wsHost, logger } = usePantheonClient();

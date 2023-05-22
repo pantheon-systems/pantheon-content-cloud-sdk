@@ -7,3 +7,5 @@ export interface Article {
   sourceURL: string;
   title: string;
 }
+
+export type ArticleWithoutContent = Omit<Article, 'content'>;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { getStyleObjectFromString } from '../../utils/styles';
+import { unescapeHTMLEntities } from '../../utils/unescape';
 
 import TopLevelElement from './TopLevelElement';
 
@@ -35,7 +36,11 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
 
   if (textContent != null) {
     const tag = isSuperscript ? 'sup' : isSubscript ? 'sub' : 'span';
-    return React.createElement(tag, { style: styles }, decodeHtml(textContent));
+    return React.createElement(
+      tag,
+      { style: styles },
+      unescapeHTMLEntities(textContent),
+    );
   }
 
   if (x.tag === 'span' && x.data == null) {
@@ -74,9 +79,3 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
 };
 
 export default ArticleComponent;
-
-function decodeHtml(html: string) {
-  const txt = document.createElement('textarea');
-  txt.innerHTML = html;
-  return txt.value;
-}
