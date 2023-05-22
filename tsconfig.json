@@ -2,7 +2,8 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "module": "ESNext",
+    "target": "ES2016",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,
