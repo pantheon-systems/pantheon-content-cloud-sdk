@@ -8,3 +8,5 @@ export { PantheonClient } from './core/pantheon-client';
 export * from './hooks';
 
 export * from './types';
+
+export * from './lib';
