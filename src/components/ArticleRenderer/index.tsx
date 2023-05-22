@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Article } from '../../types';
 
 import ArticleComponent from './ArticleComponent';
@@ -8,6 +10,7 @@ interface Props {
   bodyClassName?: string;
   containerClassName?: string;
   headerClassName?: string;
+  renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
 }
 
 const ArticleRenderer = ({
@@ -15,6 +18,7 @@ const ArticleRenderer = ({
   headerClassName,
   bodyClassName,
   containerClassName,
+  renderTitle,
 }: Props) => {
   const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
   const indexOfFirstParagraph = parsedBody.findIndex((x) =>
@@ -23,14 +27,16 @@ const ArticleRenderer = ({
 
   const [titleElement] = parsedBody.splice(indexOfFirstParagraph, 1);
 
+  const titleComponent = titleElement ? (
+    <ArticleComponent x={titleElement.children} />
+  ) : (
+    <span>{article?.title}</span>
+  );
+
   return (
     <div className={containerClassName}>
       <div className={headerClassName}>
-        {titleElement ? (
-          <ArticleComponent x={titleElement.children} />
-        ) : (
-          article?.title
-        )}
+        {renderTitle ? renderTitle(titleComponent) : titleComponent}
       </div>
       <div className={bodyClassName}>
         {parsedBody?.map((x: any, idx) => (
