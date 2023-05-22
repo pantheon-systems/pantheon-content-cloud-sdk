@@ -34,6 +34,7 @@ const ArticleRenderer = ({
       </div>
       <div className={bodyClassName}>
         {parsedBody?.map((x: any, idx) => (
+          // No stable key available
           // eslint-disable-next-line react/no-array-index-key
           <TopLevelElement element={x} key={idx} keyElem={idx} />
         ))}
