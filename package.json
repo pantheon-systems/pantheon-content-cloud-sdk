@@ -27,12 +27,29 @@
     "commit": "cz",
     "release": "yarn build && yarn release-it"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "require": "./dist/components/index.js",
+      "import": "./dist/components/index.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "components": [
+        "./dist/components/index.d.ts"
+      ]
     }
   },
   "files": [
@@ -82,7 +99,7 @@
     "concurrently": "8.0.1",
     "eslint": "8.40.0",
     "eslint-config-airbnb": "19.0.4",
-    "eslint-config-prettier": "8.8.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsx-a11y": "6.7.1",
     "eslint-plugin-prefer-arrow": "1.2.3",

@@ -7,8 +7,8 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
-    'prettier',
     '@pantheon-systems/eslint-config-pantheon/configurations/node',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -51,6 +51,7 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/require-default-props': 'off',
+    'react/react-in-jsx-scope': 'off',
     'typescript-sort-keys/interface': 'error',
     'typescript-sort-keys/string-enum': 'error',
     'unused-imports/no-unused-imports': 'error',
