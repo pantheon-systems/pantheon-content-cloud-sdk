@@ -6,7 +6,9 @@
     "source": null,
     "sourceURL": null,
     "keywords": null,
-    "publishedDate": null
+    "publishedDate": null,
+    "contentType": "TREE_PANTHEON",
+    "publishingLevel": "PRODUCTION"
   },
   {
     "__typename": "Article",
@@ -15,6 +17,8 @@
     "source": null,
     "sourceURL": null,
     "keywords": null,
-    "publishedDate": null
+    "publishedDate": null,
+    "contentType": "TREE_PANTHEON",
+    "publishingLevel": "PRODUCTION"
   }
 ]

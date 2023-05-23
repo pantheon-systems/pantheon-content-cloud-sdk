@@ -1,4 +1,5 @@
 import React from 'react';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown.js';
 
 import { Article } from '../../types';
 
@@ -20,6 +21,20 @@ const ArticleRenderer = ({
   containerClassName,
   renderTitle,
 }: Props) => {
+  const contentType = article?.contentType;
+
+  if (contentType === 'TEXT_MARKDOWN') {
+    return (
+      <div className={containerClassName}>
+        {article?.content ? (
+          <ReactMarkdown>{String(article.content)}</ReactMarkdown>
+        ) : (
+          <span>No content to display</span>
+        )}
+      </div>
+    );
+  }
+
   const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
   const indexOfFirstParagraph = parsedBody.findIndex((x) =>
     ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p'].includes(x.tag),
