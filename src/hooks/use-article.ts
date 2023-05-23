@@ -2,13 +2,13 @@ import { useEffect, useRef } from 'react';
 
 import { usePantheonClient } from '../core/pantheon-context';
 import { useQuery } from '../lib/apollo-client';
-import { GET_ARTICLE_QUERY } from '../lib/articles';
+import { ArticleQueryArgs, GET_ARTICLE_QUERY } from '../lib/articles';
 import { Article } from '../types';
 
-export const useArticle = (id: string) => {
+export const useArticle = (id: string, args?: ArticleQueryArgs) => {
   const { wsHost, logger } = usePantheonClient();
   const queryData = useQuery<{ article: Article }>(GET_ARTICLE_QUERY, {
-    variables: { id },
+    variables: { id, ...args },
   });
 
   const socketRef = useRef<WebSocket>();

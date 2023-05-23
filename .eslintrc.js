@@ -37,6 +37,7 @@ module.exports = {
     'object-curly-newline': 'off',
     'no-nested-ternary': 'off',
     'no-plusplus': 'off',
+    'no-shadow': 'off',
     'no-unused-vars': 'off',
     'no-console': 'error',
     'no-use-before-define': 'off',
