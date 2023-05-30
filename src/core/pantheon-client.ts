@@ -29,11 +29,23 @@ interface PantheonClientConfig {
    * });
    */
   pccWsHost?: string;
+
+  /**
+   * ID of the site you want to query
+   * @example
+   * // If your site ID is 12345
+   * const pantheonClient = new PantheonClient({
+   * pccHost: 'https://pantheon-content-cloud.com',
+   * siteId: '12345',
+   * });
+   */
+  siteId: string;
 }
 
 export class PantheonClient {
   public host: string;
   public wsHost: string;
+  public siteId: string;
   public logger: Logger;
   private debug: boolean;
 
@@ -44,6 +56,7 @@ export class PantheonClient {
     this.wsHost =
       config.pccWsHost ||
       config.pccHost.replace(/^http/, 'ws').replace(/^https/, 'wss');
+    this.siteId = config.siteId;
     this.debug = config.debug || false;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
 
@@ -51,8 +64,12 @@ export class PantheonClient {
       throw new Error('Missing Pantheon Content Cloud host');
     }
 
+    if (!this.siteId) {
+      throw new Error('Missing Pantheon Content Cloud site ID');
+    }
+
     this.apolloClient = new ApolloClient({
-      uri: `${this.host}/query`,
+      uri: `${this.host}/sites/${this.siteId}/query`,
       cache: new InMemoryCache(),
     });
 
