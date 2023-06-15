@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@pcc/react": {
+      "signature": "fef5ab32d9034a88acde192d7e9ab255",
+      "file": true
+    }
+  }
+}
