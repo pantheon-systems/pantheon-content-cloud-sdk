@@ -1,0 +1,14 @@
+{
+  "name": "pantheon-content-cloud-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pantheon-systems/pantheon-content-cloud-sdk.git",
+  "author": "Kevin Stubbs <kevin@pubgenius.io>",
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}
