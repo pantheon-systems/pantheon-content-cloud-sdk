@@ -6,7 +6,7 @@
   "author": "Kevin Stubbs <kevin@pubgenius.io>",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky"
+    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky && husky install gatsby-starter/.husky"
   },
   "devDependencies": {
     "husky": "^8.0.0"
