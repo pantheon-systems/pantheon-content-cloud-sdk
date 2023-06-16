@@ -1,10 +1,3 @@
-import { defineProps } from "vue";
+export { plugin as pccPlugin } from "./plugin";
 
-defineProps({
-  a: {
-    type: String,
-    default: "a",
-  },
-});
-
-export const a = "a";
+export type { PantheonClientConfig } from "./core/pantheon-client";
