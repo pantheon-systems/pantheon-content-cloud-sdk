@@ -1,4 +1,5 @@
 import { defineConfig } from "tsup";
+import GlobalsPlugin from "esbuild-plugin-globals";
 
 export default defineConfig({
   treeshake: true,
@@ -7,18 +8,22 @@ export default defineConfig({
   dts: true,
   splitting: false,
   sourcemap: "inline",
+  target: "es2019",
   outDir: "dist",
-  target: "node16",
+  globalName: "PccVue",
   entry: ["src/index.ts", "src/components/index.ts"],
   format: ["cjs", "esm"],
-  external: ["react"],
+  external: ["vue", "vue-demi"],
   outExtension: ({ format }) => {
     if (format === "iife") return { js: ".global.js" };
-
     if (format === "cjs") return { js: ".cjs" };
-
     if (format === "esm") return { js: ".mjs" };
-
     return { js: ".js" };
   },
+  esbuildPlugins: [
+    GlobalsPlugin({
+      vue: "Vue",
+      "vue-demi": "VueDemi",
+    }),
+  ],
 });
