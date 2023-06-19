@@ -46,6 +46,7 @@
     "vue": "npm:vue@^3.3.4",
     "vue-2": "npm:vue@^2.7.14",
     "vue-3": "npm:vue@^3.3.4",
+    "esbuild-plugin-globals": "^0.2.0",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
@@ -59,7 +60,6 @@
   },
   "dependencies": {
     "@vue/apollo-composable": "^4.0.0-beta.7",
-    "esbuild-plugin-globals": "^0.2.0",
     "vue-demi": "latest",
     "vue-markdown-render": "^2.0.1"
   },
