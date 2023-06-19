@@ -55,7 +55,7 @@ export class PantheonClient {
   public apolloClient: ApolloClient<NormalizedCacheObject>;
 
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost;
+    this.host = config.pccHost.replace(/\/$/, "");
     this.wsHost =
       config.pccWsHost ||
       config.pccHost.replace(/^http/, "ws").replace(/^https/, "wss");

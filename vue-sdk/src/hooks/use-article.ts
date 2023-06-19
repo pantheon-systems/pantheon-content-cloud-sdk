@@ -32,9 +32,7 @@ type GetArticleQueryResult = {
 
 export const useArticle = (id: string, args?: ArticleQueryArgs) => {
   return useQuery<GetArticleQueryResult>(GET_ARTICLE_QUERY, {
-    variables: {
-      id,
-      ...args,
-    },
+    id,
+    ...args,
   });
 };
