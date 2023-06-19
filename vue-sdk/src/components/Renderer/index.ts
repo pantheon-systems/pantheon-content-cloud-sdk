@@ -1,4 +1,4 @@
-import { PropType, defineComponent, h } from "vue";
+import { PropType, defineComponent, h } from "vue-demi";
 import VueMarkdown from "vue-markdown-render";
 import TopLevelElement from "./TopLevelElement";
 import { Article } from "src/types";

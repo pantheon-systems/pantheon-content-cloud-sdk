@@ -1,4 +1,4 @@
-import { h, defineComponent, PropType } from "vue";
+import { h, defineComponent, PropType } from "vue-demi";
 import TreeRenderer from "./TreeRenderer";
 import { JSONElement } from ".";
 

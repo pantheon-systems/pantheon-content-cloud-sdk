@@ -1,4 +1,4 @@
-import { h, defineComponent, resolveComponent, PropType } from "vue";
+import { h, defineComponent, resolveComponent, PropType } from "vue-demi";
 import {
   getStyleObjectFromString,
   unescapeHTMLEntities,
