@@ -10,16 +10,30 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "require": "./dist/components/index.js",
+      "import": "./dist/components/index.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "components": [
+        "./dist/components/index.d.ts"
+      ]
     }
   },
   "files": [
-    "index.d.ts",
     "dist",
     "README.md"
   ],
   "scripts": {
     "dev": "yarn build --watch",
-    "build": "tsup --onSuccess \"npx yalc publish\"",
+    "build": "tsup --onSuccess \"npx yalc publish --push\"",
     "type-check": "tsc"
   },
   "engines": {
