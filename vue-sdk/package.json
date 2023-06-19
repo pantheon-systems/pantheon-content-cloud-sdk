@@ -2,8 +2,16 @@
   "name": "@pcc/vue",
   "description": "Pantheon Content Cloud Vue SDK",
   "version": "0.0.1",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
   "files": [
     "index.d.ts",
     "dist",
@@ -40,12 +48,5 @@
     "esbuild-plugin-globals": "^0.2.0",
     "vue-demi": "latest"
   },
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
-    }
-  }
+  "sideEffects": false
 }
