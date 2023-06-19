@@ -46,7 +46,8 @@
   "dependencies": {
     "@vue/apollo-composable": "^4.0.0-beta.7",
     "esbuild-plugin-globals": "^0.2.0",
-    "vue-demi": "latest"
+    "vue-demi": "latest",
+    "vue-markdown-render": "^2.0.1"
   },
   "sideEffects": false
 }
