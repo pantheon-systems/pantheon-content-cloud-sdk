@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-yarn --cwd nextjs-sdk lint 
-yarn --cwd nextjs-starter lint 
