@@ -2,8 +2,9 @@
 
 ## Getting Started
 
+(THESE LINKS AREN'T UPDATED TO 'PCC' CLI DOCUMENTATION)
 To get started with the Next Pantheon Content Cloud Starter, use our
-`create-pantheon-decoupled-kit`, or the "CLI". Full documentation for this npm
+`pcc` (command-line interface tool we have created). Full documentation for this npm
 package based on [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can
 be found
 [here](https://decoupledkit.pantheon.io/docs/frontend-starters/using-the-cli) on
@@ -11,10 +12,11 @@ our docs site.
 
 For a quick start, follow the instructions below:
 
+(THIS IS STILL TODO)
 1. In your terminal, run the following command:
 
 ```bash
-npm init pantheon-decoupled-kit -- next-pcc
+pcc init
 ```
 
 2. Follow the prompts in your terminal to complete the setup.

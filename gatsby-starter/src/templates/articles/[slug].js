@@ -1,5 +1,5 @@
 import React from "react";
-import { ArticleRenderer } from "@pcc/react/components";
+import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 
 import Layout from "../../components/layout";
 

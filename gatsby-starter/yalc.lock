@@ -1,7 +1,7 @@
 {
   "version": "v1",
   "packages": {
-    "@pcc/react": {
+    "@pantheon-systems/pcc-react-sdk": {
       "signature": "90830f075af071b8b8aeaa041636966f",
       "file": true
     }
