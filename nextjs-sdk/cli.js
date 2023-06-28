@@ -3,13 +3,17 @@
 import { exit } from 'process';
 import { exec } from 'child_process';
 import { Octokit } from 'octokit';
-import { existsSync, rmSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, rmSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import chalk from 'chalk';
 import ora from 'ora';
 
 const TEMP_DIR_NAME = '.tmp_react_sdk_90723';
+const TEMPLATE_FOLDER_MAP = {
+  nextjs: 'nextjs-starter',
+  gatsby: 'gatsby-starter',
+};
 
 const octokit = new Octokit();
 async function sh(cmd) {
@@ -24,7 +28,7 @@ async function sh(cmd) {
   });
 }
 
-const init = async (dirName) => {
+const init = async (dirName, template) => {
   if (existsSync(TEMP_DIR_NAME)) rmSync(TEMP_DIR_NAME, { recursive: true });
   mkdirSync(TEMP_DIR_NAME);
 
@@ -45,10 +49,12 @@ const init = async (dirName) => {
   const setupProj = ora('Setting up project...').start();
   if (!existsSync(dirName)) mkdirSync(dirName);
   process.chdir(dirName);
-  await sh(`cp -r ../${TEMP_DIR_NAME}/pantheon-sdk/nextjs-starter/* .`);
   await sh(
-    `sed -i.bak -e "s/@pantheon-systems\\/next-pcc-starter/${dirName}/g" package.json`,
+    `cp -r ../${TEMP_DIR_NAME}/pantheon-sdk/${TEMPLATE_FOLDER_MAP[template]}/* .`,
   );
+  const packageJson = JSON.parse(readFileSync('./package.json'));
+  packageJson.name = dirName;
+  writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
   setupProj.succeed('Completed setting up project!');
 
   // Installing dependencies
@@ -72,16 +78,26 @@ yargs(hideBin(process.argv))
   .scriptName('react-sdk')
   .usage('$0 <cmd>')
   .command(
-    'init',
+    'init <project_directory> [options]',
     'Sets up project with required files. ',
     (yargs) => {
-      yargs.positional('<project_dir_name>', {
-        describe: 'The project directory to which setup should be done',
-        demandOption: true,
-      });
+      yargs
+        .positional('<project_directory>', {
+          describe: 'The project directory to which setup should be done',
+          demandOption: true,
+          type: 'string',
+        })
+        .option('template', {
+          describe: 'Populate Files for Gatsby starter kit',
+          type: 'string',
+          default: 'nextjs',
+          choices: ['nextjs', 'gatsby'],
+        });
     },
     async (args) => {
-      const projectDir = args._[1];
+      console.log('Copied files to', args);
+      const projectDir = args.project_directory;
+      const template = args.template;
       if (!projectDir) {
         // Colorize in red
         console.error(
@@ -89,8 +105,7 @@ yargs(hideBin(process.argv))
         );
         exit(1);
       }
-      await init(projectDir);
-      console.log('Copied files to', args._[1]);
+      await init(projectDir, template);
     },
   )
   .help(true).argv;
