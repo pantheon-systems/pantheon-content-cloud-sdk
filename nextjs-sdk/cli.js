@@ -66,7 +66,7 @@ const init = async (dirName, template) => {
   // TODO: Enable after releasing changes from nextjs-starter
   // const installProj = ora('Installing dependencies...').start();
   // await sh('yarn install');
-  // installProj.succeed('Installed project');
+  // installProj.succeed('Installed dependencies!');
 
   process.chdir('../');
 
@@ -90,12 +90,12 @@ yargs(hideBin(process.argv))
     (yargs) => {
       yargs
         .positional('<project_directory>', {
-          describe: 'The project directory to which setup should be done',
+          describe: 'The project directory in which setup should be done.',
           demandOption: true,
           type: 'string',
         })
         .option('template', {
-          describe: 'Populate Files for Gatsby starter kit',
+          describe: 'Template from which files should be copied',
           type: 'string',
           default: 'nextjs',
           choices: ['nextjs', 'gatsby'],
@@ -107,7 +107,7 @@ yargs(hideBin(process.argv))
       if (!projectDir) {
         console.error(
           chalk.red(
-            'ERROR: Please enter valid directory name. Check react-sdk init --help for details.',
+            'ERROR: Please enter valid directory name. Check react-sdk init --help for more details.',
           ),
         );
         exit(1);
