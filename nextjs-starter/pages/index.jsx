@@ -2,7 +2,7 @@ import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Layout from "../components/layout";
 import { PostGrid } from "../components/grid";
-import { getArticles } from "@pcc/react";
+import { getArticles } from "@pantheon-systems/pcc-react-sdk";
 import { pantheonClient } from "../lib/PantheonClient";
 
 export default function Home({ articles }) {

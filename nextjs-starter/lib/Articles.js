@@ -1,4 +1,4 @@
-import { getArticles, getArticle } from "@pcc/react";
+import { getArticles, getArticle } from "@pantheon-systems/pcc-react-sdk";
 import { pantheonClient } from "./PantheonClient";
 
 export async function getAllArticles() {
