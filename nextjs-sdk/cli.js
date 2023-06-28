@@ -95,7 +95,7 @@ yargs(hideBin(process.argv))
           type: 'string',
         })
         .option('template', {
-          describe: 'Template from which files should be copied',
+          describe: 'Template from which files should be copied.',
           type: 'string',
           default: 'nextjs',
           choices: ['nextjs', 'gatsby'],
