@@ -48,6 +48,11 @@ const init = async (dirName, template) => {
   // Setting up new project
   const setupProj = ora('Setting up project...').start();
   if (!existsSync(dirName)) mkdirSync(dirName);
+  else {
+    setupProj.stop();
+    console.log(chalk.red('ERROR: Project directory already exists.'));
+    exit(1);
+  }
   process.chdir(dirName);
   await sh(
     `cp -r ../${TEMP_DIR_NAME}/pantheon-sdk/${TEMPLATE_FOLDER_MAP[template]}/* .`,
@@ -72,7 +77,9 @@ const init = async (dirName, template) => {
   console.log();
   console.log(chalk.green('To get started please run:'));
   console.log(chalk.green(`   cd ${dirName}`));
-  console.log(chalk.green('   PCC_HOST=<host_name> yarn dev'));
+  if (template === 'nextjs')
+    console.log(chalk.green('   PCC_HOST=<host_name> yarn dev'));
+  else console.log(chalk.green('   yarn start'));
 };
 yargs(hideBin(process.argv))
   .scriptName('react-sdk')
@@ -95,13 +102,13 @@ yargs(hideBin(process.argv))
         });
     },
     async (args) => {
-      console.log('Copied files to', args);
       const projectDir = args.project_directory;
       const template = args.template;
       if (!projectDir) {
-        // Colorize in red
         console.error(
-          'Please enter valid directory name. Check react-sdk init --help for details.',
+          chalk.red(
+            'ERROR: Please enter valid directory name. Check react-sdk init --help for details.',
+          ),
         );
         exit(1);
       }
