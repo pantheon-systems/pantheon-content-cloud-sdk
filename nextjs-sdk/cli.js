@@ -7,6 +7,7 @@ import { existsSync, rmSync, mkdirSync, writeFileSync } from 'fs';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import chalk from 'chalk';
+import ora from 'ora';
 
 const TEMP_DIR_NAME = '.tmp_react_sdk_90723';
 
@@ -28,7 +29,7 @@ const init = async (dirName) => {
   mkdirSync(TEMP_DIR_NAME);
 
   // Cloning starter kit locally
-  console.log(chalk.red('Fetching starter kit...'));
+  const fetchStarter = ora('Fetching starter kit...').start();
   const { data } = await octokit.request('GET /repos/{owner}/{repo}/tarball', {
     owner: 'pantheon-systems',
     repo: 'pantheon-content-cloud-sdk',
@@ -38,23 +39,34 @@ const init = async (dirName) => {
   await sh('tar xvpf sdk-repo.tar');
   await sh('mv pantheon-systems-pantheon-content-cloud-sdk* pantheon-sdk');
   process.chdir('../');
+  fetchStarter.succeed('Fetched starter kit!');
 
   // Setting up new project
+  const setupProj = ora('Setting up project...').start();
   if (!existsSync(dirName)) mkdirSync(dirName);
   process.chdir(dirName);
   await sh(`cp -r ../${TEMP_DIR_NAME}/pantheon-sdk/nextjs-starter/* .`);
   await sh(
     `sed -i.bak -e "s/@pantheon-systems\\/next-pcc-starter/${dirName}/g" package.json`,
   );
+  setupProj.succeed('Completed setting up project!');
+
+  // Installing dependencies
+  // TODO: Enable after releasing changes from nextjs-starter
+  // const installProj = ora('Installing dependencies...').start();
+  // await sh('yarn install');
+  // installProj.succeed('Installed project');
+
   process.chdir('../');
-  console.log(chalk.green('Finished setting up', dirName, 'directory'));
-  console.log();
-  console.log(chalk.green('To get started please run:'));
-  console.log(chalk.green(`cd ${dirName}`));
-  console.log(chalk.green('yarn dev'));
 
   // Cleaning up
   rmSync(TEMP_DIR_NAME, { recursive: true });
+
+  // Messaging to get started
+  console.log();
+  console.log(chalk.green('To get started please run:'));
+  console.log(chalk.green(`   cd ${dirName}`));
+  console.log(chalk.green('   PCC_HOST=<host_name> yarn dev'));
 };
 yargs(hideBin(process.argv))
   .scriptName('react-sdk')
