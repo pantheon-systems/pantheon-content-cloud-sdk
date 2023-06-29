@@ -1,9 +1,12 @@
-import { NormalizedCacheObject } from '@apollo/client';
+import {
+  NormalizedCacheObject,
+  ApolloClient,
+  InMemoryCache,
+} from "@apollo/client";
 
-import { ApolloClient, InMemoryCache } from '../lib/apollo-client';
-import { DefaultLogger, Logger, NoopLogger } from '../utils/logger';
+import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
 
-interface PantheonClientConfig {
+export interface PantheonClientConfig {
   debug?: boolean;
 
   /**
@@ -24,8 +27,8 @@ interface PantheonClientConfig {
    * // If your Pantheon Content Cloud instance is hosted at https://pantheon-content-cloud.com
    * // then your websocket host is wss://pantheon-content-cloud.com
    * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
-   *   pccWsHost: 'wss://pantheon-content-cloud.com',
+   *  pccHost: 'https://pantheon-content-cloud.com',
+   * pccWsHost: 'wss://pantheon-content-cloud.com',
    * });
    */
   pccWsHost?: string;
@@ -35,71 +38,46 @@ interface PantheonClientConfig {
    * @example
    * // If your site ID is 12345
    * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
-   *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
+   * pccHost: 'https://pantheon-content-cloud.com',
+   * siteId: '12345',
    * });
    */
   siteId: string;
-
-  /**
-   * API Key for your PCC Workspace
-   * @example
-   * // If your API Key is ABC-DEF
-   * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
-   *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
-   * });
-   */
-  apiKey: string;
 }
 
 export class PantheonClient {
   public host: string;
-
   public wsHost: string;
   public siteId: string;
-  public apiKey: string;
-
   public logger: Logger;
   private debug: boolean;
 
   public apolloClient: ApolloClient<NormalizedCacheObject>;
 
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost;
+    this.host = config.pccHost.replace(/\/$/, "");
     this.wsHost =
       config.pccWsHost ||
-      config.pccHost.replace(/^http/, 'ws').replace(/^https/, 'wss');
+      config.pccHost.replace(/^http/, "ws").replace(/^https/, "wss");
     this.siteId = config.siteId;
-    this.apiKey = config.apiKey;
-
     this.debug = config.debug || false;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
 
     if (!this.host) {
-      throw new Error('Missing Pantheon Content Cloud host');
+      throw new Error("Missing Pantheon Content Cloud host");
     }
 
     if (!this.siteId) {
-      throw new Error('Missing Pantheon Content Cloud site ID');
-    }
-
-    if (!this.apiKey) {
-      throw new Error('Missing Pantheon Content Cloud API Key');
+      throw new Error("Missing Pantheon Content Cloud site ID");
     }
 
     this.apolloClient = new ApolloClient({
       uri: `${this.host}/sites/${this.siteId}/query`,
       cache: new InMemoryCache(),
-      headers: {
-        'PCC-API-KEY': this.apiKey,
-      },
     });
 
     if (this.debug) {
-      this.logger.info('PantheonClient initialized with config', config);
+      this.logger.info("PantheonClient initialized with config", config);
     }
   }
 }

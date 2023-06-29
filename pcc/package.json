@@ -1,0 +1,33 @@
+{
+  "name": "@pcc/starter-kit",
+  "version": "1.0.0",
+  "author": "",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pcc",
+    "gatsby",
+    "nextjs",
+    "react",
+    "pantheon"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bin": {
+    "pcc": "./cli.js"
+  },
+  "files": [
+    "./cli.js"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "octokit": "^2.1.0",
+    "ora": "^6.3.1",
+    "yargs": "^17.7.2"
+  }
+}

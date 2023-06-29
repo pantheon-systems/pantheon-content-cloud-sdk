@@ -14,10 +14,12 @@ function ensureEnvVariable(name) {
   }
 }
 
-ensureEnvVariable("NEXT_PUBLIC_PCC_HOST");
-ensureEnvVariable("NEXT_PUBLIC_PCC_SITE_ID");
+ensureEnvVariable("PCC_HOST");
+ensureEnvVariable("PCC_SITE_ID");
+ensureEnvVariable("PCC_API_KEY");
 
 export const pantheonClient = new PantheonClient({
-  pccHost: process.env.NEXT_PUBLIC_PCC_HOST,
-  siteId: process.env.NEXT_PUBLIC_PCC_SITE_ID,
+  pccHost: process.env.PCC_HOST,
+  siteId: process.env.PCC_SITE_ID,
+  apiKey: process.env.PCC_API_KEY,
 });
