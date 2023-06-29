@@ -8,8 +8,14 @@
 
 ## Installation
 
+npm
 ```console
-npm install @pcc/starter-kit
+npm install @pcc/starter-kit --global
+```
+
+yarn
+```console
+yarn add @pcc/starter-kit --global
 ```
 
 ## Usage
