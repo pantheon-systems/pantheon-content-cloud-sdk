@@ -89,10 +89,9 @@ const init = async (dirName, template) => {
   setupProj.succeed('Completed setting up project!');
 
   // Installing dependencies
-  // TODO: Enable after releasing changes from nextjs-starter
-  // const installProj = ora('Installing dependencies...').start();
-  // await sh('yarn install');
-  // installProj.succeed('Installed dependencies!');
+  const installProj = ora('Installing dependencies...').start();
+  await sh('yarn install');
+  installProj.succeed('Installed dependencies!');
   process.chdir('../');
 
   // Cleaning up
