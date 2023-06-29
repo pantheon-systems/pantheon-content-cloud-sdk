@@ -16,13 +16,13 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Go to path
-        run: cd ${{ matrix.FOLDER }}
-
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
+      - name: Go to path
+        run: cd ${{ matrix.FOLDER }}
 
       - name: Set up Node
         uses: actions/setup-node@v3
