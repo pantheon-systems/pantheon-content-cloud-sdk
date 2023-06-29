@@ -9,16 +9,18 @@ const pccHost = process.env.PCC_HOST;
 const pccSiteId = process.env.PCC_SITE_ID;
 const pccApiKey = process.env.PCC_API_KEY;
 
-if (!pccHost) {
-  throw new Error("PCC_HOST environment variable is required");
-}
+if (process.env.IS_CICD !== "true") {
+  if (!pccHost) {
+    throw new Error("PCC_HOST environment variable is required");
+  }
 
-if (!pccSiteId) {
-  throw new Error("PCC_SITE_ID environment variable is required");
-}
+  if (!pccSiteId) {
+    throw new Error("PCC_SITE_ID environment variable is required");
+  }
 
-if (!pccApiKey) {
-  throw new Error("PCC_API_KEY environment variable is required");
+  if (!pccApiKey) {
+    throw new Error("PCC_API_KEY environment variable is required");
+  }
 }
 
 const pantheonClient = new PantheonClient({

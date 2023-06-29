@@ -20,9 +20,11 @@ function ensureEnvVariable(name) {
   }
 }
 
-ensureEnvVariable("PCC_HOST");
-ensureEnvVariable("PCC_SITE_ID");
-ensureEnvVariable("PCC_API_KEY");
+if (process.env.IS_CICD !== "true") {
+  ensureEnvVariable("PCC_HOST");
+  ensureEnvVariable("PCC_SITE_ID");
+  ensureEnvVariable("PCC_API_KEY");
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
