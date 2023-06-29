@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        FOLDER: [gatsby-starter, nextjs-sdk, nextjs-starter, pcc, vue-sdk]
+        FOLDER: [nextjs-sdk, nextjs-starter, pcc, vue-sdk]
 
     name: Run Type Check & Linters
     runs-on: ubuntu-latest
