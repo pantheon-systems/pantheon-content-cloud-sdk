@@ -14,7 +14,6 @@
     "type": "git",
     "url": ""
   },
-  "bin": "./cli.js",
   "scripts": {
     "dev": "concurrently \"yarn build --watch\" \"yarn test:watch\" ",
     "build": "tsup --onSuccess \"yarn yalc publish\"",

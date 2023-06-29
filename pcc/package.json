@@ -1,5 +1,5 @@
 {
-  "name": "pcc",
+  "name": "@pcc/starter-kit",
   "version": "1.0.0",
   "author": "",
   "type": "module",
@@ -21,12 +21,6 @@
   "files": [
     "./cli.js"
   ],
-  "lint-staged": {
-    "./{src,tests}/**/*.{ts,js,jsx,tsx}": [
-      "eslint --ignore-path .gitignore --fix"
-    ],
-    "*": "prettier --write"
-  },
   "engines": {
     "node": ">=18.0.0"
   },
