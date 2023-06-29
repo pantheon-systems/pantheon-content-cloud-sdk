@@ -8,8 +8,10 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import chalk from "chalk";
 import ora from "ora";
+import path from "path";
+import os from "os";
 
-const TEMP_DIR_NAME = ".tmp_react_sdk_90723";
+const TEMP_DIR_NAME = path.join(os.tmpdir(), "react_sdk_90723");
 const TEMPLATE_FOLDER_MAP = {
   nextjs: "nextjs-starter",
   gatsby: "gatsby-starter",
@@ -38,11 +40,16 @@ const init = async (dirName, template) => {
     owner: "pantheon-systems",
     repo: "pantheon-content-cloud-sdk",
   });
-  process.chdir(TEMP_DIR_NAME);
-  writeFileSync("./sdk-repo.tar", Buffer.from(data));
-  await sh("tar xvpf sdk-repo.tar");
-  await sh("mv pantheon-systems-pantheon-content-cloud-sdk* pantheon-sdk");
-  process.chdir("../");
+  writeFileSync(path.join(TEMP_DIR_NAME, "sdk-repo.tar"), Buffer.from(data));
+  await sh(
+    `tar xvpf ${path.join(TEMP_DIR_NAME, "sdk-repo.tar")} -C ${TEMP_DIR_NAME}`
+  );
+  await sh(
+    `mv ${path.join(
+      TEMP_DIR_NAME,
+      "pantheon-systems-pantheon-content-cloud-sdk*"
+    )} ${path.join(TEMP_DIR_NAME, "pantheon-sdk")}`
+  );
   fetchStarter.succeed("Fetched starter kit!");
 
   // Setting up new project
@@ -55,7 +62,12 @@ const init = async (dirName, template) => {
   }
   process.chdir(dirName);
   await sh(
-    `cp -r ../${TEMP_DIR_NAME}/pantheon-sdk/${TEMPLATE_FOLDER_MAP[template]}/* .`
+    `cp -r ${path.join(
+      TEMP_DIR_NAME,
+      "pantheon-sdk",
+      TEMPLATE_FOLDER_MAP[template],
+      "*"
+    )} .`
   );
   const packageJson = JSON.parse(readFileSync("./package.json"));
   packageJson.name = dirName;
