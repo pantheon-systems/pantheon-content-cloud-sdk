@@ -1,5 +1,5 @@
 {
-  "name": "@pcc/vue",
+  "name": "@pcc/vue-sdk",
   "description": "Pantheon Content Cloud Vue SDK",
   "version": "0.0.1",
   "main": "./dist/index.cjs",

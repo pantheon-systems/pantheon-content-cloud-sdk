@@ -1,4 +1,4 @@
-import { PantheonClient } from "@pcc/react";
+import { PantheonClient } from "@pantheon-systems/pcc-react-sdk";
 import { PCC_HOST } from "./constants";
 
 export const pantheonClient = new PantheonClient({

@@ -1,5 +1,5 @@
 import { NextSeo } from "next-seo";
-import { ArticleRenderer } from "@pcc/react/components";
+import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 
 import Layout from "../../components/layout";
 import { getArticleById } from "../../lib/Articles";

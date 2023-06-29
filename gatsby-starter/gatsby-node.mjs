@@ -1,4 +1,8 @@
-import { getArticles, PantheonClient, getArticle } from "@pcc/react";
+import {
+  getArticles,
+  PantheonClient,
+  getArticle,
+} from "@pantheon-systems/pcc-react-sdk";
 import path from "path";
 
 const pccHost = process.env.PCC_HOST;
