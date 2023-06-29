@@ -12,11 +12,11 @@ our docs site.
 
 For a quick start, follow the instructions below:
 
-(THIS IS STILL TODO)
-1. In your terminal, run the following command:
+1. In your terminal, run the following commands:
 
 ```bash
-pcc init
+yarn add @pantheon-systems/pcc –global
+pcc init ./my-new-site --template=nextjs
 ```
 
 2. Follow the prompts in your terminal to complete the setup.
