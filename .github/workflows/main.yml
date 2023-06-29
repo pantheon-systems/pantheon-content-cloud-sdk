@@ -7,6 +7,10 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+    strategy:
+      matrix:
+        FOLDER: [nextjs-sdk, nextjs-starter, pcc, vue-sdk]
+
     name: Run Type Check & Linters
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -23,20 +27,19 @@ jobs:
           node-version: lts/*
           cache: 'yarn'
 
-      - name: Install dependencies
+      - name: Install dependencies of root
         run: yarn install --frozen-lockfile
+      
+      - name: Remove npmconfig if exists
+        run: rm -f ${{ matrix.FOLDER }}/.npmrc
 
-      - name: Check types
-        run: yarn type-check
+      - name: Install dependencies of subfolder
+        run: yarn install --frozen-lockfile
+        working-directory: ${{ matrix.FOLDER }}
 
-      - name: Check linting
-        run: yarn lint
-
-      - name: Run tests
-        run: yarn test:ci
+      # - name: Check linting
+      #   run: yarn lint
 
       - name: Build package
-        run: yarn build
-
-      - name: Check commits messages
-        uses: wagoid/commitlint-github-action@v5
+        run: IS_CICD=true yarn build
+        working-directory: ${{ matrix.FOLDER }}

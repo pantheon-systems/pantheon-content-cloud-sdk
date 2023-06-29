@@ -99,12 +99,16 @@ const init = async (dirName, template) => {
 
   // Messaging to get started
   console.log();
-  console.log(chalk.green('To get started please run:'));
+  console.log(
+    chalk.green('To get started please replace the placeholders in .env.local'),
+  );
   console.log(chalk.green(`   cd ${dirName}`));
-  if (template === 'nextjs')
-    console.log(chalk.green('   PCC_HOST=<host_name> yarn dev'));
+  console.log(chalk.green(`   vim .env.local`));
+  console.log(chalk.green('And then run the website'));
+  if (template === 'nextjs') console.log(chalk.green('   yarn dev'));
   else console.log(chalk.green('   yarn start'));
 };
+
 yargs(hideBin(process.argv))
   .scriptName('pcc')
   .usage('$0 <cmd>')
@@ -128,6 +132,7 @@ yargs(hideBin(process.argv))
     async (args) => {
       const projectDir = args.project_directory;
       const template = args.template;
+
       if (!projectDir) {
         console.error(
           chalk.red(
@@ -136,6 +141,7 @@ yargs(hideBin(process.argv))
         );
         exit(1);
       }
+
       await init(projectDir, template);
     },
   )

@@ -21,6 +21,9 @@
   "files": [
     "./cli.js"
   ],
+  "scripts": {
+    "build": "echo 'Nothing to do.'"
+  },
   "engines": {
     "node": ">=18.0.0"
   },

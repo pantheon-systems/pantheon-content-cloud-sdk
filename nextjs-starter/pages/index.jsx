@@ -49,7 +49,9 @@ export default function Home({ articles }) {
 }
 
 export async function getServerSideProps() {
-  const articles = await getArticles(pantheonClient);
+  const articles = await getArticles(pantheonClient, {
+    publishingLevel: "PRODUCTION",
+  });
 
   return {
     props: {
