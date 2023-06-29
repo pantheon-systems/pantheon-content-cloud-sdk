@@ -21,20 +21,22 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Go to path
-        run: cd ${{ matrix.FOLDER }}
-
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
           cache: 'yarn'
 
-      - name: Install dependencies
+      - name: Install dependencies of root
         run: yarn install --frozen-lockfile
+
+      - name: Install dependencies of subfolder
+        run: yarn install --frozen-lockfile
+        working-directory: ${{ matrix.FOLDER }}
 
       # - name: Check linting
       #   run: yarn lint
 
       - name: Build package
         run: yarn build
+        working-directory: ${{ matrix.FOLDER }}
