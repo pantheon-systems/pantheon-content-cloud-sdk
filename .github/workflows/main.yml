@@ -31,7 +31,7 @@ jobs:
         run: yarn install --frozen-lockfile
       
       - name: Remove npmconfig if exists
-        run: rm ${{ matrix.FOLDER }}/.npmrc
+        run: rm -f ${{ matrix.FOLDER }}/.npmrc
 
       - name: Install dependencies of subfolder
         run: yarn install --frozen-lockfile
