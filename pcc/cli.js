@@ -127,4 +127,5 @@ yargs(hideBin(process.argv))
       await init(projectDir, template);
     }
   )
+  .demandCommand()
   .help(true).argv;
