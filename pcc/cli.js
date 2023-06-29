@@ -21,6 +21,7 @@ import path from 'path';
 import os from 'os';
 
 const TEMP_DIR_NAME = path.join(os.tmpdir(), 'react_sdk_90723');
+const TAR_FILE_NAME = 'sdk-repo.tar';
 const TEMPLATE_FOLDER_MAP = {
   nextjs: 'nextjs-starter',
   gatsby: 'gatsby-starter',
@@ -49,12 +50,12 @@ const init = async (dirName, template) => {
     owner: 'pantheon-systems',
     repo: 'pantheon-content-cloud-sdk',
   });
-  writeFileSync(path.join(TEMP_DIR_NAME, 'sdk-repo.tar'), Buffer.from(data));
+  writeFileSync(path.join(TEMP_DIR_NAME, TAR_FILE_NAME), Buffer.from(data));
   await sh(
-    `tar xvpf ${path.join(TEMP_DIR_NAME, 'sdk-repo.tar')} -C ${TEMP_DIR_NAME}`,
+    `tar xvpf ${path.join(TEMP_DIR_NAME, TAR_FILE_NAME)} -C ${TEMP_DIR_NAME}`,
   );
   let files = readdirSync(TEMP_DIR_NAME);
-  files = files.filter((item) => item !== 'sdk-repo.tar');
+  files = files.filter((item) => item !== TAR_FILE_NAME);
   renameSync(
     path.join(TEMP_DIR_NAME, files[0]),
     path.join(TEMP_DIR_NAME, 'pantheon-sdk'),
