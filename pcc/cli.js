@@ -76,8 +76,9 @@ const init = async (dirName, template) => {
     { recursive: true },
   );
   chdir(dirName);
+  const appName = path.parse(dirName).base;
   const packageJson = JSON.parse(readFileSync('./package.json'));
-  packageJson.name = dirName;
+  packageJson.name = appName;
   writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
 
   // Commiting changes to Git
