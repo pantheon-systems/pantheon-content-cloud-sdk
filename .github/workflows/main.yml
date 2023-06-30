@@ -6,7 +6,7 @@ jobs:
   run-ci:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PCC_HOST: https://test.app
+      PCC_HOST: https://pcc-gfttxsojwq-uw.a.run.app
       PCC_SITE_ID: 12345
       PCC_API_KEY: ABC-DEF
 
