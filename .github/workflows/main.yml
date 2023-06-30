@@ -6,6 +6,9 @@ jobs:
   run-ci:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PCC_HOST: https://pcc-gfttxsojwq-uw.a.run.app
+      PCC_SITE_ID: 12345
+      PCC_API_KEY: ABC-DEF
 
     strategy:
       matrix:
@@ -25,11 +28,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: lts/*
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Install dependencies of root
         run: yarn install --frozen-lockfile
-      
+
       - name: Remove npmconfig if exists
         run: rm -f ${{ matrix.FOLDER }}/.npmrc
 
