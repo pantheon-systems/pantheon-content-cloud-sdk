@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { chdir, exit } from 'process';
 import { exec } from 'child_process';
 import { Octokit } from 'octokit';
@@ -13,13 +11,10 @@ import {
   readdirSync,
   cpSync,
 } from 'fs';
-import yargs from 'yargs';
-import { hideBin } from 'yargs/helpers';
-import chalk from 'chalk';
 import ora from 'ora';
 import path from 'path';
 import os from 'os';
-
+import chalk from 'chalk';
 const TEMP_DIR_NAME = path.join(os.tmpdir(), 'react_sdk_90723');
 const TAR_FILE_NAME = 'sdk-repo.tar';
 const TEMPLATE_FOLDER_MAP = {
@@ -28,7 +23,7 @@ const TEMPLATE_FOLDER_MAP = {
 };
 
 const octokit = new Octokit();
-async function sh(cmd) {
+async function sh(cmd: string) {
   return new Promise(function (resolve, reject) {
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
@@ -39,8 +34,10 @@ async function sh(cmd) {
     });
   });
 }
-
-const init = async (dirName, template) => {
+/**
+ * Handles initializing projects for PCC
+ */
+const init = async (dirName: string, template: CliTemplateOptions) => {
   if (existsSync(TEMP_DIR_NAME)) rmSync(TEMP_DIR_NAME, { recursive: true });
   mkdirSync(TEMP_DIR_NAME);
 
@@ -77,7 +74,7 @@ const init = async (dirName, template) => {
   );
   chdir(dirName);
   const appName = path.parse(dirName).base;
-  const packageJson = JSON.parse(readFileSync('./package.json'));
+  const packageJson = JSON.parse(readFileSync('./package.json').toString());
   packageJson.name = appName;
   writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
 
@@ -110,41 +107,4 @@ const init = async (dirName, template) => {
   else console.log(chalk.green('   yarn start'));
 };
 
-yargs(hideBin(process.argv))
-  .scriptName('pcc')
-  .usage('$0 <cmd>')
-  .command(
-    'init <project_directory> [options]',
-    'Sets up project with required files. ',
-    (yargs) => {
-      yargs
-        .positional('<project_directory>', {
-          describe: 'The project directory in which setup should be done.',
-          demandOption: true,
-          type: 'string',
-        })
-        .option('template', {
-          describe: 'Template from which files should be copied.',
-          type: 'string',
-          choices: ['nextjs', 'gatsby'],
-          demandOption: true,
-        });
-    },
-    async (args) => {
-      const projectDir = args.project_directory;
-      const template = args.template;
-
-      if (!projectDir) {
-        console.error(
-          chalk.red(
-            'ERROR: Please enter valid directory name. Check pcc init --help for more details.',
-          ),
-        );
-        exit(1);
-      }
-
-      await init(projectDir, template);
-    },
-  )
-  .demandCommand()
-  .help(true).argv;
+export default init;
