@@ -9,12 +9,7 @@ const OAUTH_SCOPES = [
   'https://www.googleapis.com/auth/userinfo.email',
 ];
 
-import keys from './client_google.json';
 import AddOnApiHelper from '../../lib/addonApiHelper';
-
-const GOOGLE_CLIENT_ID =
-  '142470191541-8o14j77pvagisc66s48kl4ub91f9c7b8.apps.googleusercontent.com';
-const GOOGLE_REDIRECT_URI = 'http://localhost:3030/oauth-redirect';
 
 const getOrPersistToken = (): string => {
   return '';
