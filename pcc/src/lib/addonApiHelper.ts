@@ -12,6 +12,7 @@ class AddOnApiHelper {
     refreshToken: string;
     accessToken: string;
     idToken: string;
+    email: string;
   }> {
     const resp = await axios.post(
       `${OAUTH_ENDPOINT}/token`,
@@ -28,6 +29,7 @@ class AddOnApiHelper {
       accessToken: resp.data.access_token as string,
       refreshToken: resp.data.refresh_token as string,
       idToken: resp.data.id_token as string,
+      email: resp.data.email as string
     };
   }
 

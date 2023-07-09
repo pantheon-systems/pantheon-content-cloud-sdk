@@ -8,3 +8,10 @@ declare type ApiKey = {
   keyMasked: string;
   created: string;
 };
+
+declare type AuthDetails = {
+  accessToken: string;
+  refreshToken: string;
+  idToken: string;
+  email: string;
+};

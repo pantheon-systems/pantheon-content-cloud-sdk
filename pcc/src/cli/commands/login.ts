@@ -10,20 +10,29 @@ const OAUTH_SCOPES = [
 ];
 
 import AddOnApiHelper from '../../lib/addonApiHelper';
-
-const getOrPersistToken = (): string => {
-  return '';
-};
+import ora from 'ora';
+import {
+  getLocalAuthDetails,
+  persistAuthDetails,
+} from '../../lib/localStorage';
+import { GOOGLE_CLIENT_ID, GOOGLE_REDIRCT_URI } from '../../constants';
 
 /**
  * Create a new OAuth2Client, and go through the OAuth2 content
  * workflow.  Return the full client to the callback.
  */
 function main(): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
+    const fetchStarter = ora('Logging you in...').start();
+    const authData = await getLocalAuthDetails();
+    if (authData) {
+      fetchStarter.succeed(`You are already logged in as ${authData.email}.`);
+      return;
+    }
+
     const oAuth2Client = new OAuth2Client({
-      clientId: keys.web.client_id,
-      redirectUri: keys.web.redirect_uris[0],
+      clientId: GOOGLE_CLIENT_ID,
+      redirectUri: GOOGLE_REDIRCT_URI,
     });
 
     // Generate the url that will be used for the consent dialog.
@@ -39,10 +48,20 @@ function main(): Promise<void> {
             const qs = new url.URL(req.url, 'http://localhost:3030')
               .searchParams;
             const code = qs.get('code');
-            res.end('<div>hello</div><script>window.close()</script>');
+            res.end('Success');
             server.destroy();
 
             const r = await AddOnApiHelper.getToken(code as string);
+            await persistAuthDetails({
+              accessToken: r.idToken,
+              refreshToken: r.refreshToken,
+              idToken: r.refreshToken,
+              email: r.email,
+            });
+            // TODO: Update email to be used from getToken response
+            fetchStarter.succeed(
+              `You are successfully logged in as ${'omkar@pubgenius.io'}`,
+            );
             resolve();
           }
         } catch (e) {
