@@ -15,7 +15,7 @@ import {
   getLocalAuthDetails,
   persistAuthDetails,
 } from '../../lib/localStorage';
-import { GOOGLE_CLIENT_ID, GOOGLE_REDIRCT_URI } from '../../constants';
+import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from '../../constants';
 
 /**
  * Create a new OAuth2Client, and go through the OAuth2 content
@@ -32,7 +32,7 @@ function main(): Promise<void> {
 
     const oAuth2Client = new OAuth2Client({
       clientId: GOOGLE_CLIENT_ID,
-      redirectUri: GOOGLE_REDIRCT_URI,
+      redirectUri: GOOGLE_REDIRECT_URI,
     });
 
     // Generate the url that will be used for the consent dialog.
