@@ -2,7 +2,12 @@ import {
   NormalizedCacheObject,
   ApolloClient,
   InMemoryCache,
+  HttpLink,
+  split,
 } from "@apollo/client";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { createClient } from "graphql-ws";
 
 import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
 
@@ -78,8 +83,36 @@ export class PantheonClient {
       throw new Error("Missing Pantheon Content Cloud API Key");
     }
 
-    this.apolloClient = new ApolloClient({
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: `${this.wsHost}/sites/${this.siteId}/query`,
+        connectionParams: {
+          "PCC-API-KEY": this.apiKey,
+        },
+      })
+    );
+
+    const httpLink = new HttpLink({
       uri: `${this.host}/sites/${this.siteId}/query`,
+      headers: {
+        "PCC-API-KEY": this.apiKey,
+      },
+    });
+
+    const splitLink = split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      wsLink,
+      httpLink
+    );
+
+    this.apolloClient = new ApolloClient({
+      link: splitLink,
       cache: new InMemoryCache(),
     });
 

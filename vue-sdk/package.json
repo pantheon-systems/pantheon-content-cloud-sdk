@@ -61,6 +61,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.16",
     "@vue/apollo-composable": "^4.0.0-beta.7",
+    "graphql-ws": "^5.14.0",
     "vue-demi": "latest",
     "vue-markdown-render": "^2.0.1"
   },
