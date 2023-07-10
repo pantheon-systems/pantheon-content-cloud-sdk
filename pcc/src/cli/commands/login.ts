@@ -16,13 +16,15 @@ import {
   persistAuthDetails,
 } from '../../lib/localStorage';
 import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from '../../constants';
+import { parseJwt } from '../../lib/jwt';
 
-function main(): Promise<void> {
+function login(): Promise<void> {
   return new Promise(async (resolve, reject) => {
     const fetchStarter = ora('Logging you in...').start();
     const authData = await getLocalAuthDetails();
     if (authData) {
-      fetchStarter.succeed(`You are already logged in as ${authData.email}.`);
+      const jwtPayload = parseJwt(authData.idToken);
+      fetchStarter.succeed(`You are already logged in as ${jwtPayload.email}.`);
       return;
     }
 
@@ -48,14 +50,14 @@ function main(): Promise<void> {
             server.destroy();
 
             const r = await AddOnApiHelper.getToken(code as string);
+            const jwtPayload = parseJwt(r.idToken);
             await persistAuthDetails({
               accessToken: r.accessToken,
               refreshToken: r.refreshToken,
               idToken: r.idToken,
-              email: r.email,
             });
             fetchStarter.succeed(
-              `You are successfully logged in as ${r.email}`,
+              `You are successfully logged in as ${jwtPayload.email}`,
             );
             resolve();
           }
@@ -69,8 +71,4 @@ function main(): Promise<void> {
     destroyer(server);
   });
 }
-const login = async () => {
-  await main().catch(console.error);
-};
-
 export default login;

@@ -11,7 +11,6 @@ export const getLocalAuthDetails = async (): Promise<AuthDetails | null> => {
       accessToken: authJson.accessToken,
       refreshToken: authJson.refreshToken,
       idToken: authJson.idToken,
-      email: authJson.email,
     };
   } catch (_err) {
     return null;

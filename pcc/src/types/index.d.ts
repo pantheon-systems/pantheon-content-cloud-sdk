@@ -13,5 +13,4 @@ declare type AuthDetails = {
   accessToken: string;
   refreshToken: string;
   idToken: string;
-  email: string;
 };
