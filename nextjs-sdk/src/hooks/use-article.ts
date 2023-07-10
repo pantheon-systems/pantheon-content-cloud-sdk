@@ -1,90 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-import { usePantheonClient } from '../core/pantheon-context';
 import { useQuery } from '../lib/apollo-client';
-import { ArticleQueryArgs, GET_ARTICLE_QUERY } from '../lib/articles';
+import {
+  ArticleQueryArgs,
+  GET_ARTICLE_QUERY,
+  ARTICLE_UPDATE_SUBSCRIPTION,
+} from '../lib/articles';
 import { Article } from '../types';
 
 export const useArticle = (id: string, args?: ArticleQueryArgs) => {
-  const { wsHost, logger } = usePantheonClient();
-  const queryData = useQuery<{ article: Article }>(GET_ARTICLE_QUERY, {
-    variables: { id, ...args },
-  });
-
-  const socketRef = useRef<WebSocket>();
-  const idRef = useRef<string>();
-
-  useEffect(() => {
-    idRef.current = id;
-  }, [id]);
+  const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
+    GET_ARTICLE_QUERY,
+    {
+      variables: { id, ...args },
+    },
+  );
 
   useEffect(() => {
-    if (socketRef.current != null) return;
+    subscribeToMore({
+      document: ARTICLE_UPDATE_SUBSCRIPTION,
+      variables: { id, ...args },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
 
-    const socket = new WebSocket(`${wsHost}/ws`);
-    socketRef.current = socket;
-
-    socket.addEventListener('open', () => {
-      logger.info('Connected to the GraphQL backend.');
-
-      socket.send(
-        JSON.stringify({
-          Command: 'subchanges',
-          Id: id,
-        }),
-      );
-    });
-
-    socket.addEventListener('close', () => {
-      logger.info('%cDisconnected and lonely', 'color: red;');
-    });
-
-    socket.addEventListener('message', (e) => {
-      const json = JSON.parse(e.data);
-
-      switch (json.Command) {
-        case 'refetch': {
-          if (json.Id === idRef.current) {
-            logger.info(
-              '%cNew content is available - refetching...',
-              'color: yellow;',
-            );
-            queryData.refetch();
-          }
-          break;
-        }
-        case 'doc_gone': {
-          if (json.Id === idRef.current) {
-            // TODO: Handle case when doc we are watching has been deleted.
-            logger.error('Document has been deleted');
-          }
-          break;
-        }
-        case 'debug': {
-          logger.info({ json });
-          break;
-        }
-        default: {
-          logger.error(`Unrecognized command ${json.Command}`, json);
-        }
-      }
+        const { article } = subscriptionData.data;
+        return { article };
+      },
     });
   }, []);
-
-  useEffect(() => {
-    if (socketRef.current?.readyState === WebSocket.OPEN) {
-      socketRef.current.send(
-        JSON.stringify({
-          Command: 'subchanges',
-          Id: id,
-        }),
-      );
-    }
-  }, [id]);
-
-  useEffect(() => {
-    logger.info('%cSuccessfully fetched updated content', 'color: lime;');
-  }, [queryData.data]);
 
   return {
     ...queryData,
