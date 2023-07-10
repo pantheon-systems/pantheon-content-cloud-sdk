@@ -1,8 +1,13 @@
 import { OAuth2Client } from 'google-auth-library';
 import http from 'http';
 import url from 'url';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import open from 'open';
 import destroyer from 'server-destroy';
+import { readFileSync } from 'fs';
+import nunjucks from 'nunjucks';
+nunjucks.configure({ autoescape: true });
 
 const OAUTH_SCOPES = [
   'https://www.googleapis.com/auth/drive.file',
@@ -46,9 +51,10 @@ function login(): Promise<void> {
             const qs = new url.URL(req.url, 'http://localhost:3030')
               .searchParams;
             const code = qs.get('code');
-            res.end('Success');
-            server.destroy();
-
+            const currDir = dirname(fileURLToPath(import.meta.url));
+            const content = readFileSync(
+              join(currDir, '../templates/loginSuccess.html'),
+            );
             const r = await AddOnApiHelper.getToken(code as string);
             const jwtPayload = parseJwt(r.idToken);
             await persistAuthDetails({
@@ -56,6 +62,14 @@ function login(): Promise<void> {
               refreshToken: r.refreshToken,
               idToken: r.idToken,
             });
+
+            res.end(
+              nunjucks.renderString(content.toString(), {
+                email: jwtPayload.email,
+              }),
+            );
+            server.destroy();
+
             fetchStarter.succeed(
               `You are successfully logged in as ${jwtPayload.email}`,
             );
