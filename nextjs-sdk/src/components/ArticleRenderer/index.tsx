@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown.js';
+import rehypeRaw from 'rehype-raw';
 
 import { Article } from '../../types';
 
@@ -27,7 +28,9 @@ const ArticleRenderer = ({
     return (
       <div className={containerClassName}>
         {article?.content ? (
-          <ReactMarkdown>{String(article.content)}</ReactMarkdown>
+          <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+            {String(article.content)}
+          </ReactMarkdown>
         ) : (
           <span>No content to display</span>
         )}
