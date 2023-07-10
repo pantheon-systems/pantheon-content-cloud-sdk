@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import init from './commands/init';
 import { createToken, listTokens, revokeToken } from './commands/token';
 import login from './commands/login';
+import logout from './commands/logout';
 
 yargs(hideBin(process.argv))
   .scriptName('pcc')
@@ -97,10 +98,18 @@ yargs(hideBin(process.argv))
   )
   .command(
     'login',
-    'Logs you in you to PCC account.',
+    'Logs you in you to PCC client.',
     (yargs) => {},
     async (args) => {
       await login();
+    },
+  )
+  .command(
+    'logout',
+    'Logs you out you from PCC client.',
+    (yargs) => {},
+    async (args) => {
+      await logout();
     },
   )
   .demandCommand()

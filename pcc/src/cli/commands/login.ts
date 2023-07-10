@@ -53,14 +53,13 @@ function main(): Promise<void> {
 
             const r = await AddOnApiHelper.getToken(code as string);
             await persistAuthDetails({
-              accessToken: r.idToken,
+              accessToken: r.accessToken,
               refreshToken: r.refreshToken,
-              idToken: r.refreshToken,
+              idToken: r.idToken,
               email: r.email,
             });
-            // TODO: Update email to be used from getToken response
             fetchStarter.succeed(
-              `You are successfully logged in as ${'omkar@pubgenius.io'}`,
+              `You are successfully logged in as ${r.email}`,
             );
             resolve();
           }
