@@ -2,7 +2,6 @@
 import { exit } from 'process';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import chalk from 'chalk';
 import init from './commands/init';
 import { createToken, listTokens, revokeToken } from './commands/token';
 import login from './commands/login';
@@ -12,6 +11,7 @@ yargs(hideBin(process.argv))
   .scriptName('pcc')
   .usage('$0 <cmd>')
   .strictCommands()
+  .demandCommand()
   .command(
     'init <project_directory> [options]',
     'Sets up project with required files.',
@@ -33,14 +33,6 @@ yargs(hideBin(process.argv))
       const projectDir = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
 
-      if (!projectDir) {
-        console.error(
-          chalk.red(
-            'ERROR: Please enter valid directory name. Check pcc init --help for more details.',
-          ),
-        );
-        exit(1);
-      }
       await init(projectDir, template);
     },
   )
@@ -49,6 +41,8 @@ yargs(hideBin(process.argv))
     'Enables you to manage tokens for a PCC project.',
     (yargs) => {
       yargs
+        .strictCommands()
+        .demandCommand()
         .command(
           'create',
           'Creates new token.',
@@ -81,20 +75,7 @@ yargs(hideBin(process.argv))
           },
         );
     },
-    async (args) => {
-      const projectDir = args.project_directory as string;
-      const template = args.template as CliTemplateOptions;
-
-      if (!projectDir) {
-        console.error(
-          chalk.red(
-            'ERROR: Please enter valid directory name. Check pcc init --help for more details.',
-          ),
-        );
-        exit(1);
-      }
-      await init(projectDir, template);
-    },
+    async (args) => {},
   )
   .command(
     'login',
@@ -112,5 +93,4 @@ yargs(hideBin(process.argv))
       await logout();
     },
   )
-  .demandCommand()
   .help(true).argv;

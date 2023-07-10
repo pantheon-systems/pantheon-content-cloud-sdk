@@ -38,6 +38,15 @@ async function sh(cmd: string) {
  * Handles initializing projects for PCC
  */
 const init = async (dirName: string, template: CliTemplateOptions) => {
+  if (!dirName) {
+    console.error(
+      chalk.red(
+        'ERROR: Please enter valid directory name. Check pcc init --help for more details.',
+      ),
+    );
+    exit(1);
+  }
+
   if (existsSync(TEMP_DIR_NAME)) rmSync(TEMP_DIR_NAME, { recursive: true });
   mkdirSync(TEMP_DIR_NAME);
 

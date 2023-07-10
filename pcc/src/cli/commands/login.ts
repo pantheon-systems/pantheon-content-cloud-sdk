@@ -17,10 +17,6 @@ import {
 } from '../../lib/localStorage';
 import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from '../../constants';
 
-/**
- * Create a new OAuth2Client, and go through the OAuth2 content
- * workflow.  Return the full client to the callback.
- */
 function main(): Promise<void> {
   return new Promise(async (resolve, reject) => {
     const fetchStarter = ora('Logging you in...').start();
@@ -68,7 +64,6 @@ function main(): Promise<void> {
         }
       })
       .listen(3030, () => {
-        // open the browser to the authorize url to start the workflow
         open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
       });
     destroyer(server);
