@@ -3,6 +3,8 @@ import AddOnApiHelper from '../../lib/addonApiHelper';
 import chalk from 'chalk';
 import { printTable } from '../../lib/cliDisplay';
 import dayjs from 'dayjs';
+import { exit } from 'process';
+import { HTTPNotFound } from '../exceptions';
 
 export const createToken = async () => {
   const fetchStarter = ora('Creating token...').start();
@@ -37,7 +39,15 @@ export const listTokens = async () => {
 };
 export const revokeToken = async (id: string) => {
   const fetchStarter = ora('Revoking token for given ID...').start();
-  await AddOnApiHelper.revokeApiKey(id);
+  try {
+    await AddOnApiHelper.revokeApiKey(id);
+  } catch (err) {
+    if (err instanceof HTTPNotFound) {
+      fetchStarter.fail();
+      console.log(chalk.red('Token for given ID not found.'));
+      exit(1);
+    }
+  }
   fetchStarter.succeed(
     `Successfully revoked token for ID "${chalk.bold(chalk.yellow(id))}"!`,
   );

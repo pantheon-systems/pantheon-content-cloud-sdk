@@ -1,5 +1,6 @@
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { getLocalAuthDetails } from './localStorage';
+import { HTTPNotFound } from '../cli/exceptions';
 
 const API_KEY_ENDPOINT =
   'https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi/api-key';
@@ -54,11 +55,19 @@ class AddOnApiHelper {
     const authDetails = await getLocalAuthDetails();
     if (!authDetails) return;
 
-    await axios.delete(`${API_KEY_ENDPOINT}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${authDetails.idToken}`,
-      },
-    });
+    try {
+      await axios.delete(`${API_KEY_ENDPOINT}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${authDetails.idToken}`,
+        },
+      });
+    } catch (err) {
+      if (
+        (err as { response: { status: number } }).response.status ===
+        HttpStatusCode.NotFound
+      )
+        throw new HTTPNotFound();
+    }
   }
 }
 

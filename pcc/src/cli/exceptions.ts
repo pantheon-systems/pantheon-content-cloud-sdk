@@ -1,12 +1,12 @@
-class UndhandledError extends Error {
+export class UndhandledError extends Error {
   constructor(message: string) {
     super(message);
     this.name = this.constructor.name;
   }
 }
-class AuthError extends Error {
-  constructor(message: string) {
-    super(message);
+export class HTTPNotFound extends Error {
+  constructor() {
+    super('Not Found');
     this.name = this.constructor.name;
   }
 }
