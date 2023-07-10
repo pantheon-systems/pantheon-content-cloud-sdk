@@ -13,7 +13,7 @@ export const createToken = async () => {
   console.log('\nToken:', chalk.bold(chalk.green(apiKey)), '\n');
   console.log(
     chalk.bold(
-      chalk.yellow('Please note it down. It wont be accesible hereafter.'),
+      chalk.yellow('Please note it down. It wont be accessible hereafter.'),
     ),
   );
 };
