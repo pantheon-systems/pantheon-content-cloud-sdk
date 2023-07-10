@@ -7,6 +7,18 @@ import {
 import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
 
 export interface PantheonClientConfig {
+  /**
+   * API Key for your PCC Workspace
+   * @example
+   * // If your API Key is ABC-DEF
+   * const pantheonClient = new PantheonClient({
+   *   pccHost: 'https://pantheon-content-cloud.com',
+   *   siteId: '12345',
+   *   apiKey: 'ABC-DEF',
+   * });
+   */
+  apiKey: string;
+
   debug?: boolean;
 
   /**
@@ -21,25 +33,13 @@ export interface PantheonClientConfig {
   pccHost: string;
 
   /**
-   * URL of your Pantheon Content Cloud websocket host
-   * @default pccHost
-   * @example
-   * // If your Pantheon Content Cloud instance is hosted at https://pantheon-content-cloud.com
-   * // then your websocket host is wss://pantheon-content-cloud.com
-   * const pantheonClient = new PantheonClient({
-   *  pccHost: 'https://pantheon-content-cloud.com',
-   * pccWsHost: 'wss://pantheon-content-cloud.com',
-   * });
-   */
-  pccWsHost?: string;
-
-  /**
    * ID of the site you want to query
    * @example
    * // If your site ID is 12345
    * const pantheonClient = new PantheonClient({
-   * pccHost: 'https://pantheon-content-cloud.com',
-   * siteId: '12345',
+   *   pccHost: 'https://pantheon-content-cloud.com',
+   *   siteId: '12345',
+   *   apiKey: 'ABC-DEF',
    * });
    */
   siteId: string;
@@ -47,19 +47,22 @@ export interface PantheonClientConfig {
 
 export class PantheonClient {
   public host: string;
-  public wsHost: string;
   public siteId: string;
+  public apiKey: string;
   public logger: Logger;
-  private debug: boolean;
-
   public apolloClient: ApolloClient<NormalizedCacheObject>;
+
+  public wsHost: string;
+  private debug: boolean;
 
   constructor(config: PantheonClientConfig) {
     this.host = config.pccHost.replace(/\/$/, "");
-    this.wsHost =
-      config.pccWsHost ||
-      config.pccHost.replace(/^http/, "ws").replace(/^https/, "wss");
+    this.wsHost = config.pccHost
+      .replace(/^http/, "ws")
+      .replace(/^https/, "wss");
     this.siteId = config.siteId;
+    this.apiKey = config.apiKey;
+
     this.debug = config.debug || false;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
 
@@ -69,6 +72,10 @@ export class PantheonClient {
 
     if (!this.siteId) {
       throw new Error("Missing Pantheon Content Cloud site ID");
+    }
+
+    if (!this.apiKey) {
+      throw new Error("Missing Pantheon Content Cloud API Key");
     }
 
     this.apolloClient = new ApolloClient({

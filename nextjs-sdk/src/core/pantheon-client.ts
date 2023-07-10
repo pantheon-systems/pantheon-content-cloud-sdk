@@ -61,7 +61,7 @@ export class PantheonClient {
   private wsHost: string;
 
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost;
+    this.host = config.pccHost.replace(/\/$/, '');
     this.wsHost = config.pccHost
       .replace(/^http/, 'ws')
       .replace(/^https/, 'wss');
