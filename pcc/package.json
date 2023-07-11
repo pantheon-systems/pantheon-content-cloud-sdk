@@ -22,7 +22,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup --env.NODE_ENV production",
+    "build:staging": "tsup --env.NODE_ENV staging"
   },
   "engines": {
     "node": ">=18.0.0"

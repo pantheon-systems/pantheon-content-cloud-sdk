@@ -1,11 +1,11 @@
 import axios, { HttpStatusCode } from 'axios';
 import { getLocalAuthDetails } from './localStorage';
 import { HTTPNotFound } from '../cli/exceptions';
+import config from './config';
 
-const API_KEY_ENDPOINT =
-  'https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi/api-key';
-const OAUTH_ENDPOINT =
-  'https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi/oauth';
+const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
+const OAUTH_ENDPOINT = `${config.addOnApiEndpoint}/oauth`;
+
 class AddOnApiHelper {
   static async getToken(code: string): Promise<{
     refreshToken: string;
