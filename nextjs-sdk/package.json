@@ -147,6 +147,8 @@
   "dependencies": {
     "@apollo/client": "^3.7.14",
     "graphql": "^16.6.0",
-    "react-markdown": "^8.0.7"
+    "graphql-ws": "^5.14.0",
+    "react-markdown": "^8.0.7",
+    "rehype-raw": "^6.1.1"
   }
 }

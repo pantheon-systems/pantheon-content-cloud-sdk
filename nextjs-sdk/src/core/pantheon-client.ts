@@ -1,9 +1,29 @@
-import { NormalizedCacheObject } from '@apollo/client';
+import type { NormalizedCacheObject } from '@apollo/client';
+import { createClient } from 'graphql-ws';
 
-import { ApolloClient, InMemoryCache } from '../lib/apollo-client';
+import {
+  ApolloClient,
+  InMemoryCache,
+  GraphQLWsLink,
+  HttpLink,
+  split,
+  getMainDefinition,
+} from '../lib/apollo-client';
 import { DefaultLogger, Logger, NoopLogger } from '../utils/logger';
 
 interface PantheonClientConfig {
+  /**
+   * API Key for your PCC Workspace
+   * @example
+   * // If your API Key is ABC-DEF
+   * const pantheonClient = new PantheonClient({
+   *   pccHost: 'https://pantheon-content-cloud.com',
+   *   siteId: '12345',
+   *   apiKey: 'ABC-DEF',
+   * });
+   */
+  apiKey: string;
+
   debug?: boolean;
 
   /**
@@ -18,19 +38,6 @@ interface PantheonClientConfig {
   pccHost: string;
 
   /**
-   * URL of your Pantheon Content Cloud websocket host
-   * @default pccHost
-   * @example
-   * // If your Pantheon Content Cloud instance is hosted at https://pantheon-content-cloud.com
-   * // then your websocket host is wss://pantheon-content-cloud.com
-   * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
-   *   pccWsHost: 'wss://pantheon-content-cloud.com',
-   * });
-   */
-  pccWsHost?: string;
-
-  /**
    * ID of the site you want to query
    * @example
    * // If your site ID is 12345
@@ -41,41 +48,27 @@ interface PantheonClientConfig {
    * });
    */
   siteId: string;
-
-  /**
-   * API Key for your PCC Workspace
-   * @example
-   * // If your API Key is ABC-DEF
-   * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
-   *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
-   * });
-   */
-  apiKey: string;
 }
 
 export class PantheonClient {
   public host: string;
-
-  public wsHost: string;
   public siteId: string;
   public apiKey: string;
-
   public logger: Logger;
-  private debug: boolean;
-
   public apolloClient: ApolloClient<NormalizedCacheObject>;
 
+  private debug: boolean;
+  private wsHost: string;
+
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost;
-    this.wsHost =
-      config.pccWsHost ||
-      config.pccHost.replace(/^http/, 'ws').replace(/^https/, 'wss');
+    this.host = config.pccHost.replace(/\/$/, '');
+    this.wsHost = config.pccHost
+      .replace(/^http/, 'ws')
+      .replace(/^https/, 'wss');
     this.siteId = config.siteId;
     this.apiKey = config.apiKey;
 
-    this.debug = config.debug || false;
+    this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
 
     if (!this.host) {
@@ -90,12 +83,37 @@ export class PantheonClient {
       throw new Error('Missing Pantheon Content Cloud API Key');
     }
 
-    this.apolloClient = new ApolloClient({
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: `${this.wsHost}/sites/${this.siteId}/query`,
+        connectionParams: {
+          'PCC-API-KEY': this.apiKey,
+        },
+      }),
+    );
+
+    const httpLink = new HttpLink({
       uri: `${this.host}/sites/${this.siteId}/query`,
-      cache: new InMemoryCache(),
       headers: {
         'PCC-API-KEY': this.apiKey,
       },
+    });
+
+    const splitLink = split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === 'OperationDefinition' &&
+          definition.operation === 'subscription'
+        );
+      },
+      wsLink,
+      httpLink,
+    );
+
+    this.apolloClient = new ApolloClient({
+      link: splitLink,
+      cache: new InMemoryCache(),
     });
 
     if (this.debug) {

@@ -70,6 +70,30 @@ export const GET_ARTICLE_QUERY = gql`
   }
 `;
 
+export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
+  subscription OnArticleUpdate(
+    $id: String!
+    $contentType: ContentType
+    $publishingLevel: PublishingLevel
+  ) {
+    article: articleUpdate(
+      id: $id
+      contentType: $contentType
+      publishingLevel: $publishingLevel
+    ) {
+      id
+      title
+      content
+      source
+      sourceURL
+      keywords
+      publishedDate
+      publishingLevel
+      contentType
+    }
+  }
+`;
+
 export async function getArticle(
   client: PantheonClient,
   id: string,
