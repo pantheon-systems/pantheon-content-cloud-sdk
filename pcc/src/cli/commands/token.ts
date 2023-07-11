@@ -21,7 +21,7 @@ export const listTokens = errorHandler<void>(async () => {
   const fetchStarter = ora('Fetching list of existing tokens...').start();
   const apiKeys = await AddOnApiHelper.listApiKeys();
 
-  fetchStarter.succeed('Successfully fetched list of tokens');
+  fetchStarter.succeed('Successfully fetched list of tokens.');
   if (apiKeys.length === 0) {
     console.log(chalk.yellow('No tokens found.'));
     return;
