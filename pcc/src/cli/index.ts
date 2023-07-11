@@ -6,7 +6,7 @@ import init from './commands/init';
 import { createToken, listTokens, revokeToken } from './commands/token';
 import login from './commands/login';
 import logout from './commands/logout';
-import { createSite, listSites } from './commands/sites';
+import { createSite, listSites, updateSite } from './commands/sites';
 
 yargs(hideBin(process.argv))
   .scriptName('pcc')
@@ -79,7 +79,7 @@ yargs(hideBin(process.argv))
         .strictCommands()
         .demandCommand()
         .command(
-          'create',
+          'create [options]',
           'Creates new site.',
           (yargs) => {
             yargs
@@ -105,6 +105,32 @@ yargs(hideBin(process.argv))
           'Lists existing sites.',
           (yargs) => {},
           async (args) => await listSites(),
+        )
+        .command(
+          'update <id> [options]',
+          'Updates site for given ID.',
+          (yargs) => {
+            yargs
+              .positional('<id>', {
+                describe: 'ID of the site which you want to update',
+                demandOption: true,
+                type: 'string',
+              })
+              .option('name', {
+                describe: 'Site name',
+                type: 'string',
+              })
+              .option('url', {
+                describe: 'Site url',
+                type: 'string',
+              });
+          },
+          async (args) =>
+            await updateSite({
+              id: args.id as string,
+              name: args.name as string,
+              url: args.url as string,
+            }),
         );
     },
     async (args) => {},

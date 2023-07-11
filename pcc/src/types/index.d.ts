@@ -13,6 +13,7 @@ declare type Site = {
   id: string;
   name: string;
   url: string;
+  created?: number;
 };
 
 declare type AuthDetails = {

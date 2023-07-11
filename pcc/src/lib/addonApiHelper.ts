@@ -84,7 +84,7 @@ class AddOnApiHelper {
         },
       },
     );
-    return resp.data as string;
+    return resp.data.id as string;
   }
 
   static async listSites(): Promise<Site[]> {
@@ -98,6 +98,26 @@ class AddOnApiHelper {
     });
 
     return resp.data as Site[];
+  }
+  static async updateSite(
+    id: string,
+    name?: string,
+    url?: string,
+  ): Promise<void> {
+    if (!name && !url) return;
+
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) return;
+
+    await axios.patch(
+      `${SITE_ENDPOINT}/${id}`,
+      { name: name, url: url },
+      {
+        headers: {
+          Authorization: `Bearer ${authDetails.idToken}`,
+        },
+      },
+    );
   }
 }
 
