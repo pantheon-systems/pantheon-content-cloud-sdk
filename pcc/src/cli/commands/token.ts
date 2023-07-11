@@ -4,9 +4,9 @@ import chalk from 'chalk';
 import { printTable } from '../../lib/cliDisplay';
 import dayjs from 'dayjs';
 import { exit } from 'process';
-import { HTTPNotFound } from '../exceptions';
+import { HTTPNotFound, errorHandler } from '../exceptions';
 
-export const createToken = async () => {
+export const createToken = errorHandler<void>(async () => {
   const fetchStarter = ora('Creating token...').start();
   const apiKey = await AddOnApiHelper.createApiKey();
   fetchStarter.succeed(`Successfully created token for your user. `);
@@ -16,8 +16,8 @@ export const createToken = async () => {
       chalk.yellow('Please note it down. It wont be accessible hereafter.'),
     ),
   );
-};
-export const listTokens = async () => {
+});
+export const listTokens = errorHandler<void>(async () => {
   const fetchStarter = ora('Fetching list of existing tokens...').start();
   const apiKeys = await AddOnApiHelper.listApiKeys();
 
@@ -36,8 +36,8 @@ export const listTokens = async () => {
       };
     }),
   );
-};
-export const revokeToken = async (id: string) => {
+});
+export const revokeToken = errorHandler<string>(async (id: string) => {
   const fetchStarter = ora('Revoking token for given ID...').start();
   try {
     await AddOnApiHelper.revokeApiKey(id);
@@ -51,4 +51,4 @@ export const revokeToken = async (id: string) => {
   fetchStarter.succeed(
     `Successfully revoked token for ID "${chalk.bold(chalk.yellow(id))}"!`,
   );
-};
+});

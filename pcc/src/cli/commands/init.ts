@@ -15,6 +15,7 @@ import ora from 'ora';
 import path from 'path';
 import os from 'os';
 import chalk from 'chalk';
+import { errorHandler } from '../exceptions';
 const TEMP_DIR_NAME = path.join(os.tmpdir(), 'react_sdk_90723');
 const TAR_FILE_NAME = 'sdk-repo.tar';
 const TEMPLATE_FOLDER_MAP = {
@@ -37,7 +38,13 @@ async function sh(cmd: string) {
 /**
  * Handles initializing projects for PCC
  */
-const init = async (dirName: string, template: CliTemplateOptions) => {
+const init = async ({
+  dirName,
+  template,
+}: {
+  dirName: string;
+  template: CliTemplateOptions;
+}) => {
   if (!dirName) {
     console.error(
       chalk.red(
@@ -116,4 +123,6 @@ const init = async (dirName: string, template: CliTemplateOptions) => {
   else console.log(chalk.green('   yarn start'));
 };
 
-export default init;
+export default errorHandler<{ dirName: string; template: CliTemplateOptions }>(
+  init,
+);

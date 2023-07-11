@@ -19,6 +19,7 @@ import {
 } from '../../lib/localStorage';
 import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from '../../constants';
 import { parseJwt } from '../../lib/jwt';
+import { errorHandler } from '../exceptions';
 
 function login(): Promise<void> {
   return new Promise(async (resolve, reject) => {
@@ -82,4 +83,4 @@ function login(): Promise<void> {
     destroyer(server);
   });
 }
-export default login;
+export default errorHandler<void>(login);

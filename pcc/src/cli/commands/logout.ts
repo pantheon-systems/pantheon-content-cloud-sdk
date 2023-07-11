@@ -1,6 +1,7 @@
 import ora from 'ora';
 import { rmSync, existsSync } from 'fs';
 import { AUTH_FILE_PATH } from '../../lib/localStorage';
+import { errorHandler } from '../exceptions';
 
 const logout = async () => {
   const fetchStarter = ora('Logging you out...').start();
@@ -9,4 +10,4 @@ const logout = async () => {
   fetchStarter.succeed('Successfully logged you out from PPC client!');
 };
 
-export default logout;
+export default errorHandler<void>(logout);

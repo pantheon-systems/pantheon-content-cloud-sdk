@@ -30,10 +30,10 @@ yargs(hideBin(process.argv))
         });
     },
     async (args) => {
-      const projectDir = args.project_directory as string;
+      const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
 
-      await init(projectDir, template);
+      await init({ dirName, template });
     },
   )
   .command(

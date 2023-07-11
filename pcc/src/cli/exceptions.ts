@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 export class UnhandledError extends Error {
   constructor(message: string) {
     super(message);
@@ -10,17 +12,16 @@ export class HTTPNotFound extends Error {
     this.name = this.constructor.name;
   }
 }
-// export function errorHandler<T = any[]>(f: (...args: T) => Promise<void>) {
-//   return async function (args: T) {
-//     try {
-//       await f(args);
-//     } catch (e) {
-//       console.log(
-//         chalk.red(
-//           'Something went wrong. Please contact pantheon support team.',
-//         ),
-//         chalk.red('Error Details', (e as { message: string }).message),
-//       );
-//     }
-//   };
-// }
+export function errorHandler<T>(f: (arg: T) => Promise<void>) {
+  return async function (arg: T) {
+    try {
+      await f(arg);
+    } catch (e) {
+      console.log(
+        chalk.red(
+          'ERROR: Something went wrong. Please contact Pantheon support team.',
+        ),
+      );
+    }
+  };
+}
