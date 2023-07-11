@@ -58,7 +58,7 @@ yargs(hideBin(process.argv))
         )
         .command(
           'revoke [options]',
-          'Revokes token for given id.',
+          'Revokes token for a given id.',
           (yargs) => {
             yargs.option('id', {
               describe: 'Token ID',
@@ -108,7 +108,7 @@ yargs(hideBin(process.argv))
         )
         .command(
           'update <id> [options]',
-          'Updates site for given ID.',
+          'Updates site for a given ID.',
           (yargs) => {
             yargs
               .positional('<id>', {

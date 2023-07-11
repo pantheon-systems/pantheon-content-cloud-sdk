@@ -75,6 +75,7 @@ function login(): Promise<void> {
               resolve();
             }
           } catch (e) {
+            spinner.fail();
             reject(e);
           }
         })
