@@ -9,10 +9,7 @@ import { readFileSync } from 'fs';
 import nunjucks from 'nunjucks';
 nunjucks.configure({ autoescape: true });
 
-const OAUTH_SCOPES = [
-  'https://www.googleapis.com/auth/drive.file',
-  'https://www.googleapis.com/auth/userinfo.email',
-];
+const OAUTH_SCOPES = ['https://www.googleapis.com/auth/userinfo.email'];
 
 import AddOnApiHelper from '../../lib/addonApiHelper';
 import ora from 'ora';

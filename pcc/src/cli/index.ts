@@ -47,17 +47,13 @@ yargs(hideBin(process.argv))
           'create',
           'Creates new token.',
           (yargs) => {},
-          async (args) => {
-            await createToken();
-          },
+          async (args) => await createToken(),
         )
         .command(
           'list',
           'Lists existing tokens.',
           (yargs) => {},
-          async (args) => {
-            await listTokens();
-          },
+          async (args) => await listTokens(),
         )
         .command(
           'revoke [options]',
@@ -69,10 +65,7 @@ yargs(hideBin(process.argv))
               demandOption: true,
             });
           },
-          async (args) => {
-            const id = args.id as string;
-            await revokeToken(id);
-          },
+          async (args) => await revokeToken(args.id as string),
         );
     },
     async (args) => {},
@@ -81,16 +74,12 @@ yargs(hideBin(process.argv))
     'login',
     'Logs you in you to PCC client.',
     (yargs) => {},
-    async (args) => {
-      await login();
-    },
+    async (args) => await login(),
   )
   .command(
     'logout',
     'Logs you out you from PCC client.',
     (yargs) => {},
-    async (args) => {
-      await logout();
-    },
+    async (args) => await logout(),
   )
   .help(true).argv;
