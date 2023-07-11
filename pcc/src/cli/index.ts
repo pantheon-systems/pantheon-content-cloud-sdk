@@ -6,6 +6,7 @@ import init from './commands/init';
 import { createToken, listTokens, revokeToken } from './commands/token';
 import login from './commands/login';
 import logout from './commands/logout';
+import { createSite, listSites } from './commands/sites';
 
 yargs(hideBin(process.argv))
   .scriptName('pcc')
@@ -66,6 +67,44 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await revokeToken(args.id as string),
+        );
+    },
+    async (args) => {},
+  )
+  .command(
+    'site <cmd> [options]',
+    'Enables you to manage sites for a PCC project.',
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          'create',
+          'Creates new site.',
+          (yargs) => {
+            yargs
+              .option('name', {
+                describe: 'Site name',
+                type: 'string',
+                demandOption: true,
+              })
+              .option('url', {
+                describe: 'Site url',
+                type: 'string',
+                demandOption: true,
+              });
+          },
+          async (args) =>
+            await createSite({
+              name: args.name as string,
+              url: args.url as string,
+            }),
+        )
+        .command(
+          'list',
+          'Lists existing sites.',
+          (yargs) => {},
+          async (args) => await listSites(),
         );
     },
     async (args) => {},

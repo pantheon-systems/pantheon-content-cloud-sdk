@@ -9,6 +9,12 @@ declare type ApiKey = {
   created: string;
 };
 
+declare type Site = {
+  id: string;
+  name: string;
+  url: string;
+};
+
 declare type AuthDetails = {
   accessToken: string;
   refreshToken: string;

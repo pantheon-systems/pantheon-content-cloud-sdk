@@ -4,6 +4,7 @@ import { HTTPNotFound } from '../cli/exceptions';
 import config from './config';
 
 const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
+const SITE_ENDPOINT = `${config.addOnApiEndpoint}/sites`;
 const OAUTH_ENDPOINT = `${config.addOnApiEndpoint}/oauth`;
 
 class AddOnApiHelper {
@@ -68,6 +69,35 @@ class AddOnApiHelper {
       )
         throw new HTTPNotFound();
     }
+  }
+
+  static async createSite(name: string, url: string): Promise<string | null> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) return null;
+
+    const resp = await axios.post(
+      SITE_ENDPOINT,
+      { name, url, emailList: '' },
+      {
+        headers: {
+          Authorization: `Bearer ${authDetails.idToken}`,
+        },
+      },
+    );
+    return resp.data as string;
+  }
+
+  static async listSites(): Promise<Site[]> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) return [];
+
+    const resp = await axios.get(SITE_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${authDetails.idToken}`,
+      },
+    });
+
+    return resp.data as Site[];
   }
 }
 
