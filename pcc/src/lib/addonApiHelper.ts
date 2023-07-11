@@ -1,6 +1,6 @@
 import axios, { HttpStatusCode } from 'axios';
 import { getLocalAuthDetails } from './localStorage';
-import { HTTPNotFound } from '../cli/exceptions';
+import { HTTPNotFound, UserNotLoggedIn } from '../cli/exceptions';
 import config from './config';
 
 const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
@@ -23,9 +23,9 @@ class AddOnApiHelper {
     };
   }
 
-  static async createApiKey(): Promise<string | null> {
+  static async createApiKey(): Promise<string> {
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return null;
+    if (!authDetails) throw new UserNotLoggedIn();
 
     const resp = await axios.post(
       API_KEY_ENDPOINT,
@@ -41,7 +41,7 @@ class AddOnApiHelper {
 
   static async listApiKeys(): Promise<ApiKey[]> {
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return [];
+    if (!authDetails) throw new UserNotLoggedIn();
 
     const resp = await axios.get(API_KEY_ENDPOINT, {
       headers: {
@@ -54,7 +54,7 @@ class AddOnApiHelper {
 
   static async revokeApiKey(id: string): Promise<void> {
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return;
+    if (!authDetails) throw new UserNotLoggedIn();
 
     try {
       await axios.delete(`${API_KEY_ENDPOINT}/${id}`, {
@@ -71,9 +71,9 @@ class AddOnApiHelper {
     }
   }
 
-  static async createSite(name: string, url: string): Promise<string | null> {
+  static async createSite(name: string, url: string): Promise<string> {
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return null;
+    if (!authDetails) throw new UserNotLoggedIn();
 
     const resp = await axios.post(
       SITE_ENDPOINT,
@@ -89,7 +89,7 @@ class AddOnApiHelper {
 
   static async listSites(): Promise<Site[]> {
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return [];
+    if (!authDetails) throw new UserNotLoggedIn();
 
     const resp = await axios.get(SITE_ENDPOINT, {
       headers: {
@@ -107,7 +107,7 @@ class AddOnApiHelper {
     if (!name && !url) return;
 
     const authDetails = await getLocalAuthDetails();
-    if (!authDetails) return;
+    if (!authDetails) throw new UserNotLoggedIn();
 
     await axios.patch(
       `${SITE_ENDPOINT}/${id}`,
