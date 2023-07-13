@@ -76,7 +76,7 @@ class AddOnApiHelper {
 
     const resp = await axios.post(
       SITE_ENDPOINT,
-      { url, emailList: '' },
+      { name: '', url, emailList: '' },
       {
         headers: {
           Authorization: `Bearer ${authDetails.id_token}`,

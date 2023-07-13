@@ -57,7 +57,7 @@ yargs(hideBin(process.argv))
           async (args) => await listTokens(),
         )
         .command(
-          'revoke [options]',
+          'revoke <id>',
           'Revokes token for a given id.',
           (yargs) => {
             yargs.positional('<id>', {
