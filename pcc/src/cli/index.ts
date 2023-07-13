@@ -60,10 +60,10 @@ yargs(hideBin(process.argv))
           'revoke [options]',
           'Revokes token for a given id.',
           (yargs) => {
-            yargs.option('id', {
-              describe: 'Token ID',
-              type: 'string',
+            yargs.positional('<id>', {
+              describe: 'ID of the token which you want to revoke',
               demandOption: true,
+              type: 'string',
             });
           },
           async (args) => await revokeToken(args.id as string),

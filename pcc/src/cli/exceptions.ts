@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import { exit } from 'process';
 
 export class UnhandledError extends Error {
   constructor(message: string) {
@@ -33,6 +34,7 @@ export function errorHandler<T>(f: (arg: T) => Promise<void>) {
             'Error: Something went wrong. Please contact Pantheon support team.',
           ),
         );
+        exit(1);
       }
     }
   };
