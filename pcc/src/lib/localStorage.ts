@@ -18,11 +18,15 @@ export const getLocalAuthDetails = async (): Promise<Credentials | null> => {
   if (credentials.expiry_date && credentials.expiry_date > Date.now())
     return credentials;
 
-  const newCred = await AddOnApiHelper.refreshToken(
-    credentials.refresh_token as string,
-  );
-  persistAuthDetails(newCred);
-  return newCred;
+  try {
+    const newCred = await AddOnApiHelper.refreshToken(
+      credentials.refresh_token as string,
+    );
+    persistAuthDetails(newCred);
+    return newCred;
+  } catch (_err) {
+    return null;
+  }
 };
 
 export const persistAuthDetails = async (
