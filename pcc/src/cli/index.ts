@@ -82,23 +82,13 @@ yargs(hideBin(process.argv))
           'create [options]',
           'Creates new site.',
           (yargs) => {
-            yargs
-              .option('name', {
-                describe: 'Site name',
-                type: 'string',
-                demandOption: true,
-              })
-              .option('url', {
-                describe: 'Site url',
-                type: 'string',
-                demandOption: true,
-              });
+            yargs.option('url', {
+              describe: 'Site url',
+              type: 'string',
+              demandOption: true,
+            });
           },
-          async (args) =>
-            await createSite({
-              name: args.name as string,
-              url: args.url as string,
-            }),
+          async (args) => await createSite(args.url as string),
         )
         .command(
           'list',
@@ -116,10 +106,6 @@ yargs(hideBin(process.argv))
                 demandOption: true,
                 type: 'string',
               })
-              .option('name', {
-                describe: 'Site name',
-                type: 'string',
-              })
               .option('url', {
                 describe: 'Site url',
                 type: 'string',
@@ -128,7 +114,6 @@ yargs(hideBin(process.argv))
           async (args) =>
             await updateSite({
               id: args.id as string,
-              name: args.name as string,
               url: args.url as string,
             }),
         );

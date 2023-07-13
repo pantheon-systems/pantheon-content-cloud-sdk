@@ -71,13 +71,13 @@ class AddOnApiHelper {
     }
   }
 
-  static async createSite(name: string, url: string): Promise<string> {
+  static async createSite(url: string): Promise<string> {
     const authDetails = await getLocalAuthDetails();
     if (!authDetails) throw new UserNotLoggedIn();
 
     const resp = await axios.post(
       SITE_ENDPOINT,
-      { name, url, emailList: '' },
+      { url, emailList: '' },
       {
         headers: {
           Authorization: `Bearer ${authDetails.idToken}`,
@@ -99,19 +99,13 @@ class AddOnApiHelper {
 
     return resp.data as Site[];
   }
-  static async updateSite(
-    id: string,
-    name?: string,
-    url?: string,
-  ): Promise<void> {
-    if (!name && !url) return;
-
+  static async updateSite(id: string, url: string): Promise<void> {
     const authDetails = await getLocalAuthDetails();
     if (!authDetails) throw new UserNotLoggedIn();
 
     await axios.patch(
       `${SITE_ENDPOINT}/${id}`,
-      { name: name, url: url },
+      { url },
       {
         headers: {
           Authorization: `Bearer ${authDetails.idToken}`,
