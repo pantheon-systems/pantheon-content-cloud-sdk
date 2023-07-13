@@ -5,27 +5,24 @@ import { printTable } from '../../lib/cliDisplay';
 import { errorHandler } from '../exceptions';
 import dayjs from 'dayjs';
 
-export const createSite = errorHandler<{ name: string; url: string }>(
-  async ({ name, url }: { name: string; url: string }) => {
-    const spinner = ora('Creating site...').start();
-    try {
-      await AddOnApiHelper.createSite(name, url);
-      spinner.succeed(`Successfully created the site with given details.`);
-    } catch (e) {
-      spinner.fail();
-      throw e;
-    }
-  },
-);
+export const createSite = errorHandler<string>(async (url: string) => {
+  const spinner = ora('Creating site...').start();
+  try {
+    await AddOnApiHelper.createSite(url);
+    spinner.succeed(`Successfully created the site with given details.`);
+  } catch (e) {
+    spinner.fail();
+    throw e;
+  }
+});
 
 export const updateSite = errorHandler<{
   id: string;
-  name?: string;
-  url?: string;
-}>(async ({ id, name, url }: { id: string; name?: string; url?: string }) => {
+  url: string;
+}>(async ({ id, url }: { id: string; url: string }) => {
   const spinner = ora('Updating site...').start();
   try {
-    await AddOnApiHelper.updateSite(id, name, url);
+    await AddOnApiHelper.updateSite(id, url);
     spinner.succeed(`Successfully updated the site for given ID.`);
   } catch (e) {
     spinner.fail();
@@ -48,7 +45,6 @@ export const listSites = errorHandler<void>(async () => {
       sites.map((item) => {
         return {
           Id: item.id,
-          Name: item.name,
           Url: item.url,
           'Created At': item.created
             ? dayjs(item.created).format('DD MMM YYYY, hh:mm A')

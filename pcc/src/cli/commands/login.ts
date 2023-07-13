@@ -17,9 +17,9 @@ import {
   getLocalAuthDetails,
   persistAuthDetails,
 } from '../../lib/localStorage';
-import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from '../../constants';
 import { parseJwt } from '../../lib/jwt';
 import { errorHandler } from '../exceptions';
+import config from '../../lib/config';
 
 function login(): Promise<void> {
   return new Promise(async (resolve, reject) => {
@@ -27,14 +27,14 @@ function login(): Promise<void> {
     try {
       const authData = await getLocalAuthDetails();
       if (authData) {
-        const jwtPayload = parseJwt(authData.idToken);
+        const jwtPayload = parseJwt(authData.id_token as string);
         spinner.succeed(`You are already logged in as ${jwtPayload.email}.`);
         return;
       }
 
       const oAuth2Client = new OAuth2Client({
-        clientId: GOOGLE_CLIENT_ID,
-        redirectUri: GOOGLE_REDIRECT_URI,
+        clientId: config.googleClientId,
+        redirectUri: config.googleRedirectUri,
       });
 
       // Generate the url that will be used for the consent dialog.
@@ -54,13 +54,9 @@ function login(): Promise<void> {
               const content = readFileSync(
                 join(currDir, '../templates/loginSuccess.html'),
               );
-              const r = await AddOnApiHelper.getToken(code as string);
-              const jwtPayload = parseJwt(r.idToken);
-              await persistAuthDetails({
-                accessToken: r.accessToken,
-                refreshToken: r.refreshToken,
-                idToken: r.idToken,
-              });
+              const credentials = await AddOnApiHelper.getToken(code as string);
+              const jwtPayload = parseJwt(credentials.id_token as string);
+              await persistAuthDetails(credentials);
 
               res.end(
                 nunjucks.renderString(content.toString(), {
