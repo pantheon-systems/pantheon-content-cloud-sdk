@@ -16,7 +16,7 @@ export const LIST_ARTICLES_QUERY = gql`
       title
       source
       sourceURL
-      keywords
+      tags
       publishedDate
       publishingLevel
       contentType

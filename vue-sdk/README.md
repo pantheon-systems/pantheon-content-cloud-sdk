@@ -121,7 +121,7 @@ const { result, loading, error } = useArticle(id);
   <template v-if="result">
     <div v-for="article in result.articles" :key="article.id">
       <h1>{{ article.title }}</h1>
-      <p>{{ article.keywords.join(", ") }}</p>
+      <p>{{ article.tags.join(", ") }}</p>
     </div>
   </template>
 </template>

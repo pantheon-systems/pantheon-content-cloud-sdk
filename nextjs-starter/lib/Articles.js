@@ -2,9 +2,15 @@ import { getArticles, getArticle } from "@pantheon-systems/pcc-react-sdk";
 import { pantheonClient } from "./PantheonClient";
 
 export async function getAllArticles() {
-  const posts = await getArticles(pantheonClient, {
-    publishingLevel: "PRODUCTION"
-  });
+  const posts = await getArticles(
+    pantheonClient,
+    {
+      publishingLevel: "REALTIME",
+    },
+    {
+      titleContains: "Document",
+    }
+  );
 
   return posts;
 }

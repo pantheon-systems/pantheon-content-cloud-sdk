@@ -16,10 +16,17 @@ export interface ArticleQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
 }
 
+export interface ArticleSearchArgs {
+  tagContains: string;
+  titleContains: string;
+  bodyContains: string;
+}
+
 export const LIST_ARTICLES_QUERY = gql`
   query ListArticles(
     $contentType: ContentType
     $publishingLevel: PublishingLevel
+    $filter: ArticleFilterInput
   ) {
     articles(contentType: $contentType, publishingLevel: $publishingLevel) {
       id
@@ -34,13 +41,42 @@ export const LIST_ARTICLES_QUERY = gql`
   }
 `;
 
+export function convertSearchParamsToGQL(searchParams?: ArticleSearchArgs) {
+  if (!searchParams) return null;
+
+  return {
+    filter: {
+      title: searchParams?.titleContains
+        ? {
+            contains: searchParams.titleContains,
+          }
+        : undefined,
+      // body: searchParams?.bodyContains
+      //   ? {
+      //       contains: searchParams.bodyContains,
+      //     }
+      //   : undefined,
+      // tag: searchParams?.tagContains
+      //   ? {
+      //       contains: searchParams.tagContains,
+      //     }
+      //   : undefined,
+    },
+  };
+}
+
 export async function getArticles(
   client: PantheonClient,
   args?: ArticleQueryArgs,
+  searchParams?: ArticleSearchArgs,
 ) {
   const articles = await client.apolloClient.query({
     query: LIST_ARTICLES_QUERY,
     variables: args,
+    // variables: {
+    //   ...args,
+    //   ...convertSearchParamsToGQL(searchParams),
+    // },
   });
 
   return articles.data.articles as ArticleWithoutContent[];
