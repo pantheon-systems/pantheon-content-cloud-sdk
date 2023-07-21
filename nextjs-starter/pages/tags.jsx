@@ -2,7 +2,7 @@ import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Layout from "../components/layout";
 import { PostGrid } from "../components/grid";
-import { getArticles, getTags } from "@pantheon-systems/pcc-react-sdk";
+import { getArticles, getAllTags } from "@pantheon-systems/pcc-react-sdk";
 import { pantheonClient } from "../lib/PantheonClient";
 import { searchQueryAtom } from "../components/searchbar";
 import { Tags } from "../components/tags";
@@ -84,7 +84,7 @@ export async function getServerSideProps({ query }) {
   return {
     props: {
       articles,
-      tags: await getTags(pantheonClient),
+      tags: await getAllTags(pantheonClient),
       searchString: query.q || "",
     },
   };

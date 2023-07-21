@@ -12,8 +12,7 @@ export async function getAllArticles() {
 export async function getArticleById(id) {
   const post = await getArticle(pantheonClient, id, {
     publishingLevel: "PRODUCTION",
-    contentType: "TEXT_MARKDOWN",
-    // contentType: "TREE_PANTHEON",
+    contentType: "TREE_PANTHEON",
   });
 
   return post;

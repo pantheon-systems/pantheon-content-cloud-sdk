@@ -1,2 +1,2 @@
 export { getArticles, getArticle } from './articles';
-export { getTags } from './metadata';
+export { getAllTags } from './metadata';

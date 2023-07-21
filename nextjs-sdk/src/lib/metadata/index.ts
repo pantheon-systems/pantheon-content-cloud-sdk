@@ -12,7 +12,7 @@ export const LIST_TAGS_QUERY = gql`
   }
 `;
 
-export async function getTags(client: PantheonClient): Promise<string[]> {
+export async function getAllTags(client: PantheonClient): Promise<string[]> {
   const { site } = (
     await client.apolloClient.query({
       query: LIST_TAGS_QUERY,
