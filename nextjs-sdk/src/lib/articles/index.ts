@@ -47,7 +47,7 @@ export const LIST_ARTICLES_QUERY = gql`
 
 export function convertSearchParamsToGQL(
   searchParams?: ArticleSearchArgs,
-): ConvertedArticleSearchArgs | null {
+): { filter: ConvertedArticleSearchArgs } | null {
   if (!searchParams) return null;
 
   // Cast empty object to workaround Typescript bug
@@ -57,12 +57,14 @@ export function convertSearchParamsToGQL(
 
   Object.keys(searchParams).forEach(
     (k) =>
-      (convertedObject[k as FilterableFields] = {
+      (convertedObject[k.replace('Contains', '') as FilterableFields] = {
         contains: searchParams[k as FilterableFields],
       }),
   );
 
-  return convertedObject;
+  return Object.keys(convertedObject).length
+    ? { filter: convertedObject }
+    : null;
 }
 
 export async function getArticles(

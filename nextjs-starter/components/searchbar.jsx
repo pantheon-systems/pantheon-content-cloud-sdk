@@ -31,7 +31,7 @@ export const Searchbar = () => {
             router.push({
               pathname: "/search",
               query: {
-                query: searchQuery,
+                q: searchQuery,
               },
             });
           }
