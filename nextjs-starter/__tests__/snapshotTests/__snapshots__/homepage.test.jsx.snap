@@ -148,7 +148,7 @@ exports[`<HomepageTemplate /> > should render with posts 1`] = `
            and 
           <a
             class="text-blue-500 underline hover:text-blue-100"
-            href="https://pantheon.com/"
+            href="https://pantheon.io/"
           >
             Pantheon Content Cloud
           </a>

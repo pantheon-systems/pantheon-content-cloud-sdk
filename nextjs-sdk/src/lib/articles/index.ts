@@ -16,11 +16,11 @@ export interface ArticleQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
 }
 
-export interface ArticleSearchArgs {
-  tagContains: string;
-  titleContains: string;
-  bodyContains: string;
-}
+type FilterableFields = 'body' | 'tag' | 'title';
+export type ArticleSearchArgs = { [key in FilterableFields]: string };
+type ConvertedArticleSearchArgs = {
+  [key in FilterableFields]: { contains: string };
+};
 
 export const LIST_ARTICLES_QUERY = gql`
   query ListArticles(
@@ -28,12 +28,16 @@ export const LIST_ARTICLES_QUERY = gql`
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
-    articles(contentType: $contentType, publishingLevel: $publishingLevel) {
+    articles(
+      contentType: $contentType
+      publishingLevel: $publishingLevel
+      filter: $filter
+    ) {
       id
       title
       source
       sourceURL
-      keywords
+      tags
       publishedDate
       publishingLevel
       contentType
@@ -41,28 +45,24 @@ export const LIST_ARTICLES_QUERY = gql`
   }
 `;
 
-export function convertSearchParamsToGQL(searchParams?: ArticleSearchArgs) {
+export function convertSearchParamsToGQL(
+  searchParams?: ArticleSearchArgs,
+): ConvertedArticleSearchArgs | null {
   if (!searchParams) return null;
 
-  return {
-    filter: {
-      title: searchParams?.titleContains
-        ? {
-            contains: searchParams.titleContains,
-          }
-        : undefined,
-      // body: searchParams?.bodyContains
-      //   ? {
-      //       contains: searchParams.bodyContains,
-      //     }
-      //   : undefined,
-      // tag: searchParams?.tagContains
-      //   ? {
-      //       contains: searchParams.tagContains,
-      //     }
-      //   : undefined,
-    },
-  };
+  // Cast empty object to workaround Typescript bug
+  // https://stackoverflow.com/questions/15877362/declare-and-initialize-a-dictionary-in-typescript
+  let convertedObject: ConvertedArticleSearchArgs =
+    {} as ConvertedArticleSearchArgs;
+
+  Object.keys(searchParams).forEach(
+    (k) =>
+      (convertedObject[k as FilterableFields] = {
+        contains: searchParams[k as FilterableFields],
+      }),
+  );
+
+  return convertedObject;
 }
 
 export async function getArticles(
@@ -72,11 +72,7 @@ export async function getArticles(
 ) {
   const articles = await client.apolloClient.query({
     query: LIST_ARTICLES_QUERY,
-    variables: args,
-    // variables: {
-    //   ...args,
-    //   ...convertSearchParamsToGQL(searchParams),
-    // },
+    variables: Object.assign({}, args, convertSearchParamsToGQL(searchParams)),
   });
 
   return articles.data.articles as ArticleWithoutContent[];
@@ -98,7 +94,7 @@ export const GET_ARTICLE_QUERY = gql`
       content
       source
       sourceURL
-      keywords
+      tags
       publishedDate
       publishingLevel
       contentType
@@ -122,7 +118,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       content
       source
       sourceURL
-      keywords
+      tags
       publishedDate
       publishingLevel
       contentType

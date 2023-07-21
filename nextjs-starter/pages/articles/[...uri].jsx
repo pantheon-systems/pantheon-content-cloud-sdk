@@ -2,6 +2,7 @@ import { NextSeo } from "next-seo";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 
 import Layout from "../../components/layout";
+import { Tags } from "../../components/tags";
 import { getArticleById } from "../../lib/Articles";
 
 export default function PageTemplate({ article }) {
@@ -32,6 +33,7 @@ export default function PageTemplate({ article }) {
             </div>
           )}
         />
+        <Tags tags={article?.tags} />
       </div>
     </Layout>
   );

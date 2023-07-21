@@ -1,5 +1,6 @@
-import { Header, Footer, PreviewRibbon } from "@pantheon-systems/nextjs-kit";
+import { Footer, PreviewRibbon } from "@pantheon-systems/nextjs-kit";
 import Link from "next/link";
+import { Searchbar } from "./searchbar";
 
 export default function Layout({ children, footerMenu, preview }) {
   const navItems = [
@@ -44,6 +45,9 @@ export default function Layout({ children, footerMenu, preview }) {
                 </li>
               );
             })}
+            <div>
+              <Searchbar />
+            </div>
           </ul>
         </nav>
       </div>
@@ -60,7 +64,7 @@ export default function Layout({ children, footerMenu, preview }) {
           and{" "}
           <a
             className="text-blue-500 underline hover:text-blue-100"
-            href="https://pantheon.com/"
+            href="https://pantheon.io/"
           >
             Pantheon Content Cloud
           </a>

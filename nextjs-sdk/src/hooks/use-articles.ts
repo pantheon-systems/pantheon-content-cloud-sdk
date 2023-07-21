@@ -16,7 +16,7 @@ export const useArticles = (
   searchParams?: ArticleSearchArgs,
 ) => {
   const queryData = useQuery<ListArticlesResponse>(LIST_ARTICLES_QUERY, {
-    variables: { ...args, ...convertSearchParamsToGQL(searchParams) },
+    variables: Object.assign({}, args, convertSearchParamsToGQL(searchParams)),
   });
 
   return {
