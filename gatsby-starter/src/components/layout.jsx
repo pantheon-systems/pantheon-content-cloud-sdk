@@ -53,7 +53,7 @@ export default function Layout({ children, footerMenu }) {
           and{" "}
           <a
             className="text-blue-500 underline hover:text-blue-100"
-            href="https://pantheon.com/"
+            href="https://pantheon.io/"
           >
             Pantheon Content Cloud
           </a>

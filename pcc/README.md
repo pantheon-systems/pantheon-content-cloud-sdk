@@ -10,12 +10,12 @@
 
 npm
 ```console
-npm install @pcc/starter-kit --global
+npm install @pantheon-systems/pcc--global
 ```
 
 yarn
 ```console
-yarn add @pcc/starter-kit --global
+yarn add @pantheon-systems/pcc --global
 ```
 
 ## Usage
