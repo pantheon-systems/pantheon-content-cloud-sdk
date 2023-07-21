@@ -19,7 +19,7 @@ export default function TagSearch({ articles, tags, searchString }) {
   const HomepageHeader = () => (
     <div className="prose sm:prose-xl mt-20 flex flex-col mx-auto max-w-fit">
       <h1 className="prose text-4xl text-center h-full">
-        Welcome to{" "}
+        Welcome to&quot;
         <a
           className="text-blue-600 no-underline hover:underline"
           href="https://nextjs.org"
@@ -55,7 +55,7 @@ export default function TagSearch({ articles, tags, searchString }) {
         <>
           {" "}
           <h3 className="text-center text-3xl">
-            Article with tag "{searchString}"
+            Article with tag &quot;{searchString}&quot;
           </h3>
           <section>
             <PostGrid contentType="posts" data={articles} />

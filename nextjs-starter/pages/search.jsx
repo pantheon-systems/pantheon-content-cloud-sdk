@@ -51,7 +51,7 @@ export default function Search({ articles, searchString }) {
       />
       <HomepageHeader />
       <h3 className="text-center text-3xl">
-        Search results for "{searchQuery}"
+        Search results for &quot;{searchQuery}&quot;
       </h3>
       <section>
         <PostGrid contentType="posts" data={articles} />
