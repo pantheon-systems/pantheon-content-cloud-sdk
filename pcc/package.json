@@ -19,7 +19,8 @@
     "pcc": "./dist/index.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "templates"
   ],
   "scripts": {
     "build": "tsup --env.NODE_ENV production",
