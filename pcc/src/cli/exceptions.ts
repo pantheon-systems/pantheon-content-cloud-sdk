@@ -30,6 +30,9 @@ export function errorHandler<T>(f: (arg: T) => Promise<void>) {
         console.log(chalk.yellow('Please run "pcc login" to login the user.'));
       } else {
         console.log(
+          chalk.yellow('Stack trace:', (e as { stack: string }).stack),
+        );
+        console.log(
           chalk.red(
             'Error: Something went wrong. Please contact Pantheon support team.',
           ),
