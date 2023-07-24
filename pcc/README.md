@@ -10,7 +10,7 @@
 
 npm
 ```console
-npm install @pantheon-systems/pcc--global
+npm install @pantheon-systems/pcc --global
 ```
 
 yarn
