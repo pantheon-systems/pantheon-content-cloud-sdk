@@ -98,6 +98,7 @@ class AddOnApiHelper {
 
     return resp.data as Site[];
   }
+
   static async updateSite(id: string, url: string): Promise<void> {
     const authDetails = await getLocalAuthDetails();
     if (!authDetails) throw new UserNotLoggedIn();
