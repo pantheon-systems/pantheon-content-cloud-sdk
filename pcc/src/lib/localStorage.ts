@@ -1,4 +1,5 @@
 import { writeFileSync, readFileSync } from 'fs';
+import { ensureFile } from 'fs-extra';
 import { PCC_ROOT_DIR } from '../constants';
 import { Credentials } from 'google-auth-library';
 import AddOnApiHelper from './addonApiHelper';
@@ -32,5 +33,15 @@ export const getLocalAuthDetails = async (): Promise<Credentials | null> => {
 export const persistAuthDetails = async (
   payload: Credentials,
 ): Promise<void> => {
+  await new Promise<void>((resolve, reject) =>
+    ensureFile(AUTH_FILE_PATH, (err: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    }),
+  );
+
   writeFileSync(AUTH_FILE_PATH, JSON.stringify(payload, null, 2));
 };
