@@ -28,13 +28,19 @@ yargs(hideBin(process.argv))
           type: 'string',
           choices: ['nextjs', 'gatsby'],
           demandOption: true,
+        })
+        .option('appName', {
+          describe: '"package.json" compatible name for the project.',
+          type: 'string',
+          demandOption: false,
         });
     },
     async (args) => {
       const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
+      const appName = args.appName as string | undefined;
 
-      await init({ dirName, template });
+      await init({ dirName, template, appName });
     },
   )
   .command(

@@ -41,9 +41,11 @@ async function sh(cmd: string) {
 const init = async ({
   dirName,
   template,
+  appName,
 }: {
   dirName: string;
   template: CliTemplateOptions;
+  appName: string;
 }) => {
   if (!dirName) {
     console.error(
@@ -89,9 +91,9 @@ const init = async ({
     { recursive: true },
   );
   chdir(dirName);
-  const appName = path.parse(dirName).base;
   const packageJson = JSON.parse(readFileSync('./package.json').toString());
-  packageJson.name = appName;
+  if (appName) packageJson.name = appName;
+  else packageJson.name = path.parse(dirName).base;
   writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
 
   // Commiting changes to Git
@@ -123,6 +125,8 @@ const init = async ({
   else console.log(chalk.green('   yarn start'));
 };
 
-export default errorHandler<{ dirName: string; template: CliTemplateOptions }>(
-  init,
-);
+export default errorHandler<{
+  dirName: string;
+  template: CliTemplateOptions;
+  appName?: string;
+}>(init);
