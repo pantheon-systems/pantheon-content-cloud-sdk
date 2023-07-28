@@ -41,11 +41,15 @@ async function sh(cmd: string) {
 const init = async ({
   dirName,
   template,
+  skipInstallation,
+  packageManager,
   appName,
 }: {
   dirName: string;
   template: CliTemplateOptions;
-  appName: string;
+  skipInstallation: boolean;
+  packageManager: PackageManager;
+  appName?: string;
 }) => {
   if (!dirName) {
     console.error(
@@ -104,13 +108,15 @@ const init = async ({
   );
   setupProj.succeed('Completed setting up project!');
 
-  // Installing dependencies
-  const installProj = ora('Installing dependencies...').start();
-  await sh('yarn install');
-  installProj.succeed('Installed dependencies!');
-  process.chdir('../');
+  if (!skipInstallation) {
+    // Installing dependencies
+    const installProj = ora('Installing dependencies...').start();
+    await sh(`${packageManager} install`);
+    installProj.succeed('Installed dependencies!');
+  }
 
   // Cleaning up
+  process.chdir('../');
   rmSync(TEMP_DIR_NAME, { recursive: true });
 
   // Messaging to get started
@@ -128,5 +134,7 @@ const init = async ({
 export default errorHandler<{
   dirName: string;
   template: CliTemplateOptions;
+  packageManager: PackageManager;
   appName?: string;
+  skipInstallation: boolean;
 }>(init);
