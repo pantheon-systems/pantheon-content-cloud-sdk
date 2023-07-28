@@ -16,7 +16,7 @@ import path from 'path';
 import os from 'os';
 import chalk from 'chalk';
 import { errorHandler } from '../exceptions';
-import { SpinnerLogger } from '../../lib/logger';
+import { Logger, SpinnerLogger } from '../../lib/logger';
 const TEMP_DIR_NAME = path.join(os.tmpdir(), 'react_sdk_90723');
 const TAR_FILE_NAME = 'sdk-repo.tar';
 const TEMPLATE_FOLDER_MAP = {
@@ -54,8 +54,9 @@ const init = async ({
   silentLogs: boolean;
   appName?: string;
 }) => {
+  const logger = new Logger(silentLogs);
   if (!dirName) {
-    console.error(
+    logger.error(
       chalk.red(
         'ERROR: Please enter valid directory name. Check pcc init --help for more details.',
       ),
@@ -90,7 +91,7 @@ const init = async ({
   setupProj.start();
   if (existsSync(dirName)) {
     setupProj.stop();
-    console.log(chalk.red('ERROR: Project directory already exists.'));
+    logger.error(chalk.red('ERROR: Project directory already exists.'));
     exit(1);
   }
 
@@ -129,15 +130,15 @@ const init = async ({
   rmSync(TEMP_DIR_NAME, { recursive: true });
 
   // Messaging to get started
-  console.log();
-  console.log(
+  logger.log();
+  logger.log(
     chalk.green('To get started please replace the placeholders in .env.local'),
   );
-  console.log(chalk.green(`   cd ${dirName}`));
-  console.log(chalk.green(`   vim .env.local`));
-  console.log(chalk.green('And then run the website'));
-  if (template === 'nextjs') console.log(chalk.green('   yarn dev'));
-  else console.log(chalk.green('   yarn start'));
+  logger.log(chalk.green(`   cd ${dirName}`));
+  logger.log(chalk.green(`   vim .env.local`));
+  logger.log(chalk.green('And then run the website'));
+  if (template === 'nextjs') logger.log(chalk.green('   yarn dev'));
+  else logger.log(chalk.green('   yarn start'));
 };
 
 export default errorHandler<{
