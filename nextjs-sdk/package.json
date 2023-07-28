@@ -1,7 +1,7 @@
 {
   "name": "@pantheon-systems/pcc-react-sdk",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "",
   "license": "",
   "keywords": [
@@ -146,6 +146,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
+    "framer-motion": "^10.13.1",
     "graphql": "^16.6.0",
     "graphql-ws": "^5.14.0",
     "react-markdown": "^8.0.7",

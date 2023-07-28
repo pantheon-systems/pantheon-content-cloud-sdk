@@ -34,7 +34,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
     );
   }
 
-  if (textContent != null) {
+  if (textContent?.trim().length) {
     const tag = isSuperscript ? 'sup' : isSubscript ? 'sub' : 'span';
     return React.createElement(
       tag,
@@ -62,6 +62,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
       </a>
     );
   }
+
   if (x.tag === 'img' || x.tag === 'image') {
     return <img src={x.src} alt={x.alt} title={x.title} />;
   }
