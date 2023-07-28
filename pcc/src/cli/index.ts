@@ -58,7 +58,7 @@ yargs(hideBin(process.argv))
           default: true,
           demandOption: false,
         })
-        .option('use-yarn', {
+        .option('silent', {
           describe:
             'Skips all console output except for errors and return value from actions.',
           type: 'boolean',
