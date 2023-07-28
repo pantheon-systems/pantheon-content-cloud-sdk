@@ -64,6 +64,12 @@ yargs(hideBin(process.argv))
           type: 'boolean',
           default: false,
           demandOption: false,
+        })
+        .option('eslint', {
+          describe: 'Initialize with eslint config.',
+          type: 'boolean',
+          default: false,
+          demandOption: false,
         });
     },
     async (args) => {
@@ -74,6 +80,7 @@ yargs(hideBin(process.argv))
       const usePnpm = args['use-pnpm'] as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
+      const eslint = args.eslint as boolean;
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
@@ -88,6 +95,7 @@ yargs(hideBin(process.argv))
         packageManager,
         appName,
         silentLogs: silent,
+        eslint
       });
     },
   )

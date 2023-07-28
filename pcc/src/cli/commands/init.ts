@@ -24,6 +24,16 @@ const TEMPLATE_FOLDER_MAP = {
   gatsby: 'gatsby-starter',
 };
 
+// TODO: Make sure this versions are stale.
+const ESLINT_DEPENDENCIES = {
+  eslint: '^8.24.0',
+  'eslint-config-next': '^13.1.1',
+};
+
+const ESLINT_CONFIG = {
+  extends: 'next/core-web-vitals',
+};
+
 const octokit = new Octokit();
 async function sh(cmd: string) {
   return new Promise(function (resolve, reject) {
@@ -45,6 +55,7 @@ const init = async ({
   skipInstallation,
   packageManager,
   silentLogs,
+  eslint,
   appName,
 }: {
   dirName: string;
@@ -52,6 +63,7 @@ const init = async ({
   skipInstallation: boolean;
   packageManager: PackageManager;
   silentLogs: boolean;
+  eslint: boolean;
   appName?: string;
 }) => {
   const logger = new Logger(silentLogs);
@@ -104,7 +116,17 @@ const init = async ({
   const packageJson = JSON.parse(readFileSync('./package.json').toString());
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
-  writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
+
+  if (eslint) {
+    packageJson.devDependencies = {
+      ...packageJson.devDependencies,
+      ...ESLINT_DEPENDENCIES,
+    };
+
+    writeFileSync('./.eslintrc.json', JSON.stringify(ESLINT_CONFIG, null, 2));
+  }
+
+  writeFileSync('./package.json', JSON.stringify(packageJson, null, 2) + '\n');
 
   // Commiting changes to Git
   await sh('git init');
@@ -147,5 +169,6 @@ export default errorHandler<{
   packageManager: PackageManager;
   skipInstallation: boolean;
   silentLogs: boolean;
+  eslint: boolean;
   appName?: string;
 }>(init);
