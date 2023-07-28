@@ -1,7 +1,7 @@
 export const Tags = ({ tags }) => {
   return (
     <p className="mt-2 text-sm leading-[1.25rem] text-theme-bg-black">
-      {tags !==null && tags.length ? (
+      {tags?.length ? (
         <>
           Tags:&nbsp;
           {tags.map((x, i) => (
