@@ -16,6 +16,7 @@ import path from 'path';
 import os from 'os';
 import chalk from 'chalk';
 import { errorHandler } from '../exceptions';
+import { SpinnerLogger } from '../../lib/logger';
 const TEMP_DIR_NAME = path.join(os.tmpdir(), 'react_sdk_90723');
 const TAR_FILE_NAME = 'sdk-repo.tar';
 const TEMPLATE_FOLDER_MAP = {
@@ -43,12 +44,14 @@ const init = async ({
   template,
   skipInstallation,
   packageManager,
+  silentLogs,
   appName,
 }: {
   dirName: string;
   template: CliTemplateOptions;
   skipInstallation: boolean;
   packageManager: PackageManager;
+  silentLogs: boolean;
   appName?: string;
 }) => {
   if (!dirName) {
@@ -64,7 +67,8 @@ const init = async ({
   mkdirSync(TEMP_DIR_NAME);
 
   // Cloning starter kit locally
-  const fetchStarter = ora('Fetching starter kit...').start();
+  const fetchStarter = new SpinnerLogger('Fetching starter kit...', silentLogs);
+  fetchStarter.start();
   const { data } = await octokit.request('GET /repos/{owner}/{repo}/tarball', {
     owner: 'pantheon-systems',
     repo: 'pantheon-content-cloud-sdk',
@@ -82,7 +86,8 @@ const init = async ({
   fetchStarter.succeed('Fetched starter kit!');
 
   // Setting up new project
-  const setupProj = ora('Setting up project...').start();
+  const setupProj = new SpinnerLogger('Setting up project...', silentLogs);
+  setupProj.start();
   if (existsSync(dirName)) {
     setupProj.stop();
     console.log(chalk.red('ERROR: Project directory already exists.'));
@@ -110,7 +115,11 @@ const init = async ({
 
   if (!skipInstallation) {
     // Installing dependencies
-    const installProj = ora('Installing dependencies...').start();
+    const installProj = new SpinnerLogger(
+      'Installing dependencies...',
+      silentLogs,
+    );
+    installProj.start();
     await sh(`${packageManager} install`);
     installProj.succeed('Installed dependencies!');
   }
@@ -135,6 +144,7 @@ export default errorHandler<{
   dirName: string;
   template: CliTemplateOptions;
   packageManager: PackageManager;
-  appName?: string;
   skipInstallation: boolean;
+  silentLogs: boolean;
+  appName?: string;
 }>(init);

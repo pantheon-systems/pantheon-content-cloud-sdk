@@ -57,6 +57,13 @@ yargs(hideBin(process.argv))
           type: 'boolean',
           default: true,
           demandOption: false,
+        })
+        .option('use-yarn', {
+          describe:
+            'Skips all console output except for errors and return value from actions.',
+          type: 'boolean',
+          default: false,
+          demandOption: false,
         });
     },
     async (args) => {
@@ -66,6 +73,7 @@ yargs(hideBin(process.argv))
       const useNpm = args['use-npm'] as boolean;
       const usePnpm = args['use-pnpm'] as boolean;
       const appName = args.appName as string | undefined;
+      const silent = args.silent as boolean;
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
@@ -79,6 +87,7 @@ yargs(hideBin(process.argv))
         skipInstallation: noInstall,
         packageManager,
         appName,
+        silentLogs: silent,
       });
     },
   )
