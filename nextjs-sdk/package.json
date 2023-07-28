@@ -17,7 +17,7 @@
   },
   "scripts": {
     "dev": "concurrently \"yarn build --watch\" \"yarn test:watch\" ",
-    "build": "tsup --onSuccess \"yarn yalc publish\"",
+    "build": "tsup",
     "type-check": "tsc",
     "lint": "eslint --ignore-path .gitignore \"{src,tests}/**/*.+(ts|js|tsx)\"",
     "lint:fix": "yarn lint --fix && prettier --write .",
@@ -119,11 +119,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-test-renderer": "18.2.0",
-    "release-it": "15.10.3",
+    "release-it": "^16.1.3",
     "ts-jest": "29.1.0",
     "tsup": "6.7.0",
     "typescript": "5.0.4",
-    "yalc": "1.0.0-pre.53",
     "yargs": "^17.7.2"
   },
   "peerDependencies": {

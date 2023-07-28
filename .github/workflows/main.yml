@@ -6,9 +6,9 @@ jobs:
   run-ci:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      PCC_HOST: https://pcc-gfttxsojwq-uw.a.run.app
-      PCC_SITE_ID: 12345
-      PCC_API_KEY: ABC-DEF
+      PCC_HOST: https://pcc-cxog5ytt4a-uw.a.run.app
+      PCC_SITE_ID: wyqvIbhzhQgN4bz2VPjD
+      PCC_API_KEY: ${{ secrets.PCC_API_KEY }}
 
     strategy:
       matrix:

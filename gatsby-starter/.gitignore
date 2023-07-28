@@ -49,3 +49,8 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Lockfiles
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
