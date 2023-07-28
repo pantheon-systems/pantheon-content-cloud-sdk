@@ -1,4 +1,3 @@
-import ora from "ora";
 export interface Logger {
   error: LogFunction;
   info: LogFunction;

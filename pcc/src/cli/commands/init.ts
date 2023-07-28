@@ -24,7 +24,7 @@ const TEMPLATE_FOLDER_MAP = {
   gatsby: 'gatsby-starter',
 };
 
-// TODO: Make sure this versions are stale.
+// TODO: Make sure below ESLINT versions are not stale.
 const ESLINT_DEPENDENCIES = {
   eslint: '^8.24.0',
   'eslint-config-next': '^13.1.1',
