@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "@pantheon-systems/pcc-eslint-config"
+  ]
+}
