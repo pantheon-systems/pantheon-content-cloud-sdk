@@ -1,3 +1,6 @@
+# Build output
+public/
+
 # Logs
 logs
 *.log

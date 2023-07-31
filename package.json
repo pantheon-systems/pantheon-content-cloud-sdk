@@ -5,10 +5,15 @@
   "repository": "git@github.com:pantheon-systems/pantheon-content-cloud-sdk.git",
   "author": "Kevin Stubbs <kevin@pubgenius.io>",
   "license": "MIT",
+  "packageManager": "pnpm@8.6.11",
   "scripts": {
-    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky && husky install gatsby-starter/.husky"
+    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky && husky install gatsby-starter/.husky",
+    "dev": "turbo run dev"
   },
   "devDependencies": {
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "turbo": "^1.10.12"
   }
 }
