@@ -15,7 +15,7 @@ For a quick start, follow the instructions below:
 1. In your terminal, run the following commands:
 
 ```bash
-yarn add @pantheon-systems/pcc –global
+npm add @pantheon-systems/pcc –global
 pcc init ./my-new-site --template=nextjs
 ```
 

@@ -32,8 +32,8 @@
     "README.md"
   ],
   "scripts": {
-    "dev": "yarn build --watch",
-    "build": "tsup --onSuccess \"npx yalc publish --push\"",
+    "dev": "pnpm run build --watch",
+    "build": "tsup",
     "type-check": "tsc"
   },
   "engines": {
@@ -46,8 +46,7 @@
     "typescript": "^5.1.3",
     "vue": "npm:vue@^3.3.4",
     "vue-2": "npm:vue@^2.7.14",
-    "vue-3": "npm:vue@^3.3.4",
-    "yalc": "^1.0.0-pre.53"
+    "vue-3": "npm:vue@^3.3.4"
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1.0.0-rc.1",

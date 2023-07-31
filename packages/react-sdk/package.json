@@ -16,16 +16,16 @@
     "url": "https://github.com/pantheon-systems/pantheon-content-cloud-sdk"
   },
   "scripts": {
-    "dev": "concurrently \"yarn build --watch\" \"yarn test:watch\" ",
-    "build": "tsup --onSuccess \"yarn yalc publish\"",
+    "dev": "concurrently \"pnpm run build --watch\" \"pnpm run test:watch\" ",
+    "build": "tsup",
     "type-check": "tsc",
     "lint": "eslint --ignore-path .gitignore \"{src,tests}/**/*.+(ts|js|tsx)\"",
-    "lint:fix": "yarn lint --fix && prettier --write .",
+    "lint:fix": "pnpm run lint --fix && prettier --write .",
     "test": "jest --coverage --passWithNoTests",
-    "test:ci": "yarn test --ci",
+    "test:ci": "pnpm run test --ci",
     "test:watch": "jest --watch",
     "commit": "cz",
-    "release": "yarn build && yarn release-it"
+    "release": "pnpm run build && pnpm run release-it"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -123,7 +123,6 @@
     "ts-jest": "29.1.0",
     "tsup": "6.7.0",
     "typescript": "5.0.4",
-    "yalc": "1.0.0-pre.53",
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
@@ -147,6 +146,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.14",
     "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "graphql-ws": "^5.14.0",
     "react-markdown": "^8.0.7",
     "rehype-raw": "^6.1.1"
