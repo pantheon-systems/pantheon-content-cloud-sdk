@@ -14,7 +14,8 @@ npm install @pcc/vue
 
 ## Setup
 
-Initialize the Pantheon Content Cloud plugin with your PCC instance URL and site identifier.
+Initialize the Pantheon Content Cloud plugin with your PCC instance URL and site
+identifier.
 
 ```javascript
 import { pccPlugin } from "@pcc/vue";
@@ -30,14 +31,16 @@ createApp(App)
 
 ## Usage
 
-This package exports composables and helper components to get you up and running with the Pantheon Content Cloud API.
+This package exports composables and helper components to get you up and running
+with the Pantheon Content Cloud API.
 
 ### Components
 
 #### Article Renderer
 
 The `<ArticleRenderer />` component will render the article received from
-Content Cloud by converting the raw article data into HTML elements you can style and render in your app.
+Content Cloud by converting the raw article data into HTML elements you can
+style and render in your app.
 
 ```vue
 <script setup>
@@ -66,7 +69,9 @@ const { result, loading, error } = useArticle(id);
 
 ### Composables
 
-All composables use the [`Vue Apollo` library](https://v4.apollo.vuejs.org/) under the hood and return the same `result`, `loading`, `error` refs among [other properties](https://v4.apollo.vuejs.org/api/use-query.html#return).
+All composables use the [`Vue Apollo` library](https://v4.apollo.vuejs.org/)
+under the hood and return the same `result`, `loading`, `error` refs among
+[other properties](https://v4.apollo.vuejs.org/api/use-query.html#return).
 
 #### useArticle
 
@@ -99,7 +104,8 @@ const { result, loading, error } = useArticle(id);
 
 #### useArticles
 
-Fetch a list of available articles. This query does not include the article content.
+Fetch a list of available articles. This query does not include the article
+content.
 
 ```vue
 <script setup>

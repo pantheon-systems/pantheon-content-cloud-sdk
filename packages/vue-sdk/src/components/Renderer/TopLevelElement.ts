@@ -1,6 +1,6 @@
-import { h, defineComponent, PropType } from "vue-demi";
-import TreeRenderer from "./TreeRenderer";
+import { defineComponent, h, PropType } from "vue-demi";
 import { JSONElement } from ".";
+import TreeRenderer from "./TreeRenderer";
 
 export default defineComponent({
   name: "TopLevelElement",

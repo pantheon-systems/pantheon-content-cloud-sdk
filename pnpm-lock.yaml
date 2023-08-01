@@ -139,6 +139,9 @@ importers:
 
   configs/eslint:
     dependencies:
+      '@ianvs/prettier-plugin-sort-imports':
+        specifier: ^4.1.0
+        version: 4.1.0(prettier@3.0.0)
       '@types/eslint':
         specifier: ^8.44.1
         version: 8.44.1
@@ -157,6 +160,9 @@ importers:
       eslint-config-turbo:
         specifier: ^1.10.12
         version: 1.10.12(eslint@8.46.0)
+      prettier:
+        specifier: ^3.0.0
+        version: 3.0.0
 
   packages/cli:
     dependencies:
@@ -384,9 +390,12 @@ importers:
       '@apollo/client':
         specifier: ^3.7.16
         version: 3.7.16(graphql-ws@5.14.0)(graphql@16.6.0)(react-dom@18.2.0)(react@18.2.0)
+      '@ianvs/prettier-plugin-sort-imports':
+        specifier: ^4.1.0
+        version: 4.1.0(prettier@2.8.8)
       '@vue/apollo-composable':
         specifier: ^4.0.0-beta.7
-        version: 4.0.0-beta.7(@apollo/client@3.7.16)(@vue/composition-api@1.0.0-rc.1)(graphql@16.6.0)(typescript@5.1.3)(vue@3.3.4)
+        version: 4.0.0-beta.7(@apollo/client@3.7.16)(graphql@16.6.0)(typescript@5.1.3)(vue@3.3.4)
       '@vue/composition-api':
         specifier: '>=1.0.0-rc.1'
         version: 1.0.0-rc.1(vue@3.3.4)
@@ -395,7 +404,7 @@ importers:
         version: 5.14.0(graphql@16.6.0)
       vue-demi:
         specifier: latest
-        version: 0.14.5(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4)
+        version: 0.14.5(vue@3.3.4)
       vue-markdown-render:
         specifier: ^2.0.1
         version: 2.0.1
@@ -2695,6 +2704,46 @@ packages:
 
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+
+  /@ianvs/prettier-plugin-sort-imports@4.1.0(prettier@2.8.8):
+    resolution: {integrity: sha512-IAXeTLU24k6mRPa6mFbW1qZJ/j0m3OeH44wyijWyr+YqqdNtBnfHxAntOAATS9iDfrT01NesKGsdzqnXdDQa/A==}
+    peerDependencies:
+      '@vue/compiler-sfc': '>=3.0.0'
+      prettier: 2 || 3
+    peerDependenciesMeta:
+      '@vue/compiler-sfc':
+        optional: true
+    dependencies:
+      '@babel/core': 7.21.8
+      '@babel/generator': 7.22.9
+      '@babel/parser': 7.22.7
+      '@babel/traverse': 7.22.8
+      '@babel/types': 7.22.5
+      prettier: 2.8.8
+      semver: 7.5.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@ianvs/prettier-plugin-sort-imports@4.1.0(prettier@3.0.0):
+    resolution: {integrity: sha512-IAXeTLU24k6mRPa6mFbW1qZJ/j0m3OeH44wyijWyr+YqqdNtBnfHxAntOAATS9iDfrT01NesKGsdzqnXdDQa/A==}
+    peerDependencies:
+      '@vue/compiler-sfc': '>=3.0.0'
+      prettier: 2 || 3
+    peerDependenciesMeta:
+      '@vue/compiler-sfc':
+        optional: true
+    dependencies:
+      '@babel/core': 7.21.8
+      '@babel/generator': 7.22.9
+      '@babel/parser': 7.22.7
+      '@babel/traverse': 7.22.8
+      '@babel/types': 7.22.5
+      prettier: 3.0.0
+      semver: 7.5.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@iarna/toml@2.2.5:
     resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
@@ -5151,7 +5200,7 @@ packages:
       - supports-color
     dev: true
 
-  /@vue/apollo-composable@4.0.0-beta.7(@apollo/client@3.7.16)(@vue/composition-api@1.0.0-rc.1)(graphql@16.6.0)(typescript@5.1.3)(vue@3.3.4):
+  /@vue/apollo-composable@4.0.0-beta.7(@apollo/client@3.7.16)(graphql@16.6.0)(typescript@5.1.3)(vue@3.3.4):
     resolution: {integrity: sha512-BCKK9xAH67e033Q715nzhGwn9PlnTACb+840qQQjSa1YFwjeiDufPpJ/GGqaLGqJgTm+wgpIljA/H+MYDFhe6g==}
     peerDependencies:
       '@apollo/client': ^3.4.13
@@ -5163,12 +5212,11 @@ packages:
         optional: true
     dependencies:
       '@apollo/client': 3.7.16(graphql-ws@5.14.0)(graphql@16.6.0)(react-dom@18.2.0)(react@18.2.0)
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       graphql: 16.6.0
       throttle-debounce: 3.0.1
       ts-essentials: 9.3.2(typescript@5.1.3)
       vue: 3.3.4
-      vue-demi: 0.13.11(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4)
+      vue-demi: 0.13.11(vue@3.3.4)
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -15047,7 +15095,12 @@ packages:
     resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
+
+  /prettier@3.0.0:
+    resolution: {integrity: sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: false
 
   /pretty-bytes@5.6.0:
     resolution: {integrity: sha512-FFw039TmrBqFK8ma/7OL3sDz/VytdtJr044/QUJtH0wK9lb9jLq9tJyIxUwtQJHwar2BqtiA4iCWSwo9JLkzFg==}
@@ -16021,7 +16074,7 @@ packages:
     resolution: {integrity: sha512-0Ju4+6A8iOnpL/Thra7dZsSlOHYAHIeMxfhWQRI1/VLcT3WDBZKKtQt/QkBOsiIN9ZpuvHE6cGZ0x4glCMmfiA==}
     engines: {node: '>=12'}
     dependencies:
-      semver: 7.5.0
+      semver: 7.5.4
     dev: true
 
   /semver@5.7.2:
@@ -17751,7 +17804,7 @@ packages:
       is-yarn-global: 0.4.1
       latest-version: 7.0.0
       pupa: 3.1.0
-      semver: 7.5.0
+      semver: 7.5.4
       semver-diff: 4.0.0
       xdg-basedir: 5.1.0
     dev: true
@@ -17997,7 +18050,7 @@ packages:
       acorn-walk: 8.2.0
     dev: true
 
-  /vue-demi@0.13.11(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4):
+  /vue-demi@0.13.11(vue@3.3.4):
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
     engines: {node: '>=12'}
     hasBin: true
@@ -18009,11 +18062,10 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       vue: 3.3.4
     dev: false
 
-  /vue-demi@0.14.5(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4):
+  /vue-demi@0.14.5(vue@3.3.4):
     resolution: {integrity: sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA==}
     engines: {node: '>=12'}
     hasBin: true
@@ -18025,7 +18077,6 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       vue: 3.3.4
     dev: false
 

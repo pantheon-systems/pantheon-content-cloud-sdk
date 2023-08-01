@@ -1,6 +1,5 @@
-import { PantheonClient, PantheonClientConfig } from "src/core/pantheon-client";
 import { DefaultApolloClient } from "@vue/apollo-composable";
-
+import { PantheonClient, PantheonClientConfig } from "src/core/pantheon-client";
 import type { App } from "vue";
 
 export const plugin = {

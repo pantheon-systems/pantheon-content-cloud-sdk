@@ -6,11 +6,14 @@ module.exports = {
     browser: true,
   },
   parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "prettier"],
   extends: [
     "turbo",
-    "prettier",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
+  rules: {
+    "prettier/prettier": "error",
+  },
 };

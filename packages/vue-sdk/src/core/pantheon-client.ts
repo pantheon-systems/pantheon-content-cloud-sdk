@@ -1,14 +1,13 @@
 import {
-  NormalizedCacheObject,
   ApolloClient,
-  InMemoryCache,
   HttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
   split,
 } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { createClient } from "graphql-ws";
-
 import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
 
 export interface PantheonClientConfig {
@@ -89,7 +88,7 @@ export class PantheonClient {
         connectionParams: {
           "PCC-API-KEY": this.apiKey,
         },
-      })
+      }),
     );
 
     const httpLink = new HttpLink({
@@ -108,7 +107,7 @@ export class PantheonClient {
         );
       },
       wsLink,
-      httpLink
+      httpLink,
     );
 
     this.apolloClient = new ApolloClient({
@@ -117,7 +116,10 @@ export class PantheonClient {
     });
 
     if (this.debug) {
-      this.logger.info("PantheonClient initialized with config", config);
+      this.logger.info(
+        "PantheonClient initialized with config",
+        JSON.stringify(config, null, 2),
+      );
     }
   }
 }

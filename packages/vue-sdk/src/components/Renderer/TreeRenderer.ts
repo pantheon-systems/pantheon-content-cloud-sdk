@@ -1,9 +1,9 @@
-import { h, defineComponent, resolveComponent, PropType } from "vue-demi";
+import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
+import { JSONElement } from ".";
 import {
   getStyleObjectFromString,
   unescapeHTMLEntities,
 } from "../../utils/renderer";
-import { JSONElement } from ".";
 
 export default defineComponent({
   name: "TreeRenderer",
@@ -37,7 +37,7 @@ export default defineComponent({
           ? h(resolveComponent("TreeRenderer"), {
               x: x.children,
             })
-          : []
+          : [],
       );
     }
 
