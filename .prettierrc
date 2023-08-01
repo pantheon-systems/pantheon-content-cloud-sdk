@@ -1,7 +1,5 @@
 {
-  "plugins": [
-    "@ianvs/prettier-plugin-sort-imports"
-  ],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"],
   "semi": true,
   "singleQuote": false,
   "useTabs": false,

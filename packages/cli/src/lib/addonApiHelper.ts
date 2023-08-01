@@ -1,8 +1,8 @@
-import axios, { HttpStatusCode } from 'axios';
-import { getLocalAuthDetails } from './localStorage';
-import { HTTPNotFound, UserNotLoggedIn } from '../cli/exceptions';
-import config from './config';
-import { Credentials } from 'google-auth-library';
+import axios, { HttpStatusCode } from "axios";
+import { Credentials } from "google-auth-library";
+import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
+import config from "./config";
+import { getLocalAuthDetails } from "./localStorage";
 
 const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
 const SITE_ENDPOINT = `${config.addOnApiEndpoint}/sites`;
@@ -76,7 +76,7 @@ class AddOnApiHelper {
 
     const resp = await axios.post(
       SITE_ENDPOINT,
-      { name: '', url, emailList: '' },
+      { name: "", url, emailList: "" },
       {
         headers: {
           Authorization: `Bearer ${authDetails.id_token}`,

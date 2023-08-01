@@ -10,7 +10,7 @@ export function printTable(input: { [key: string]: string | number }[]) {
       prev[curr] = curr.toString().length;
       return prev;
     },
-    {}
+    {},
   );
   input.forEach((row) => {
     Object.keys(columnPaddings).forEach((column) => {
@@ -27,8 +27,8 @@ export function printTable(input: { [key: string]: string | number }[]) {
           prev[curr] = row[curr].toString().padEnd(columnPaddings[curr]);
           return prev;
         },
-        {}
-      )
+        {},
+      ),
     );
   });
 

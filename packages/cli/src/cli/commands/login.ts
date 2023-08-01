@@ -1,25 +1,24 @@
-import { OAuth2Client } from "google-auth-library";
-import http from "http";
-import url from "url";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import open from "open";
-import destroyer from "server-destroy";
 import { readFileSync } from "fs";
+import http from "http";
+import { dirname, join } from "path";
+import url, { fileURLToPath } from "url";
+import { OAuth2Client } from "google-auth-library";
 import nunjucks from "nunjucks";
-nunjucks.configure({ autoescape: true });
-
-const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
-
-import AddOnApiHelper from "../../lib/addonApiHelper";
+import open from "open";
 import ora from "ora";
+import destroyer from "server-destroy";
+import AddOnApiHelper from "../../lib/addonApiHelper";
+import config from "../../lib/config";
+import { parseJwt } from "../../lib/jwt";
 import {
   getLocalAuthDetails,
   persistAuthDetails,
 } from "../../lib/localStorage";
-import { parseJwt } from "../../lib/jwt";
 import { errorHandler } from "../exceptions";
-import config from "../../lib/config";
+
+nunjucks.configure({ autoescape: true });
+
+const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
 
 function login(): Promise<void> {
   return new Promise(
@@ -58,10 +57,10 @@ function login(): Promise<void> {
                 const code = qs.get("code");
                 const currDir = dirname(fileURLToPath(import.meta.url));
                 const content = readFileSync(
-                  join(currDir, "../templates/loginSuccess.html")
+                  join(currDir, "../templates/loginSuccess.html"),
                 );
                 const credentials = await AddOnApiHelper.getToken(
-                  code as string
+                  code as string,
                 );
                 const jwtPayload = parseJwt(credentials.id_token as string);
                 await persistAuthDetails(credentials);
@@ -69,12 +68,12 @@ function login(): Promise<void> {
                 res.end(
                   nunjucks.renderString(content.toString(), {
                     email: jwtPayload.email,
-                  })
+                  }),
                 );
                 server.destroy();
 
                 spinner.succeed(
-                  `You are successfully logged in as ${jwtPayload.email}`
+                  `You are successfully logged in as ${jwtPayload.email}`,
                 );
                 resolve();
               }
@@ -91,7 +90,7 @@ function login(): Promise<void> {
         spinner.fail();
         reject(e);
       }
-    }
+    },
   );
 }
 export default errorHandler<void>(login);

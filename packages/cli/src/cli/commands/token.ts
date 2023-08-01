@@ -1,20 +1,20 @@
-import ora from 'ora';
-import AddOnApiHelper from '../../lib/addonApiHelper';
-import chalk from 'chalk';
-import { printTable } from '../../lib/cliDisplay';
-import dayjs from 'dayjs';
-import { exit } from 'process';
-import { HTTPNotFound, errorHandler } from '../exceptions';
+import { exit } from "process";
+import chalk from "chalk";
+import dayjs from "dayjs";
+import ora from "ora";
+import AddOnApiHelper from "../../lib/addonApiHelper";
+import { printTable } from "../../lib/cliDisplay";
+import { errorHandler, HTTPNotFound } from "../exceptions";
 
 export const createToken = errorHandler<void>(async () => {
-  const spinner = ora('Creating token...').start();
+  const spinner = ora("Creating token...").start();
   try {
     const apiKey = await AddOnApiHelper.createApiKey();
     spinner.succeed(`Successfully created token for your user. `);
-    console.log('\nToken:', chalk.bold(chalk.green(apiKey)), '\n');
+    console.log("\nToken:", chalk.bold(chalk.green(apiKey)), "\n");
     console.log(
       chalk.bold(
-        chalk.yellow('Please note it down. It wont be accessible hereafter.'),
+        chalk.yellow("Please note it down. It wont be accessible hereafter."),
       ),
     );
   } catch (e) {
@@ -23,13 +23,13 @@ export const createToken = errorHandler<void>(async () => {
   }
 });
 export const listTokens = errorHandler<void>(async () => {
-  const spinner = ora('Fetching list of existing tokens...').start();
+  const spinner = ora("Fetching list of existing tokens...").start();
   try {
     const apiKeys = await AddOnApiHelper.listApiKeys();
 
-    spinner.succeed('Successfully fetched list of tokens.');
+    spinner.succeed("Successfully fetched list of tokens.");
     if (apiKeys.length === 0) {
-      console.log(chalk.yellow('No tokens found.'));
+      console.log(chalk.yellow("No tokens found."));
       return;
     }
 
@@ -38,7 +38,7 @@ export const listTokens = errorHandler<void>(async () => {
         return {
           Id: item.id,
           Key: item.keyMasked,
-          'Created At': dayjs(item.created).format('DD MMM YYYY, hh:mm A'),
+          "Created At": dayjs(item.created).format("DD MMM YYYY, hh:mm A"),
         };
       }),
     );
@@ -48,7 +48,7 @@ export const listTokens = errorHandler<void>(async () => {
   }
 });
 export const revokeToken = errorHandler<string>(async (id: string) => {
-  const spinner = ora('Revoking token for given ID...').start();
+  const spinner = ora("Revoking token for given ID...").start();
   try {
     await AddOnApiHelper.revokeApiKey(id);
     spinner.succeed(
@@ -57,7 +57,7 @@ export const revokeToken = errorHandler<string>(async (id: string) => {
   } catch (err) {
     spinner.fail();
     if (err instanceof HTTPNotFound) {
-      console.log(chalk.red('Token for given ID not found.'));
+      console.log(chalk.red("Token for given ID not found."));
       exit(1);
     }
     throw err;

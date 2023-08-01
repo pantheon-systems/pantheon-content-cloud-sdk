@@ -2,10 +2,10 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import init from "./commands/init";
-import { createToken, listTokens, revokeToken } from "./commands/token";
 import login from "./commands/login";
 import logout from "./commands/logout";
 import { createSite, listSites, updateSite } from "./commands/sites";
+import { createToken, listTokens, revokeToken } from "./commands/token";
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
@@ -34,7 +34,7 @@ yargs(hideBin(process.argv))
       const template = args.template as CliTemplateOptions;
 
       await init({ dirName, template });
-    }
+    },
   )
   .command(
     "token <cmd> [options]",
@@ -49,7 +49,7 @@ yargs(hideBin(process.argv))
           () => {
             // noop
           },
-          async () => await createToken()
+          async () => await createToken(),
         )
         .command(
           "list",
@@ -57,7 +57,7 @@ yargs(hideBin(process.argv))
           () => {
             // noop
           },
-          async () => await listTokens()
+          async () => await listTokens(),
         )
         .command(
           "revoke <id>",
@@ -69,12 +69,12 @@ yargs(hideBin(process.argv))
               type: "string",
             });
           },
-          async (args) => await revokeToken(args.id as string)
+          async (args) => await revokeToken(args.id as string),
         );
     },
     async () => {
       // noop
-    }
+    },
   )
   .command(
     "site <cmd> [options]",
@@ -93,7 +93,7 @@ yargs(hideBin(process.argv))
               demandOption: true,
             });
           },
-          async (args) => await createSite(args.url as string)
+          async (args) => await createSite(args.url as string),
         )
         .command(
           "list",
@@ -101,7 +101,7 @@ yargs(hideBin(process.argv))
           () => {
             // noop
           },
-          async () => await listSites()
+          async () => await listSites(),
         )
         .command(
           "update <id> [options]",
@@ -122,12 +122,12 @@ yargs(hideBin(process.argv))
             await updateSite({
               id: args.id as string,
               url: args.url as string,
-            })
+            }),
         );
     },
     async () => {
       // noop
-    }
+    },
   )
   .command(
     "login",
@@ -135,7 +135,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login()
+    async () => await login(),
   )
   .command(
     "logout",
@@ -143,6 +143,6 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await logout()
+    async () => await logout(),
   )
   .help(true).argv;

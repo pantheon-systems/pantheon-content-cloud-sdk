@@ -1,6 +1,6 @@
 declare enum CliTemplateOptions {
-  'nextjs' = 'nextjs',
-  'gatsby' = 'gatsby',
+  "nextjs" = "nextjs",
+  "gatsby" = "gatsby",
 }
 
 declare type ApiKey = {

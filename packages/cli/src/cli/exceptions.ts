@@ -1,5 +1,5 @@
-import chalk from 'chalk';
-import { exit } from 'process';
+import { exit } from "process";
+import chalk from "chalk";
 
 export class UnhandledError extends Error {
   constructor(message: string) {
@@ -10,13 +10,13 @@ export class UnhandledError extends Error {
 
 export class UserNotLoggedIn extends Error {
   constructor() {
-    super('Pleaes login user using `pcc login` command');
+    super("Pleaes login user using `pcc login` command");
     this.name = this.constructor.name;
   }
 }
 export class HTTPNotFound extends Error {
   constructor() {
-    super('Not Found');
+    super("Not Found");
     this.name = this.constructor.name;
   }
 }
@@ -26,15 +26,15 @@ export function errorHandler<T>(f: (arg: T) => Promise<void>) {
       await f(arg);
     } catch (e) {
       if (e instanceof UserNotLoggedIn) {
-        console.log(chalk.red('Error: User is not logged in.'));
+        console.log(chalk.red("Error: User is not logged in."));
         console.log(chalk.yellow('Please run "pcc login" to login the user.'));
       } else {
         console.log(
-          chalk.yellow('Stack trace:', (e as { stack: string }).stack),
+          chalk.yellow("Stack trace:", (e as { stack: string }).stack),
         );
         console.log(
           chalk.red(
-            'Error: Something went wrong. Please contact Pantheon support team.',
+            "Error: Something went wrong. Please contact Pantheon support team.",
           ),
         );
         exit(1);

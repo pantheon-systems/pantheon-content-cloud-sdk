@@ -1,11 +1,11 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ['src/cli/index.ts'],
+  entry: ["src/cli/index.ts"],
   treeshake: true,
-  sourcemap: 'inline',
+  sourcemap: "inline",
   minify: true,
   clean: true,
   splitting: false,
-  format: ['esm'],
+  format: ["esm"],
 });

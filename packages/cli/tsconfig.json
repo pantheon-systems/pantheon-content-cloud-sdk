@@ -4,12 +4,8 @@
     "target": "ES2020",
     "module": "ESNext",
     "moduleResolution": "node",
-    "lib": [
-      "ESNext"
-    ],
-    "types": [
-      "node"
-    ],
+    "lib": ["ESNext"],
+    "types": ["node"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -17,5 +13,5 @@
     "outDir": "./dist",
     "resolveJsonModule": true,
     "isolatedModules": true
-  },
+  }
 }
