@@ -15,15 +15,12 @@ npm install @pantheon-systems/pcc-react-sdk
 ## Setup
 
 ```javascript
-import {
-  PantheonClient,
-  PantheonProvider,
-} from "@pantheon-systems/pcc-react-sdk";
+import { PantheonClient, PantheonProvider } from '@pantheon-systems/pcc-react-sdk';
 
 // Create a client
 const pantheonClient = new PantheonClient({
-  pccHost: "https://my-content-cloud-host.com", // URL to PCC instance
-  pccWsHost: "wss://my-content-cloud-host.com", // PCC Instance websocket URL, optional
+  pccHost: 'https://my-content-cloud-host.com', // URL to PCC instance
+  pccWsHost: 'wss://my-content-cloud-host.com', // PCC Instance websocket URL, optional
 });
 
 // Wrap your app in the provider
@@ -51,7 +48,7 @@ Content Cloud by converting the raw article data into React elements you can
 style and render in your app.
 
 ```javascript
-import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk";
+import { ArticleRenderer } from '@pantheon-systems/pcc-react-sdk';
 
 function ArticlePage({ id }) {
   const { article } = useArticle(id);
@@ -74,7 +71,7 @@ function ArticlePage({ id }) {
 Fetch an article by ID.
 
 ```javascript
-import { useArticle } from "@pantheon-systems/pcc-react-sdk";
+import { useArticle } from '@pantheon-systems/pcc-react-sdk';
 
 function Article({ id }) {
   const { article, loading, error } = useArticle(id);
@@ -101,7 +98,7 @@ function Article({ id }) {
 Fetch a list of available articles.
 
 ```javascript
-import { useArticles } from "@pantheon-systems/pcc-react-sdk";
+import { useArticles } from '@pantheon-systems/pcc-react-sdk';
 
 function Articles() {
   const { articles, loading, error } = useArticles();
@@ -139,7 +136,7 @@ other contexts where React hooks cannot be used.
 Fetch an article by ID.
 
 ```javascript
-import { getArticle } from "@pantheon-systems/pcc-react-sdk";
+import { getArticle } from '@pantheon-systems/pcc-react-sdk';
 
 // In Next.js getServerSideProps for example
 
@@ -162,7 +159,7 @@ export async function getServerSideProps({ params }) {
 Fetch a list of available articles, excluding their content.
 
 ```javascript
-import { getArticles } from "@pantheon-systems/pcc-react-sdk";
+import { getArticles } from '@pantheon-systems/pcc-react-sdk';
 
 // In Next.js getStaticPaths for example
 export async function getStaticPaths() {
