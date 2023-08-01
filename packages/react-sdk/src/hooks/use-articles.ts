@@ -1,11 +1,11 @@
-import { useQuery } from '../lib/apollo-client';
+import { useQuery } from "../lib/apollo-client";
 import {
   ArticleQueryArgs,
   ArticleSearchArgs,
-  LIST_ARTICLES_QUERY,
   convertSearchParamsToGQL,
-} from '../lib/articles';
-import { ArticleWithoutContent } from '../types';
+  LIST_ARTICLES_QUERY,
+} from "../lib/articles";
+import { ArticleWithoutContent } from "../types";
 
 type ListArticlesResponse = {
   articles: ArticleWithoutContent[];

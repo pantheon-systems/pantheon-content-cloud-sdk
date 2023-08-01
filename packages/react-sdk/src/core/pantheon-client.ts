@@ -1,15 +1,14 @@
-import type { NormalizedCacheObject } from '@apollo/client';
-import { createClient } from 'graphql-ws';
-
+import type { NormalizedCacheObject } from "@apollo/client";
+import { createClient } from "graphql-ws";
 import {
   ApolloClient,
-  InMemoryCache,
+  getMainDefinition,
   GraphQLWsLink,
   HttpLink,
+  InMemoryCache,
   split,
-  getMainDefinition,
-} from '../lib/apollo-client';
-import { DefaultLogger, Logger, NoopLogger } from '../utils/logger';
+} from "../lib/apollo-client";
+import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
 
 interface PantheonClientConfig {
   /**
@@ -61,10 +60,10 @@ export class PantheonClient {
   private wsHost: string;
 
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost.replace(/\/$/, '');
+    this.host = config.pccHost.replace(/\/$/, "");
     this.wsHost = config.pccHost
-      .replace(/^http/, 'ws')
-      .replace(/^https/, 'wss');
+      .replace(/^http/, "ws")
+      .replace(/^https/, "wss");
     this.siteId = config.siteId;
     this.apiKey = config.apiKey;
 
@@ -72,22 +71,22 @@ export class PantheonClient {
     this.logger = this.debug ? DefaultLogger : NoopLogger;
 
     if (!this.host) {
-      throw new Error('Missing Pantheon Content Cloud host');
+      throw new Error("Missing Pantheon Content Cloud host");
     }
 
     if (!this.siteId) {
-      throw new Error('Missing Pantheon Content Cloud site ID');
+      throw new Error("Missing Pantheon Content Cloud site ID");
     }
 
     if (!this.apiKey) {
-      throw new Error('Missing Pantheon Content Cloud API Key');
+      throw new Error("Missing Pantheon Content Cloud API Key");
     }
 
     const wsLink = new GraphQLWsLink(
       createClient({
         url: `${this.wsHost}/sites/${this.siteId}/query`,
         connectionParams: {
-          'PCC-API-KEY': this.apiKey,
+          "PCC-API-KEY": this.apiKey,
         },
       }),
     );
@@ -95,7 +94,7 @@ export class PantheonClient {
     const httpLink = new HttpLink({
       uri: `${this.host}/sites/${this.siteId}/query`,
       headers: {
-        'PCC-API-KEY': this.apiKey,
+        "PCC-API-KEY": this.apiKey,
       },
     });
 
@@ -103,8 +102,8 @@ export class PantheonClient {
       ({ query }) => {
         const definition = getMainDefinition(query);
         return (
-          definition.kind === 'OperationDefinition' &&
-          definition.operation === 'subscription'
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
         );
       },
       wsLink,
@@ -117,7 +116,7 @@ export class PantheonClient {
     });
 
     if (this.debug) {
-      this.logger.info('PantheonClient initialized with config', config);
+      this.logger.info("PantheonClient initialized with config", config);
     }
   }
 }

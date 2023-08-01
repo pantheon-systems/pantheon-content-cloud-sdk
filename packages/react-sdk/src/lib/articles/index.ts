@@ -2,21 +2,21 @@
  * Static helper functions for articles
  */
 
-import { PantheonClient } from '../../core/pantheon-client';
+import { PantheonClient } from "../../core/pantheon-client";
 import {
   Article,
   ArticleWithoutContent,
   ContentType,
   PublishingLevel,
-} from '../../types';
-import { gql } from '../apollo-client';
+} from "../../types";
+import { gql } from "../apollo-client";
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;
   publishingLevel?: keyof typeof PublishingLevel;
 }
 
-type FilterableFields = 'body' | 'tag' | 'title';
+type FilterableFields = "body" | "tag" | "title";
 export type ArticleSearchArgs = { [key in FilterableFields]: string };
 type ConvertedArticleSearchArgs = {
   [key in FilterableFields]: { contains: string };
@@ -52,12 +52,12 @@ export function convertSearchParamsToGQL(
 
   // Cast empty object to workaround Typescript bug
   // https://stackoverflow.com/questions/15877362/declare-and-initialize-a-dictionary-in-typescript
-  let convertedObject: ConvertedArticleSearchArgs =
+  const convertedObject: ConvertedArticleSearchArgs =
     {} as ConvertedArticleSearchArgs;
 
   Object.keys(searchParams).forEach(
     (k) =>
-      (convertedObject[k.replace('Contains', '') as FilterableFields] = {
+      (convertedObject[k.replace("Contains", "") as FilterableFields] = {
         contains: searchParams[k as FilterableFields],
       }),
   );

@@ -1,12 +1,11 @@
-import { useEffect } from 'react';
-
-import { useQuery } from '../lib/apollo-client';
+import { useEffect } from "react";
+import { useQuery } from "../lib/apollo-client";
 import {
+  ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
   GET_ARTICLE_QUERY,
-  ARTICLE_UPDATE_SUBSCRIPTION,
-} from '../lib/articles';
-import { Article } from '../types';
+} from "../lib/articles";
+import { Article } from "../types";
 
 export const useArticle = (id: string, args?: ArticleQueryArgs) => {
   const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(

@@ -2,15 +2,15 @@ const reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g;
 const reHasEscapedHtml = RegExp(reEscapedHtml.source);
 
 const htmlUnescapes = {
-  '&amp;': '&',
-  '&lt;': '<',
-  '&gt;': '>',
-  '&quot;': '"',
-  '&#39;': "'",
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#39;": "'",
 };
 
-const basePropertyOf = (object: Record<any, any>) => (key: any) =>
-  object == null ? undefined : object[key];
+const basePropertyOf = (object: Record<string, string>) => (key: string) =>
+  object[key];
 
 const unescapeHtmlChar = basePropertyOf(htmlUnescapes);
 

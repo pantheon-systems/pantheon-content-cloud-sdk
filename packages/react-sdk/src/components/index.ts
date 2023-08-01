@@ -1,1 +1,1 @@
-export { default as ArticleRenderer } from './ArticleRenderer';
+export { default as ArticleRenderer } from "./ArticleRenderer";

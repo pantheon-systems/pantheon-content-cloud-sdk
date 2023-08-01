@@ -1,11 +1,9 @@
-import React from 'react';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown.js';
-import rehypeRaw from 'rehype-raw';
-
-import { Article } from '../../types';
-
-import ArticleComponent from './ArticleComponent';
-import TopLevelElement from './TopLevelElement';
+import React from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
+import rehypeRaw from "rehype-raw";
+import { Article } from "../../types";
+import ArticleComponent from "./ArticleComponent";
+import TopLevelElement from "./TopLevelElement";
 
 interface Props {
   article?: Article;
@@ -24,7 +22,7 @@ const ArticleRenderer = ({
 }: Props) => {
   const contentType = article?.contentType;
 
-  if (contentType === 'TEXT_MARKDOWN') {
+  if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
         {article?.content ? (
@@ -40,7 +38,7 @@ const ArticleRenderer = ({
 
   const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
   const indexOfFirstParagraph = parsedBody.findIndex((x) =>
-    ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'p'].includes(x.tag),
+    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "p"].includes(x.tag),
   );
 
   const [titleElement] = parsedBody.splice(indexOfFirstParagraph, 1);

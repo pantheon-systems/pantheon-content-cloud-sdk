@@ -1,10 +1,8 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from "react";
+import { ApolloProvider } from "../lib/apollo-client";
+import { PantheonClient } from "./pantheon-client";
 
-import { ApolloProvider } from '../lib/apollo-client';
-
-import { PantheonClient } from './pantheon-client';
-
-interface PantheonProviderProps extends PropsWithChildren<any> {
+interface PantheonProviderProps extends PropsWithChildren<object> {
   client: PantheonClient;
 }
 
@@ -23,7 +21,7 @@ export const usePantheonClient = () => {
   const client = React.useContext(PantheonContext);
 
   if (!client) {
-    throw new Error('Cannot use outside of a PantheonProvider');
+    throw new Error("Cannot use outside of a PantheonProvider");
   }
 
   return client;

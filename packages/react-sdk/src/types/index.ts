@@ -10,15 +10,15 @@ export interface Article {
   title: string | null;
 }
 
-export type ArticleWithoutContent = Omit<Article, 'content'>;
+export type ArticleWithoutContent = Omit<Article, "content">;
 
 export enum PublishingLevel {
-  production = 'PRODUCTION',
-  realtime = 'REALTIME',
-  staging = 'STAGING',
+  production = "PRODUCTION",
+  realtime = "REALTIME",
+  staging = "STAGING",
 }
 
 export enum ContentType {
-  TEXT_MARKDOWN = 'TEXT_MARKDOWN',
-  TREE_PANTHEON = 'TREE_PANTHEON',
+  TEXT_MARKDOWN = "TEXT_MARKDOWN",
+  TREE_PANTHEON = "TREE_PANTHEON",
 }

@@ -4,12 +4,18 @@ export interface Logger {
   warn: LogFunction;
 }
 
-type LogFunction = (...args: any[]) => void;
+type LogFunction = (...args: unknown[]) => void;
 
 export const DefaultLogger: Logger = console;
 
 export const NoopLogger: Logger = {
-  error: () => {},
-  info: () => {},
-  warn: () => {},
+  error: () => {
+    // noop
+  },
+  info: () => {
+    // noop
+  },
+  warn: () => {
+    // noop
+  },
 };

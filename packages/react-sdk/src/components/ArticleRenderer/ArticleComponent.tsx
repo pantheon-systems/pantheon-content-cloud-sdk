@@ -1,9 +1,7 @@
-import * as React from 'react';
-
-import { getStyleObjectFromString } from '../../utils/styles';
-import { unescapeHTMLEntities } from '../../utils/unescape';
-
-import TopLevelElement from './TopLevelElement';
+import * as React from "react";
+import { getStyleObjectFromString } from "../../utils/styles";
+import { unescapeHTMLEntities } from "../../utils/unescape";
+import TopLevelElement from "./TopLevelElement";
 
 const ArticleComponent = ({ x }: any): React.ReactElement | null => {
   if (Array.isArray(x)) {
@@ -19,12 +17,12 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
   }
   if (x == null) return null;
 
-  const textContent = typeof x === 'string' ? x : x.data;
-  const styles = getStyleObjectFromString(x?.style || '');
-  const isSuperscript = Boolean(styles['vertical-align'] === 'super');
-  const isSubscript = Boolean(styles['vertical-align'] === 'sub');
+  const textContent = typeof x === "string" ? x : x.data;
+  const styles = getStyleObjectFromString(x?.style || "");
+  const isSuperscript = Boolean(styles["vertical-align"] === "super");
+  const isSubscript = Boolean(styles["vertical-align"] === "sub");
 
-  const articleComponents = ['li', 'tr', 'td'];
+  const articleComponents = ["li", "tr", "td"];
 
   if (articleComponents.includes(x.tag)) {
     return React.createElement(
@@ -35,7 +33,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
   }
 
   if (textContent != null) {
-    const tag = isSuperscript ? 'sup' : isSubscript ? 'sub' : 'span';
+    const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
     return React.createElement(
       tag,
       { style: styles },
@@ -43,7 +41,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
     );
   }
 
-  if (x.tag === 'span' && x.data == null) {
+  if (x.tag === "span" && x.data == null) {
     return (
       <span>
         <ArticleComponent x={x.children} />
@@ -51,22 +49,22 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
     );
   }
 
-  if (x.tag === 'p') {
+  if (x.tag === "p") {
     return <TopLevelElement element={x} />;
   }
 
-  if (x.tag === 'a') {
+  if (x.tag === "a") {
     return (
       <a href={x.href} target="_blank" rel="noopener noreferrer" style={styles}>
         {x.data}
       </a>
     );
   }
-  if (x.tag === 'img' || x.tag === 'image') {
+  if (x.tag === "img" || x.tag === "image") {
     return <img src={x.src} alt={x.alt} title={x.title} />;
   }
 
-  if (x.type === 'BLOCKQUOTE') {
+  if (x.type === "BLOCKQUOTE") {
     return (
       <blockquote>
         <p dir="ltr">QUOTE TEXT</p>
