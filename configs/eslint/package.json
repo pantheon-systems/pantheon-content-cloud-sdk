@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-pcc",
+  "name": "eslint-config-pcc-custom",
   "version": "1.0.0",
   "description": "PCC SDK Monorepo ESLint Config",
   "private": true,

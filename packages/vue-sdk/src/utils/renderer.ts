@@ -65,8 +65,8 @@ const htmlUnescapes = {
   "&#39;": "'",
 };
 
-const basePropertyOf = (object: Record<any, any>) => (key: any) =>
-  object == null ? undefined : object[key];
+const basePropertyOf = (object: Record<string, string>) => (key: string) =>
+  object[key];
 
 const unescapeHtmlChar = basePropertyOf(htmlUnescapes);
 

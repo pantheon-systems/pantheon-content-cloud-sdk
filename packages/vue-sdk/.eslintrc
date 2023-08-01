@@ -1,5 +1,4 @@
 {
-  "extends": [
-    "@pantheon-systems/pcc-eslint-config"
-  ]
+  "extends": ["pcc-custom"],
+  "ignorePatterns": ["dist/*"]
 }
