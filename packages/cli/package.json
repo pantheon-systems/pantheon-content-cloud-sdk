@@ -1,7 +1,8 @@
 {
-  "name": "@pantheon-systems/pcc",
+  "name": "@pantheon-systems/pcc-cli",
+  "author": "@pantheon-systems",
+  "description": "Pantheon Content Cloud CLI",
   "version": "1.0.3",
-  "author": "",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -24,7 +25,9 @@
   ],
   "scripts": {
     "build": "tsup --env.NODE_ENV production",
-    "build:staging": "tsup --env.NODE_ENV staging"
+    "build:staging": "tsup --env.NODE_ENV staging",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -45,9 +48,12 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/chalk": "^2.2.0",
+    "@types/node": "^20.4.5",
     "@types/nunjucks": "^3.2.3",
     "@types/server-destroy": "^1.0.1",
     "@types/yargs": "^17.0.24",
+    "eslint": "^8.46.0",
+    "eslint-config-pcc-custom": "workspace:*",
     "tsup": "^7.1.0"
   }
 }

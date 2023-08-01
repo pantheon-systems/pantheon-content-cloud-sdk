@@ -1,5 +1,5 @@
-import { Console } from 'console';
-import { Transform } from 'stream';
+import { Console } from "console";
+import { Transform } from "stream";
 
 export function printTable(input: { [key: string]: string | number }[]) {
   if (input.length === 0) return;
@@ -10,7 +10,7 @@ export function printTable(input: { [key: string]: string | number }[]) {
       prev[curr] = curr.toString().length;
       return prev;
     },
-    {},
+    {}
   );
   input.forEach((row) => {
     Object.keys(columnPaddings).forEach((column) => {
@@ -27,8 +27,8 @@ export function printTable(input: { [key: string]: string | number }[]) {
           prev[curr] = row[curr].toString().padEnd(columnPaddings[curr]);
           return prev;
         },
-        {},
-      ),
+        {}
+      )
     );
   });
 
@@ -40,14 +40,14 @@ export function printTable(input: { [key: string]: string | number }[]) {
   });
   const logger = new Console({ stdout: ts });
   logger.table(inputWithPaddings);
-  const table = (ts.read() || '').toString();
-  let result = '';
-  for (let row of table.split(/[\r\n]+/)) {
-    let r = row.replace(/[^┬]*┬/, '┌');
-    r = r.replace(/^├─*┼/, '├');
-    r = r.replace(/│[^│]*/, '');
-    r = r.replace(/^└─*┴/, '└');
-    r = r.replace(/'/g, ' ');
+  const table = (ts.read() || "").toString();
+  let result = "";
+  for (const row of table.split(/[\r\n]+/)) {
+    let r = row.replace(/[^┬]*┬/, "┌");
+    r = r.replace(/^├─*┼/, "├");
+    r = r.replace(/│[^│]*/, "");
+    r = r.replace(/^└─*┴/, "└");
+    r = r.replace(/'/g, " ");
     result += `${r}\n`;
   }
   console.log(result);
