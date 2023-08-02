@@ -37,11 +37,15 @@ const ArticleRenderer = ({
   }
 
   const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
-  const indexOfFirstParagraph = parsedBody.findIndex((x) =>
-    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "p"].includes(x.tag),
+  const indexOfFirstHeader = parsedBody.findIndex((x) =>
+    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
   );
 
-  const [titleElement] = parsedBody.splice(indexOfFirstParagraph, 1);
+  const indexOfFirstParagraph = parsedBody.findIndex((x) => x.tag === "p");
+  const resolvedTitleIndex =
+    indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+
+  const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
 
   const titleComponent = titleElement ? (
     <ArticleComponent x={titleElement.children} />

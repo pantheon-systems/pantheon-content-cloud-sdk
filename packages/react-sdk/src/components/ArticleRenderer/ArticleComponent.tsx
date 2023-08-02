@@ -32,7 +32,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
     );
   }
 
-  if (textContent != null) {
+  if (textContent?.trim().length) {
     const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
     return React.createElement(
       tag,

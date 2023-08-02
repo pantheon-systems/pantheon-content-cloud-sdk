@@ -2,8 +2,8 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "0.0.8",
-  "license": "",
+  "version": "0.0.9",
+  "license": "MIT",
   "keywords": [
     "pcc",
     "react",

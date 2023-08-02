@@ -20,3 +20,5 @@ declare type AuthDetails = {
   refreshToken: string;
   idToken: string;
 };
+
+declare type PackageManager = 'npm' | 'pnpm' | 'yarn';
