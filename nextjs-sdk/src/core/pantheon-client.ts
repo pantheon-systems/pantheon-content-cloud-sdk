@@ -10,8 +10,9 @@ import {
   getMainDefinition,
 } from '../lib/apollo-client';
 import { DefaultLogger, Logger, NoopLogger } from '../utils/logger';
+import { PublishingLevel } from '../types';
 
-interface PantheonClientConfig {
+export interface PantheonClientConfig {
   /**
    * API Key for your PCC Workspace
    * @example
@@ -48,6 +49,8 @@ interface PantheonClientConfig {
    * });
    */
   siteId: string;
+
+  defaultPublishingLevel?: PublishingLevel;
 }
 
 export class PantheonClient {
@@ -56,6 +59,7 @@ export class PantheonClient {
   public apiKey: string;
   public logger: Logger;
   public apolloClient: ApolloClient<NormalizedCacheObject>;
+  public defaultPublishingLevel: PublishingLevel | undefined;
 
   private debug: boolean;
   private wsHost: string;
@@ -67,6 +71,8 @@ export class PantheonClient {
       .replace(/^https/, 'wss');
     this.siteId = config.siteId;
     this.apiKey = config.apiKey;
+
+    this.defaultPublishingLevel = config.defaultPublishingLevel;
 
     this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown.js';
 import rehypeRaw from 'rehype-raw';
 
@@ -6,6 +7,7 @@ import { Article } from '../../types';
 
 import ArticleComponent from './ArticleComponent';
 import TopLevelElement from './TopLevelElement';
+import { PreviewBar } from '../Preview/Preview';
 
 interface Props {
   article?: Article;
@@ -22,6 +24,12 @@ const ArticleRenderer = ({
   containerClassName,
   renderTitle,
 }: Props) => {
+  const [renderCSR, setRenderCSR] = React.useState(false);
+
+  useEffect(() => {
+    setRenderCSR(true);
+  }, []);
+
   const contentType = article?.contentType;
 
   if (contentType === 'TEXT_MARKDOWN') {
@@ -57,6 +65,9 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
+      {renderCSR && article != null
+        ? createPortal(<PreviewBar id={article.id} />, document.body)
+        : null}
       <div className={headerClassName}>
         {renderTitle ? renderTitle(titleComponent) : titleComponent}
       </div>

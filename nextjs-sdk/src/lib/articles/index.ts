@@ -135,7 +135,7 @@ export async function getArticle(
 ) {
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { id, ...args },
+    variables: { id, publishingLevel: client.defaultPublishingLevel, ...args },
   });
 
   return article.data.article as Article;
