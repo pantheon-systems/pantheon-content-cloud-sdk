@@ -1,6 +1,6 @@
+import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider.js";
+import { PantheonClient } from "@pantheon-systems/pcc-sdk-core";
 import React, { PropsWithChildren } from "react";
-import { ApolloProvider } from "../lib/apollo-client";
-import { PantheonClient } from "./pantheon-client";
 
 interface PantheonProviderProps extends PropsWithChildren<object> {
   client: PantheonClient;

@@ -101,10 +101,8 @@
     "prettier": "^3.0.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.14",
-    "graphql": "^16.6.0",
-    "graphql-tag": "^2.12.6",
-    "graphql-ws": "^5.14.0",
+    "@pantheon-systems/pcc-sdk-core": "workspace:*",
+    "@apollo/client": "^3.7.17",
     "react-markdown": "^8.0.7",
     "rehype-raw": "^6.1.1"
   }

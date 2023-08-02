@@ -2,14 +2,17 @@
  * Static helper functions for articles
  */
 
-import { PantheonClient } from "../../core/pantheon-client";
+import {
+  GET_ARTICLE_QUERY,
+  LIST_ARTICLES_QUERY,
+  PantheonClient,
+} from "@pantheon-systems/pcc-sdk-core";
 import {
   Article,
   ArticleWithoutContent,
   ContentType,
   PublishingLevel,
 } from "../../types";
-import { gql } from "../apollo-client";
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;
@@ -21,29 +24,6 @@ export type ArticleSearchArgs = { [key in FilterableFields]: string };
 type ConvertedArticleSearchArgs = {
   [key in FilterableFields]: { contains: string };
 };
-
-export const LIST_ARTICLES_QUERY = gql`
-  query ListArticles(
-    $contentType: ContentType
-    $publishingLevel: PublishingLevel
-    $filter: ArticleFilterInput
-  ) {
-    articles(
-      contentType: $contentType
-      publishingLevel: $publishingLevel
-      filter: $filter
-    ) {
-      id
-      title
-      source
-      sourceURL
-      tags
-      publishedDate
-      publishingLevel
-      contentType
-    }
-  }
-`;
 
 export function convertSearchParamsToGQL(
   searchParams?: ArticleSearchArgs,
@@ -79,54 +59,6 @@ export async function getArticles(
 
   return articles.data.articles as ArticleWithoutContent[];
 }
-
-export const GET_ARTICLE_QUERY = gql`
-  query GetArticle(
-    $id: String!
-    $contentType: ContentType
-    $publishingLevel: PublishingLevel
-  ) {
-    article(
-      id: $id
-      contentType: $contentType
-      publishingLevel: $publishingLevel
-    ) {
-      id
-      title
-      content
-      source
-      sourceURL
-      tags
-      publishedDate
-      publishingLevel
-      contentType
-    }
-  }
-`;
-
-export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
-  subscription OnArticleUpdate(
-    $id: String!
-    $contentType: ContentType
-    $publishingLevel: PublishingLevel
-  ) {
-    article: articleUpdate(
-      id: $id
-      contentType: $contentType
-      publishingLevel: $publishingLevel
-    ) {
-      id
-      title
-      content
-      source
-      sourceURL
-      tags
-      publishedDate
-      publishingLevel
-      contentType
-    }
-  }
-`;
 
 export async function getArticle(
   client: PantheonClient,

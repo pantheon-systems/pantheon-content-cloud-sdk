@@ -11,8 +11,6 @@ export { ApolloClient } from "@apollo/client/core/ApolloClient.js";
 export { GraphQLWsLink } from "@apollo/client/link/subscriptions/index.js";
 export { HttpLink } from "@apollo/client/link/http/index.js";
 export { split } from "@apollo/client/link/core/index.js";
-export { ApolloProvider } from "@apollo/client/react/context/ApolloProvider.js";
-export { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 export { default as gql } from "graphql-tag";
 export { InMemoryCache } from "@apollo/client/cache/inmemory/inMemoryCache.js";
 export { getMainDefinition } from "@apollo/client/utilities/index.js";

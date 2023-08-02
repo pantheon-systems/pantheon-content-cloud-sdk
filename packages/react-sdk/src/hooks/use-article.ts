@@ -1,13 +1,17 @@
-import { useEffect } from "react";
-import { useQuery } from "../lib/apollo-client";
+import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
   ARTICLE_UPDATE_SUBSCRIPTION,
-  ArticleQueryArgs,
   GET_ARTICLE_QUERY,
-} from "../lib/articles";
+} from "@pantheon-systems/pcc-sdk-core";
+import { useEffect } from "react";
+import { ArticleQueryArgs } from "../lib/articles";
 import { Article } from "../types";
 
-export const useArticle = (id: string, args?: ArticleQueryArgs) => {
+type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
+  article: Article | undefined;
+};
+
+export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
   const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
     GET_ARTICLE_QUERY,
     {
@@ -30,6 +34,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs) => {
 
   return {
     ...queryData,
+    subscribeToMore,
     article: queryData.data?.article,
   };
 };
