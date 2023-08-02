@@ -21,4 +21,4 @@ declare type AuthDetails = {
   idToken: string;
 };
 
-declare type PackageManager = 'npm' | 'pnpm' | 'yarn';
+declare type PackageManager = "npm" | "pnpm" | "yarn";

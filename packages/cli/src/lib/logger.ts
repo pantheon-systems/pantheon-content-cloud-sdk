@@ -1,7 +1,8 @@
-import ora, { Ora } from 'ora';
+import ora, { Ora } from "ora";
+
 export class SpinnerLogger {
   logger: Ora | null;
-  constructor(message: string, disabled: boolean = false) {
+  constructor(message: string, disabled = false) {
     if (!disabled) this.logger = ora(message);
     else this.logger = null;
   }
@@ -21,15 +22,15 @@ export class SpinnerLogger {
 export class Logger {
   logger: Console;
   disabled: boolean;
-  constructor(disabled: boolean = false) {
+  constructor(disabled = false) {
     this.logger = console;
     this.disabled = disabled;
   }
 
-  log(...args: any[]) {
+  log(...args: unknown[]) {
     if (!this.disabled) this.logger.log(...args);
   }
-  error(...args: any[]) {
+  error(...args: unknown[]) {
     this.logger.error(...args);
   }
 }

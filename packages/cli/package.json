@@ -46,9 +46,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/chalk": "^2.2.0",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.4.6",
     "@types/nunjucks": "^3.2.3",
     "@types/server-destroy": "^1.0.1",
     "@types/yargs": "^17.0.24",
