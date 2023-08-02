@@ -1,5 +1,6 @@
-export { PantheonProvider } from './core/pantheon-context';
+export { PantheonAPI } from './core/pantheon-api';
 export { PantheonClient } from './core/pantheon-client';
+export { PantheonProvider } from './core/pantheon-context';
 
 // Would be nice to have this as a separate entry point but
 // context is defined at module scope so can't be shared between
