@@ -4,7 +4,7 @@
   "description": "Pantheon Content Cloud SDK Core",
   "version": "0.0.1",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

@@ -82,14 +82,17 @@ export class PantheonClient {
       throw new Error("Missing Pantheon Content Cloud API Key");
     }
 
-    const wsLink = new GraphQLWsLink(
-      createClient({
-        url: `${this.wsHost}/sites/${this.siteId}/query`,
-        connectionParams: {
-          "PCC-API-KEY": this.apiKey,
-        },
-      }),
-    );
+    const wsLink =
+      typeof window !== "undefined"
+        ? new GraphQLWsLink(
+            createClient({
+              url: `${this.wsHost}/sites/${this.siteId}/query`,
+              connectionParams: {
+                "PCC-API-KEY": this.apiKey,
+              },
+            }),
+          )
+        : undefined;
 
     const httpLink = new HttpLink({
       uri: `${this.host}/sites/${this.siteId}/query`,
@@ -98,17 +101,20 @@ export class PantheonClient {
       },
     });
 
-    const splitLink = split(
-      ({ query }) => {
-        const definition = getMainDefinition(query);
-        return (
-          definition.kind === "OperationDefinition" &&
-          definition.operation === "subscription"
-        );
-      },
-      wsLink,
-      httpLink,
-    );
+    const splitLink =
+      typeof window !== "undefined" && wsLink
+        ? split(
+            ({ query }) => {
+              const definition = getMainDefinition(query);
+              return (
+                definition.kind === "OperationDefinition" &&
+                definition.operation === "subscription"
+              );
+            },
+            wsLink,
+            httpLink,
+          )
+        : httpLink;
 
     this.apolloClient = new ApolloClient({
       link: splitLink,
