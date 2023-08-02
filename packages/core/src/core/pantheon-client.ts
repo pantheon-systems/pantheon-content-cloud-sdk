@@ -10,7 +10,7 @@ import { createClient } from "graphql-ws";
 import { GraphQLWsLink } from "../lib/apollo-client";
 import { DefaultLogger, Logger, NoopLogger } from "../lib/logger";
 
-interface PantheonClientConfig {
+export interface PantheonClientConfig {
   /**
    * API Key for your PCC Workspace
    * @example

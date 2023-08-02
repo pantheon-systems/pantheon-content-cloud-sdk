@@ -1,6 +1,6 @@
-import { Article } from "src/types";
 import { defineComponent, h, PropType } from "vue-demi";
 import VueMarkdown from "vue-markdown-render";
+import { Article } from "../../types";
 import TopLevelElement from "./TopLevelElement";
 
 export type JSONElement = {

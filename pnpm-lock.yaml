@@ -140,7 +140,7 @@ importers:
         specifier: ^8.46.0
         version: 8.46.0
       eslint-config-pcc-custom:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../../configs/eslint
       tsup:
         specifier: ^7.1.0
@@ -240,23 +240,20 @@ importers:
   packages/vue-sdk:
     dependencies:
       '@apollo/client':
-        specifier: ^3.7.16
-        version: 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)
-      '@ianvs/prettier-plugin-sort-imports':
-        specifier: ^4.1.0
-        version: 4.1.0(prettier@3.0.0)
+        specifier: ^3.7.17
+        version: 3.7.17(graphql@16.7.1)
+      '@pantheon-systems/pcc-sdk-core':
+        specifier: workspace:*
+        version: link:../core
       '@vue/apollo-composable':
         specifier: ^4.0.0-beta.7
-        version: 4.0.0-beta.7(@apollo/client@3.7.17)(@vue/composition-api@1.0.0-rc.1)(graphql@16.7.1)(typescript@5.1.6)(vue@3.3.4)
+        version: 4.0.0-beta.7(@apollo/client@3.7.17)(graphql@16.7.1)(typescript@5.1.6)(vue@3.3.4)
       '@vue/composition-api':
         specifier: '>=1.0.0-rc.1'
         version: 1.0.0-rc.1(vue@3.3.4)
-      graphql-ws:
-        specifier: ^5.14.0
-        version: 5.14.0(graphql@16.7.1)
       vue-demi:
         specifier: latest
-        version: 0.14.5(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4)
+        version: 0.14.5(vue@3.3.4)
       vue-markdown-render:
         specifier: ^2.0.1
         version: 2.0.1
@@ -453,6 +450,40 @@ packages:
       graphql: 16.7.1
       graphql-tag: 2.12.6(graphql@16.7.1)
       graphql-ws: 5.14.0(graphql@16.7.1)
+      hoist-non-react-statics: 3.3.2
+      optimism: 0.16.2
+      prop-types: 15.8.1
+      response-iterator: 0.2.6
+      symbol-observable: 4.0.0
+      ts-invariant: 0.10.3
+      tslib: 2.6.1
+      zen-observable-ts: 1.2.5
+    dev: false
+
+  /@apollo/client@3.7.17(graphql@16.7.1):
+    resolution: {integrity: sha512-0EErSHEtKPNl5wgWikHJbKFAzJ/k11O0WO2QyqZSHpdxdAnw7UWHY4YiLbHCFG7lhrD+NTQ3Z/H9Jn4rcikoJA==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+      graphql-ws: ^5.5.5
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      subscriptions-transport-ws: ^0.9.0 || ^0.11.0
+    peerDependenciesMeta:
+      graphql-ws:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      subscriptions-transport-ws:
+        optional: true
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.7.1)
+      '@wry/context': 0.7.3
+      '@wry/equality': 0.5.6
+      '@wry/trie': 0.4.3
+      graphql: 16.7.1
+      graphql-tag: 2.12.6(graphql@16.7.1)
       hoist-non-react-statics: 3.3.2
       optimism: 0.16.2
       prop-types: 15.8.1
@@ -4659,7 +4690,7 @@ packages:
       - supports-color
     dev: true
 
-  /@vue/apollo-composable@4.0.0-beta.7(@apollo/client@3.7.17)(@vue/composition-api@1.0.0-rc.1)(graphql@16.7.1)(typescript@5.1.6)(vue@3.3.4):
+  /@vue/apollo-composable@4.0.0-beta.7(@apollo/client@3.7.17)(graphql@16.7.1)(typescript@5.1.6)(vue@3.3.4):
     resolution: {integrity: sha512-BCKK9xAH67e033Q715nzhGwn9PlnTACb+840qQQjSa1YFwjeiDufPpJ/GGqaLGqJgTm+wgpIljA/H+MYDFhe6g==}
     peerDependencies:
       '@apollo/client': ^3.4.13
@@ -4670,13 +4701,12 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@apollo/client': 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
+      '@apollo/client': 3.7.17(graphql@16.7.1)
       graphql: 16.7.1
       throttle-debounce: 3.0.1
       ts-essentials: 9.3.2(typescript@5.1.6)
       vue: 3.3.4
-      vue-demi: 0.13.11(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4)
+      vue-demi: 0.13.11(vue@3.3.4)
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -12918,6 +12948,22 @@ packages:
       yaml: 1.10.2
     dev: true
 
+  /postcss-load-config@4.0.1:
+    resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
+    engines: {node: '>= 14'}
+    peerDependencies:
+      postcss: '>=8.0.9'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      postcss:
+        optional: true
+      ts-node:
+        optional: true
+    dependencies:
+      lilconfig: 2.1.0
+      yaml: 2.3.1
+    dev: true
+
   /postcss-load-config@4.0.1(postcss@8.4.24):
     resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
     engines: {node: '>= 14'}
@@ -15195,7 +15241,7 @@ packages:
       execa: 5.1.1
       globby: 11.1.0
       joycon: 3.1.1
-      postcss-load-config: 4.0.1(postcss@8.4.24)
+      postcss-load-config: 4.0.1
       resolve-from: 5.0.0
       rollup: 3.27.0
       source-map: 0.8.0-beta.0
@@ -15809,7 +15855,7 @@ packages:
       - terser
     dev: true
 
-  /vue-demi@0.13.11(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4):
+  /vue-demi@0.13.11(vue@3.3.4):
     resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
     engines: {node: '>=12'}
     hasBin: true
@@ -15821,11 +15867,10 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       vue: 3.3.4
     dev: false
 
-  /vue-demi@0.14.5(@vue/composition-api@1.0.0-rc.1)(vue@3.3.4):
+  /vue-demi@0.14.5(vue@3.3.4):
     resolution: {integrity: sha512-o9NUVpl/YlsGJ7t+xuqJKx8EBGf1quRhCiT6D/J0pfwmk9zUwYkC7yrF4SZCe6fETvSM3UNL2edcbYrSyc4QHA==}
     engines: {node: '>=12'}
     hasBin: true
@@ -15837,7 +15882,6 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       vue: 3.3.4
     dev: false
 
