@@ -7,8 +7,8 @@ import {
   HttpLink,
   InMemoryCache,
   split,
-} from "../lib/apollo-client";
-import { DefaultLogger, Logger, NoopLogger } from "../utils/logger";
+} from "./lib/apollo-client";
+import { DefaultLogger, Logger, NoopLogger } from "./lib/logger";
 
 interface PantheonClientConfig {
   /**
@@ -120,3 +120,5 @@ export class PantheonClient {
     }
   }
 }
+
+export * from "./lib/apollo-client";
