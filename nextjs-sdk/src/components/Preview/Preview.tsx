@@ -68,7 +68,7 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
           color: 'black',
           left: '0',
           top: '0',
-          padding: '8px 16px',
+          padding: '18px',
         }}
       >
         <div
