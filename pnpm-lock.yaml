@@ -117,13 +117,13 @@ importers:
         version: link:../../configs/eslint
       tsup:
         specifier: ^7.1.0
-        version: 7.1.0
+        version: 7.1.0(typescript@5.1.6)
 
   packages/core:
     dependencies:
       '@apollo/client':
         specifier: ^3.7.17
-        version: 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.7.1)
@@ -151,7 +151,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: ^3.7.17
-        version: 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.7.17(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
         specifier: workspace:*
         version: link:../core
@@ -242,7 +242,7 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: ^3.7.17
-        version: 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.7.17(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
         specifier: workspace:*
         version: link:../core
@@ -293,8 +293,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ^0.0.8
-        version: 0.0.8(@types/react-dom@18.2.7)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.27)
@@ -333,8 +333,8 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.1.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.3)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ^0.0.8
-        version: 0.0.8(@types/react-dom@18.2.7)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.3.3)
@@ -426,7 +426,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@apollo/client@3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0):
+  /@apollo/client@3.7.17(graphql-ws@5.14.0)(graphql@16.7.1):
     resolution: {integrity: sha512-0EErSHEtKPNl5wgWikHJbKFAzJ/k11O0WO2QyqZSHpdxdAnw7UWHY4YiLbHCFG7lhrD+NTQ3Z/H9Jn4rcikoJA==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
@@ -451,6 +451,40 @@ packages:
       graphql: 16.7.1
       graphql-tag: 2.12.6(graphql@16.7.1)
       graphql-ws: 5.14.0(graphql@16.7.1)
+      hoist-non-react-statics: 3.3.2
+      optimism: 0.16.2
+      prop-types: 15.8.1
+      response-iterator: 0.2.6
+      symbol-observable: 4.0.0
+      ts-invariant: 0.10.3
+      tslib: 2.6.1
+      zen-observable-ts: 1.2.5
+    dev: false
+
+  /@apollo/client@3.7.17(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-0EErSHEtKPNl5wgWikHJbKFAzJ/k11O0WO2QyqZSHpdxdAnw7UWHY4YiLbHCFG7lhrD+NTQ3Z/H9Jn4rcikoJA==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+      graphql-ws: ^5.5.5
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      subscriptions-transport-ws: ^0.9.0 || ^0.11.0
+    peerDependenciesMeta:
+      graphql-ws:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      subscriptions-transport-ws:
+        optional: true
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.7.1)
+      '@wry/context': 0.7.3
+      '@wry/equality': 0.5.6
+      '@wry/trie': 0.4.3
+      graphql: 16.7.1
+      graphql-tag: 2.12.6(graphql@16.7.1)
       hoist-non-react-statics: 3.3.2
       optimism: 0.16.2
       prop-types: 15.8.1
@@ -4643,32 +4677,6 @@ packages:
       tailwindcss: 3.3.3
     dev: false
 
-  /@pantheon-systems/pcc-react-sdk@0.0.8(@types/react-dom@18.2.7)(@types/react@18.2.18)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-2+IWgziPGXQvEUP7hVBLNXIOtHXOwDfJM2hOxYBPEPS3/vUVSiDU5UeePKiFu7K5PaXv4GgrAvRniCpCfvLIbw==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      '@types/react': '>=17'
-      '@types/react-dom': '>=17'
-      react: '>=17'
-      react-dom: '>=17'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-    dependencies:
-      '@apollo/client': 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
-      '@types/react': 18.2.18
-      '@types/react-dom': 18.2.7
-      graphql: 16.7.1
-      graphql-ws: 5.14.0(graphql@16.7.1)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-markdown: 8.0.7(@types/react@18.2.18)(react@18.2.0)
-      rehype-raw: 6.1.1
-    transitivePeerDependencies:
-      - subscriptions-transport-ws
-      - supports-color
-    dev: false
-
   /@parcel/bundler-default@2.8.3(@parcel/core@2.8.3):
     resolution: {integrity: sha512-yJvRsNWWu5fVydsWk3O2L4yIy3UZiKWO2cPDukGOIWMgp/Vbpp+2Ct5IygVRtE22bnseW/E/oe0PV3d2IkEJGg==}
     engines: {node: '>= 12.0.0', parcel: ^2.8.3}
@@ -6024,7 +6032,7 @@ packages:
       '@vue/composition-api':
         optional: true
     dependencies:
-      '@apollo/client': 3.7.17(graphql-ws@5.14.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.7.17(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
       '@vue/composition-api': 1.0.0-rc.1(vue@3.3.4)
       graphql: 16.7.1
       throttle-debounce: 3.0.1
@@ -6655,7 +6663,7 @@ packages:
   /axios@1.4.0:
     resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
     dependencies:
-      follow-redirects: 1.15.2
+      follow-redirects: 1.15.2(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
@@ -6684,7 +6692,7 @@ packages:
       '@babel/types': 7.22.5
       eslint: 8.46.0
       eslint-visitor-keys: 1.3.0
-      resolve: 1.22.2
+      resolve: 1.22.3
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -9999,16 +10007,6 @@ packages:
 
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
-
-  /follow-redirects@1.15.2:
-    resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dev: false
 
   /follow-redirects@1.15.2(debug@4.3.4):
     resolution: {integrity: sha512-VQLG33o04KaQ8uYi2tVNbdrWp1QWxNNea+nmIB4EVM28v0hmP17z7aG1+wAkNzVq4KeXTq3221ye5qTJP91JwA==}
@@ -14639,22 +14637,6 @@ packages:
       yaml: 1.10.2
     dev: true
 
-  /postcss-load-config@4.0.1:
-    resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
-    engines: {node: '>= 14'}
-    peerDependencies:
-      postcss: '>=8.0.9'
-      ts-node: '>=9.0.0'
-    peerDependenciesMeta:
-      postcss:
-        optional: true
-      ts-node:
-        optional: true
-    dependencies:
-      lilconfig: 2.1.0
-      yaml: 2.3.1
-    dev: true
-
   /postcss-load-config@4.0.1(postcss@8.4.27):
     resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
     engines: {node: '>= 14'}
@@ -17022,41 +17004,6 @@ packages:
       sucrase: 3.34.0
       tree-kill: 1.2.2
       typescript: 5.0.4
-    transitivePeerDependencies:
-      - supports-color
-      - ts-node
-    dev: true
-
-  /tsup@7.1.0:
-    resolution: {integrity: sha512-mazl/GRAk70j8S43/AbSYXGgvRP54oQeX8Un4iZxzATHt0roW0t6HYDVZIXMw0ZQIpvr1nFMniIVnN5186lW7w==}
-    engines: {node: '>=16.14'}
-    hasBin: true
-    peerDependencies:
-      '@swc/core': ^1
-      postcss: ^8.4.12
-      typescript: '>=4.1.0'
-    peerDependenciesMeta:
-      '@swc/core':
-        optional: true
-      postcss:
-        optional: true
-      typescript:
-        optional: true
-    dependencies:
-      bundle-require: 4.0.1(esbuild@0.18.17)
-      cac: 6.7.14
-      chokidar: 3.5.3
-      debug: 4.3.4
-      esbuild: 0.18.17
-      execa: 5.1.1
-      globby: 11.1.0
-      joycon: 3.1.1
-      postcss-load-config: 4.0.1
-      resolve-from: 5.0.0
-      rollup: 3.27.0
-      source-map: 0.8.0-beta.0
-      sucrase: 3.34.0
-      tree-kill: 1.2.2
     transitivePeerDependencies:
       - supports-color
       - ts-node
