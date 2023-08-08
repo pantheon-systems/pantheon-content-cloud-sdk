@@ -1,13 +1,13 @@
+import type { NormalizedCacheObject } from "@apollo/client";
+import { createClient } from "graphql-ws";
 import {
   ApolloClient,
+  getMainDefinition,
+  GraphQLWsLink,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject,
   split,
-} from "@apollo/client";
-import { getMainDefinition } from "@apollo/client/utilities";
-import { createClient } from "graphql-ws";
-import { GraphQLWsLink } from "../lib/apollo-client";
+} from "../lib/apollo-client";
 import { DefaultLogger, Logger, NoopLogger } from "../lib/logger";
 
 export interface PantheonClientConfig {
