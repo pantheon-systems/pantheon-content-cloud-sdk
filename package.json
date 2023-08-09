@@ -6,8 +6,8 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev",
-    "build": "turbo run build --filter='./packages/*'",
-    "lint": "turbo run lint --filter='./packages/*'",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
     "ci:publish": "changeset publish"
   },
   "dependencies": {

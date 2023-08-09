@@ -18,7 +18,7 @@
     "test": {
       // A package's `test` script depends on that package's
       // own `build` script being completed first.
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "^build"],
       // A package's `test` script should only be rerun when
       // either a `.tsx` or `.ts` file has changed in `src` or `test` folders.
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
@@ -27,6 +27,7 @@
     // can be run whenever. It also has no filesystem outputs.
     "lint": {},
     "dev": {
+      "dependsOn": ["^build"], // `dev` depends on `build` of dependencies being completed
       "cache": false,
       "persistent": true
     }

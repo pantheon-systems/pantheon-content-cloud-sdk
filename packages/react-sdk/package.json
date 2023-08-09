@@ -16,7 +16,7 @@
     "url": "https://github.com/pantheon-systems/pantheon-content-cloud-sdk"
   },
   "scripts": {
-    "dev": "concurrently \"pnpm run build --watch\" \"pnpm run test:watch\" ",
+    "dev": "tsup --watch",
     "build": "tsup",
     "type-check": "tsc --noEmit",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
