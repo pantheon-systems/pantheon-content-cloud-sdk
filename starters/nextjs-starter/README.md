@@ -2,11 +2,10 @@
 
 ## Getting Started
 
-(THESE LINKS AREN'T UPDATED TO 'PCC' CLI DOCUMENTATION)
-To get started with the Next Pantheon Content Cloud Starter, use our
-`pcc` (command-line interface tool we have created). Full documentation for this npm
-package based on [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can
-be found
+(THESE LINKS AREN'T UPDATED TO 'PCC' CLI DOCUMENTATION) To get started with the
+Next Pantheon Content Cloud Starter, use our `pcc` (command-line interface tool
+we have created). Full documentation for this npm package based on
+[npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can be found
 [here](https://decoupledkit.pantheon.io/docs/frontend-starters/using-the-cli) on
 our docs site.
 
@@ -15,7 +14,7 @@ For a quick start, follow the instructions below:
 1. In your terminal, run the following commands:
 
 ```bash
-npm add @pantheon-systems/pcc –global
+npm install @pantheon-systems/pcc –global
 pcc init ./my-new-site --template=nextjs
 ```
 
@@ -23,8 +22,10 @@ pcc init ./my-new-site --template=nextjs
 
 ## Pantheon @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react
 
-Pantheon's @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react are included as dependencies in this project. This allows developers to make use of utility functions to simplify the
-process of building and maintaining a Front-End site on Pantheon.
+Pantheon's @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react are
+included as dependencies in this project. This allows developers to make use of
+utility functions to simplify the process of building and maintaining a
+Front-End site on Pantheon.
 
 Full documentation can be found at:
 https://github.com/pantheon-systems/decoupled-kit-js/tree/canary/web/docs/Packages
