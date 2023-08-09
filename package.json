@@ -7,8 +7,9 @@
     "preinstall": "npx only-allow pnpm",
     "dev": "turbo run dev",
     "build": "turbo run build --filter=./packages/*",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint --filter=./packages/*",
     "build:starters": "turbo run build --filter=./starters/*",
+    "lint:starters": "turbo run lint --filter=./starters/*",
     "ci:publish": "changeset publish"
   },
   "dependencies": {
