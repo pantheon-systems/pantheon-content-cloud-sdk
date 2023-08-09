@@ -108,7 +108,12 @@ const init = async ({
   }
 
   cpSync(
-    path.join(TEMP_DIR_NAME, "pantheon-sdk", TEMPLATE_FOLDER_MAP[template]),
+    path.join(
+      TEMP_DIR_NAME,
+      "pantheon-sdk",
+      "starters",
+      TEMPLATE_FOLDER_MAP[template],
+    ),
     dirName,
     { recursive: true },
   );
