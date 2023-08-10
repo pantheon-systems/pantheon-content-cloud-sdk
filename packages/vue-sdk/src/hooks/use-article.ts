@@ -11,13 +11,28 @@ type Return = ReturnType<typeof useQuery<GetArticleQueryResult>> & {
 };
 
 export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
-  const queryData = useQuery<GetArticleQueryResult>(GET_ARTICLE_QUERY, {
-    id,
-    ...args,
+  const { subscribeToMore, ...queryData } = useQuery<GetArticleQueryResult>(
+    GET_ARTICLE_QUERY,
+    {
+      id,
+      ...args,
+    },
+  );
+
+  subscribeToMore({
+    document: GET_ARTICLE_QUERY,
+    variables: { id, ...args },
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) return prev;
+
+      const { article } = subscriptionData.data;
+      return { article };
+    },
   });
 
   return {
     ...queryData,
+    subscribeToMore,
     article: queryData.result?.value?.article,
   };
 };
