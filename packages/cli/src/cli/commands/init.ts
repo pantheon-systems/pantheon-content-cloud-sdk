@@ -143,7 +143,7 @@ const init = async ({
 
   // Create .env.local/.env.development
   const localEnvFileName =
-    template === 'gatsby' ? '.env.development' : '.env.local';
+    template === "gatsby" ? ".env.development" : ".env.local";
   await sh(`cp .env.example ${localEnvFileName}`);
 
   if (!skipInstallation) {
