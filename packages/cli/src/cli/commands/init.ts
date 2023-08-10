@@ -134,8 +134,8 @@ const init = async ({
   writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
   // Committing changes to Git
-  await sh('git init');
-  await sh('git add .');
+  await sh("git init");
+  await sh("git add .");
   await sh(
     'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
   );
