@@ -1,4 +1,4 @@
-# @pantheon-systems/next-pcc-starter
+# gatsby-pcc-starter
 
 ## 1.0.0
 
