@@ -128,13 +128,19 @@ const init = async ({
 
   writeFileSync('./package.json', JSON.stringify(packageJson, null, 2) + '\n');
 
-  // Commiting changes to Git
+  // Committing changes to Git
   await sh('git init');
   await sh('git add .');
   await sh(
     'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
   );
   setupProj.succeed('Completed setting up project!');
+
+  const localEnvFileName =
+    template === 'gatsby' ? '.env.development' : '.env.local';
+
+  // Create .env.local/.env.development
+  await sh(`cp .env.example ${localEnvFileName}`);
 
   if (!skipInstallation) {
     // Installing dependencies
@@ -154,7 +160,9 @@ const init = async ({
   // Messaging to get started
   logger.log();
   logger.log(
-    chalk.green('To get started please replace the placeholders in .env.local'),
+    chalk.green(
+      `To get started please replace the placeholders in ${localEnvFileName}`,
+    ),
   );
   logger.log(chalk.green(`   cd ${dirName}`));
   logger.log(chalk.green(`   vim .env.local`));
