@@ -1,7 +1,7 @@
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
-import { Article } from "../../types";
 import ArticleComponent from "./ArticleComponent";
 import TopLevelElement from "./TopLevelElement";
 

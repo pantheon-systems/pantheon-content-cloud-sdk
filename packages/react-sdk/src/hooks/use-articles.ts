@@ -5,7 +5,7 @@ import {
   convertSearchParamsToGQL,
   LIST_ARTICLES_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
-import { ArticleWithoutContent } from "../types";
+import { ArticleWithoutContent } from "@pantheon-systems/pcc-sdk-core/types";
 
 type ListArticlesResponse = {
   articles: ArticleWithoutContent[];

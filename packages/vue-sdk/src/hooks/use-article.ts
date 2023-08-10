@@ -1,6 +1,9 @@
-import { GET_ARTICLE_QUERY } from "@pantheon-systems/pcc-sdk-core";
+import {
+  ArticleQueryArgs,
+  GET_ARTICLE_QUERY,
+} from "@pantheon-systems/pcc-sdk-core";
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { useQuery } from "@vue/apollo-composable";
-import { Article, ArticleQueryArgs } from "src/types/Article";
 
 type GetArticleQueryResult = {
   article: Article;

@@ -4,8 +4,8 @@ import {
   ArticleQueryArgs,
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { useEffect } from "react";
-import { Article } from "../types";
 
 type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
   article: Article | undefined;

@@ -1,6 +1,9 @@
-import { LIST_ARTICLES_QUERY } from "@pantheon-systems/pcc-sdk-core";
+import {
+  ArticleQueryArgs,
+  LIST_ARTICLES_QUERY,
+} from "@pantheon-systems/pcc-sdk-core";
+import { ArticleWithoutContent } from "@pantheon-systems/pcc-sdk-core/types";
 import { useQuery } from "@vue/apollo-composable";
-import { ArticleQueryArgs, ArticleWithoutContent } from "src/types/Article";
 
 type ListArticlesResponse = {
   articles: ArticleWithoutContent[];
