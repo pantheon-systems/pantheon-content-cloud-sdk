@@ -1,7 +1,9 @@
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import React from "react";
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
+import { PreviewBar } from "../Preview/Preview";
 import ArticleComponent from "./ArticleComponent";
 import TopLevelElement from "./TopLevelElement";
 
@@ -20,11 +22,21 @@ const ArticleRenderer = ({
   containerClassName,
   renderTitle,
 }: Props) => {
+  const [renderCSR, setRenderCSR] = React.useState(false);
+
+  useEffect(() => {
+    setRenderCSR(true);
+  }, []);
+
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
+        {renderCSR && article != null
+          ? createPortal(<PreviewBar id={article.id} />, document.body)
+          : null}
+
         {article?.content ? (
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>
             {String(article.content)}
@@ -55,6 +67,10 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
+      {renderCSR && article != null
+        ? createPortal(<PreviewBar id={article.id} />, document.body)
+        : null}
+
       <div className={headerClassName}>
         {renderTitle ? renderTitle(titleComponent) : titleComponent}
       </div>
