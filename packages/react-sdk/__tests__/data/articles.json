@@ -1,0 +1,24 @@
+[
+  {
+    "__typename": "Article",
+    "id": "1",
+    "title": "Test 1",
+    "source": null,
+    "sourceURL": null,
+    "keywords": null,
+    "publishedDate": null,
+    "contentType": "TREE_PANTHEON",
+    "publishingLevel": "PRODUCTION"
+  },
+  {
+    "__typename": "Article",
+    "id": "1",
+    "title": "Test 2",
+    "source": null,
+    "sourceURL": null,
+    "keywords": null,
+    "publishedDate": null,
+    "contentType": "TREE_PANTHEON",
+    "publishingLevel": "PRODUCTION"
+  }
+]

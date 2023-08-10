@@ -1,0 +1,6 @@
+dist
+coverage
+.prettierignore
+*.snap
+.npmrc
+.gitignore
