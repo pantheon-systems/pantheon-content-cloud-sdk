@@ -1,14 +1,23 @@
 {
-  "name": "pantheon-content-cloud-sdk",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:pantheon-systems/pantheon-content-cloud-sdk.git",
-  "author": "Kevin Stubbs <kevin@pubgenius.io>",
+  "name": "pantheon-content-cloud-sdks",
+  "private": true,
   "license": "MIT",
+  "packageManager": "pnpm@8.6.11",
   "scripts": {
-    "prepare": "husky install && husky install nextjs-sdk/.husky && husky install nextjs-starter/.husky && husky install gatsby-starter/.husky"
+    "preinstall": "npx only-allow pnpm",
+    "dev": "turbo run dev",
+    "build": "turbo run build --filter=./packages/*",
+    "lint": "turbo run lint --filter=./packages/*",
+    "build:starters": "turbo run build --filter=./starters/*",
+    "lint:starters": "turbo run lint --filter=./starters/*",
+    "ci:publish": "changeset publish"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.2",
+    "eslint": "^8.46.0",
+    "turbo": "^1.10.12"
   },
   "devDependencies": {
-    "husky": "^8.0.0"
+    "eslint-config-pcc-custom": "workspace:*"
   }
 }

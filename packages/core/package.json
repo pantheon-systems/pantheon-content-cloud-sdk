@@ -1,0 +1,52 @@
+{
+  "name": "@pantheon-systems/pcc-sdk-core",
+  "author": "@pantheon-systems",
+  "description": "Pantheon Content Cloud SDK Core",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "require": "./dist/types/index.js",
+      "import": "./dist/types/index.mjs"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "types": [
+        "./dist/types/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint . && prettier --check . && tsc --noEmit",
+    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.7.17",
+    "graphql-tag": "^2.12.6",
+    "graphql-ws": "^5.14.0",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "eslint": "^8.46.0",
+    "eslint-config-pcc-custom": "workspace:*",
+    "tsup": "^7.1.0"
+  }
+}
