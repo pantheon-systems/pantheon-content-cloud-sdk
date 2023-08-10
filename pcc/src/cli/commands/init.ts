@@ -136,10 +136,9 @@ const init = async ({
   );
   setupProj.succeed('Completed setting up project!');
 
+  // Create .env.local/.env.development
   const localEnvFileName =
     template === 'gatsby' ? '.env.development' : '.env.local';
-
-  // Create .env.local/.env.development
   await sh(`cp .env.example ${localEnvFileName}`);
 
   if (!skipInstallation) {
