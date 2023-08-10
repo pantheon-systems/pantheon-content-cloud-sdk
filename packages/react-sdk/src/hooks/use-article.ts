@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
   ARTICLE_UPDATE_SUBSCRIPTION,
+  ArticleQueryArgs,
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { useEffect } from "react";
-import { ArticleQueryArgs } from "../lib/articles";
 import { Article } from "../types";
 
 type Return = ReturnType<typeof useQuery<{ article: Article }>> & {

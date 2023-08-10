@@ -2,17 +2,14 @@
  * Static helper functions for articles
  */
 
-import {
-  GET_ARTICLE_QUERY,
-  LIST_ARTICLES_QUERY,
-  PantheonClient,
-} from "@pantheon-systems/pcc-sdk-core";
+import { PantheonClient } from "../core/pantheon-client";
+import { GET_ARTICLE_QUERY, LIST_ARTICLES_QUERY } from "../lib/gql";
 import {
   Article,
   ArticleWithoutContent,
   ContentType,
   PublishingLevel,
-} from "../../types";
+} from "../types";
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;

@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
-import { LIST_ARTICLES_QUERY } from "@pantheon-systems/pcc-sdk-core";
 import {
   ArticleQueryArgs,
   ArticleSearchArgs,
   convertSearchParamsToGQL,
-} from "../lib/articles";
+  LIST_ARTICLES_QUERY,
+} from "@pantheon-systems/pcc-sdk-core";
 import { ArticleWithoutContent } from "../types";
 
 type ListArticlesResponse = {
