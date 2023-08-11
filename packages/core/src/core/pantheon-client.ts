@@ -47,12 +47,27 @@ export interface PantheonClientConfig {
    * });
    */
   siteId: string;
+
+  /**
+   * Optional parameter to provide a PCC Grant in place of an API Key.
+   * Useful for preventing preview content from being viewed publicly.
+   * Any preview links generated from the add-on will include a PCC Grant.
+   * Provide it here to ensure that only users with the preview link can view the content.
+   *
+   * @example
+   * const pantheonClient = new PantheonClient({
+   *  pccHost: 'https://pantheon-content-cloud.com',
+   *  siteId: '12345',
+   *  pccGrant: 'pcc_grant ABC-DEF',
+   * });
+   */
+  pccGrant?: string;
 }
 
 export class PantheonClient {
   public host: string;
   public siteId: string;
-  public apiKey: string;
+  public apiKey: string | undefined;
   public logger: Logger;
   public apolloClient: ApolloClient<NormalizedCacheObject>;
 
@@ -65,7 +80,11 @@ export class PantheonClient {
       .replace(/^http/, "ws")
       .replace(/^https/, "wss");
     this.siteId = config.siteId;
-    this.apiKey = config.apiKey;
+    this.apiKey = config.apiKey
+      ? config.apiKey
+      : config.pccGrant
+      ? `pcc_grant ${config.pccGrant.replace(/^pcc_grant\s+/, "")}` // Remove pcc_grant prefix if present
+      : undefined;
 
     this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
