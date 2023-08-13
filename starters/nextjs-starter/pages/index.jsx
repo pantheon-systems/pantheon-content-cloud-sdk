@@ -1,10 +1,8 @@
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import Layout from "../components/layout";
-import { PostGrid } from "../components/grid";
-import { getArticles } from "@pantheon-systems/pcc-react-sdk";
-import { pantheonClient } from "../lib/PantheonClient";
-import { getAllArticles } from "../lib/Articles";
+import { PostGrid } from "../src/components/grid";
+import Layout from "../src/components/layout";
+import { getAllArticles } from "../src/lib/Articles";
 
 export default function Home({ articles }) {
   const HomepageHeader = () => (

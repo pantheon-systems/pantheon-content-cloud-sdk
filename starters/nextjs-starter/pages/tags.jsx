@@ -1,11 +1,11 @@
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import Layout from "../components/layout";
-import { PostGrid } from "../components/grid";
+import Layout from "../src/components/layout";
+import { PostGrid } from "../src/components/grid";
 import { getArticles, getAllTags } from "@pantheon-systems/pcc-react-sdk";
-import { pantheonClient } from "../lib/PantheonClient";
-import { searchQueryAtom } from "../components/searchbar";
-import { Tags } from "../components/tags";
+import { pantheonClient } from "../src/lib/PantheonClient";
+import { searchQueryAtom } from "../src/components/searchbar";
+import { Tags } from "../src/components/tags";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 

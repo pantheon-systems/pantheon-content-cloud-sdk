@@ -1,8 +1,9 @@
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import { NextSeo } from "next-seo";
-import Layout from "../../components/layout";
-import { Tags } from "../../components/tags";
-import { getArticleById } from "../../lib/Articles";
+import Layout from "../../src/components/layout";
+import { Tags } from "../../src/components/tags";
+import { getArticleById } from "../../src/lib/Articles";
+import LeadCapture from "../../src/smart-components/lead-capture";
 
 export default function PageTemplate({ article }) {
   return (
@@ -31,6 +32,7 @@ export default function PageTemplate({ article }) {
               <hr className="mt-6 mb-8" />
             </div>
           )}
+          smartComponentMap={{ LEAD_CAPTURE: LeadCapture }}
         />
         <Tags tags={article?.tags} />
       </div>

@@ -1,16 +1,29 @@
 import * as React from "react";
+import { SmartComponentMap } from ".";
 import { getStyleObjectFromString } from "../../utils/styles";
 import { unescapeHTMLEntities } from "../../utils/unescape";
 import TopLevelElement from "./TopLevelElement";
 
-const ArticleComponent = ({ x }: any): React.ReactElement | null => {
+interface Props {
+  x: any;
+  smartComponentMap?: SmartComponentMap;
+}
+
+const ArticleComponent = ({
+  x,
+  smartComponentMap,
+}: Props): React.ReactElement | null => {
   if (Array.isArray(x)) {
     return (
       <>
         {x.map((span: any, idx) => (
           // No stable key available
           // eslint-disable-next-line react/no-array-index-key
-          <ArticleComponent x={span} key={idx} />
+          <ArticleComponent
+            key={idx}
+            x={span}
+            smartComponentMap={smartComponentMap}
+          />
         ))}
       </>
     );
@@ -28,7 +41,10 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
     return React.createElement(
       x.tag,
       { style: styles, ...x.attrs },
-      React.createElement(ArticleComponent, { x: x.children }),
+      React.createElement(ArticleComponent, {
+        x: x.children,
+        smartComponentMap,
+      }),
     );
   }
 
@@ -44,13 +60,18 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
   if (x.tag === "span" && x.data == null) {
     return (
       <span>
-        <ArticleComponent x={x.children} />
+        <ArticleComponent
+          x={x.children}
+          smartComponentMap={smartComponentMap}
+        />
       </span>
     );
   }
 
   if (x.tag === "p") {
-    return <TopLevelElement element={x} />;
+    return (
+      <TopLevelElement element={x} smartComponentMap={smartComponentMap} />
+    );
   }
 
   if (x.tag === "a") {
@@ -60,6 +81,7 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
       </a>
     );
   }
+
   if (x.tag === "img" || x.tag === "image") {
     return <img src={x.src} alt={x.alt} title={x.title} />;
   }
@@ -71,6 +93,12 @@ const ArticleComponent = ({ x }: any): React.ReactElement | null => {
         <p dir="ltr">-&nbsp;QUOTE ATTRIBUTION</p>
       </blockquote>
     );
+  }
+
+  if (smartComponentMap?.[x.type?.toUpperCase()] != null) {
+    return React.createElement(smartComponentMap[x.type.toUpperCase()], {
+      ...x.attrs,
+    });
   }
 
   return null;
