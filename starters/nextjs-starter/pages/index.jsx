@@ -1,15 +1,13 @@
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import Layout from "../components/layout";
 import { PostGrid } from "../components/grid";
-import { getArticles } from "@pantheon-systems/pcc-react-sdk";
-import { pantheonClient } from "../lib/PantheonClient";
+import Layout from "../components/layout";
 import { getAllArticles } from "../lib/Articles";
 
 export default function Home({ articles }) {
   const HomepageHeader = () => (
-    <div className="prose sm:prose-xl mt-20 flex flex-col mx-auto max-w-fit">
-      <h1 className="prose text-4xl text-center h-full">
+    <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
+      <h1 className="h-full text-4xl prose text-center">
         Welcome to{" "}
         <a
           className="text-blue-600 no-underline hover:underline"
@@ -19,7 +17,7 @@ export default function Home({ articles }) {
         </a>
       </h1>
       <div className="text-2xl">
-        <div className="bg-black text-white rounded flex items-center justify-center p-4">
+        <div className="flex items-center justify-center p-4 text-white bg-black rounded">
           Decoupled PCC on{" "}
           <Image
             src="/pantheon.png"

@@ -1,7 +1,7 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Tags } from "./tags";
 import { withGrid } from "@pantheon-systems/nextjs-kit";
+import Image from "next/image";
+import Link from "next/link";
+import { Tags } from "./tags";
 
 const GradientPlaceholder = () => (
   <div className="w-full h-full bg-gradient-to-b from-blue-100 to-blue-500" />
@@ -9,26 +9,30 @@ const GradientPlaceholder = () => (
 
 const GridItem = ({ href, imgSrc, altText, tags, title }) => {
   return (
-    <Link passHref href={href}>
-      <div className="flex flex-col rounded-lg shadow-lg overflow-hidden cursor-pointer border-2 h-full hover:border-indigo-500">
-        <div className="flex-shrink-0 relative h-40">
-          {imgSrc !== null ? (
-            <Image
-              src={imgSrc}
-              fill
-              alt={altText}
-              style={{ objectFit: "cover" }}
-            />
-          ) : (
-            <GradientPlaceholder />
-          )}
-        </div>
-        <h2 className="my-4 mx-6 text-xl leading-7 font-semibold text-gray-900">
-          {title} &rarr;
+    <>
+      <div className="flex flex-col rounded-lg shadow-lg overflow-hidden h-full">
+        <Link passHref href={href}>
+          <div className="flex-shrink-0 relative h-40 hover:border-indigo-500 cursor-pointer border-2s">
+            {imgSrc !== null ? (
+              <Image
+                src={imgSrc}
+                fill
+                alt={altText}
+                style={{ objectFit: "cover" }}
+              />
+            ) : (
+              <GradientPlaceholder />
+            )}
+          </div>
+        </Link>
+        <div className="my-4 mx-6 text-xl leading-7 font-semibold text-gray-900">
+          <Link passHref href={href}>
+            <div className="hover:scale-105">{title} &rarr;</div>
+          </Link>
           <Tags tags={tags || []} />
-        </h2>
+        </div>
       </div>
-    </Link>
+    </>
   );
 };
 
