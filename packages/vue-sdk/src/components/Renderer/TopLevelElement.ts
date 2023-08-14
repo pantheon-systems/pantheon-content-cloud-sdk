@@ -34,6 +34,14 @@ export default defineComponent({
     }
 
     if (element.tag === "p" || element.tag === "span") {
+      if (
+        !element.data &&
+        element.children?.every((child) => !child.data && !child.children)
+      ) {
+        // Empty paragraph
+        return h("br");
+      }
+
       return h(element.tag, {}, children);
     }
     if (element.tag === "ul" && element.children?.length) {
