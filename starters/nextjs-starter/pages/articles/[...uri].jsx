@@ -21,7 +21,7 @@ export default function PageTemplate({ article }) {
 
               <p className="py-2">
                 Last Updated:{" "}
-                {new Date(article.publishedDate).toLocaleDateString("en-US", {
+                {new Date(article.updatedAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",

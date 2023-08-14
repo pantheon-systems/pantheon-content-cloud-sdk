@@ -1,6 +1,5 @@
-import React from "react";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
-
+import React from "react";
 import Layout from "../../components/layout";
 
 export default function PageTemplate({ pageContext: { article } }) {
@@ -15,9 +14,7 @@ export default function PageTemplate({ pageContext: { article } }) {
 
               <p className="py-2">
                 Last Updated:{" "}
-                {new Date(
-                  article?.publishedDate || "2023-05-02"
-                ).toLocaleDateString("en-US", {
+                {new Date(article.updatedAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
