@@ -35,12 +35,28 @@ const ArticleComponent = ({
   const isSuperscript = Boolean(styles["vertical-align"] === "super");
   const isSubscript = Boolean(styles["vertical-align"] === "sub");
 
-  const articleComponents = ["li", "tr", "td"];
-
-  if (articleComponents.includes(x.tag)) {
+  if (x.tag === "li") {
     return React.createElement(
       x.tag,
       { style: styles, ...x.attrs },
+      React.createElement(ArticleComponent, {
+        x: x.children,
+        smartComponentMap,
+      }),
+    );
+  }
+
+  const tableElements = ["tr", "td"];
+
+  if (tableElements.includes(x.tag)) {
+    const { colspan, rowspan, ...attrs } = x.attrs;
+
+    const colSpan = colspan ? { colSpan: Number(colspan) } : {};
+    const rowSpan = rowspan ? { rowSpan: Number(rowspan) } : {};
+
+    return React.createElement(
+      x.tag,
+      { style: styles, ...attrs, ...colSpan, ...rowSpan },
       React.createElement(ArticleComponent, {
         x: x.children,
         smartComponentMap,

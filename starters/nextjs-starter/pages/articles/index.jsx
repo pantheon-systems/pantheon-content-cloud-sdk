@@ -1,9 +1,9 @@
 import { Paginator } from "@pantheon-systems/nextjs-kit";
 import { NextSeo } from "next-seo";
-import { PageGrid } from "../../src/components/grid.jsx";
-import Layout from "../../src/components/layout.jsx";
-import PageHeader from "../../src/components/page-header.jsx";
-import { getAllArticles } from "../../src/lib/Articles.js";
+import { PageGrid } from "../../components/grid.jsx";
+import Layout from "../../components/layout.jsx";
+import PageHeader from "../../components/page-header.jsx";
+import { getAllArticles } from "../../lib/Articles.js";
 
 export default function ArticlesListTemplate({ articles }) {
   const RenderCurrentItems = ({ currentItems }) => {
