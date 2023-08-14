@@ -7,12 +7,15 @@ import { PreviewBar } from "../Preview/Preview";
 import ArticleComponent from "./ArticleComponent";
 import TopLevelElement from "./TopLevelElement";
 
+export type SmartComponentMap = { [key: string]: React.FunctionComponent };
+
 interface Props {
   article?: Article;
   bodyClassName?: string;
   containerClassName?: string;
   headerClassName?: string;
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
+  smartComponentMap?: SmartComponentMap;
 }
 
 const ArticleRenderer = ({
@@ -21,6 +24,7 @@ const ArticleRenderer = ({
   bodyClassName,
   containerClassName,
   renderTitle,
+  smartComponentMap,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -60,7 +64,10 @@ const ArticleRenderer = ({
   const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
 
   const titleComponent = titleElement ? (
-    <ArticleComponent x={titleElement.children} />
+    <ArticleComponent
+      x={titleElement.children}
+      smartComponentMap={smartComponentMap}
+    />
   ) : (
     <span>{article?.title}</span>
   );
@@ -78,7 +85,11 @@ const ArticleRenderer = ({
         {parsedBody?.map((x: any, idx) => (
           // No stable key available
           // eslint-disable-next-line react/no-array-index-key
-          <TopLevelElement element={x} key={idx} keyElem={idx} />
+          <TopLevelElement
+            key={idx}
+            element={x}
+            smartComponentMap={smartComponentMap}
+          />
         ))}
       </div>
     </div>

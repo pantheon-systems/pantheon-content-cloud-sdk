@@ -1,12 +1,23 @@
 import React from "react";
+import { SmartComponentMap } from ".";
 import ArticleComponent from "./ArticleComponent";
 
-const TopLevelElement = ({ element }: any) => {
+interface Props {
+  element: any;
+  smartComponentMap?: SmartComponentMap;
+}
+
+const TopLevelElement = ({ element, smartComponentMap }: Props) => {
   if (element.tag === "hr") {
     return <hr />;
   }
 
-  const children = <ArticleComponent x={element.children} />;
+  const children = (
+    <ArticleComponent
+      x={element.children}
+      smartComponentMap={smartComponentMap}
+    />
+  );
 
   const articleComponents = ["h1", "h2", "h3", "h4", "h5", "h6"];
 
@@ -34,7 +45,7 @@ const TopLevelElement = ({ element }: any) => {
       return <br />;
     }
 
-    return <p>{children}</p>;
+    return <div>{children}</div>;
   }
   if (element.tag === "ul" && element.children.length) {
     return <ul>{children}</ul>;
@@ -43,7 +54,9 @@ const TopLevelElement = ({ element }: any) => {
     return <ol>{children}</ol>;
   }
   if (element.tag === "component") {
-    return <ArticleComponent x={element} />;
+    return (
+      <ArticleComponent x={element} smartComponentMap={smartComponentMap} />
+    );
   }
   return null;
 };
