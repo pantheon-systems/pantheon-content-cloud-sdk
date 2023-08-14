@@ -23,6 +23,17 @@ const TopLevelElement = ({ element }: any) => {
   }
 
   if (element.tag === "p" || element.tag === "span") {
+    if (
+      !element.data &&
+      element.children.every(
+        (child: { data: string | null; children: unknown[] | null }) =>
+          !child.data && !child.children,
+      )
+    ) {
+      // Empty paragraph
+      return <br />;
+    }
+
     return <p>{children}</p>;
   }
   if (element.tag === "ul" && element.children.length) {
