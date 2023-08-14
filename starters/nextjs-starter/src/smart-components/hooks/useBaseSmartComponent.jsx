@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
-// Should this be on the preview page itself?
+// TODO: Should this be on the preview page itself?
+// TODO: This kind of resizing code seems to be re-implemented multiple times - which one is actually needed?
 export const useBaseSmartComponent = () => {
   // This useEffect is to support smart component previews.
   useEffect(() => {
