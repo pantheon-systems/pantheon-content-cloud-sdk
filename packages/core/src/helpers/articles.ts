@@ -69,3 +69,16 @@ export async function getArticle(
 
   return article.data.article as Article;
 }
+
+export async function getArticleBySlug(
+  client: PantheonClient,
+  slug: string,
+  args?: ArticleQueryArgs,
+) {
+  const article = await client.apolloClient.query({
+    query: GET_ARTICLE_QUERY,
+    variables: { slug, ...args },
+  });
+
+  return article.data.article as Article;
+}

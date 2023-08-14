@@ -2,20 +2,21 @@ import gql from "graphql-tag";
 
 export const GET_ARTICLE_QUERY = gql`
   query GetArticle(
-    $id: String!
+    $id: String
+    $slug: String
     $contentType: ContentType
     $publishingLevel: PublishingLevel
   ) {
     article(
       id: $id
+      slug: $slug
       contentType: $contentType
       publishingLevel: $publishingLevel
     ) {
       id
       title
       content
-      source
-      sourceURL
+      slug
       tags
       publishedDate
       publishingLevel
@@ -38,8 +39,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       id
       title
       content
-      source
-      sourceURL
+      slug
       tags
       publishedDate
       publishingLevel
@@ -61,8 +61,7 @@ export const LIST_ARTICLES_QUERY = gql`
     ) {
       id
       title
-      source
-      sourceURL
+      slug
       tags
       publishedDate
       publishingLevel

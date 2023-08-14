@@ -5,9 +5,8 @@ export interface Article {
   tags: string[] | null;
   publishedDate: string | null;
   publishingLevel: keyof typeof PublishingLevel;
-  source: string | null;
-  sourceURL: string | null;
   title: string | null;
+  slug: string | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;
@@ -21,4 +20,10 @@ export enum PublishingLevel {
 export enum ContentType {
   TEXT_MARKDOWN = "TEXT_MARKDOWN",
   TREE_PANTHEON = "TREE_PANTHEON",
+}
+
+export interface TreePantheonContent {
+  tag: string;
+  attrs: { (key: string): any | any[] | null | undefined };
+  children: TreePantheonContent[] | null | undefined;
 }

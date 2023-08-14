@@ -1,3 +1,4 @@
+import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
 import * as React from "react";
 import { SmartComponentMap } from ".";
 import { getStyleObjectFromString } from "../../utils/styles";
@@ -5,7 +6,7 @@ import { unescapeHTMLEntities } from "../../utils/unescape";
 import TopLevelElement from "./TopLevelElement";
 
 interface Props {
-  x: any;
+  x: TreePantheonContent;
   smartComponentMap?: SmartComponentMap;
 }
 

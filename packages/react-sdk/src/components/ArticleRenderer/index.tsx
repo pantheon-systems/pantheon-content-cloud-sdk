@@ -53,7 +53,7 @@ const ArticleRenderer = ({
   }
 
   const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
-  const indexOfFirstHeader = parsedBody.findIndex((x) =>
+  const indexOfFirstHeader = parsedBody.findIndex((x: any) =>
     ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
   );
 
@@ -82,7 +82,7 @@ const ArticleRenderer = ({
         {renderTitle ? renderTitle(titleComponent) : titleComponent}
       </div>
       <div className={bodyClassName}>
-        {parsedBody?.map((x: any, idx) => (
+        {parsedBody?.map((x: any, idx: number) => (
           // No stable key available
           // eslint-disable-next-line react/no-array-index-key
           <TopLevelElement
