@@ -3,11 +3,12 @@ export interface Article {
   contentType: keyof typeof ContentType;
   id: string;
   tags: string[] | null;
-  publishedDate: string | null;
+  publishedDate: number | null;
   publishingLevel: keyof typeof PublishingLevel;
   source: string | null;
   sourceURL: string | null;
   title: string | null;
+  updatedAt: number | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;
