@@ -4,7 +4,7 @@ import {
 } from "@pantheon-systems/pcc-react-sdk";
 
 export const pantheonAPIOptions: PantheonAPIOptions = {
-  resolvePath: (article) => `/articles/${article.id}`,
+  resolvePath: (article) => `/articles/${article.slug || article.id}`,
 };
 
 export default PantheonAPI(pantheonAPIOptions);

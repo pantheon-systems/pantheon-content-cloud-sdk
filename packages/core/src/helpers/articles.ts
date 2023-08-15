@@ -82,3 +82,17 @@ export async function getArticleBySlug(
 
   return article.data.article as Article;
 }
+
+export async function getArticleBySlugOrId(
+  client: PantheonClient,
+  slugOrId: string,
+  args?: ArticleQueryArgs,
+) {
+  // First attempt to retrieve by slug, and fallback to by id if the matching slug
+  // couldn't be found.
+  const post =
+    (await getArticleBySlug(client, slugOrId, args)) ||
+    (await getArticle(client, slugOrId, args));
+
+  return post;
+}

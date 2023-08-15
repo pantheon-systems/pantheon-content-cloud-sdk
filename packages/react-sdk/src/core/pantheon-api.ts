@@ -1,3 +1,8 @@
+import {
+  getArticleBySlugOrId,
+  PantheonClient,
+  PantheonClientConfig,
+} from "@pantheon-systems/pcc-sdk-core/*";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 
 interface ApiRequest {
@@ -20,12 +25,20 @@ export interface PantheonAPIOptions {
    * (article) => `/posts/${article.id}`
    *
    */
-  resolvePath?: (article: Pick<Article, "id">) => string;
+  resolvePath?: (article: Partial<Article> & Pick<Article, "id">) => string;
+
   /**
    * The path to redirect to if the article is not found.
    * Defaults to `/404`.
    */
   notFoundPath?: string;
+
+  /**
+   * A function which can be called in order to retrieve
+   * a PantheonClient instance. It is only called as needed.
+   *
+   */
+  getPantheonClient?: (props?: Partial<PantheonClientConfig>) => PantheonClient;
 }
 
 function defaultResolvePath(article: Pick<Article, "id">) {
@@ -51,13 +64,28 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     if (command[0] === "document") {
       // TODO: We will almost definitely need to retrieve the whole article eventually, which will
       // require the PantheonClient to be passed into the options.
-      const parsedArticle = {
-        id: command[1],
-      };
+      const parsedArticleId = command[1];
+
+      let article: (Partial<Article> & Pick<Article, "id">) | null =
+        options?.getPantheonClient
+          ? await getArticleBySlugOrId(
+              options?.getPantheonClient({
+                pccGrant: pccGrant ? pccGrant.toString() : undefined,
+              }),
+              parsedArticleId,
+              { publishingLevel: publishingLevel?.toString() as any },
+            )
+          : null;
+
+      if (article == null) {
+        article = {
+          id: parsedArticleId,
+        };
+      }
 
       const resolvedPath = options?.resolvePath
-        ? options.resolvePath(parsedArticle)
-        : defaultResolvePath(parsedArticle);
+        ? options.resolvePath(article)
+        : defaultResolvePath(article);
 
       res.redirect(
         302,

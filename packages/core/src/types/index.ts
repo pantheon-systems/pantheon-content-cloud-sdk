@@ -2,6 +2,7 @@ export interface Article {
   content: string | null;
   contentType: keyof typeof ContentType;
   id: string;
+  slug: string | null;
   tags: string[] | null;
   publishedDate: number | null;
   publishingLevel: keyof typeof PublishingLevel;
