@@ -2,7 +2,6 @@ import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import Layout from "../../components/layout";
-import LeadCapture from "../../components/smart-components/lead-capture";
 import { Tags } from "../../components/tags";
 import { getArticleBySlugOrId } from "../../lib/Articles";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
@@ -36,7 +35,7 @@ export default function PageTemplate({ article }) {
               <hr className="mt-6 mb-8" />
             </div>
           )}
-          smartComponentMap={{ LEAD_CAPTURE: LeadCapture }}
+          smartComponentMap={pantheonAPIOptions.smartComponentMap}
         />
         <Tags tags={article?.tags} />
       </div>

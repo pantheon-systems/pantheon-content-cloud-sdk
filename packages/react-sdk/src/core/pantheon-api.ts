@@ -4,6 +4,7 @@ import {
   PantheonClientConfig,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import { SmartComponentMap } from "../components/ArticleRenderer";
 
 interface ApiRequest {
   query: Record<string, string | string[]>;
@@ -13,6 +14,7 @@ interface ApiRequest {
 interface ApiResponse {
   setHeader: (key: string, value: string) => void;
   redirect: (code: number, url: string) => void;
+  json: (data: string | object | unknown) => void;
 }
 
 export interface PantheonAPIOptions {
@@ -39,6 +41,11 @@ export interface PantheonAPIOptions {
    *
    */
   getPantheonClient?: (props?: Partial<PantheonClientConfig>) => PantheonClient;
+
+  /**
+   * Map of type to React smart components.
+   */
+  smartComponentMap?: SmartComponentMap;
 }
 
 function defaultResolvePath(article: Pick<Article, "id">) {
@@ -97,8 +104,21 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
             ? `?publishingLevel=${encodeURIComponent(publishingLevel)}`
             : ""),
       );
+    } else if (command[0] === "component_schema") {
+      const componentFilter = command[1];
+
+      if (options?.smartComponentMap == null) {
+        return res.redirect(302, options?.notFoundPath || "/404");
+      } else if (componentFilter == null) {
+        // Return entire schema if no filter was given.
+        return res.json(options?.smartComponentMap);
+      } else {
+        return res.json(
+          options?.smartComponentMap[componentFilter.toUpperCase()],
+        );
+      }
     } else {
-      res.redirect(301, options?.notFoundPath || "/404");
+      res.redirect(302, options?.notFoundPath || "/404");
     }
   };
 }
