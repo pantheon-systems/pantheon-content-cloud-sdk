@@ -2,7 +2,7 @@ import {
   getArticleBySlugOrId,
   PantheonClient,
   PantheonClientConfig,
-} from "@pantheon-systems/pcc-sdk-core/*";
+} from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 
 interface ApiRequest {
@@ -87,6 +87,7 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         ? options.resolvePath(article)
         : defaultResolvePath(article);
 
+      console.log({ article, resolvedPath });
       res.redirect(
         302,
         resolvedPath +
