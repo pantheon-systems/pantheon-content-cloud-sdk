@@ -3,10 +3,10 @@ export interface Article {
   contentType: keyof typeof ContentType;
   id: string;
   tags: string[] | null;
-  publishedDate: string | null;
+  publishedDate: number | null;
   publishingLevel: keyof typeof PublishingLevel;
   title: string | null;
-  slug: string | null;
+  updatedAt: number | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;

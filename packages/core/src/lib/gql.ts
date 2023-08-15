@@ -21,6 +21,7 @@ export const GET_ARTICLE_QUERY = gql`
       publishedDate
       publishingLevel
       contentType
+      updatedAt
     }
   }
 `;
@@ -44,6 +45,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       publishedDate
       publishingLevel
       contentType
+      updatedAt
     }
   }
 `;
@@ -66,6 +68,7 @@ export const LIST_ARTICLES_QUERY = gql`
       publishedDate
       publishingLevel
       contentType
+      updatedAt
     }
   }
 `;
