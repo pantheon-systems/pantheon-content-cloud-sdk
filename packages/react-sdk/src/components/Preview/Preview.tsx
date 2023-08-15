@@ -4,6 +4,7 @@ import { IconHideUI } from "../Icons/IconHideUI";
 import { IconInfo } from "../Icons/IconInfo";
 import { IconLeftArrow } from "../Icons/IconLeftArrow";
 import { IconReload } from "../Icons/IconReload";
+import ViewFormatChooser from "./ViewFormatChooser";
 
 interface Props {
   id: string;
@@ -22,8 +23,7 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(true);
   const [showReloadWarning, setShowReloadWarning] = React.useState(false);
 
-  // TODO: Re-enable this if a general solution is found.
-  // const [viewFormat, setViewFormat] = React.useState('desktop');
+  const [viewFormat, setViewFormat] = React.useState("desktop");
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -126,11 +126,18 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
           </div>
         ) : null}
       </div>
-      {/* TODO: Re-enable this if a general solution is found. */}
-      {/* <ViewFormatChooser
-          viewFormat={viewFormat}
-          setViewFormat={setViewFormat}
-        /> */}
+      <ViewFormatChooser
+        viewFormat={viewFormat}
+        setViewFormat={(newViewFormat: string) => {
+          if (newViewFormat === "desktop") {
+            window.resizeTo(screen.width, screen.height);
+          } else {
+            window.resizeTo(728, screen.height);
+          }
+
+          setViewFormat(newViewFormat);
+        }}
+      />
     </div>
   );
 };
