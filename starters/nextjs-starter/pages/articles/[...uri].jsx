@@ -1,9 +1,11 @@
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import { NextSeo } from "next-seo";
+import queryString from "query-string";
 import Layout from "../../components/layout";
 import LeadCapture from "../../components/smart-components/lead-capture";
 import { Tags } from "../../components/tags";
-import { getArticleById } from "../../lib/Articles";
+import { getArticleBySlugOrId } from "../../lib/Articles";
+import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 export default function PageTemplate({ article }) {
   return (
@@ -43,11 +45,31 @@ export default function PageTemplate({ article }) {
 }
 
 export async function getServerSideProps({
-  params: { uri },
   req: { cookies },
+  query: { uri, ...query },
 }) {
-  const id = uri[uri.length - 1];
-  const article = await getArticleById(id, cookies["PCC-GRANT"]);
+  const slugOrId = uri[uri.length - 1];
+  const article = await getArticleBySlugOrId(slugOrId, cookies["PCC-GRANT"]);
+
+  if (!article) {
+    return {
+      notFound: true,
+    };
+  } else if (
+    article.slug?.trim().length &&
+    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
+  ) {
+    // If the article was accessed by the id rather than the slug - then redirect to the canonical
+    // link (mostly for SEO purposes than anything else).
+    return {
+      redirect: {
+        destination: `${pantheonAPIOptions.resolvePath(article)}?${
+          query ? queryString.stringify(query) : ""
+        }#`,
+        permanent: false,
+      },
+    };
+  }
 
   if (!article) {
     return {

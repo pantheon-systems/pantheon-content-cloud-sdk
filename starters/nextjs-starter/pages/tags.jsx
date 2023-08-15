@@ -14,7 +14,9 @@ export default function TagSearch({ articles, tags, searchString }) {
 
   useEffect(() => {
     setSearchQuery(searchString);
-  }, []);
+    // Don't include searchString as a hook dependency because we only
+    // want to update it when this component initially mounts.
+  }, [setSearchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const HomepageHeader = () => (
     <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">

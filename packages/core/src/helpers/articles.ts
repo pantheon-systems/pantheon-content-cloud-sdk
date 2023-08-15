@@ -69,3 +69,35 @@ export async function getArticle(
 
   return article.data.article as Article;
 }
+
+export async function getArticleBySlug(
+  client: PantheonClient,
+  slug: string,
+  args?: ArticleQueryArgs,
+) {
+  const article = await client.apolloClient.query({
+    query: GET_ARTICLE_QUERY,
+    variables: { slug, ...args },
+  });
+
+  return article.data.article as Article;
+}
+
+export async function getArticleBySlugOrId(
+  client: PantheonClient,
+  slugOrId: string,
+  args?: ArticleQueryArgs,
+) {
+  // First attempt to retrieve by slug, and fallback to by id if the matching slug
+  // couldn't be found.
+  try {
+    const article = await getArticleBySlug(client, slugOrId, args);
+
+    if (article) {
+      return article;
+    }
+    // eslint-disable-next-line no-empty
+  } catch (e) {}
+
+  return await getArticle(client, slugOrId, args);
+}

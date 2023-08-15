@@ -9,6 +9,11 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      IS_CICD: true
+
     steps:
       - uses: actions/checkout@v2
       - uses: pnpm/action-setup@v2
