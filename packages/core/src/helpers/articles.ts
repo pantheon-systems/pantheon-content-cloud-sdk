@@ -90,9 +90,13 @@ export async function getArticleBySlugOrId(
 ) {
   // First attempt to retrieve by slug, and fallback to by id if the matching slug
   // couldn't be found.
-  const post =
-    (await getArticleBySlug(client, slugOrId, args)) ||
-    (await getArticle(client, slugOrId, args));
+  try {
+    const article = await getArticleBySlug(client, slugOrId, args);
 
-  return post;
+    if (article) {
+      return article;
+    }
+  } catch (e) {}
+
+  return await getArticle(client, slugOrId, args);
 }
