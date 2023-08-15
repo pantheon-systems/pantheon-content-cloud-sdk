@@ -20,8 +20,8 @@ const TopLevelElement = ({ element, smartComponentMap }: Props) => {
         smartComponentMap={smartComponentMap}
       />
     ) : (
-      element.children.map((x) => (
-        <ArticleComponent x={x} smartComponentMap={smartComponentMap} />
+      element.children.map((x, i: number) => (
+        <ArticleComponent x={x} key={i} smartComponentMap={smartComponentMap} />
       ))
     );
 

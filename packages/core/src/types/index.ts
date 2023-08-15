@@ -24,6 +24,19 @@ export enum ContentType {
 
 export interface TreePantheonContent {
   tag: string;
-  attrs: { (key: string): any | any[] | null | undefined };
+  attrs: {
+    [key: string | "rowspan" | "colspan"]:
+      | unknown
+      | unknown[]
+      | null
+      | undefined;
+  };
   children: TreePantheonContent[] | null | undefined;
+  data?: string | null | undefined;
+  style?: string[] | null | undefined;
+  href?: string | null | undefined;
+  alt?: string | null | undefined;
+  title?: string | null | undefined;
+  src?: string | null | undefined;
+  type: string;
 }

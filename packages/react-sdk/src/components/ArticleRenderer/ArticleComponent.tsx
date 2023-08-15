@@ -6,7 +6,7 @@ import { unescapeHTMLEntities } from "../../utils/unescape";
 import TopLevelElement from "./TopLevelElement";
 
 interface Props {
-  x: TreePantheonContent;
+  x: TreePantheonContent | TreePantheonContent[] | null | undefined;
   smartComponentMap?: SmartComponentMap;
 }
 
@@ -14,11 +14,12 @@ const ArticleComponent = ({
   x,
   smartComponentMap,
 }: Props): React.ReactElement | null => {
+  if (x == null) return null;
+
   if (Array.isArray(x)) {
     return (
       <>
-        {x.map((span: any, idx) => (
-          // No stable key available
+        {x.map((span, idx) => (
           // eslint-disable-next-line react/no-array-index-key
           <ArticleComponent
             key={idx}
@@ -29,10 +30,9 @@ const ArticleComponent = ({
       </>
     );
   }
-  if (x == null) return null;
 
   const textContent = typeof x === "string" ? x : x.data;
-  const styles = getStyleObjectFromString(x?.style || "");
+  const styles = getStyleObjectFromString(x?.style || []);
   const isSuperscript = Boolean(styles["vertical-align"] === "super");
   const isSubscript = Boolean(styles["vertical-align"] === "sub");
 
@@ -93,14 +93,25 @@ const ArticleComponent = ({
 
   if (x.tag === "a") {
     return (
-      <a href={x.href} target="_blank" rel="noopener noreferrer" style={styles}>
+      <a
+        href={x.href || undefined}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={styles}
+      >
         {x.data}
       </a>
     );
   }
 
   if (x.tag === "img" || x.tag === "image") {
-    return <img src={x.src} alt={x.alt} title={x.title} />;
+    return (
+      <img
+        src={x.src || undefined}
+        alt={x.alt || undefined}
+        title={x.title || undefined}
+      />
+    );
   }
 
   if (x.type === "BLOCKQUOTE") {

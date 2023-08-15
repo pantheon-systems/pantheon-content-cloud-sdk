@@ -1,4 +1,7 @@
-import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import {
+  Article,
+  TreePantheonContent,
+} from "@pantheon-systems/pcc-sdk-core/types";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
@@ -52,8 +55,10 @@ const ArticleRenderer = ({
     );
   }
 
-  const parsedBody: any[] = article?.content ? JSON.parse(article.content) : [];
-  const indexOfFirstHeader = parsedBody.findIndex((x: any) =>
+  const parsedBody: TreePantheonContent[] = article?.content
+    ? JSON.parse(article.content)
+    : [];
+  const indexOfFirstHeader = parsedBody.findIndex((x) =>
     ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
   );
 
@@ -82,7 +87,7 @@ const ArticleRenderer = ({
         {renderTitle ? renderTitle(titleComponent) : titleComponent}
       </div>
       <div className={bodyClassName}>
-        {parsedBody?.map((x: any, idx: number) => (
+        {parsedBody?.map((x, idx: number) => (
           // No stable key available
           // eslint-disable-next-line react/no-array-index-key
           <TopLevelElement
