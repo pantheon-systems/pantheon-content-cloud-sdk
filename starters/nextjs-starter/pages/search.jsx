@@ -13,8 +13,10 @@ export default function Search({ articles, searchString }) {
 
   useEffect(() => {
     setSearchQuery(searchString);
-  }, []);
-
+    // Don't include searchString as a hook dependency because we only
+    // want to update it when this component initially mounts.
+  }, [setSearchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+  
   const HomepageHeader = () => (
     <div className="prose sm:prose-xl mt-20 flex flex-col mx-auto max-w-fit">
       <h1 className="prose text-4xl text-center h-full">
