@@ -10,7 +10,19 @@ import { PreviewBar } from "../Preview/Preview";
 import ArticleComponent from "./ArticleComponent";
 import TopLevelElement from "./TopLevelElement";
 
-export type SmartComponentMap = { [key: string]: React.FunctionComponent };
+export type SmartComponentMap = {
+  [key: string]: {
+    reactComponent: React.FunctionComponent;
+    title: string;
+    iconUrl?: string | null | undefined;
+    attributes: {
+      [key: string]: {
+        required?: boolean | null | undefined;
+        type?: string | null | undefined;
+      };
+    };
+  };
+};
 
 interface Props {
   article?: Article;

@@ -124,9 +124,12 @@ const ArticleComponent = ({
   }
 
   if (smartComponentMap?.[x.type?.toUpperCase()] != null) {
-    return React.createElement(smartComponentMap[x.type.toUpperCase()], {
-      ...x.attrs,
-    });
+    return React.createElement(
+      smartComponentMap[x.type.toUpperCase()]?.reactComponent,
+      {
+        ...x.attrs,
+      },
+    );
   }
 
   return null;

@@ -99,5 +99,9 @@ export async function getArticleBySlugOrId(
     // eslint-disable-next-line no-empty
   } catch (e) {}
 
-  return await getArticle(client, slugOrId, args);
+  try {
+    return await getArticle(client, slugOrId, args);
+  } catch (e) {
+    return null;
+  }
 }
