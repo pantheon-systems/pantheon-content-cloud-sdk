@@ -69,8 +69,6 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     }
 
     if (command[0] === "document") {
-      // TODO: We will almost definitely need to retrieve the whole article eventually, which will
-      // require the PantheonClient to be passed into the options.
       const parsedArticleId = command[1];
 
       let article: (Partial<Article> & Pick<Article, "id">) | null =
