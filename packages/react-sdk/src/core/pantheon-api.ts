@@ -96,7 +96,6 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         ? options.resolvePath(article)
         : defaultResolvePath(article);
 
-      console.log({ article, resolvedPath });
       res.redirect(
         302,
         resolvedPath +
