@@ -57,7 +57,7 @@ const init = async ({
   dirName,
   template,
   skipInstallation,
-  packageManager,
+  packageManager = "npm",
   silentLogs,
   eslint,
   appName,
