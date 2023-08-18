@@ -24,6 +24,10 @@ const TEMPLATE_FOLDER_MAP = {
   gatsby: "gatsby-starter",
 };
 
+const WORKSPACE_DEPENDENCY_PATHS = {
+  "@pantheon-systems/pcc-react-sdk": ["packages", "react-sdk"],
+};
+
 // TODO: Make sure below ESLINT versions are not stale.
 const ESLINT_DEPENDENCIES = {
   eslint: "^8.24.0",
@@ -53,7 +57,7 @@ const init = async ({
   dirName,
   template,
   skipInstallation,
-  packageManager,
+  packageManager = "npm",
   silentLogs,
   eslint,
   appName,
@@ -121,6 +125,39 @@ const init = async ({
   const packageJson = JSON.parse(readFileSync("./package.json").toString());
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
+
+  // Resolve workspace dependencies
+  Object.keys(WORKSPACE_DEPENDENCY_PATHS).forEach((dep) => {
+    const isDep = packageJson.dependencies[dep];
+    const isDevDep = packageJson.devDependencies[dep];
+
+    if (!isDep && !isDevDep) return;
+
+    const depPath =
+      WORKSPACE_DEPENDENCY_PATHS[
+        dep as keyof typeof WORKSPACE_DEPENDENCY_PATHS
+      ];
+
+    // Resolve dependency version
+    const depPackagePath = path.join(
+      TEMP_DIR_NAME,
+      "pantheon-sdk",
+      ...depPath,
+      "package.json",
+    );
+
+    const depPackageJson = JSON.parse(
+      readFileSync(depPackagePath).toString(),
+    ) as {
+      version: string;
+    };
+
+    const depVersion = depPackageJson.version;
+
+    // Replace workspace identifier with version
+    if (isDep) packageJson.dependencies[dep] = depVersion;
+    if (isDevDep) packageJson.devDependencies[dep] = depVersion;
+  });
 
   if (eslint) {
     packageJson.devDependencies = {
