@@ -4,7 +4,12 @@ import { hideBin } from "yargs/helpers";
 import init from "./commands/init";
 import login from "./commands/login";
 import logout from "./commands/logout";
-import { createSite, listSites, updateSite } from "./commands/sites";
+import {
+  configurableSiteProperties,
+  createSite,
+  listSites,
+  updateSiteConfig,
+} from "./commands/sites";
 import { createToken, listTokens, revokeToken } from "./commands/token";
 
 yargs(hideBin(process.argv))
@@ -104,24 +109,44 @@ yargs(hideBin(process.argv))
           async () => await listSites(),
         )
         .command(
-          "update <id> [options]",
-          "Updates site for a given ID.",
+          "configure <id> [options]",
+          "Configure properties for a given site",
           (yargs) => {
             yargs
+              .strictCommands()
               .positional("<id>", {
-                describe: "ID of the site which you want to update",
+                describe: "ID of the site which you want to configure",
                 demandOption: true,
                 type: "string",
               })
-              .option("url", {
-                describe: "Site url",
-                type: "string",
+              .check((args) => {
+                const providedProperties = configurableSiteProperties.filter(
+                  (property) => args[property.id],
+                );
+
+                if (providedProperties.length === 0) {
+                  throw new Error(
+                    "Please provide at least one property to configure.",
+                  );
+                }
+
+                return true;
               });
+
+            configurableSiteProperties.forEach((property) => {
+              yargs.option(property.command.name, {
+                describe: property.command.description,
+                type: property.command.type,
+              });
+            });
           },
           async (args) =>
-            await updateSite({
+            await updateSiteConfig({
               id: args.id as string,
-              url: args.url as string,
+              ...(args as unknown as Record<
+                (typeof configurableSiteProperties)[number]["id"],
+                string
+              >),
             }),
         );
     },

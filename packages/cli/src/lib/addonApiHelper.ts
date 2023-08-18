@@ -113,6 +113,42 @@ class AddOnApiHelper {
       },
     );
   }
+
+  static async updateSiteConfig(
+    id: string,
+    {
+      url,
+      webhookUrl,
+      webhookSecret,
+    }: {
+      url?: string;
+      webhookUrl?: string;
+      webhookSecret?: string;
+    },
+  ): Promise<void> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) throw new UserNotLoggedIn();
+
+    const configuredWebhook = webhookUrl || webhookSecret;
+
+    await axios.patch(
+      `${SITE_ENDPOINT}/${id}`,
+      {
+        ...(url && { url: url }),
+        ...(configuredWebhook && {
+          webhookConfig: {
+            ...(webhookUrl && { webhookUrl: webhookUrl }),
+            ...(webhookSecret && { webhookSecret: webhookUrl }),
+          },
+        }),
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authDetails.id_token}`,
+        },
+      },
+    );
+  }
 }
 
 export default AddOnApiHelper;

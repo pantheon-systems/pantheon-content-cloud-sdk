@@ -16,20 +16,6 @@ export const createSite = errorHandler<string>(async (url: string) => {
   }
 });
 
-export const updateSite = errorHandler<{
-  id: string;
-  url: string;
-}>(async ({ id, url }: { id: string; url: string }) => {
-  const spinner = ora("Updating site...").start();
-  try {
-    await AddOnApiHelper.updateSite(id, url);
-    spinner.succeed(`Successfully updated the site for given ID.`);
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
-
 export const listSites = errorHandler<void>(async () => {
   const spinner = ora("Fetching list of existing sites...").start();
   try {
@@ -57,3 +43,51 @@ export const listSites = errorHandler<void>(async () => {
     throw e;
   }
 });
+
+export const updateSiteConfig = errorHandler(
+  async ({
+    id,
+    ...configurableProperties
+  }: {
+    id: string;
+  } & Partial<
+    Record<(typeof configurableSiteProperties)[number]["id"], string>
+  >) => {
+    const spinner = ora("Updating site...").start();
+
+    try {
+      await AddOnApiHelper.updateSiteConfig(id, configurableProperties);
+      spinner.succeed(`Successfully updated the site.`);
+    } catch (e) {
+      spinner.fail();
+      throw e;
+    }
+  },
+);
+
+export const configurableSiteProperties = [
+  {
+    id: "url",
+    command: {
+      name: "url <url>",
+      description: "Set url for a given site",
+      type: "string",
+    },
+  },
+  {
+    id: "webhookUrl",
+    command: {
+      name: "webhook-url <webhookUrl>",
+      description: "Set a webhook url for a given site",
+      type: "string",
+    },
+  },
+  {
+    id: "webhookSecret",
+    command: {
+      name: "webhook-secret <webhookSecret>",
+      description: "Set a webhook secret for a given site",
+      type: "string",
+    },
+  },
+] as const;
