@@ -12,9 +12,9 @@ const getSeoMetadata = (article) => {
   let publishedTime = null;
 
   // Collecting data from metadata fields
-  Object.entries(article.metadataFields).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && val.msSinceEpoch)
+  Object.entries(article.metadata || {}).forEach(([key, val]) => {
+    if (key.toLowerCase() === "author" && val) authors = [val];
+    else if (key.toLowerCase() === "date" && val.msSinceEpoch)
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
   if (article.tags && article.tags.length > 0) tags = val;
