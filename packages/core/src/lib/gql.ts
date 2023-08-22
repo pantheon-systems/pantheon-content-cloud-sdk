@@ -18,6 +18,7 @@ export const GET_ARTICLE_QUERY = gql`
       content
       slug
       tags
+      metadata
       publishedDate
       publishingLevel
       contentType
@@ -42,6 +43,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       content
       slug
       tags
+      metadata
       publishedDate
       publishingLevel
       contentType
@@ -65,6 +67,7 @@ export const LIST_ARTICLES_QUERY = gql`
       title
       slug
       tags
+      metadata
       publishedDate
       publishingLevel
       contentType
