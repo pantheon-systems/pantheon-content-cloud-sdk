@@ -35,6 +35,7 @@ export default function PageTemplate({ article }) {
         title={seoMetadata.title}
         description={seoMetadata.description}
         openGraph={{
+          type: 'website',
           title: seoMetadata.title,
           description: seoMetadata.description,
           article: {
