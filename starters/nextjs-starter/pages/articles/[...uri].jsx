@@ -13,11 +13,11 @@ const getSeoMetadata = (article) => {
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase() === "author" && val) authors = [val];
-    else if (key.toLowerCase() === "date" && val.msSinceEpoch)
+    if (key.toLowerCase().trim() === "author" && val) authors = [val];
+    else if (key.toLowerCase().trim() === "date" && val.msSinceEpoch)
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
-  if (article.tags && article.tags.length > 0) tags = val;
+  if (article.tags && article.tags.length > 0) tags = article.tags;
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
@@ -35,7 +35,7 @@ export default function PageTemplate({ article }) {
         title={seoMetadata.title}
         description={seoMetadata.description}
         openGraph={{
-          type: 'website',
+          type: "website",
           title: seoMetadata.title,
           description: seoMetadata.description,
           article: {
