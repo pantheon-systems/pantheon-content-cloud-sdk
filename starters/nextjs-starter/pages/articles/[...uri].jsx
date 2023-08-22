@@ -7,8 +7,8 @@ import { getArticleBySlugOrId } from "../../lib/Articles";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 const getSeoMetadata = (article) => {
+  const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   let authors = [];
-  let tags = [];
   let publishedTime = null;
 
   // Collecting data from metadata fields
@@ -17,7 +17,6 @@ const getSeoMetadata = (article) => {
     else if (key.toLowerCase().trim() === "date" && val.msSinceEpoch)
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
-  if (article.tags && article.tags.length > 0) tags = article.tags;
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
