@@ -24,6 +24,7 @@
     "templates"
   ],
   "scripts": {
+    "test": "jest",
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "lint": "eslint . && prettier --check .",
@@ -46,12 +47,14 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@types/jest": "29.5.1",
     "@types/node": "^20.4.6",
     "@types/nunjucks": "^3.2.3",
     "@types/server-destroy": "^1.0.1",
     "@types/yargs": "^17.0.24",
     "eslint": "^8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
+    "jest": "29.5.0",
     "tsup": "^7.1.0"
   }
 }
