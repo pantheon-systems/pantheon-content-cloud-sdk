@@ -22,6 +22,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
   useEffect(() => {
     subscribeToMore({
       document: ARTICLE_UPDATE_SUBSCRIPTION,
+      variables: { id, ...args },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
 
@@ -29,7 +30,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
         return { article };
       },
     });
-  }, [subscribeToMore]);
+  }, [subscribeToMore, id, args]);
 
   return {
     ...queryData,
