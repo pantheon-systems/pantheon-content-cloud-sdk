@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -103,6 +103,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.17",
     "@pantheon-systems/pcc-sdk-core": "workspace:*",
+    "query-string": "^8.1.0",
     "react-markdown": "^8.0.7",
     "rehype-raw": "^6.1.1"
   }
