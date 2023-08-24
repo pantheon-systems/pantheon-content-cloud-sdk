@@ -23,6 +23,7 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
   const [showReloadWarning, setShowReloadWarning] = React.useState(false);
 
   // TODO: Re-enable this if a general solution is found.
+  // https://getpantheon.atlassian.net/browse/PCC-51
   // const [viewFormat, setViewFormat] = React.useState('desktop');
 
   React.useEffect(() => {
@@ -126,7 +127,8 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
           </div>
         ) : null}
       </div>
-      {/* TODO: Re-enable this if a general solution is found. */}
+      {/* TODO: Re-enable this if a general solution is found. 
+       https://getpantheon.atlassian.net/browse/PCC-51 */}
       {/* <ViewFormatChooser
           viewFormat={viewFormat}
           setViewFormat={setViewFormat}
