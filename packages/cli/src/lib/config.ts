@@ -1,6 +1,7 @@
 enum Env {
   production = "production",
   staging = "staging",
+  test = "test",
 }
 type Config = {
   addOnApiEndpoint: string;
@@ -22,6 +23,11 @@ const config: { [key in Env]: Config } = {
       "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
     googleClientId:
       "142470191541-8o14j77pvagisc66s48kl4ub91f9c7b8.apps.googleusercontent.com",
+    googleRedirectUri: "http://localhost:3030/oauth-redirect",
+  },
+  [Env.test]: {
+    addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
+    googleClientId: "test-google-com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
   },
 };
