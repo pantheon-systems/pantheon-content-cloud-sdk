@@ -128,6 +128,7 @@ const ArticleComponent = ({
       smartComponentMap[x.type.toUpperCase()]?.reactComponent,
       {
         ...x.attrs,
+        ...(x as any).attributes,
       },
     );
   }

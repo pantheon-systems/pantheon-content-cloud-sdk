@@ -30,7 +30,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
         return { article };
       },
     });
-  }, [subscribeToMore]);
+  }, [subscribeToMore, id, args]);
 
   return {
     ...queryData,
