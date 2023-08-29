@@ -182,9 +182,13 @@ const init = async ({
   new SpinnerLogger("77777").start();
   await sh("git add .");
   new SpinnerLogger("88888").start();
-  await sh(
-    'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
-  );
+  try {
+    await sh(
+      'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
+    );
+  } catch (err) {
+    new SpinnerLogger("999999" + err).start();
+  }
   new SpinnerLogger("999999").start();
   setupProj.succeed("Completed setting up project!");
 
