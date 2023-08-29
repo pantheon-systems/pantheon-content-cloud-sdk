@@ -80,7 +80,7 @@ yargs(hideBin(process.argv))
       const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
       const noInstall = args.noInstall as boolean;
-      const useNpm = args["use-npm"] as boolean;
+      const useYarn = args["use-yarn"] as boolean;
       const usePnpm = args["use-pnpm"] as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
@@ -88,9 +88,9 @@ yargs(hideBin(process.argv))
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
-      if (useNpm) packageManager = "npm";
+      if (useYarn) packageManager = "yarn";
       else if (usePnpm) packageManager = "pnpm";
-      else packageManager = "yarn";
+      else packageManager = "npm";
 
       await init({
         dirName,
