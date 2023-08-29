@@ -1,0 +1,32 @@
+name: PCC CLI Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      IS_CICD: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.11
+      - name: Setup nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm --filter '*cli*' test
