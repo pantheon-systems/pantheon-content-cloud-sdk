@@ -1,4 +1,4 @@
-name: PCC CLI Tests
+name: Tests
 
 on:
   push:
