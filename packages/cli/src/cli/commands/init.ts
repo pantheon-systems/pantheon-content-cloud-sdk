@@ -104,7 +104,7 @@ const init = async ({
   fetchStarter.succeed("Fetched starter kit!");
 
   // Setting up new project
-  const setupProj = new SpinnerLogger("Setting up project...", silentLogs);
+  const setupProj = new SpinnerLogger("Setting up project1...", silentLogs);
   console.log("11111111111");
   setupProj.start();
   if (existsSync(dirName)) {
