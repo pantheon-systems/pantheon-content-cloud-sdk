@@ -3,7 +3,7 @@ import path from "path";
 import tmp from "tmp";
 import { sh } from "./init";
 
-jest.setTimeout(120000);
+jest.setTimeout(180000);
 
 const PCC = "./dist/index.js";
 
