@@ -36,5 +36,5 @@ jobs:
       - name: Test
         run:
           cd packages/cli && pnpm run build:staging && ./dist/index.js init
-          ${appFolder} --template gatsby --use-pnpm
+          /tmp/tmp-123123123123 --template gatsby --use-pnpm
         # run: pnpm --filter '*cli*' test
