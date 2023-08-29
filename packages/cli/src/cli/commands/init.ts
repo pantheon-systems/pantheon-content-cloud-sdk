@@ -195,6 +195,7 @@ const init = async ({
       await sh(`${packageManager} install`);
     } catch (_err) {
       new SpinnerLogger("1111111111" + _err, silentLogs).start();
+      throw _err;
     }
     installProj.succeed("Installed dependencies!");
   }
