@@ -34,8 +34,4 @@ jobs:
           --global user.name "PCC"
 
       - name: Test
-        # run:
-        #   rm -rf /tmp/tmp-123123123123 && cd packages/cli && pnpm run
-        #   build:staging && ./dist/index.js init /tmp/tmp-123123123123 --template
-        #   gatsby --noInstall && cd /tmp/tmp-123123123123 && pnpm install
         run: CI=false && pnpm --filter '*cli*' test
