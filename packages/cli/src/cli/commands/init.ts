@@ -104,7 +104,7 @@ const init = async ({
   fetchStarter.succeed("Fetched starter kit!");
 
   // Setting up new project
-  const setupProj = new SpinnerLogger("Setting up project1...", silentLogs);
+  const setupProj = new SpinnerLogger("Setting up project...", silentLogs);
   setupProj.start();
   if (existsSync(dirName)) {
     setupProj.stop();
@@ -191,7 +191,11 @@ const init = async ({
       silentLogs,
     );
     installProj.start();
-    await sh(`${packageManager} install`);
+    try {
+      await sh(`${packageManager} install`);
+    } catch (_err) {
+      new SpinnerLogger("1111111111" + _err, silentLogs).start();
+    }
     installProj.succeed("Installed dependencies!");
   }
 
