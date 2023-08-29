@@ -28,5 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Configure Git
+        run: git config --global user.email "pcc@pantheon.io"
+
       - name: Test
         run: pnpm --filter '*cli*' test
