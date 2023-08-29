@@ -35,6 +35,7 @@ jobs:
 
       - name: Test
         run:
-          cd packages/cli && pnpm run build:staging && ./dist/index.js init
-          /tmp/tmp-123123123123 --template gatsby --use-pnpm
+          rm -rf /tmp/tmp-123123123123 && cd packages/cli && pnpm run
+          build:staging && ./dist/index.js init /tmp/tmp-123123123123 --template
+          gatsby --noInstall && cd /tmp/tmp-123123123123 && pnpm install
         # run: pnpm --filter '*cli*' test
