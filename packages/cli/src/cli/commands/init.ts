@@ -163,6 +163,7 @@ const init = async ({
     if (isDevDep) packageJson.devDependencies[dep] = depVersion;
   });
 
+  new SpinnerLogger("4444").start();
   if (eslint) {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
@@ -172,8 +173,10 @@ const init = async ({
     writeFileSync("./.eslintrc.json", JSON.stringify(ESLINT_CONFIG, null, 2));
   }
 
+  new SpinnerLogger("55555").start();
   writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
+  new SpinnerLogger("6666").start();
   // Committing changes to Git
   await sh("git init");
   await sh("git add .");
@@ -182,6 +185,7 @@ const init = async ({
   );
   setupProj.succeed("Completed setting up project!");
 
+  new SpinnerLogger("77777").start();
   // Create .env.local/.env.development
   const localEnvFileName =
     template === "gatsby" ? ".env.development" : ".env.local";
