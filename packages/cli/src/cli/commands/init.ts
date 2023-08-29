@@ -105,12 +105,14 @@ const init = async ({
 
   // Setting up new project
   const setupProj = new SpinnerLogger("Setting up project...", silentLogs);
+  console.log("11111111111");
   setupProj.start();
   if (existsSync(dirName)) {
     setupProj.stop();
     logger.error(chalk.red("ERROR: Project directory already exists."));
     exit(1);
   }
+  console.log("222222222");
 
   cpSync(
     path.join(
@@ -122,6 +124,7 @@ const init = async ({
     dirName,
     { recursive: true },
   );
+  console.log("33333333");
   chdir(dirName);
   const packageJson = JSON.parse(readFileSync("./package.json").toString());
   if (appName) packageJson.name = appName;
