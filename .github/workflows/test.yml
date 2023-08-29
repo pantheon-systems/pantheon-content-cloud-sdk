@@ -29,7 +29,9 @@ jobs:
         run: pnpm install
 
       - name: Configure Git
-        run: git config --global user.email "pcc@pantheon.io"
+        run:
+          git config --global user.email "pcc@pantheon.io" &&  git config
+          --global user.name "PCC"
 
       - name: Test
         run: pnpm --filter '*cli*' test

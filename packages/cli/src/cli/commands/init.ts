@@ -105,14 +105,12 @@ const init = async ({
 
   // Setting up new project
   const setupProj = new SpinnerLogger("Setting up project1...", silentLogs);
-  new SpinnerLogger("111111111111").start();
   setupProj.start();
   if (existsSync(dirName)) {
     setupProj.stop();
     logger.error(chalk.red("ERROR: Project directory already exists."));
     exit(1);
   }
-  new SpinnerLogger("2222").start();
 
   cpSync(
     path.join(
@@ -124,7 +122,6 @@ const init = async ({
     dirName,
     { recursive: true },
   );
-  new SpinnerLogger("333").start();
   chdir(dirName);
   const packageJson = JSON.parse(readFileSync("./package.json").toString());
   if (appName) packageJson.name = appName;
@@ -163,7 +160,6 @@ const init = async ({
     if (isDevDep) packageJson.devDependencies[dep] = depVersion;
   });
 
-  new SpinnerLogger("4444").start();
   if (eslint) {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
@@ -173,23 +169,14 @@ const init = async ({
     writeFileSync("./.eslintrc.json", JSON.stringify(ESLINT_CONFIG, null, 2));
   }
 
-  new SpinnerLogger("55555").start();
   writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
-  new SpinnerLogger("6666").start();
   // Committing changes to Git
   await sh("git init");
-  new SpinnerLogger("77777").start();
   await sh("git add .");
-  new SpinnerLogger("88888").start();
-  try {
-    await sh(
-      'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
-    );
-  } catch (err) {
-    new SpinnerLogger("999999" + err).start();
-  }
-  new SpinnerLogger("999999").start();
+  await sh(
+    'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
+  );
   setupProj.succeed("Completed setting up project!");
 
   // Create .env.local/.env.development
