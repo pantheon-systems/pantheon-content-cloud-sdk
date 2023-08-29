@@ -1,7 +1,7 @@
 import fs, { readFileSync } from "fs";
+import path from "path";
 import tmp from "tmp";
-import init, { sh } from "./init";
-import logout from "./logout";
+import { sh } from "./init";
 
 jest.setTimeout(120000);
 
@@ -13,10 +13,11 @@ beforeAll(async () => {
 
 test("should be able to init starter kit for nextjs template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(`${PCC} init ${appFolder} --template nextjs --noInstall`);
+  await sh(`${PCC} init ${appFolder} --template nextjs --use-pnpm`);
 
-  // Dependencies are not installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(false);
+  // Dependencies are installed
+  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
 
   // Eslint not initialized
   // expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -30,7 +31,7 @@ test("should be able to init starter kit for nextjs template", async () => {
   const packageJson = JSON.parse(
     readFileSync(`${appFolder}/package.json`).toString(),
   );
-  expect(packageJson.name).toBe(appFolder);
+  expect(packageJson.name).toBe(path.parse(appFolder).base);
 
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
@@ -38,10 +39,11 @@ test("should be able to init starter kit for nextjs template", async () => {
 
 test("should be able to init starter kit for gatsby template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(`${PCC} init ${appFolder} --template gatsby --noInstall`);
+  await sh(`${PCC} init ${appFolder} --template gatsby --use-pnpm`);
 
-  // Dependencies are not installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(false);
+  // Dependencies are installed
+  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -56,7 +58,7 @@ test("should be able to init starter kit for gatsby template", async () => {
   const packageJson = JSON.parse(
     readFileSync(`${appFolder}/package.json`).toString(),
   );
-  expect(packageJson.name).toBe(appFolder);
+  expect(packageJson.name).toBe(path.parse(appFolder).base);
 
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
@@ -82,7 +84,7 @@ test("should be able to init starter kit with eslint and app name", async () => 
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-test("should not do anything when project directory already exists", async () => {
+test("should raise error when project directory already exists", async () => {
   const appFolder = tmp.tmpNameSync();
   fs.mkdirSync(appFolder);
 
@@ -104,15 +106,23 @@ test("should not do anything when project directory already exists", async () =>
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-test("should be able to install dependencies", async () => {
+test("should raise error when template name is incorrect", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(
-    `${PCC} init ${appFolder} --appName test_app --template nextjs --use-pnpm --eslint`,
-  );
 
-  // Dependencies are installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+  let error = 0;
+  try {
+    await sh(
+      `${PCC} init ${appFolder} --appName test_app --template react --noInstall --eslint`,
+    );
+  } catch (err) {
+    error = 1;
+  }
+
+  expect(error).toBe(1);
+
+  // No files are created
+  expect(fs.existsSync(appFolder)).toBe(false);
+
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
