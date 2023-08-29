@@ -28,8 +28,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install Git
-        run: apt-get install git -y
-
       - name: Test
         run: pnpm --filter '*cli*' test
