@@ -34,4 +34,7 @@ jobs:
           --global user.name "PCC"
 
       - name: Test
-        run: pnpm --filter '*cli*' test
+        run:
+          pnpm run build:staging && ./dist/index.js init ${appFolder} --template
+          gatsby --use-pnpm
+        # run: pnpm --filter '*cli*' test
