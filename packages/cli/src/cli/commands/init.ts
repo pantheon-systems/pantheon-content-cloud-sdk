@@ -179,13 +179,15 @@ const init = async ({
   new SpinnerLogger("6666").start();
   // Committing changes to Git
   await sh("git init");
+  new SpinnerLogger("77777").start();
   await sh("git add .");
+  new SpinnerLogger("88888").start();
   await sh(
     'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
   );
+  new SpinnerLogger("999999").start();
   setupProj.succeed("Completed setting up project!");
 
-  new SpinnerLogger("77777").start();
   // Create .env.local/.env.development
   const localEnvFileName =
     template === "gatsby" ? ".env.development" : ".env.local";
