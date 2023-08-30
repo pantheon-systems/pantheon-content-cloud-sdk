@@ -181,7 +181,7 @@ export async function getStaticPaths() {
 
 #### Creating your own smart components
 
-Create the smart component 
+Create the smart component
 
 ```javascript
 import { forwardRef } from "react";
@@ -193,9 +193,9 @@ const MyAwesomeComponent = forwardRef(function ({ title, body }, ref) {
   return <div><h3>{title}</h3><p>{body}</p></div>;
 ```
 
-Provide it to the PantheonAPI's smart component map.
-(Note that other properties should be passed in too, such as getPantheonClient and resolvePath).
-See the NextJS starter kit for a clearer reference.
+Provide it to the PantheonAPI's smart component map. (Note that other properties
+should be passed in too, such as getPantheonClient and resolvePath). See the
+NextJS starter kit for a clearer reference.
 
 ```javascript
 PantheonAPI({
@@ -215,6 +215,6 @@ PantheonAPI({
         },
       },
     },
-  }
+  },
 });
 ```
