@@ -33,3 +33,17 @@ allow you to quickly get up and running with Pantheon Content Cloud.
    ```sh
    pnpm dev
    ```
+### Running the CLI
+1. Follow the "setup the monorepo" steps.
+
+2. Run the CLI
+
+   ```sh
+   node packages/cli/dist/index.js
+   ```
+
+   It will respond with the possible commands. A full example command would be:
+
+   ```sh
+   node packages/cli/dist/index.js sites list
+   ```

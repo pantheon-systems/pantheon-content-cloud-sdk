@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
+import { z } from "zod";
 import { PreviewBar } from "../Preview/Preview";
 import ArticleComponent from "./ArticleComponent";
 import TopLevelElement from "./TopLevelElement";
@@ -15,7 +16,7 @@ export type SmartComponentMap = {
     reactComponent: React.FunctionComponent;
     title: string;
     iconUrl?: string | null | undefined;
-    attributes: {
+    fields: {
       [key: string]: {
         required?: boolean | null | undefined;
         type?: string | null | undefined;

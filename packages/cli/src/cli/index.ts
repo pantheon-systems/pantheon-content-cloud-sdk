@@ -7,6 +7,7 @@ import logout from "./commands/logout";
 import {
   configurableSiteProperties,
   createSite,
+  getComponentSchema,
   listSites,
   updateSiteConfig,
 } from "./commands/sites";
@@ -99,6 +100,28 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await createSite(args.url as string),
+        )
+        .command(
+          "components [options]",
+          "Shows component schema of the site.",
+          (yargs) => {
+            yargs.option("url", {
+              describe: "Site url",
+              type: "string",
+              demandOption: true,
+            });
+
+            yargs.option("apiPath", {
+              describe: "API path such as /api/pantheoncloud/component_schema",
+              type: "string",
+              demandOption: false,
+            });
+          },
+          async (args) =>
+            await getComponentSchema({
+              url: args.url as string,
+              apiPath: args.apiPath as string | null,
+            }),
         )
         .command(
           "list",
