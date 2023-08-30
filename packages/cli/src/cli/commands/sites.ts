@@ -45,10 +45,6 @@ export const getComponentSchema = errorHandler<getComponentSchemaParams>(
       // Print out the component schema.
       console.log(JSON.stringify(result, null, 4));
     } catch (e) {
-      try {
-        console.log(Object.keys(e as any), typeof e);
-      } catch (ee) {}
-
       spinner.fail();
       throw e;
     }

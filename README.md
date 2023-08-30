@@ -33,7 +33,9 @@ allow you to quickly get up and running with Pantheon Content Cloud.
    ```sh
    pnpm dev
    ```
+
 ### Running the CLI
+
 1. Follow the "setup the monorepo" steps.
 
 2. Run the CLI

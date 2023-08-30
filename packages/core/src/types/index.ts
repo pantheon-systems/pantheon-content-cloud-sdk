@@ -44,6 +44,10 @@ export interface TreePantheonContent {
   type: string;
 }
 
+export interface TreePantheonContentSmartComponent extends TreePantheonContent {
+  attributes: { [key: string]: string | null | boolean | number | unknown };
+}
+
 export const SmartComponentMapZod = z.record(
   z.string(),
   z.object({
