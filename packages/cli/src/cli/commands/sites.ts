@@ -21,33 +21,31 @@ export const createSite = errorHandler<string>(async (url: string) => {
 type getComponentSchemaParams = { url: string; apiPath: string | null };
 export const getComponentSchema = errorHandler<getComponentSchemaParams>(
   async ({ url, apiPath }: getComponentSchemaParams) => {
-    const spinner = ora("Creating site...").start();
+    const spinner = ora("Retrieving component schema...").start();
+    const schemaEndpoint = `${url}${
+      apiPath || "/api/pantheoncloud/component_schema"
+    }`;
+    const result = (await axios.get(schemaEndpoint)).data;
+
+    spinner.succeed(
+      `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
+    );
+
     try {
-      const schemaEndpoint = `${url}${
-        apiPath || "/api/pantheoncloud/component_schema"
-      }`;
-      const result = (await axios.get(schemaEndpoint)).data;
-
-      spinner.succeed(
-        `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
-      );
-
-      try {
-        validateComponentSchema(result);
-      } catch (e) {
-        console.log(
+      validateComponentSchema(result);
+    } catch (e) {
+      console.error(
+        chalk.red(
           "Failed to validate this schema:",
           JSON.stringify(result, null, 4),
-        );
-        throw e;
-      }
-
-      // Print out the component schema.
-      console.log(JSON.stringify(result, null, 4));
-    } catch (e) {
+        ),
+      );
       spinner.fail();
-      throw e;
+      process.exit(1);
     }
+
+    // Print out the component schema.
+    console.log(JSON.stringify(result, null, 4));
   },
 );
 
