@@ -80,14 +80,15 @@ export class PantheonClient {
       .replace(/^http/, "ws")
       .replace(/^https/, "wss");
     this.siteId = config.siteId;
-    this.apiKey = config.pccGrant
-      ? `pcc_grant ${config.pccGrant.replace(/^pcc_grant\s+/, "")}` // Remove pcc_grant prefix if present
-      : config.apiKey
-      ? config.apiKey
-      : undefined;
-
     this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
+
+    this.apiKey = undefined;
+    if (config.pccGrant) {
+      this.apiKey = config.pccGrant.replace(/^pcc_grant\s+/, "");
+    } else if (config.apiKey) {
+      this.apiKey = config.apiKey;
+    }
 
     if (!this.host) {
       throw new Error("Missing Pantheon Content Cloud host");
