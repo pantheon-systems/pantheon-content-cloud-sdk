@@ -34,13 +34,12 @@ export const getComponentSchema = errorHandler<getComponentSchemaParams>(
     try {
       validateComponentSchema(result);
     } catch (e) {
-      console.error(
+      spinner.fail(
         chalk.red(
           "Failed to validate this schema:",
           JSON.stringify(result, null, 4),
         ),
       );
-      spinner.fail();
       process.exit(1);
     }
 
