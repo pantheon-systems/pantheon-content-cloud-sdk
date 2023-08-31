@@ -40,7 +40,7 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-async function sh(cmd: string) {
+export async function sh(cmd: string) {
   return new Promise(function (resolve, reject) {
     exec(cmd, (err, stdout, stderr) => {
       if (err) {
