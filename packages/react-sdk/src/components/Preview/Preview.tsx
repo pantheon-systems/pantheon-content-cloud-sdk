@@ -1,5 +1,6 @@
 import queryString from "query-string";
 import React from "react";
+import { IconCopy } from "../Icons/IconCopy";
 import { IconHideUI } from "../Icons/IconHideUI";
 import { IconInfo } from "../Icons/IconInfo";
 import { IconLeftArrow } from "../Icons/IconLeftArrow";
@@ -21,10 +22,6 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
 export const PreviewBar = ({ id, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(true);
   const [showReloadWarning, setShowReloadWarning] = React.useState(false);
-
-  // TODO: Re-enable this if a general solution is found.
-  // https://getpantheon.atlassian.net/browse/PCC-51
-  // const [viewFormat, setViewFormat] = React.useState('desktop');
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -49,6 +46,10 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
       setIsHidden,
       id,
     });
+  }
+
+  if (isHidden) {
+    // SHOW SHOW UI.
   }
 
   return (
@@ -127,12 +128,12 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
           </div>
         ) : null}
       </div>
-      {/* TODO: Re-enable this if a general solution is found. 
-       https://getpantheon.atlassian.net/browse/PCC-51 */}
-      {/* <ViewFormatChooser
-          viewFormat={viewFormat}
-          setViewFormat={setViewFormat}
-        /> */}
+      <button
+        style={{ ...textWithIconStyle }}
+        onClick={() => navigator.clipboard.writeText(window.location.href)}
+      >
+        <IconCopy /> Copy URL
+      </button>
     </div>
   );
 };
