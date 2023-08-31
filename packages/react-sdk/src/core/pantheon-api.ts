@@ -77,7 +77,7 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     if (command[0] === "document") {
       const parsedArticleId = command[1];
 
-      const article: (Partial<Article> & Pick<Article, "id">) | null =
+      let article: (Partial<Article> & Pick<Article, "id">) | null =
         options?.getPantheonClient
           ? await getArticleBySlugOrId(
               options?.getPantheonClient({
@@ -90,10 +90,10 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
             )
           : null;
 
-      if (!article?.id) {
-        throw new Error(
-          `Article with ID or slug "${parsedArticleId}" not found`,
-        );
+      if (article == null) {
+        article = {
+          id: parsedArticleId,
+        };
       }
 
       const resolvedPath = options?.resolvePath
