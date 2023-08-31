@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export interface Article {
   content: string | null;
   contentType: keyof typeof ContentType;
@@ -41,3 +43,23 @@ export interface TreePantheonContent {
   src?: string | null | undefined;
   type: string;
 }
+
+export interface TreePantheonContentSmartComponent extends TreePantheonContent {
+  attributes: { [key: string]: string | null | boolean | number | unknown };
+}
+
+export const SmartComponentMapZod = z.record(
+  z.string(),
+  z.object({
+    title: z.string(),
+    iconUrl: z.string().nullable().optional(),
+    fields: z.record(
+      z.string(),
+      z.object({
+        displayName: z.string().nullable().optional(),
+        required: z.boolean().nullable().optional(),
+        type: z.string().nullable(),
+      }),
+    ),
+  }),
+);

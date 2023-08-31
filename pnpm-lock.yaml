@@ -100,6 +100,9 @@ importers:
       '@babel/preset-env':
         specifier: 7.21.5
         version: 7.21.5(@babel/core@7.21.8)
+      '@pantheon-systems/pcc-sdk-core':
+        specifier: workspace:*
+        version: link:../core
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -154,6 +157,12 @@ importers:
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+      zod-validation-error:
+        specifier: ^1.5.0
+        version: 1.5.0(zod@3.22.2)
     devDependencies:
       '@types/node':
         specifier: ^20.4.5
@@ -4017,8 +4026,8 @@ packages:
       - supports-color
     dev: true
 
-  /@jest/transform@29.6.3:
-    resolution: {integrity: sha512-dPIc3DsvMZ/S8ut4L2ViCj265mKO0owB0wfzBv2oGzL9pQ+iRvJewHqLBmsGb7XFb5UotWIEtvY5A/lnylaIoQ==}
+  /@jest/transform@29.6.4:
+    resolution: {integrity: sha512-8thgRSiXUqtr/pPGY/OsyHuMjGyhVnWrFAwoxmIemlBuiMyU1WFs0tXoNxzcr4A4uErs/ABre76SGmrr5ab/AA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@babel/core': 7.21.8
@@ -4029,7 +4038,7 @@ packages:
       convert-source-map: 2.0.0
       fast-json-stable-stringify: 2.1.0
       graceful-fs: 4.2.11
-      jest-haste-map: 29.6.3
+      jest-haste-map: 29.6.4
       jest-regex-util: 29.6.3
       jest-util: 29.6.3
       micromatch: 4.0.5
@@ -6784,7 +6793,25 @@ packages:
       '@babel/core': ^7.8.0
     dependencies:
       '@babel/core': 7.21.8
-      '@jest/transform': 29.6.3
+      '@jest/transform': 29.6.4
+      '@types/babel__core': 7.20.1
+      babel-plugin-istanbul: 6.1.1
+      babel-preset-jest: 29.6.3(@babel/core@7.21.8)
+      chalk: 4.1.2
+      graceful-fs: 4.2.11
+      slash: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /babel-jest@29.6.4(@babel/core@7.21.8):
+    resolution: {integrity: sha512-meLj23UlSLddj6PC+YTOFRgDAtjnZom8w/ACsrx0gtPtv5cJZk0A5Unk5bV4wixD7XaPCN1fQvpww8czkZURmw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@babel/core': ^7.8.0
+    dependencies:
+      '@babel/core': 7.21.8
+      '@jest/transform': 29.6.4
       '@types/babel__core': 7.20.1
       babel-plugin-istanbul: 6.1.1
       babel-preset-jest: 29.6.3(@babel/core@7.21.8)
@@ -12212,7 +12239,7 @@ packages:
       '@jest/test-sequencer': 29.6.2
       '@jest/types': 29.6.1
       '@types/node': 18.16.9
-      babel-jest: 29.6.3(@babel/core@7.21.8)
+      babel-jest: 29.6.4(@babel/core@7.21.8)
       chalk: 4.1.2
       ci-info: 3.8.0
       deepmerge: 4.3.1
@@ -12252,7 +12279,7 @@ packages:
       '@jest/test-sequencer': 29.6.2
       '@jest/types': 29.6.1
       '@types/node': 20.4.6
-      babel-jest: 29.6.3(@babel/core@7.21.8)
+      babel-jest: 29.6.4(@babel/core@7.21.8)
       chalk: 4.1.2
       ci-info: 3.8.0
       deepmerge: 4.3.1
@@ -12340,8 +12367,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /jest-haste-map@29.6.3:
-    resolution: {integrity: sha512-GecR5YavfjkhOytEFHAeI6aWWG3f/cOKNB1YJvj/B76xAmeVjy4zJUYobGF030cRmKaO1FBw3V8CZZ6KVh9ZSw==}
+  /jest-haste-map@29.6.4:
+    resolution: {integrity: sha512-12Ad+VNTDHxKf7k+M65sviyynRoZYuL1/GTuhEVb8RYsNSNln71nANRb/faSyWvx0j+gHcivChXHIoMJrGYjog==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.6.3
@@ -12352,7 +12379,7 @@ packages:
       graceful-fs: 4.2.11
       jest-regex-util: 29.6.3
       jest-util: 29.6.3
-      jest-worker: 29.6.3
+      jest-worker: 29.6.4
       micromatch: 4.0.5
       walker: 1.0.8
     optionalDependencies:
@@ -12612,8 +12639,8 @@ packages:
       supports-color: 8.1.1
     dev: true
 
-  /jest-worker@29.6.3:
-    resolution: {integrity: sha512-wacANXecZ/GbQakpf2CClrqrlwsYYDSXFd4fIGdL+dXpM2GWoJ+6bhQ7vR3TKi3+gkSfBkjy1/khH/WrYS4Q6g==}
+  /jest-worker@29.6.4:
+    resolution: {integrity: sha512-6dpvFV4WjcWbDVGgHTWo/aupl8/LbBx2NSKfiwqf79xC/yeJjKHT1+StcKy/2KTmW16hE68ccKVOtXf+WZGz7Q==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@types/node': 20.4.6
@@ -18482,6 +18509,19 @@ packages:
 
   /zen-observable@0.8.15:
     resolution: {integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==}
+    dev: false
+
+  /zod-validation-error@1.5.0(zod@3.22.2):
+    resolution: {integrity: sha512-/7eFkAI4qV0tcxMBB/3+d2c1P6jzzZYdYSlBuAklzMuCrJu5bzJfHS0yVAS87dRHVlhftd6RFJDIvv03JgkSbw==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      zod: ^3.18.0
+    dependencies:
+      zod: 3.22.2
+    dev: false
+
+  /zod@3.22.2:
+    resolution: {integrity: sha512-wvWkphh5WQsJbVk1tbx1l1Ly4yg+XecD+Mq280uBGt9wa5BKSWf4Mhp6GmrkPixhMxmabYY7RbzlwVP32pbGCg==}
     dev: false
 
   /zwitch@2.0.4:

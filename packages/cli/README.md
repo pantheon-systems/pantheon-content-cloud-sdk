@@ -56,5 +56,11 @@ $ pcc init new_proj --template=gatsby
 To get started please run:
    cd new_proj
    yarn start
+
+$ # Retrieve component schema from your playground site
+$ pcc site components --url https://live-collabcms-fe-demo.appa.pantheon.site --apiPath /api/YOUR_SITE_ID/pantheoncloud/component_schema
+
+$ # Retrieve component schema from your site (replace www.example.com)
+$ pcc site components --url https://www.example.com
 $
 ```
