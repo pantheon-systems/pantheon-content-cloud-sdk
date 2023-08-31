@@ -1,7 +1,4 @@
-declare enum CliTemplateOptions {
-  "nextjs" = "nextjs",
-  "gatsby" = "gatsby",
-}
+declare type CliTemplateOptions = "nextjs" | "gatsby";
 
 declare type ApiKey = {
   id: string;
