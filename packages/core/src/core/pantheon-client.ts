@@ -80,10 +80,10 @@ export class PantheonClient {
       .replace(/^http/, "ws")
       .replace(/^https/, "wss");
     this.siteId = config.siteId;
-    this.apiKey = config.apiKey
-      ? config.apiKey
-      : config.pccGrant
+    this.apiKey = config.pccGrant
       ? `pcc_grant ${config.pccGrant.replace(/^pcc_grant\s+/, "")}` // Remove pcc_grant prefix if present
+      : config.apiKey
+      ? config.apiKey
       : undefined;
 
     this.debug = !!config.debug;
