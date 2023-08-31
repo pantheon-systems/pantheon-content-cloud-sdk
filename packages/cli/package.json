@@ -24,7 +24,7 @@
     "templates"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --silent",
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "lint": "eslint . && prettier --check .",

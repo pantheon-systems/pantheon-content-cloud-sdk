@@ -1,7 +1,9 @@
 import fs, { readFileSync } from "fs";
 import path from "path";
+import chalk from "chalk";
 import tmp from "tmp";
-import { sh } from "./init";
+import { Logger } from "../../lib/logger";
+import init, { sh } from "./init";
 
 jest.setTimeout(180000);
 
@@ -86,18 +88,29 @@ test("should be able to init starter kit with eslint and app name", async () => 
 
 test("should raise error when project directory already exists", async () => {
   const appFolder = tmp.tmpNameSync();
+  const loggerSpy = jest
+    .spyOn(Logger.prototype, "error")
+    .mockImplementation(() => null);
+  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {
+    throw Error("TEST_ERROR");
+  });
   fs.mkdirSync(appFolder);
 
-  let error = 0;
   try {
-    await sh(
-      `${PCC} init ${appFolder} --appName test_app --template gatsby --noInstall --eslint`,
-    );
+    await init({
+      dirName: appFolder,
+      template: "nextjs",
+      packageManager: "npm",
+      skipInstallation: true,
+      eslint: false,
+      silentLogs: true,
+    });
   } catch (err) {
-    error = 1;
+    expect(loggerSpy).toBeCalledWith(
+      chalk.red("ERROR: Project directory already exists."),
+    );
+    expect(exitSpy).toBeCalledWith(1);
   }
-
-  expect(error).toBe(1);
 
   // No files are created
   expect(fs.readdirSync(appFolder).length).toBe(0);
