@@ -17,8 +17,9 @@ export type SmartComponentMap = {
     iconUrl?: string | null | undefined;
     fields: {
       [key: string]: {
+        displayName: string | null | undefined;
         required?: boolean | null | undefined;
-        type?: string | null | undefined;
+        type: string;
       };
     };
   };
