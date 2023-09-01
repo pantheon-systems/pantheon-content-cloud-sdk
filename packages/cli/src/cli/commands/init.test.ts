@@ -9,10 +9,6 @@ jest.setTimeout(180000);
 
 const PCC = "./dist/index.js";
 
-beforeAll(async () => {
-  await sh("pnpm run build:staging");
-});
-
 test("should be able to init starter kit for nextjs template", async () => {
   const appFolder = tmp.tmpNameSync();
   await sh(`${PCC} init ${appFolder} --template nextjs --use-pnpm`);
