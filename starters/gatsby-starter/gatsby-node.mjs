@@ -1,19 +1,15 @@
+import path from "path";
 import {
+  getArticle,
   getArticles,
   PantheonClient,
-  getArticle,
 } from "@pantheon-systems/pcc-react-sdk";
-import path from "path";
 
 const pccHost = process.env.PCC_HOST;
 const pccSiteId = process.env.PCC_SITE_ID;
 const pccApiKey = process.env.PCC_API_KEY;
 
 if (process.env.IS_CICD !== "true") {
-  if (!pccHost) {
-    throw new Error("PCC_HOST environment variable is required");
-  }
-
   if (!pccSiteId) {
     throw new Error("PCC_SITE_ID environment variable is required");
   }
@@ -50,7 +46,7 @@ const createPages = async ({ actions: { createPage } }) => {
     articles.map(async ({ id }) => {
       const article = await getArticle(pantheonClient, id);
       return article;
-    })
+    }),
   );
 
   articlesWithContent.forEach(async (article) => {
