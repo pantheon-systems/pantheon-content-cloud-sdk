@@ -63,6 +63,9 @@ importers:
 
   packages/cli:
     dependencies:
+      '@pantheon-systems/pcc-sdk-core':
+        specifier: workspace:*
+        version: link:../core
       axios:
         specifier: ^1.4.0
         version: 1.4.0
@@ -100,9 +103,6 @@ importers:
       '@babel/preset-env':
         specifier: 7.21.5
         version: 7.21.5(@babel/core@7.21.8)
-      '@pantheon-systems/pcc-sdk-core':
-        specifier: workspace:*
-        version: link:../core
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
