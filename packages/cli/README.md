@@ -49,7 +49,7 @@ To get started please run:
 
    # Set your site id and API key
    vim .env.local
-   
+
    # Run the site
    yarn dev
 
@@ -63,7 +63,7 @@ To get started please run:
 
    # Set your site id and API key
    vim .env.development
-   
+
    # Run the site
    yarn start
 

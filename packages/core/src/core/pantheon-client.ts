@@ -70,7 +70,7 @@ export class PantheonClient {
     // by the Pantheon team when testing staging or local dev backend environments.
     // It defaults to our production API endpoint. In a future release it will
     // be a more human-friendly URL.
-    let pccHost = config.pccHost || "https://pcc-gfttxsojwq-uc.a.run.app";
+    const pccHost = config.pccHost || "https://pcc-gfttxsojwq-uc.a.run.app";
 
     this.host = pccHost.replace(/\/$/, "");
     this.wsHost = pccHost.replace(/^http/, "ws").replace(/^https/, "wss");
