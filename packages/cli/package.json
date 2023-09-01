@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-cli",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud CLI",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "type": "module",
   "license": "MIT",
   "keywords": [

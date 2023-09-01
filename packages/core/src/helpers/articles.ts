@@ -97,11 +97,14 @@ export async function getArticleBySlugOrId(
       return article;
     }
     // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } catch (e) {
+    console.error(e);
+  }
 
   try {
     return await getArticle(client, slugOrId, args);
   } catch (e) {
+    console.error(e);
     return null;
   }
 }
