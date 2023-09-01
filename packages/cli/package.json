@@ -44,7 +44,8 @@
     "open": "^9.1.0",
     "ora": "^6.3.1",
     "server-destroy": "^1.0.1",
-    "yargs": "^17.7.2"
+    "yargs": "^17.7.2",
+    "@pantheon-systems/pcc-sdk-core": "workspace:*"
   },
   "devDependencies": {
     "@babel/preset-env": "7.21.5",
@@ -57,7 +58,6 @@
     "babel-jest": "^29.6.3",
     "eslint": "^8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
-    "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "jest": "29.5.0",
     "tmp": "^0.2.1",
     "ts-jest": "29.1.0",
