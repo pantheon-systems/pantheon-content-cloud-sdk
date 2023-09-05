@@ -23,8 +23,8 @@ import { pccPlugin } from "@pcc/vue";
 createApp(App)
   // Install the plugin
   .use(pccPlugin, {
-    pccHost: import.meta.env.VITE_PCC_HOST, // URL to PCC instance
-    siteId: import.meta.env.VITE_PCC_SITE_ID, // PCC Instance websocket URL, optional
+    siteId: import.meta.env.VITE_PCC_SITE_ID, // PCC Site Id; required
+    apiKey: import.meta.env.VITE_PCC_API_KEY, // PCC API Key; required
   })
   .mount("#app");
 ```

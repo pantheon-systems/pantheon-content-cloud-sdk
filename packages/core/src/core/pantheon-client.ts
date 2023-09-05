@@ -16,7 +16,6 @@ export interface PantheonClientConfig {
    * @example
    * // If your API Key is ABC-DEF
    * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
    *   siteId: '12345',
    *   apiKey: 'ABC-DEF',
    * });
@@ -26,13 +25,7 @@ export interface PantheonClientConfig {
   debug?: boolean;
 
   /**
-   * URL of your Pantheon Content Cloud instance
-   * @example
-   * // If your Pantheon Content Cloud instance is hosted at https://pantheon-content-cloud.com
-   * // then your host is https://pantheon-content-cloud.com
-   * const pantheonClient = new PantheonClient({
-   * pccHost: 'https://pantheon-content-cloud.com',
-   * });
+   * NOT FOR EXTERNAL USE.
    */
   pccHost: string;
 
@@ -41,7 +34,6 @@ export interface PantheonClientConfig {
    * @example
    * // If your site ID is 12345
    * const pantheonClient = new PantheonClient({
-   *   pccHost: 'https://pantheon-content-cloud.com',
    *   siteId: '12345',
    *   apiKey: 'ABC-DEF',
    * });
@@ -56,7 +48,6 @@ export interface PantheonClientConfig {
    *
    * @example
    * const pantheonClient = new PantheonClient({
-   *  pccHost: 'https://pantheon-content-cloud.com',
    *  siteId: '12345',
    *  pccGrant: 'pcc_grant ABC-DEF',
    * });
@@ -75,10 +66,14 @@ export class PantheonClient {
   private wsHost: string;
 
   constructor(config: PantheonClientConfig) {
-    this.host = config.pccHost.replace(/\/$/, "");
-    this.wsHost = config.pccHost
-      .replace(/^http/, "ws")
-      .replace(/^https/, "wss");
+    // Allow the user to override the PCC host, but this would only be done
+    // by the Pantheon team when testing staging or local dev backend environments.
+    // It defaults to our production API endpoint. In a future release it will
+    // be a more human-friendly URL.
+    const pccHost = config.pccHost || "https://pcc-gfttxsojwq-uc.a.run.app";
+
+    this.host = pccHost.replace(/\/$/, "");
+    this.wsHost = pccHost.replace(/^http/, "ws").replace(/^https/, "wss");
     this.siteId = config.siteId;
     this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
