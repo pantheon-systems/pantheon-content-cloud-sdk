@@ -2,6 +2,7 @@
  * Static helper functions for articles
  */
 
+import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
 import { GET_ARTICLE_QUERY, LIST_ARTICLES_QUERY } from "../lib/gql";
 import {
@@ -98,13 +99,28 @@ export async function getArticleBySlugOrId(
     }
     // eslint-disable-next-line no-empty
   } catch (e) {
-    console.error(e);
+    if (
+      !(e instanceof ApolloError) ||
+      (e instanceof ApolloError &&
+        e.graphQLErrors[0]?.message !==
+          "No document matching this slug was found.")
+    ) {
+      console.error(e);
+    }
   }
 
   try {
     return await getArticle(client, slugOrId, args);
   } catch (e) {
-    console.error(e);
+    if (
+      !(e instanceof ApolloError) ||
+      (e instanceof ApolloError &&
+        e.graphQLErrors[0]?.message !==
+          "No document matching this ID was found.")
+    ) {
+      console.error(e);
+    }
+
     return null;
   }
 }
