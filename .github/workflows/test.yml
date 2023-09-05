@@ -1,0 +1,40 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      IS_CICD: true
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.12
+      - name: Setup nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Configure Git
+        run:
+          git config --global user.email "pcc@pantheon.io" &&  git config
+          --global user.name "PCC"
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: CI=false && pnpm --filter '*cli*' test

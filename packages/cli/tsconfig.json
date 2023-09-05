@@ -5,12 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "lib": ["ESNext"],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true,
-    "outDir": "./dist",
     "resolveJsonModule": true,
     "isolatedModules": true
   }

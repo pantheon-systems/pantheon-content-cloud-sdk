@@ -7,6 +7,7 @@ import logout from "./commands/logout";
 import {
   configurableSiteProperties,
   createSite,
+  getComponentSchema,
   listSites,
   updateSiteConfig,
 } from "./commands/sites";
@@ -32,13 +33,75 @@ yargs(hideBin(process.argv))
           type: "string",
           choices: ["nextjs", "gatsby"],
           demandOption: true,
+        })
+        .option("appName", {
+          describe: '"package.json" compatible name for the project.',
+          type: "string",
+          demandOption: false,
+        })
+        .option("noInstall", {
+          describe: "Do not install any dependencies.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
+        })
+        .option("use-npm", {
+          describe: "Use NPM package manager for installing dependencies.",
+          type: "boolean",
+          default: true,
+          demandOption: false,
+        })
+        .option("use-pnpm", {
+          describe: "Use PNPM package manager for installing dependencies.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
+        })
+        .option("use-yarn", {
+          describe: "Use Yarn package manager for installing dependencies.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
+        })
+        .option("silent", {
+          describe:
+            "Skips all console output except for errors and return value from actions.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
+        })
+        .option("eslint", {
+          describe: "Initialize with eslint config.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
         });
     },
     async (args) => {
       const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
+      const noInstall = args.noInstall as boolean;
+      const useYarn = args["use-yarn"] as boolean;
+      const usePnpm = args["use-pnpm"] as boolean;
+      const appName = args.appName as string | undefined;
+      const silent = args.silent as boolean;
+      const eslint = args.eslint as boolean;
 
-      await init({ dirName, template });
+      // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
+      let packageManager: PackageManager;
+      if (useYarn) packageManager = "yarn";
+      else if (usePnpm) packageManager = "pnpm";
+      else packageManager = "npm";
+
+      await init({
+        dirName,
+        template,
+        skipInstallation: noInstall,
+        packageManager,
+        appName,
+        silentLogs: silent,
+        eslint,
+      });
     },
   )
   .command(
@@ -99,6 +162,28 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await createSite(args.url as string),
+        )
+        .command(
+          "components [options]",
+          "Shows component schema of the site.",
+          (yargs) => {
+            yargs.option("url", {
+              describe: "Site url",
+              type: "string",
+              demandOption: true,
+            });
+
+            yargs.option("apiPath", {
+              describe: "API path such as /api/pantheoncloud/component_schema",
+              type: "string",
+              demandOption: false,
+            });
+          },
+          async (args) =>
+            await getComponentSchema({
+              url: args.url as string,
+              apiPath: args.apiPath as string | null,
+            }),
         )
         .command(
           "list",

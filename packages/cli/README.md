@@ -46,7 +46,12 @@ $ pcc init new_proj --template=nextjs
 
 To get started please run:
    cd new_proj
-   PCC_HOST=<host_name> yarn dev
+
+   # Set your site id and API key
+   vim .env.local
+
+   # Run the site
+   yarn dev
 
 $ # Create project with gatsby template
 $ pcc init new_proj --template=gatsby
@@ -55,6 +60,17 @@ $ pcc init new_proj --template=gatsby
 
 To get started please run:
    cd new_proj
+
+   # Set your site id and API key
+   vim .env.development
+
+   # Run the site
    yarn start
+
+$ # Retrieve component schema from your playground site
+$ pcc site components --url https://live-collabcms-fe-demo.appa.pantheon.site --apiPath /api/YOUR_SITE_ID/pantheoncloud/component_schema
+
+$ # Retrieve component schema from your site (replace www.example.com)
+$ pcc site components --url https://www.example.com
 $
 ```

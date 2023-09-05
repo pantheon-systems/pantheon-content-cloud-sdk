@@ -15,10 +15,11 @@ export type SmartComponentMap = {
     reactComponent: React.FunctionComponent;
     title: string;
     iconUrl?: string | null | undefined;
-    attributes: {
+    fields: {
       [key: string]: {
+        displayName: string | null | undefined;
         required?: boolean | null | undefined;
-        type?: string | null | undefined;
+        type: string;
       };
     };
   };

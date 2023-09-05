@@ -21,7 +21,6 @@ function ensureEnvVariable(name) {
 }
 
 if (process.env.IS_CICD !== "true") {
-  ensureEnvVariable("PCC_HOST");
   ensureEnvVariable("PCC_SITE_ID");
   ensureEnvVariable("PCC_API_KEY");
 }

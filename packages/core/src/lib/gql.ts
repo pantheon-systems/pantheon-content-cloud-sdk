@@ -18,6 +18,7 @@ export const GET_ARTICLE_QUERY = gql`
       content
       slug
       tags
+      siteId
       metadata
       publishedDate
       publishingLevel
@@ -40,6 +41,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
     ) {
       id
       title
+      siteId
       content
       slug
       tags
@@ -65,6 +67,7 @@ export const LIST_ARTICLES_QUERY = gql`
     ) {
       id
       title
+      siteId
       slug
       tags
       metadata

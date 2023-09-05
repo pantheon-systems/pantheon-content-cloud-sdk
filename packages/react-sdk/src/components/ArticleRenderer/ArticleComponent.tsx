@@ -1,4 +1,7 @@
-import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
+import type {
+  TreePantheonContent,
+  TreePantheonContentSmartComponent,
+} from "@pantheon-systems/pcc-sdk-core/types";
 import * as React from "react";
 import { SmartComponentMap } from ".";
 import { getStyleObjectFromString } from "../../utils/styles";
@@ -128,7 +131,7 @@ const ArticleComponent = ({
       smartComponentMap[x.type.toUpperCase()]?.reactComponent,
       {
         ...x.attrs,
-        ...(x as any).attributes,
+        ...(x as TreePantheonContentSmartComponent).attributes,
       },
     );
   }

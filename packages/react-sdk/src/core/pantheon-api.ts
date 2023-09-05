@@ -30,6 +30,12 @@ export interface PantheonAPIOptions {
   resolvePath?: (article: Partial<Article> & Pick<Article, "id">) => string;
 
   /**
+   * Return the canonical path for previewing a component
+   * given the component's name.
+   */
+  componentPreviewPath?: (componentName: string) => string;
+
+  /**
    * The path to redirect to if the article is not found.
    * Defaults to `/404`.
    */
@@ -114,6 +120,8 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
           options?.smartComponentMap[componentFilter.toUpperCase()],
         );
       }
+    } else if (command[0] === "component" && options?.componentPreviewPath) {
+      return res.redirect(302, options.componentPreviewPath(command[1]));
     } else {
       res.redirect(302, options?.notFoundPath || "/404");
     }
