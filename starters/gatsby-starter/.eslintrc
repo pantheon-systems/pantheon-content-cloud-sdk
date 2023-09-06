@@ -1,0 +1,4 @@
+{
+  "extends": ["pcc-custom"],
+  "ignorePatterns": ["public/*"]
+}

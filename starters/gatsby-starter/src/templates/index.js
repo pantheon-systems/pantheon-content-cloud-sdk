@@ -1,6 +1,7 @@
 import React from "react";
-import Layout from "../components/layout";
 import { PostGrid } from "../components/grid";
+import Layout from "../components/layout";
+import PantheonLogo from "../images/pantheon.png";
 
 export default function Home({ ...props }) {
   const { articles } = props.pageContext;
@@ -20,7 +21,7 @@ export default function Home({ ...props }) {
         <div className="flex items-center justify-center p-4 text-white bg-black rounded">
           Decoupled PCC on{" "}
           <img
-            src="/pantheon.png"
+            src={PantheonLogo}
             alt="Pantheon Logo"
             style={{
               margin: 0,
