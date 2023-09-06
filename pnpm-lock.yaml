@@ -360,6 +360,46 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.3.3)
 
+  starters/gatsby-starter-ts:
+    dependencies:
+      '@mdx-js/react':
+        specifier: ^2.3.0
+        version: 2.3.0(react@18.2.0)
+      '@pantheon-systems/pcc-react-sdk':
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.27)
+      gatsby:
+        specifier: ^5.10.0
+        version: 5.11.0(babel-eslint@10.1.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
+      gatsby-plugin-mdx:
+        specifier: ^5.10.0
+        version: 5.11.0(@mdx-js/react@2.3.0)(gatsby-source-filesystem@5.11.0)(gatsby@5.11.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+      gatsby-plugin-postcss:
+        specifier: ^6.10.0
+        version: 6.11.0(gatsby@5.11.0)(postcss@8.4.27)(webpack@5.88.2)
+      gatsby-source-filesystem:
+        specifier: ^5.10.0
+        version: 5.11.0(gatsby@5.11.0)
+      postcss:
+        specifier: ^8.4.24
+        version: 8.4.27
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.3
+    devDependencies:
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.9(tailwindcss@3.3.3)
+
   starters/nextjs-starter:
     dependencies:
       '@pantheon-systems/nextjs-kit':
@@ -15968,14 +16008,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /resolve@1.22.2:
-    resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
-    hasBin: true
-    dependencies:
-      is-core-module: 2.12.1
-      path-parse: 1.0.7
-      supports-preserve-symlinks-flag: 1.0.0
-
   /resolve@1.22.3:
     resolution: {integrity: sha512-P8ur/gp/AmbEzjr729bZnLjXK5Z+4P0zhIJgBgzqRih7hL7BOukHGtSTA3ACMY467GRFz3duQsi0bDZdR7DKdw==}
     hasBin: true
@@ -16952,7 +16984,7 @@ packages:
       postcss-load-config: 4.0.1(postcss@8.4.27)
       postcss-nested: 6.0.1(postcss@8.4.27)
       postcss-selector-parser: 6.0.13
-      resolve: 1.22.2
+      resolve: 1.22.3
       sucrase: 3.34.0
     transitivePeerDependencies:
       - ts-node

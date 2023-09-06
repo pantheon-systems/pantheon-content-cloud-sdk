@@ -1,0 +1,10 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "outputs": ["public/**", ".cache/**"],
+      "env": ["NODE_ENV", "PCC_SITE_ID", "PCC_API_KEY"]
+    }
+  }
+}
