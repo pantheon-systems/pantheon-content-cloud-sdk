@@ -337,9 +337,6 @@ importers:
       gatsby-plugin-mdx:
         specifier: ^5.10.0
         version: 5.11.0(@mdx-js/react@2.3.0)(gatsby-source-filesystem@5.11.0)(gatsby@5.11.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
-      gatsby-plugin-pnpm-gatsby-5:
-        specifier: 1.2.11
-        version: 1.2.11(gatsby@5.11.0)
       gatsby-plugin-postcss:
         specifier: ^6.10.0
         version: 6.11.0(gatsby@5.11.0)(postcss@8.4.27)(webpack@5.88.2)
@@ -362,9 +359,6 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.3.3)
-      eslint:
-        specifier: ^8.24.0
-        version: 8.46.0
 
   starters/nextjs-starter:
     dependencies:
@@ -10587,16 +10581,6 @@ packages:
       - supports-color
     dev: false
 
-  /gatsby-plugin-pnpm-gatsby-5@1.2.11(gatsby@5.11.0):
-    resolution: {integrity: sha512-3isxA0QFNmESkUlUPDNs/kzY4c8lA5XypTULjzE00rbdHQSWVD/BFXPyr3GSvY4U7sCubAlVa8KSNR6Zf+gzLg==}
-    peerDependencies:
-      gatsby: ~2.x.x || ~3.x.x || ~4.x.x || ~5.x.x
-    dependencies:
-      gatsby: 5.11.0(babel-eslint@10.1.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
-      lodash.get: 4.4.2
-      lodash.uniq: 4.5.0
-    dev: false
-
   /gatsby-plugin-postcss@6.11.0(gatsby@5.11.0)(postcss@8.4.27)(webpack@5.88.2):
     resolution: {integrity: sha512-/gwAOPxiYPVVPmBwnkpD4Wlg+7svS0b17A6g0ajHfV46N0RQzvP25RRpkMskmC9NbyaxA/wHrASyF+Uv5i0fNQ==}
     engines: {node: '>=18.0.0'}
@@ -13172,10 +13156,6 @@ packages:
 
   /lodash.foreach@4.5.0:
     resolution: {integrity: sha512-aEXTF4d+m05rVOAUG3z4vZZ4xVexLKZGF0lIxuHZ1Hplpk/3B6Z1+/ICICYRLm7c41Z2xiejbkCkJoTlypoXhQ==}
-    dev: false
-
-  /lodash.get@4.4.2:
-    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: false
 
   /lodash.isplainobject@4.0.6:
