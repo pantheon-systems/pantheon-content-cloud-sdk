@@ -62,6 +62,63 @@ test("should be able to init starter kit for gatsby template", async () => {
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
+
+test("should be able to init starter kit for nextjs template with tyepscript", async () => {
+  const appFolder = tmp.tmpNameSync();
+  await sh(`${PCC} init ${appFolder} --template nextjs --use-pnpm --ts`);
+
+  // Dependencies are installed
+  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+
+  // Eslint not initialized
+  // expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+
+  // Checking if primary required files for Nextjs starter kit are created.
+  expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/pages/index.tsx`)).toBe(true);
+
+  // package.json checks
+  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
+  const packageJson = JSON.parse(
+    readFileSync(`${appFolder}/package.json`).toString(),
+  );
+  expect(packageJson.name).toBe(path.parse(appFolder).base);
+
+  // Remove app folder
+  fs.rmSync(appFolder, { recursive: true, force: true });
+});
+
+test("should be able to init starter kit for gatsby template with typescript", async () => {
+  const appFolder = tmp.tmpNameSync();
+  await sh(`${PCC} init ${appFolder} --template gatsby --use-pnpm --ts`);
+
+  // Dependencies are installed
+  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+
+  // Check that TypesScript source files exist.
+  expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
+
+  // Eslint not initialized
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+
+  // Checking if primary required files for Gatsby starter kit are created
+  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/gatsby-config.js`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
+
+  // package.json checks
+  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
+  const packageJson = JSON.parse(
+    readFileSync(`${appFolder}/package.json`).toString(),
+  );
+  expect(packageJson.name).toBe(path.parse(appFolder).base);
+
+  // Remove app folder
+  fs.rmSync(appFolder, { recursive: true, force: true });
+});
+
 test("should be able to init starter kit with eslint and app name", async () => {
   const appFolder = tmp.tmpNameSync();
   await sh(
@@ -100,6 +157,7 @@ test("should raise error when project directory already exists", async () => {
       skipInstallation: true,
       eslint: false,
       silentLogs: true,
+      useTypescript: true,
     });
   } catch (err) {
     expect(loggerSpy).toBeCalledWith(
