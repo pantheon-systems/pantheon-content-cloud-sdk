@@ -7,7 +7,7 @@ export interface Article {
   slug?: string | null;
   tags: string[] | null;
   publishedDate: number | null;
-  publishingLevel: keyof typeof PublishingLevel;
+  publishingLevel: PublishingLevel;
   title: string | null;
   updatedAt: number | null;
 }
