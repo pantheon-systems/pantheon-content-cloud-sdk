@@ -149,6 +149,32 @@ class AddOnApiHelper {
       },
     );
   }
+
+  static async fetchWebhookLogs(
+    siteId: string,
+    {
+      limit,
+      offset,
+    }: {
+      limit?: number;
+      offset?: number;
+    },
+  ) {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) throw new UserNotLoggedIn();
+
+    const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}/webhookLogs`, {
+      headers: {
+        Authorization: `Bearer ${authDetails.id_token}`,
+      },
+      params: {
+        limit,
+        offset,
+      },
+    });
+
+    return resp.data as WebhookDeliveryLog[];
+  }
 }
 
 export default AddOnApiHelper;

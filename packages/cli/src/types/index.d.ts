@@ -19,3 +19,14 @@ declare type AuthDetails = {
 };
 
 declare type PackageManager = "npm" | "pnpm" | "yarn";
+
+declare type WebhookDeliveryLog = {
+  type: "success" | "failure";
+  event: string;
+  payload: Record<string, unknown>;
+  headers: Record<string, unknown>;
+  requestTime: number;
+  responseStatus: number;
+  responseHeaders: Record<string, unknown>;
+  responseDuration: number;
+};
