@@ -34,18 +34,19 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
+    "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "axios": "^1.4.0",
     "chalk": "^5.3.0",
     "dayjs": "^1.11.9",
     "fs-extra": "^11.1.1",
+    "get-port": "^7.0.0",
     "google-auth-library": "^8.9.0",
     "nunjucks": "^3.2.4",
     "octokit": "^2.1.0",
     "open": "^9.1.0",
     "ora": "^6.3.1",
     "server-destroy": "^1.0.1",
-    "yargs": "^17.7.2",
-    "@pantheon-systems/pcc-sdk-core": "workspace:*"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@babel/preset-env": "7.21.5",

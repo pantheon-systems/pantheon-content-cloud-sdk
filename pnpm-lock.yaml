@@ -78,6 +78,9 @@ importers:
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
+      get-port:
+        specifier: ^7.0.0
+        version: 7.0.0
       google-auth-library:
         specifier: ^8.9.0
         version: 8.9.0
@@ -10893,6 +10896,11 @@ packages:
   /get-port@3.2.0:
     resolution: {integrity: sha512-x5UJKlgeUiNT8nyo/AcnwLnZuZNcSjSw0kogRB+Whd1fjjFq4B1hySFxSFWWSn4mIBzg3sRNUDFYc4g5gjPoLg==}
     engines: {node: '>=4'}
+    dev: false
+
+  /get-port@7.0.0:
+    resolution: {integrity: sha512-mDHFgApoQd+azgMdwylJrv2DX47ywGq1i5VFJE7fZ0dttNq3iQMfsU4IvEgBHojA3KqEudyu7Vq+oN8kNaNkWw==}
+    engines: {node: '>=16'}
     dev: false
 
   /get-stream@4.1.0:
