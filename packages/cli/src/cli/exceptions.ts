@@ -10,7 +10,7 @@ export class UnhandledError extends Error {
 
 export class UserNotLoggedIn extends Error {
   constructor() {
-    super("Pleaes login user using `pcc login` command");
+    super("Please login user using `pcc login` command");
     this.name = this.constructor.name;
   }
 }
