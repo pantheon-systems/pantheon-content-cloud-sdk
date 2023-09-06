@@ -62,7 +62,6 @@ test("should be able to init starter kit for gatsby template", async () => {
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-
 test("should be able to init starter kit for nextjs template with tyepscript", async () => {
   const appFolder = tmp.tmpNameSync();
   await sh(`${PCC} init ${appFolder} --template nextjs --use-pnpm --ts`);

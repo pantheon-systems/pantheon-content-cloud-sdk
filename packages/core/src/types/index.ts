@@ -10,7 +10,7 @@ export interface Article {
   publishingLevel: PublishingLevel;
   title: string | null;
   updatedAt: number | null;
-  metadata: any | null;
+  metadata: unknown | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;

@@ -108,7 +108,7 @@ yargs(hideBin(process.argv))
         appName,
         silentLogs: silent,
         eslint,
-        useTypescript
+        useTypescript,
       });
     },
   )
