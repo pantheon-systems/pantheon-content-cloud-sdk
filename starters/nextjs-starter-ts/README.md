@@ -2,11 +2,11 @@
 
 ## Getting Started
 
-(THESE LINKS AREN'T UPDATED TO 'PCC' CLI DOCUMENTATION) To get started with the
+To get started with the
 Next Pantheon Content Cloud Starter, use our `pcc` (command-line interface tool
 we have created). Full documentation for this npm package based on
 [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can be found
-[here](https://decoupledkit.pantheon.io/docs/frontend-starters/using-the-cli) on
+[here](https://www.npmjs.com/package/@pantheon-systems/pcc) on
 our docs site.
 
 For a quick start, follow the instructions below:
