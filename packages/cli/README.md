@@ -76,12 +76,13 @@ $ pcc site components --url https://www.example.com
 ```
 
 ## Example of creating a site and API key for it
+
 ```bash
 $ pcc site create --url https://www.example.com
 ✔ Successfully created the site with given details. Id: THE_NEW_SITE_ID
 
 $ pcc token create
-✔ Successfully created token for your user. 
+✔ Successfully created token for your user.
 
 Token: TOKEN-SECRET-GUID-DONT-SHARE-THIS
 
