@@ -10,8 +10,10 @@ import { errorHandler } from "../exceptions";
 export const createSite = errorHandler<string>(async (url: string) => {
   const spinner = ora("Creating site...").start();
   try {
-    await AddOnApiHelper.createSite(url);
-    spinner.succeed(`Successfully created the site with given details.`);
+    const siteId = await AddOnApiHelper.createSite(url);
+    spinner.succeed(
+      `Successfully created the site with given details. Id: ${siteId}`,
+    );
   } catch (e) {
     spinner.fail();
     throw e;
