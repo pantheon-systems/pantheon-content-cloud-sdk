@@ -10,14 +10,15 @@ export interface Article {
   publishingLevel: keyof typeof PublishingLevel;
   title: string | null;
   updatedAt: number | null;
+  metadata: unknown | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;
 
 export enum PublishingLevel {
-  production = "PRODUCTION",
-  realtime = "REALTIME",
-  staging = "STAGING",
+  PRODUCTION = "PRODUCTION",
+  REALTIME = "REALTIME",
+  STAGING = "STAGING",
 }
 
 export enum ContentType {

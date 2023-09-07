@@ -62,6 +62,7 @@ const init = async ({
   silentLogs,
   eslint,
   appName,
+  useTypescript,
 }: {
   dirName: string;
   template: CliTemplateOptions;
@@ -70,6 +71,7 @@ const init = async ({
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useTypescript: boolean;
 }) => {
   const logger = new Logger(silentLogs);
   if (!dirName) {
@@ -117,7 +119,7 @@ const init = async ({
       TEMP_DIR_NAME,
       "pantheon-sdk",
       "starters",
-      TEMPLATE_FOLDER_MAP[template],
+      `${TEMPLATE_FOLDER_MAP[template]}${useTypescript ? "-ts" : ""}`,
     ),
     dirName,
     { recursive: true },
@@ -221,4 +223,5 @@ export default errorHandler<{
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useTypescript: boolean;
 }>(init);

@@ -75,6 +75,12 @@ yargs(hideBin(process.argv))
           type: "boolean",
           default: false,
           demandOption: false,
+        })
+        .option("ts", {
+          describe: "Initialize as a Typescript project.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
         });
     },
     async (args) => {
@@ -86,6 +92,7 @@ yargs(hideBin(process.argv))
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
       const eslint = args.eslint as boolean;
+      const useTypescript = args.ts as boolean;
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
@@ -101,6 +108,7 @@ yargs(hideBin(process.argv))
         appName,
         silentLogs: silent,
         eslint,
+        useTypescript,
       });
     },
   )
