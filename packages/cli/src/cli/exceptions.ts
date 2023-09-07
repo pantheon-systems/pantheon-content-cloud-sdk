@@ -10,7 +10,7 @@ export class UnhandledError extends Error {
 
 export class UserNotLoggedIn extends Error {
   constructor() {
-    super("Pleaes login user using `pcc login` command");
+    super("Please login user using `pcc login` command");
     this.name = this.constructor.name;
   }
 }
@@ -27,7 +27,7 @@ export function errorHandler<T>(f: (arg: T) => Promise<void>) {
     } catch (e) {
       if (e instanceof UserNotLoggedIn) {
         console.log(chalk.red("Error: User is not logged in."));
-        console.log(chalk.yellow('Please run "pcc login" to login the user.'));
+        console.log(chalk.yellow('Please run "pcc login" to login.'));
       } else {
         console.log(
           chalk.yellow("\nStack trace:", (e as { stack: string }).stack),
