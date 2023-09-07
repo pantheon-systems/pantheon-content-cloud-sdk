@@ -236,28 +236,37 @@ yargs(hideBin(process.argv))
             }),
         )
         .command(
-          "logs <id>",
-          "Shows webhook delivery logs for a given site.",
+          "webhooks <cmd> [options]",
+          "Manage webhooks for a given site",
           (yargs) => {
             yargs
               .strictCommands()
-              .positional("<id>", {
-                describe: "ID of the site for which you want to see logs",
-                demandOption: true,
-                type: "string",
-              })
-              .option("limit", {
-                describe: "Number of logs to fetch at a time",
-                type: "number",
-                default: 100,
-                demandOption: false,
-              });
+              .demandCommand()
+              .command(
+                "history <id>",
+                "View webhook event delivery logs for a given site",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .positional("<id>", {
+                      describe: "ID of the site for which you want to see logs",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("limit", {
+                      describe: "Number of logs to fetch at a time",
+                      type: "number",
+                      default: 100,
+                      demandOption: false,
+                    });
+                },
+                async (args) =>
+                  await showLogs({
+                    id: args.id as string,
+                    limit: args.limit as number,
+                  }),
+              );
           },
-          async (args) =>
-            await showLogs({
-              id: args.id as string,
-              limit: args.limit as number,
-            }),
         );
     },
     async () => {
