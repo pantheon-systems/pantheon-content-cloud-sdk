@@ -21,7 +21,8 @@ type ShowLogsArgs = {
   limit?: number;
 };
 
-async function setupLogViewerServer(logs: WebhookDeliveryLog[]) {
+async function setupLogViewerServer(_logs: WebhookDeliveryLog[]) {
+  let logs = _logs;
   const server = http.createServer(async (req, res) => {
     const currDir = dirname(fileURLToPath(import.meta.url));
     const template = readFileSync(join(currDir, "../templates/logs.html"));
@@ -44,9 +45,17 @@ async function setupLogViewerServer(logs: WebhookDeliveryLog[]) {
 
   destroyer(server);
 
+  function updateLogs(newLogs: WebhookDeliveryLog[]) {
+    logs = newLogs;
+
+    // Update the logs page
+    open(address, { wait: true }).then((cp) => cp.kill());
+  }
+
   return {
     server,
     address,
+    updateLogs,
   };
 }
 
@@ -75,32 +84,42 @@ async function showLogs({ id, limit: _limit }: ShowLogsArgs) {
   let logs: WebhookDeliveryLog[] = await fetchLogs(id, limit, offset);
 
   // Setup listening server
-  const { server, address } = await setupLogViewerServer(logs);
+  const { server, address, updateLogs } = await setupLogViewerServer(logs);
 
   console.log(`Visit ${address} to view logs`);
-  console.log("Press <SPACE> to load more logs");
-  console.log("Press q to quit");
+  console.log("Press <SPACE> then <ENTER> to load more logs");
+  console.log("Press q then <ENTER> to quit");
 
-  readline.emitKeypressEvents(process.stdin);
+  function listenForInput() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
 
-  if (process.stdin.isTTY) process.stdin.setRawMode(true);
+    rl.question("", async (input) => {
+      if (input === "q") {
+        server.destroy();
+        process.exit();
+      }
 
-  process.stdin.on("keypress", async (chunk, key) => {
-    if (key && key.name == "q") {
-      server.destroy();
-      process.exit();
-    }
+      if (input === " ") {
+        // Load more logs
+        const newOffset = offset + limit;
+        const newLogs = await fetchLogs(id, limit, newOffset);
 
-    if (key && key.name == "space") {
-      // Load more logs
-      const newOffset = offset + limit;
+        offset = newOffset;
+        logs = [...newLogs, ...logs];
 
-      const newLogs = await fetchLogs(id, limit, newOffset);
+        updateLogs(logs);
+      }
 
-      offset = newOffset;
-      logs = [...newLogs, ...logs];
-    }
-  });
+      rl.close();
+
+      listenForInput();
+    });
+  }
+
+  listenForInput();
 }
 
 export default errorHandler<ShowLogsArgs>(showLogs);

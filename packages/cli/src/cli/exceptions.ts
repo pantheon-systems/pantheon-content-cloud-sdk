@@ -27,7 +27,7 @@ export function errorHandler<T>(f: (arg: T) => Promise<void>) {
     } catch (e) {
       if (e instanceof UserNotLoggedIn) {
         console.log(chalk.red("Error: User is not logged in."));
-        console.log(chalk.yellow('Please run "pcc login" to login the user.'));
+        console.log(chalk.yellow('Please run "pcc login" to login.'));
       } else {
         console.log(
           chalk.yellow("\nStack trace:", (e as { stack: string }).stack),
