@@ -7,7 +7,7 @@ export interface Article {
   slug?: string | null;
   tags: string[] | null;
   publishedDate: number | null;
-  publishingLevel: PublishingLevel;
+  publishingLevel: keyof typeof PublishingLevel;
   title: string | null;
   updatedAt: number | null;
   metadata: unknown | null;
@@ -16,9 +16,9 @@ export interface Article {
 export type ArticleWithoutContent = Omit<Article, "content">;
 
 export enum PublishingLevel {
-  production = "PRODUCTION",
-  realtime = "REALTIME",
-  staging = "STAGING",
+  PRODUCTION = "PRODUCTION",
+  REALTIME = "REALTIME",
+  STAGING = "STAGING",
 }
 
 export enum ContentType {

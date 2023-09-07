@@ -14,7 +14,7 @@ import {
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;
-  publishingLevel?: PublishingLevel;
+  publishingLevel?: keyof typeof PublishingLevel;
 }
 
 type FilterableFields = "body" | "tag" | "title";
