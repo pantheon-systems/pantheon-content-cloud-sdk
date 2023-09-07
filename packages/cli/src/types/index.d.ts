@@ -24,9 +24,7 @@ declare type WebhookDeliveryLog = {
   type: "success" | "failure";
   event: string;
   payload: Record<string, unknown>;
-  headers: Record<string, unknown>;
   requestTime: number;
   responseStatus: number;
-  responseHeaders: Record<string, unknown>;
   responseDuration: number;
 };
