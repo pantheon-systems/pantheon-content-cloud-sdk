@@ -4,6 +4,7 @@ import { hideBin } from "yargs/helpers";
 import init from "./commands/init";
 import login from "./commands/login";
 import logout from "./commands/logout";
+import showLogs from "./commands/logs";
 import {
   configurableSiteProperties,
   createSite,
@@ -241,6 +242,39 @@ yargs(hideBin(process.argv))
                 string
               >),
             }),
+        )
+        .command(
+          "webhooks <cmd> [options]",
+          "Manage webhooks for a given site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "history <id>",
+                "View webhook event delivery logs for a given site",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .positional("<id>", {
+                      describe: "ID of the site for which you want to see logs",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("limit", {
+                      describe: "Number of logs to fetch at a time",
+                      type: "number",
+                      default: 100,
+                      demandOption: false,
+                    });
+                },
+                async (args) =>
+                  await showLogs({
+                    id: args.id as string,
+                    limit: args.limit as number,
+                  }),
+              );
+          },
         );
     },
     async () => {
