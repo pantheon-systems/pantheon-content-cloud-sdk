@@ -33,6 +33,7 @@ interface Props {
   headerClassName?: string;
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
+  timeout?: number;
 }
 
 const ArticleRenderer = ({
@@ -42,6 +43,7 @@ const ArticleRenderer = ({
   containerClassName,
   renderTitle,
   smartComponentMap,
+  timeout,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -55,7 +57,10 @@ const ArticleRenderer = ({
     return (
       <div className={containerClassName}>
         {renderCSR && article != null
-          ? createPortal(<PreviewBar id={article.id} />, document.body)
+          ? createPortal(
+              <PreviewBar id={article.id} timeout={timeout} />,
+              document.body,
+            )
           : null}
 
         {article?.content ? (
@@ -94,7 +99,10 @@ const ArticleRenderer = ({
   return (
     <div className={containerClassName}>
       {renderCSR && article != null
-        ? createPortal(<PreviewBar id={article.id} />, document.body)
+        ? createPortal(
+            <PreviewBar id={article.id} timeout={timeout} />,
+            document.body,
+          )
         : null}
 
       <div className={headerClassName}>
