@@ -1,5 +1,6 @@
 import queryString from "query-string";
 import React from "react";
+import { usePantheonClient } from "../../core/pantheon-context";
 import { IconHideUI } from "../Icons/IconHideUI";
 import { IconInfo } from "../Icons/IconInfo";
 import { IconLeftArrow } from "../Icons/IconLeftArrow";
@@ -18,9 +19,13 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
   flexDirection: "row",
 };
 
+export function parseJwt(token: string) {
+  return JSON.parse(Buffer.from(token.split(".")[1], "base64").toString());
+}
 export const PreviewBar = ({ id, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(true);
   const [showReloadWarning, setShowReloadWarning] = React.useState(false);
+  const { apiKey } = usePantheonClient();
 
   // TODO: Re-enable this if a general solution is found.
   // https://getpantheon.atlassian.net/browse/PCC-51
@@ -36,11 +41,20 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
     }
   }, []);
 
-  // Show the reload warning after 10 minutes.
+  // Show the preview timeout warning when apiKey is expired
   React.useEffect(() => {
+    // Only show warning for `pcc_grant` type of API keys.
+    if (!apiKey || !apiKey.startsWith("pcc_grant")) return;
+
+    // Parse JWT
+    const token = apiKey.split(" ")[1];
+    const jwtPayload = parseJwt(token) as { previewExpiry: number };
+    if (!jwtPayload.previewExpiry) return;
+    const mSecFromNow = jwtPayload.previewExpiry - Date.now();
+
     setTimeout(() => {
       setShowReloadWarning(true);
-    }, 10 * 60_000);
+    }, mSecFromNow);
   }, []);
 
   if (previewBarOverride != null) {
