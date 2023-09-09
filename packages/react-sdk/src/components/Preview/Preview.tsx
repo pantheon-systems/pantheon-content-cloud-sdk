@@ -1,6 +1,5 @@
 import queryString from "query-string";
 import React from "react";
-import { usePantheonClient } from "../../core/pantheon-context";
 import { IconHideUI } from "../Icons/IconHideUI";
 import { IconInfo } from "../Icons/IconInfo";
 import { IconLeftArrow } from "../Icons/IconLeftArrow";
@@ -38,7 +37,7 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
     }
   }, []);
 
-  // Show the preview timeout warning when apiKey is expired
+  // Show the preview timeout warning after `timeout`
   React.useEffect(() => {
     if (!timeout) return;
 
