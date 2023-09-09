@@ -125,8 +125,8 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
                 opacity: "50%",
               }}
             >
-              Reload current live preview to continue receiving realtime
-              updates.
+              Real-time updates are finished. Please hit "Preview" from add-on
+              again to see real-time updates.
             </span>
           </div>
         ) : null}
