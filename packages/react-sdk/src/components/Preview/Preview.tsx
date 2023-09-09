@@ -39,11 +39,11 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
 
   // Show the preview timeout warning after `timeout`
   React.useEffect(() => {
-    // if (!timeout) return;
+    if (!timeout) return;
 
     setTimeout(() => {
       setShowReloadWarning(true);
-    }, 0);
+    }, timeout);
   }, []);
 
   if (previewBarOverride != null) {
