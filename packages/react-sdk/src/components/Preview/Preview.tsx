@@ -39,11 +39,11 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
 
   // Show the preview timeout warning after `timeout`
   React.useEffect(() => {
-    if (!timeout) return;
+    // if (!timeout) return;
 
     setTimeout(() => {
       setShowReloadWarning(true);
-    }, timeout);
+    }, 0);
   }, []);
 
   if (previewBarOverride != null) {
@@ -124,8 +124,8 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
                 opacity: "50%",
               }}
             >
-              Real-time updates are finished. Please hit "Preview" from add-on
-              again to see real-time updates.
+              Real-time updates are finished. Please hit &quot;Preview&quot;
+              from add-on again to see real-time updates.
             </span>
           </div>
         ) : null}
