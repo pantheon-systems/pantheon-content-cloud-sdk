@@ -17,7 +17,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
               <Image
                 src={imgSrc}
                 fill
-                alt={altText}
+                alt={altText || title}
                 style={{ objectFit: "cover" }}
               />
             ) : (
