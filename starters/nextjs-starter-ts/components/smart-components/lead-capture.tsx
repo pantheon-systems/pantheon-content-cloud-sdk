@@ -1,7 +1,15 @@
 import { forwardRef } from "react";
 import { useBaseSmartComponent } from "./hooks/useBaseSmartComponent";
 
-const LeadCapture = forwardRef(function ({ title, body }, ref) {
+interface Props {
+  title: string;
+  body: string;
+}
+
+const LeadCapture = forwardRef<HTMLDivElement>(function (
+  { title, body }: Props,
+  ref,
+) {
   useBaseSmartComponent();
 
   return (

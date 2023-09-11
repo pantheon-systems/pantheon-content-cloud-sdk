@@ -22,10 +22,12 @@ export const pantheonAPIOptions: PantheonAPIOptions = {
       iconUrl: null,
       fields: {
         title: {
+          displayName: "Title",
           required: true,
           type: "string",
         },
         body: {
+          displayName: "Body",
           required: false,
           type: "string",
         },

@@ -7,7 +7,15 @@ const GradientPlaceholder = () => (
   <div className="w-full h-full bg-gradient-to-b from-blue-100 to-blue-500" />
 );
 
-const GridItem = ({ href, imgSrc, altText, tags, title }) => {
+interface Props {
+  href: string;
+  imgSrc: string;
+  altText?: string;
+  tags?: string[];
+  title: string;
+}
+
+const GridItem = ({ href, imgSrc, altText, tags, title }: Props) => {
   return (
     <>
       <div className="flex flex-col rounded-lg shadow-lg overflow-hidden h-full">
@@ -17,7 +25,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
               <Image
                 src={imgSrc}
                 fill
-                alt={altText}
+                alt={altText || title}
                 style={{ objectFit: "cover" }}
               />
             ) : (

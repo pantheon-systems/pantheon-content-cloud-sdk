@@ -79,7 +79,7 @@ export async function getServerSideProps({ query }) {
       publishingLevel: "PRODUCTION",
     },
     {
-      tag: query.q,
+      tagContains: query.q,
     },
   );
 
