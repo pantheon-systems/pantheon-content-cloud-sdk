@@ -8,6 +8,7 @@ import { IconReload } from "../Icons/IconReload";
 interface Props {
   id: string;
   previewBarOverride?: React.ReactElement | undefined | null;
+  timeout?: number;
 }
 
 const textWithIconStyle: Partial<React.CSSProperties> = {
@@ -18,7 +19,7 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
   flexDirection: "row",
 };
 
-export const PreviewBar = ({ id, previewBarOverride }: Props) => {
+export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
   const [isHidden, setIsHidden] = React.useState(true);
   const [showReloadWarning, setShowReloadWarning] = React.useState(false);
 
@@ -36,11 +37,13 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
     }
   }, []);
 
-  // Show the reload warning after 10 minutes.
+  // Show the preview timeout warning after `timeout`
   React.useEffect(() => {
+    if (!timeout) return;
+
     setTimeout(() => {
       setShowReloadWarning(true);
-    }, 10 * 60_000);
+    }, timeout);
   }, []);
 
   if (previewBarOverride != null) {
@@ -121,8 +124,8 @@ export const PreviewBar = ({ id, previewBarOverride }: Props) => {
                 opacity: "50%",
               }}
             >
-              Reload current live preview to continue receiving realtime
-              updates.
+              Real-time updates are finished. Please hit &quot;Preview&quot;
+              from add-on again to see real-time updates.
             </span>
           </div>
         ) : null}
