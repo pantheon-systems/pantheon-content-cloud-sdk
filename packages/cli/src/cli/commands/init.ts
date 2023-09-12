@@ -188,12 +188,15 @@ const init = async ({
 
   if (!skipInstallation) {
     // Installing dependencies
-    const installProj = new SpinnerLogger(
-      "Installing dependencies...",
-      silentLogs,
-    );
+    const installProj = new SpinnerLogger("Installing dependencies...", false);
     installProj.start();
-    await sh(`${packageManager} install`);
+    try {
+      await sh(`${packageManager} install`);
+    } catch (e) {
+      console.error(e);
+      throw e;
+    }
+
     installProj.succeed("Installed dependencies!");
   }
 
