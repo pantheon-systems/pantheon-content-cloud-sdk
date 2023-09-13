@@ -21,14 +21,8 @@ export const pantheonAPIOptions = {
       title: "Lead Capture Form",
       iconUrl: null,
       fields: {
-        title: {
-          required: true,
-          type: "string",
-        },
-        body: {
-          required: false,
-          type: "string",
-        },
+        title: { displayName: "Title", required: true, type: "string" },
+        body: { displayName: "Body", required: false, type: "string" },
       },
     },
   },
