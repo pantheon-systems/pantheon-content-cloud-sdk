@@ -1,4 +1,6 @@
+export type { PantheonClientConfig } from "@pantheon-systems/pcc-sdk-core";
 export { PantheonClient } from "@pantheon-systems/pcc-sdk-core";
+
 export {
   getArticles,
   getArticle,

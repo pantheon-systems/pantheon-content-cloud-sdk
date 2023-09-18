@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -78,6 +78,9 @@ importers:
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
+      get-port:
+        specifier: ^7.0.0
+        version: 7.0.0
       google-auth-library:
         specifier: ^8.9.0
         version: 8.9.0
@@ -360,7 +363,129 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.3.3)
 
+  starters/gatsby-starter-ts:
+    dependencies:
+      '@mdx-js/react':
+        specifier: ^2.3.0
+        version: 2.3.0(react@18.2.0)
+      '@pantheon-systems/pcc-react-sdk':
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.14(postcss@8.4.27)
+      gatsby:
+        specifier: ^5.10.0
+        version: 5.11.0(babel-eslint@10.1.0)(react-dom@18.2.0)(react@18.2.0)(typescript@5.1.6)
+      gatsby-plugin-mdx:
+        specifier: ^5.10.0
+        version: 5.11.0(@mdx-js/react@2.3.0)(gatsby-source-filesystem@5.11.0)(gatsby@5.11.0)(graphql@16.7.1)(react-dom@18.2.0)(react@18.2.0)
+      gatsby-plugin-postcss:
+        specifier: ^6.10.0
+        version: 6.11.0(gatsby@5.11.0)(postcss@8.4.27)(webpack@5.88.2)
+      gatsby-source-filesystem:
+        specifier: ^5.10.0
+        version: 5.11.0(gatsby@5.11.0)
+      postcss:
+        specifier: ^8.4.24
+        version: 8.4.27
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.3
+    devDependencies:
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.9(tailwindcss@3.3.3)
+
   starters/nextjs-starter:
+    dependencies:
+      '@pantheon-systems/nextjs-kit':
+        specifier: 1.7.2
+        version: 1.7.2(next@13.1.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.3)
+      '@pantheon-systems/pcc-react-sdk':
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.9(tailwindcss@3.3.3)
+      classnames:
+        specifier: ^2.3.2
+        version: 2.3.2
+      dotenv:
+        specifier: ^16.0.2
+        version: 16.0.2
+      jotai:
+        specifier: ^2.2.2
+        version: 2.2.2(react@18.2.0)
+      next:
+        specifier: ^13.1.1
+        version: 13.1.1(@babel/core@7.21.8)(react-dom@18.2.0)(react@18.2.0)
+      next-seo:
+        specifier: ^5.4.0
+        version: 5.4.0(next@13.1.1)(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      sharp:
+        specifier: ^0.31.1
+        version: 0.31.1
+    devDependencies:
+      '@testing-library/react':
+        specifier: 13.4.0
+        version: 13.4.0(react-dom@18.2.0)(react@18.2.0)
+      '@vitejs/plugin-react':
+        specifier: ^2.1.0
+        version: 2.1.0(vite@3.2.7)
+      autoprefixer:
+        specifier: ^10.4.12
+        version: 10.4.14(postcss@8.4.27)
+      c8:
+        specifier: ^7.12.0
+        version: 7.12.0
+      eslint:
+        specifier: ^8.24.0
+        version: 8.46.0
+      eslint-config-next:
+        specifier: ^13.1.1
+        version: 13.1.1(eslint@8.46.0)(typescript@4.8.4)
+      jsdom:
+        specifier: ^22.0.0
+        version: 22.0.0
+      msw:
+        specifier: ^0.47.3
+        version: 0.47.3(typescript@4.8.4)
+      postcss:
+        specifier: ^8.4.16
+        version: 8.4.27
+      prettier:
+        specifier: ^3.0.0
+        version: 3.0.0
+      tailwindcss:
+        specifier: ^3.1.8
+        version: 3.3.3
+      typescript:
+        specifier: 4.8.4
+        version: 4.8.4
+      vite:
+        specifier: ^3.2.7
+        version: 3.2.7(@types/node@20.4.6)
+      vitest:
+        specifier: ^0.23.4
+        version: 0.23.4(jsdom@22.0.0)
+      vitest-fetch-mock:
+        specifier: ^0.2.2
+        version: 0.2.2(vitest@0.23.4)
+
+  starters/nextjs-starter-ts:
     dependencies:
       '@pantheon-systems/nextjs-kit':
         specifier: 1.7.2
@@ -10895,6 +11020,11 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /get-port@7.0.0:
+    resolution: {integrity: sha512-mDHFgApoQd+azgMdwylJrv2DX47ywGq1i5VFJE7fZ0dttNq3iQMfsU4IvEgBHojA3KqEudyu7Vq+oN8kNaNkWw==}
+    engines: {node: '>=16'}
+    dev: false
+
   /get-stream@4.1.0:
     resolution: {integrity: sha512-GMat4EJ5161kIy2HevLlr4luNjBgvmj413KaQA7jt4V8B4RDsfpHk7WQ9GVqfYyyx8OS/L66Kox+rJRNklLK7w==}
     engines: {node: '>=6'}
@@ -15886,14 +16016,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /resolve@1.22.2:
-    resolution: {integrity: sha512-Sb+mjNHOULsBv818T40qSPeRiuWLyaGMa5ewydRLFimneixmVy2zdivRl+AF6jaYPC8ERxGDmFSiqui6SfPd+g==}
-    hasBin: true
-    dependencies:
-      is-core-module: 2.12.1
-      path-parse: 1.0.7
-      supports-preserve-symlinks-flag: 1.0.0
-
   /resolve@1.22.3:
     resolution: {integrity: sha512-P8ur/gp/AmbEzjr729bZnLjXK5Z+4P0zhIJgBgzqRih7hL7BOukHGtSTA3ACMY467GRFz3duQsi0bDZdR7DKdw==}
     hasBin: true
@@ -16870,7 +16992,7 @@ packages:
       postcss-load-config: 4.0.1(postcss@8.4.27)
       postcss-nested: 6.0.1(postcss@8.4.27)
       postcss-selector-parser: 6.0.13
-      resolve: 1.22.2
+      resolve: 1.22.3
       sucrase: 3.34.0
     transitivePeerDependencies:
       - ts-node

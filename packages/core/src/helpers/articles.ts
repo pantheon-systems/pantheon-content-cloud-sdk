@@ -18,9 +18,15 @@ export interface ArticleQueryArgs {
 }
 
 type FilterableFields = "body" | "tag" | "title";
-export type ArticleSearchArgs = { [key in FilterableFields]: string };
+
+export type ArticleSearchArgs = {
+  bodyContains?: string;
+  tagContains?: string;
+  titleContains?: string;
+};
+
 type ConvertedArticleSearchArgs = {
-  [key in FilterableFields]: { contains: string };
+  [key in FilterableFields]: { contains: string } | undefined;
 };
 
 export function convertSearchParamsToGQL(
@@ -28,17 +34,23 @@ export function convertSearchParamsToGQL(
 ): { filter: ConvertedArticleSearchArgs } | null {
   if (!searchParams) return null;
 
-  // Cast empty object to workaround Typescript bug
-  // https://stackoverflow.com/questions/15877362/declare-and-initialize-a-dictionary-in-typescript
-  const convertedObject: ConvertedArticleSearchArgs =
-    {} as ConvertedArticleSearchArgs;
-
-  Object.keys(searchParams).forEach(
-    (k) =>
-      (convertedObject[k.replace("Contains", "") as FilterableFields] = {
-        contains: searchParams[k as FilterableFields],
-      }),
-  );
+  const convertedObject: ConvertedArticleSearchArgs = {
+    body: searchParams.bodyContains
+      ? {
+          contains: searchParams.bodyContains,
+        }
+      : undefined,
+    tag: searchParams.tagContains
+      ? {
+          contains: searchParams.tagContains,
+        }
+      : undefined,
+    title: searchParams.titleContains
+      ? {
+          contains: searchParams.titleContains,
+        }
+      : undefined,
+  };
 
   return Object.keys(convertedObject).length
     ? { filter: convertedObject }
@@ -60,12 +72,12 @@ export async function getArticles(
 
 export async function getArticle(
   client: PantheonClient,
-  id: string,
+  id: number | string,
   args?: ArticleQueryArgs,
 ) {
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { id, ...args },
+    variables: { id: id.toString(), ...args },
   });
 
   return article.data.article as Article;
@@ -86,13 +98,13 @@ export async function getArticleBySlug(
 
 export async function getArticleBySlugOrId(
   client: PantheonClient,
-  slugOrId: string,
+  slugOrId: number | string,
   args?: ArticleQueryArgs,
 ) {
   // First attempt to retrieve by slug, and fallback to by id if the matching slug
   // couldn't be found.
   try {
-    const article = await getArticleBySlug(client, slugOrId, args);
+    const article = await getArticleBySlug(client, slugOrId.toString(), args);
 
     if (article) {
       return article;

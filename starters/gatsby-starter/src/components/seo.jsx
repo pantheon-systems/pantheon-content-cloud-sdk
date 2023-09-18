@@ -1,3 +1,5 @@
+import React from 'react';
+
 const defaultMeta = {
   type: "website",
   robots: "follow, index",
@@ -12,6 +14,7 @@ export default function Seo({ title, description, tags, authors, date }) {
     tags,
     date,
   };
+
   return (
     <head>
       <title>{meta.title}</title>

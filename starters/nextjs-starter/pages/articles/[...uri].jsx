@@ -27,7 +27,7 @@ const getSeoMetadata = (article) => {
 };
 
 export default function PageTemplate({ article }) {
-  const seoMetadata= getSeoMetadata(article)
+  const seoMetadata = getSeoMetadata(article);
   return (
     <Layout>
       <NextSeo
