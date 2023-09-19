@@ -2,9 +2,10 @@ import queryString from "query-string";
 import React from "react";
 import { IconCopy } from "../Icons/IconCopy";
 import { IconHideUI } from "../Icons/IconHideUI";
-import { IconInfo } from "../Icons/IconInfo";
 import { IconLeftArrow } from "../Icons/IconLeftArrow";
-import { IconReload } from "../Icons/IconReload";
+import "../../index.css";
+import { motion } from "framer-motion";
+import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
 interface Props {
   id: string;
@@ -22,7 +23,7 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
 
 export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
   const [isHidden, setIsHidden] = React.useState(true);
-  const [showReloadWarning, setShowReloadWarning] = React.useState(false);
+  const [isLive, setIsLive] = React.useState(true);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -39,7 +40,7 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
     if (!timeout) return;
 
     setTimeout(() => {
-      setShowReloadWarning(true);
+      setIsLive(false);
     }, timeout);
   }, []);
 
@@ -51,20 +52,15 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
     });
   }
 
-  if (isHidden) {
-    // SHOW SHOW UI.
-  }
-
   return (
-    <div
+    <motion.div
       style={{
-        fontFamily: "Roboto, sans-serif",
+        fontFamily: "Poppins, sans-serif",
+        fontWeight: 700,
         zIndex: 5,
-        display: isHidden ? "none" : "flex",
+        height: 0,
+        // display: isHidden ? "none" : "flex",
         position: "absolute",
-        justifyContent: "space-between",
-        alignItems: "center",
-        columnGap: "1rem",
         overflow: "clip",
         background: "white",
         width: "100%",
@@ -72,71 +68,67 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
         color: "black",
         left: "0",
         top: "0",
-        padding: "18px",
+        padding: "0",
+        borderBottom: "1px solid #CFCFD3",
+        overflowY: "hidden",
+        fontSize: "16px",
       }}
+      animate={{ height: isHidden ? 0 : 78, padding: isHidden ? 0 : 18 }}
+      transition={{ delay: isHidden ? 0 : 0.5 }}
     >
       <div
         style={{
+          position: "absolute",
           display: "flex",
-          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           columnGap: "1rem",
+          width: "100%",
+          paddingRight: 36,
         }}
       >
-        <a
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            columnGap: "1rem",
+          }}
+        >
+          <a
+            style={{
+              ...textWithIconStyle,
+              background: "#3017A1",
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 700,
+              color: "#fff",
+              padding: "8px 12px",
+              borderRadius: "4px",
+            }}
+            href={`https://docs.google.com/document/d/${id}/edit`}
+          >
+            <IconLeftArrow /> GO BACK TO DOCS
+          </a>
+          <button
+            style={{ ...textWithIconStyle }}
+            onClick={() => setIsHidden(true)}
+          >
+            <IconHideUI /> HIDE UI
+          </button>
+        </div>
+        <LivePreviewIndicator isLive={isLive} />
+        <button
           style={{
             ...textWithIconStyle,
-            background: "#DDE5E7",
-            color: "#212121",
+            border: "1px solid #23232D",
             padding: "8px 12px",
-            borderRadius: "4px",
+            borderRadius: "3px",
+            gap: "10px",
           }}
-          href={`https://docs.google.com/document/d/${id}/edit`}
+          onClick={() => navigator.clipboard.writeText(window.location.href)}
         >
-          <IconLeftArrow /> GO BACK TO DOCS
-        </a>
-        <button
-          style={{ ...textWithIconStyle }}
-          onClick={() => location.reload()}
-        >
-          <IconReload /> RELOAD
-        </button>
-        <button
-          style={{ ...textWithIconStyle }}
-          onClick={() => setIsHidden(true)}
-        >
-          <IconHideUI /> HIDE UI
+          <IconCopy /> Copy URL
         </button>
       </div>
-      <div>
-        {showReloadWarning ? (
-          <div
-            style={{
-              display: "flex",
-              color: "#212121",
-              alignItems: "center",
-              columnGap: "4px",
-              flexDirection: "row",
-            }}
-          >
-            <IconInfo />{" "}
-            <span
-              style={{
-                color: "black",
-                opacity: "50%",
-              }}
-            >
-              Real-time updates are finished. Please hit &quot;Preview&quot;
-              from add-on again to see real-time updates.
-            </span>
-          </div>
-        ) : null}
-      </div>
-      <button
-        style={{ ...textWithIconStyle }}
-        onClick={() => navigator.clipboard.writeText(window.location.href)}
-      >
-        <IconCopy /> Copy URL
-      </button>
-    </div>
+    </motion.div>
   );
 };

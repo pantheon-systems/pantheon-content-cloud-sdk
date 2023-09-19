@@ -86,7 +86,11 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
               parsedArticleId,
               // We will let downstream validate the publishingLevel param.
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { publishingLevel: publishingLevel?.toString() as any },
+              {
+                publishingLevel: publishingLevel
+                  ?.toString()
+                  .toUpperCase() as any,
+              },
             )
           : null;
 
@@ -104,7 +108,9 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         302,
         resolvedPath +
           (publishingLevel && typeof publishingLevel === "string"
-            ? `?publishingLevel=${encodeURIComponent(publishingLevel)}`
+            ? `?publishingLevel=${encodeURIComponent(
+                publishingLevel,
+              ).toUpperCase()}`
             : ""),
       );
     } else if (command[0] === "component_schema") {

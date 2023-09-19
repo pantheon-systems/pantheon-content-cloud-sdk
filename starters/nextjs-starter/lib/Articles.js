@@ -19,12 +19,12 @@ export async function getArticleById(id, pccGrant) {
   return post;
 }
 
-export async function getArticleBySlugOrId(id, pccGrant) {
+export async function getArticleBySlugOrId(id, pccGrant, publishingLevel="PRODUCTION") {
   const post = await PCCReactSDK.getArticleBySlugOrId(
     buildPantheonClientWithGrant(pccGrant),
     id,
     {
-      publishingLevel: "PRODUCTION",
+      publishingLevel: publishingLevel,
       contentType: "TREE_PANTHEON",
     },
   );

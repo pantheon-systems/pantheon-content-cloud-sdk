@@ -80,7 +80,13 @@ export class PantheonClient {
 
     this.apiKey = undefined;
     if (config.pccGrant) {
-      this.apiKey = config.pccGrant.replace(/^pcc_grant\s+/, "");
+      if (config.pccGrant.includes("pcc_grant ")) {
+        this.apiKey = config.pccGrant;
+      } else {
+        this.apiKey = `pcc_grant ${config.pccGrant}`;
+      }
+
+      console.log(this.apiKey);
     } else if (config.apiKey) {
       this.apiKey = config.apiKey;
     }
