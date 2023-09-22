@@ -199,10 +199,7 @@ const init = async ({
 
   if (!skipInstallation) {
     // Installing dependencies
-    console.log("Installing dependencies...");
-    const installProj = new SpinnerLogger("Installing dependencies...", false);
-    installProj.info();
-    // installProj.start();
+    new SpinnerLogger("Installing dependencies...", silentLogs).info();
     try {
       await sh(packageManager, ["install"], true);
     } catch (e) {
@@ -210,7 +207,7 @@ const init = async ({
       throw e;
     }
 
-    installProj.succeed("Installed dependencies!");
+    new SpinnerLogger("", silentLogs).succeed("Installed dependencies!");
   }
 
   // Cleaning up

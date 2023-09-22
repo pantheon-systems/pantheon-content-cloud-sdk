@@ -37,4 +37,4 @@ jobs:
         run: pnpm build
 
       - name: Test
-        run: CI=false && pnpm --filter '*cli*' test
+        run: pnpm --filter '*cli*' test

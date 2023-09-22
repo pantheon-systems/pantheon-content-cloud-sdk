@@ -18,7 +18,7 @@ test("should be able to init starter kit for nextjs template", async () => {
   expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
 
   // Eslint not initialized
-  // expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Nextjs starter kit are created.
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
@@ -78,7 +78,7 @@ test("should be able to init starter kit for nextjs template with typescript", a
   expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
 
   // Eslint not initialized
-  // expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Nextjs starter kit are created.
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
