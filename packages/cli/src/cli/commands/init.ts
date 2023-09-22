@@ -28,8 +28,6 @@ const WORKSPACE_DEPENDENCY_PATHS = {
   "@pantheon-systems/pcc-react-sdk": ["packages", "react-sdk"],
 };
 
-// TODO: Make sure below ESLINT versions are not stale.
-// https://getpantheon.atlassian.net/browse/PCC-474
 const ESLINT_DEPENDENCIES = {
   eslint: "latest",
   "eslint-config-next": "latest",
