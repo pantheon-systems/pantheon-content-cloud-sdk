@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import {  spawn } from "child_process";
 import {
   cpSync,
   existsSync,
@@ -42,15 +42,19 @@ const ESLINT_CONFIG = {
 const octokit = new Octokit();
 export async function sh(cmd: string) {
   return new Promise(function (resolve, reject) {
-    exec(cmd, (err, stdout, stderr) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ stdout, stderr });
-      }
+    const process = spawn(cmd);
+    process.stdout.on("data", (data: Buffer) => {
+      console.log(data.toString());
+    });
+    process.stderr.on("data", (data: Buffer) => {
+      console.error(data.toString());
+    });
+    process.on("exit", (code) => {
+      if (code === 0) resolve(0);
+      else reject(0);
     });
   });
-}
+
 /**
  * Handles initializing projects for PCC
  */
