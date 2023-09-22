@@ -31,8 +31,8 @@ const WORKSPACE_DEPENDENCY_PATHS = {
 // TODO: Make sure below ESLINT versions are not stale.
 // https://getpantheon.atlassian.net/browse/PCC-474
 const ESLINT_DEPENDENCIES = {
-  eslint: "^8.24.0",
-  "eslint-config-next": "^13.1.1",
+  eslint: "latest",
+  "eslint-config-next": "latest",
 };
 
 const ESLINT_CONFIG = {
