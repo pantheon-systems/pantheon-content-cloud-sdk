@@ -14,7 +14,6 @@ import path from "path";
 import { chdir, exit } from "process";
 import chalk from "chalk";
 import { Octokit } from "octokit";
-import ora from "ora";
 import { Logger, SpinnerLogger } from "../../lib/logger";
 import { errorHandler } from "../exceptions";
 
@@ -41,11 +40,7 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-export async function sh(
-  cmd: string,
-  args: string[],
-  displayOutput: boolean = false,
-) {
+export async function sh(cmd: string, args: string[], displayOutput = false) {
   return new Promise(function (resolve, reject) {
     const pr = spawn(cmd, args, {
       stdio: displayOutput ? "inherit" : undefined,
