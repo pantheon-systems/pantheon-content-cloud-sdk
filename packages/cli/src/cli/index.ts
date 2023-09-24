@@ -275,6 +275,40 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
+        )
+        .command(
+          // TODO: Validate all descriptions
+          "document <cmd> [options]",
+          "Enables you to manage documents",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "preview <id>",
+                "Generate preview url",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .positional("<id>", {
+                      describe:
+                        "ID of the document for which you want to see preview link",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("baseUrl", {
+                      describe: "Base URL for the preview link",
+                      type: "string",
+                      demandOption: false,
+                    });
+                },
+                async (args) =>
+                  await showLogs({
+                    id: args.id as string,
+                    limit: args.limit as number,
+                  }),
+              );
+          },
         );
     },
     async () => {
