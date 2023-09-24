@@ -10,6 +10,9 @@ export class SpinnerLogger {
   start() {
     if (this.logger) this.logger.start();
   }
+  info() {
+    if (this.logger) this.logger.info();
+  }
   stop() {
     if (this.logger) this.logger.stop();
   }
