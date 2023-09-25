@@ -1,5 +1,11 @@
 declare type CliTemplateOptions = "nextjs" | "gatsby";
 
+declare type Article = {
+  id: string;
+  siteId: string;
+  title: string;
+};
+
 declare type ApiKey = {
   id: string;
   keyMasked: string;
@@ -10,6 +16,7 @@ declare type Site = {
   id: string;
   url: string;
   created?: number;
+  __isPlayground: boolean;
 };
 
 declare type AuthDetails = {
