@@ -142,7 +142,7 @@ yargs(hideBin(process.argv))
           "Revokes token for a given id.",
           (yargs) => {
             yargs.positional("<id>", {
-              describe: "ID of the token which you want to revoke",
+              describe: "ID of the token which you want to revoke.",
               demandOption: true,
               type: "string",
             });
@@ -178,13 +178,13 @@ yargs(hideBin(process.argv))
           "Shows component schema of the site.",
           (yargs) => {
             yargs.option("url", {
-              describe: "Site url",
+              describe: "Site url.",
               type: "string",
               demandOption: true,
             });
 
             yargs.option("apiPath", {
-              describe: "API path such as /api/pantheoncloud/component_schema",
+              describe: "API path such as /api/pantheoncloud/component_schema.",
               type: "string",
               demandOption: false,
             });
@@ -205,12 +205,12 @@ yargs(hideBin(process.argv))
         )
         .command(
           "configure <id> [options]",
-          "Configure properties for a given site",
+          "Configure properties for a given site.",
           (yargs) => {
             yargs
               .strictCommands()
               .positional("<id>", {
-                describe: "ID of the site which you want to configure",
+                describe: "ID of the site which you want to configure.",
                 demandOption: true,
                 type: "string",
               })
@@ -246,24 +246,25 @@ yargs(hideBin(process.argv))
         )
         .command(
           "webhooks <cmd> [options]",
-          "Manage webhooks for a given site",
+          "Manage webhooks for a given site.",
           (yargs) => {
             yargs
               .strictCommands()
               .demandCommand()
               .command(
                 "history <id>",
-                "View webhook event delivery logs for a given site",
+                "View webhook event delivery logs for a given site.",
                 (yargs) => {
                   yargs
                     .strictCommands()
                     .positional("<id>", {
-                      describe: "ID of the site for which you want to see logs",
+                      describe:
+                        "ID of the site for which you want to see logs.",
                       demandOption: true,
                       type: "string",
                     })
                     .option("limit", {
-                      describe: "Number of logs to fetch at a time",
+                      describe: "Number of logs to fetch at a time.",
                       type: "number",
                       default: 100,
                       demandOption: false,
@@ -284,7 +285,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "document <cmd> [options]",
-    "Enables you to manage documents for a PCC Project",
+    "Enables you to manage documents for a PCC Project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -296,12 +297,12 @@ yargs(hideBin(process.argv))
             yargs
               .strictCommands()
               .positional("<id>", {
-                describe: "ID of the document",
+                describe: "ID of the document.",
                 demandOption: true,
                 type: "string",
               })
               .option("baseUrl", {
-                describe: "Base URL for the generated preview link",
+                describe: "Base URL for the generated preview link.",
                 type: "string",
                 demandOption: false,
               });

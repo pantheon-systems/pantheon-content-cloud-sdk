@@ -1,11 +1,5 @@
 import { exit } from "process";
-import { validateComponentSchema } from "@pantheon-systems/pcc-sdk-core";
-import axios from "axios";
-import chalk from "chalk";
-import dayjs from "dayjs";
-import ora from "ora";
 import AddOnApiHelper from "../../lib/addonApiHelper";
-import { printTable } from "../../lib/cliDisplay";
 import config from "../../lib/config";
 import { filterUndefinedProperties, parameterize } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
@@ -14,21 +8,32 @@ type GeneratePreviewParam = {
   documentId: string;
   baseUrl: string;
 };
-function generateBaseAPIPath(siteData: Site) {
+function generateBaseAPIPath(siteData: Site, baseUrl?: string) {
   if (!siteData) return "#";
 
   const isPlayground = siteData.__isPlayground;
 
+  let _baseUrl: string;
+  if (baseUrl) _baseUrl = baseUrl;
+  else if (isPlayground) _baseUrl = config.playgroundUrl;
+  else _baseUrl = siteData.url;
+
   return isPlayground
-    ? `${config.playgroundUrl}/api/${siteData.id}/pantheoncloud`
-    : `${siteData.url}/api/pantheoncloud`;
+    ? `${_baseUrl}/api/${siteData.id}/pantheoncloud`
+    : `${_baseUrl}/api/pantheoncloud`;
 }
 
 async function generateDocumentPath(
   site: Site,
   docId: string,
   isPreview: boolean,
-  queryParams?: Record<string, string>,
+  {
+    baseUrl,
+    queryParams,
+  }: {
+    baseUrl?: string;
+    queryParams?: Record<string, string>;
+  },
 ) {
   const augmentedQueryParams = { ...queryParams };
 
@@ -41,7 +46,7 @@ async function generateDocumentPath(
       ? {}
       : filterUndefinedProperties(augmentedQueryParams);
 
-  return `${generateBaseAPIPath(site)}/document/${docId}${
+  return `${generateBaseAPIPath(site, baseUrl)}/document/${docId}${
     Object.values(params).length > 0 ? `/?${parameterize(params)}` : ""
   }`;
 }
@@ -69,7 +74,10 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     }
 
     const buildLink = `${await generateDocumentPath(site, documentId, true, {
-      publishingLevel: "REALTIME",
+      queryParams: {
+        publishingLevel: "REALTIME",
+      },
+      baseUrl,
     })}`;
 
     console.log("build link: ", buildLink);
