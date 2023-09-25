@@ -1,6 +1,8 @@
 import { exit } from "process";
+import chalk from "chalk";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import config from "../../lib/config";
+import { Logger, SpinnerLogger } from "../../lib/logger";
 import { filterUndefinedProperties, parameterize } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
 
@@ -54,24 +56,50 @@ async function generateDocumentPath(
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
   async ({ documentId, baseUrl }: GeneratePreviewParam) => {
     let document: Article;
+    const logger = new Logger();
+
+    if (baseUrl) {
+      try {
+        new URL(baseUrl);
+      } catch (_err) {
+        logger.error(
+          chalk.red(
+            `ERROR: Value provided for \`baseUrl\` is not a valid URL. `,
+          ),
+        );
+        exit(1);
+      }
+    }
+
+    // Fetching document details
+    const fetchLogger = new SpinnerLogger("Fetching document details...");
+    fetchLogger.start();
     try {
       document = await AddOnApiHelper.getDocument(documentId);
     } catch (err: any) {
+      fetchLogger.stop();
       if (err.response.status === 404) {
-        console.log("article not found");
+        logger.error(
+          chalk.red("ERROR: Article not found for given document ID."),
+        );
         exit(1);
       } else throw err;
     }
-
     let site: Site;
     try {
       site = await AddOnApiHelper.getSite(document.siteId);
     } catch (err: any) {
+      fetchLogger.stop();
       if (err.response.status === 404) {
-        console.log("site not found");
+        logger.error(chalk.red("ERROR: Site not found for given document."));
         exit(1);
       } else throw err;
     }
+    fetchLogger.succeed("Fetched document details!");
+
+    // Generating link
+    const generateLinkLogger = new SpinnerLogger("Generating preview link");
+    generateLinkLogger.start();
 
     const buildLink = `${await generateDocumentPath(site, documentId, true, {
       queryParams: {
@@ -79,7 +107,10 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
       },
       baseUrl,
     })}`;
+    generateLinkLogger.succeed(
+      "Successfully generated preview link. Please copy it from below:",
+    );
 
-    console.log("build link: ", buildLink);
+    logger.log(chalk.green(buildLink));
   },
 );
