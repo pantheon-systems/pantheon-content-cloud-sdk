@@ -22,7 +22,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
     },
   );
 
-  subscribeToMore({
+  subscribeToMore(() => ({
     document: GET_ARTICLE_QUERY,
     variables: { id, ...args },
     updateQuery: (prev, { subscriptionData }) => {
@@ -31,7 +31,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
       const { article } = subscriptionData.data;
       return { article };
     },
-  });
+  }));
 
   return {
     ...queryData,
