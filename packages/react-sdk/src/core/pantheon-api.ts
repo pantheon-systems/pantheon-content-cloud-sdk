@@ -1,9 +1,11 @@
+import { Url } from "url";
 import {
   getArticleBySlugOrId,
   PantheonClient,
   PantheonClientConfig,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import queryString from "query-string";
 import { SmartComponentMap } from "../components/ArticleRenderer";
 
 interface ApiRequest {
@@ -64,7 +66,8 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     // so we have to change it here to allow the external Pantheon system to access these APIs.
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    const { command: commandInput, pccGrant, publishingLevel } = req.query;
+    const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
+    const { publishingLevel } = restOfQuery;
     const command = Array.isArray(commandInput) ? commandInput : [commandInput];
 
     if (pccGrant) {
@@ -127,7 +130,17 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         );
       }
     } else if (command[0] === "component" && options?.componentPreviewPath) {
-      return res.redirect(302, options.componentPreviewPath(command[1]));
+      const previewPath = options.componentPreviewPath(command[1]);
+      const pathParts = previewPath.split("?");
+      const query = queryString.parse(pathParts[1] || "");
+
+      return res.redirect(
+        302,
+        `${pathParts[0]}?${queryString.stringify({
+          ...restOfQuery,
+          ...query,
+        })}`,
+      );
     } else {
       res.redirect(302, options?.notFoundPath || "/404");
     }
