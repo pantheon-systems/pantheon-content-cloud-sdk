@@ -283,27 +283,25 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
-    // TODO: Validate all descriptions
     "document <cmd> [options]",
-    "Enables you to manage documents",
+    "Enables you to manage documents for a PCC Project",
     (yargs) => {
       yargs
         .strictCommands()
         .demandCommand()
         .command(
           "preview <id>",
-          "Generate preview url",
+          "Generates preview link for a given document ID.",
           (yargs) => {
             yargs
               .strictCommands()
               .positional("<id>", {
-                describe:
-                  "ID of the document for which you want to see preview link",
+                describe: "ID of the document",
                 demandOption: true,
                 type: "string",
               })
               .option("baseUrl", {
-                describe: "Base URL for the preview link",
+                describe: "Base URL for the generated preview link",
                 type: "string",
                 demandOption: false,
               });
