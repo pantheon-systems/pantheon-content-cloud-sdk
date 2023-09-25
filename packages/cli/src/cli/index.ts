@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import { generatePreviewLink } from "./commands/documents";
 import init from "./commands/init";
 import login from "./commands/login";
 import logout from "./commands/logout";
@@ -275,44 +276,44 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
-        )
-        .command(
-          // TODO: Validate all descriptions
-          "document <cmd> [options]",
-          "Enables you to manage documents",
-          (yargs) => {
-            yargs
-              .strictCommands()
-              .demandCommand()
-              .command(
-                "preview <id>",
-                "Generate preview url",
-                (yargs) => {
-                  yargs
-                    .strictCommands()
-                    .positional("<id>", {
-                      describe:
-                        "ID of the document for which you want to see preview link",
-                      demandOption: true,
-                      type: "string",
-                    })
-                    .option("baseUrl", {
-                      describe: "Base URL for the preview link",
-                      type: "string",
-                      demandOption: false,
-                    });
-                },
-                async (args) =>
-                  await showLogs({
-                    id: args.id as string,
-                    limit: args.limit as number,
-                  }),
-              );
-          },
         );
     },
     async () => {
       // noop
+    },
+  )
+  .command(
+    // TODO: Validate all descriptions
+    "document <cmd> [options]",
+    "Enables you to manage documents",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "preview <id>",
+          "Generate preview url",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("<id>", {
+                describe:
+                  "ID of the document for which you want to see preview link",
+                demandOption: true,
+                type: "string",
+              })
+              .option("baseUrl", {
+                describe: "Base URL for the preview link",
+                type: "string",
+                demandOption: false,
+              });
+          },
+          async (args) =>
+            await generatePreviewLink({
+              documentId: args.id as string,
+              baseUrl: args.baseUrl as string,
+            }),
+        );
     },
   )
   .command(

@@ -1,3 +1,4 @@
+import { exit } from "process";
 import { validateComponentSchema } from "@pantheon-systems/pcc-sdk-core";
 import axios from "axios";
 import chalk from "chalk";
@@ -5,133 +6,72 @@ import dayjs from "dayjs";
 import ora from "ora";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { printTable } from "../../lib/cliDisplay";
+import config from "../../lib/config";
+import { filterUndefinedProperties, parameterize } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
 
 type GeneratePreviewParam = {
   documentId: string;
   baseUrl: string;
 };
+function generateBaseAPIPath(siteData: Site) {
+  if (!siteData) return "#";
+
+  const isPlayground = siteData.__isPlayground;
+
+  return isPlayground
+    ? `${config.playgroundUrl}/api/${siteData.id}/pantheoncloud`
+    : `${siteData.url}/api/pantheoncloud`;
+}
+
+async function generateDocumentPath(
+  site: Site,
+  docId: string,
+  isPreview: boolean,
+  queryParams?: Record<string, string>,
+) {
+  const augmentedQueryParams = { ...queryParams };
+
+  if (isPreview) {
+    augmentedQueryParams.pccGrant = await AddOnApiHelper.getPreviewJwt(site.id);
+  }
+
+  const params =
+    augmentedQueryParams == null
+      ? {}
+      : filterUndefinedProperties(augmentedQueryParams);
+
+  return `${generateBaseAPIPath(site)}/document/${docId}${
+    Object.values(params).length > 0 ? `/?${parameterize(params)}` : ""
+  }`;
+}
+
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
   async ({ documentId, baseUrl }: GeneratePreviewParam) => {
-    console.log("*****TEST*****", documentId, baseUrl);
-  },
-);
-
-export const createSite = errorHandler<string>(async (url: string) => {
-  const spinner = ora("Creating site...").start();
-  try {
-    const siteId = await AddOnApiHelper.createSite(url);
-    spinner.succeed(
-      `Successfully created the site with given details. Id: ${siteId}`,
-    );
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
-
-type getComponentSchemaParams = { url: string; apiPath: string | null };
-export const getComponentSchema = errorHandler<getComponentSchemaParams>(
-  async ({ url, apiPath }: getComponentSchemaParams) => {
-    const spinner = ora("Retrieving component schema...").start();
-    const schemaEndpoint = `${url}${
-      apiPath || "/api/pantheoncloud/component_schema"
-    }`;
-    const result = (await axios.get(schemaEndpoint)).data;
-
-    spinner.succeed(
-      `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
-    );
-
+    let document: Article;
     try {
-      validateComponentSchema(result);
-    } catch (e) {
-      spinner.fail(
-        chalk.red(
-          "Failed to validate this schema:",
-          JSON.stringify(result, null, 4),
-        ),
-      );
-      process.exit(1);
+      document = await AddOnApiHelper.getDocument(documentId);
+    } catch (err: any) {
+      if (err.response.status === 404) {
+        console.log("article not found");
+        exit(1);
+      } else throw err;
     }
 
-    // Print out the component schema.
-    console.log(JSON.stringify(result, null, 4));
-  },
-);
-
-export const listSites = errorHandler<void>(async () => {
-  const spinner = ora("Fetching list of existing sites...").start();
-  try {
-    const sites = await AddOnApiHelper.listSites();
-
-    spinner.succeed("Successfully fetched list of sites.");
-    if (sites.length === 0) {
-      console.log(chalk.yellow("No sites found."));
-      return;
-    }
-
-    printTable(
-      sites.map((item) => {
-        return {
-          Id: item.id,
-          Url: item.url,
-          "Created At": item.created
-            ? dayjs(item.created).format("DD MMM YYYY, hh:mm A")
-            : "NA",
-        };
-      }),
-    );
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
-
-export const updateSiteConfig = errorHandler(
-  async ({
-    id,
-    ...configurableProperties
-  }: {
-    id: string;
-  } & Partial<
-    Record<(typeof configurableSiteProperties)[number]["id"], string>
-  >) => {
-    const spinner = ora("Updating site...").start();
-
+    let site: Site;
     try {
-      await AddOnApiHelper.updateSiteConfig(id, configurableProperties);
-      spinner.succeed(`Successfully updated the site.`);
-    } catch (e) {
-      spinner.fail();
-      throw e;
+      site = await AddOnApiHelper.getSite(document.siteId);
+    } catch (err: any) {
+      if (err.response.status === 404) {
+        console.log("site not found");
+        exit(1);
+      } else throw err;
     }
+
+    const buildLink = `${await generateDocumentPath(site, documentId, true, {
+      publishingLevel: "REALTIME",
+    })}`;
+
+    console.log("build link: ", buildLink);
   },
 );
-
-export const configurableSiteProperties = [
-  {
-    id: "url",
-    command: {
-      name: "url <url>",
-      description: "Set url for a given site",
-      type: "string",
-    },
-  },
-  {
-    id: "webhookUrl",
-    command: {
-      name: "webhook-url <webhookUrl>",
-      description: "Set a webhook url for a given site",
-      type: "string",
-    },
-  },
-  {
-    id: "webhookSecret",
-    command: {
-      name: "webhook-secret <webhookSecret>",
-      description: "Set a webhook secret for a given site",
-      type: "string",
-    },
-  },
-] as const;
