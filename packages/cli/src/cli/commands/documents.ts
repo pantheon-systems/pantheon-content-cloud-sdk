@@ -76,9 +76,9 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     fetchLogger.start();
     try {
       document = await AddOnApiHelper.getDocument(documentId);
-    } catch (err: any) {
+    } catch (err) {
       fetchLogger.stop();
-      if (err.response.status === 404) {
+      if ((err as { response: { status: number } }).response.status === 404) {
         logger.error(
           chalk.red("ERROR: Article not found for given document ID."),
         );
@@ -88,9 +88,9 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     let site: Site;
     try {
       site = await AddOnApiHelper.getSite(document.siteId);
-    } catch (err: any) {
+    } catch (err) {
       fetchLogger.stop();
-      if (err.response.status === 404) {
+      if ((err as { response: { status: number } }).response.status === 404) {
         logger.error(chalk.red("ERROR: Site not found for given document."));
         exit(1);
       } else throw err;
