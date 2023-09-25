@@ -14,7 +14,6 @@ import path from "path";
 import { chdir, exit } from "process";
 import chalk from "chalk";
 import { Octokit } from "octokit";
-import ora from "ora";
 import { Logger, SpinnerLogger } from "../../lib/logger";
 import { errorHandler } from "../exceptions";
 
@@ -29,11 +28,9 @@ const WORKSPACE_DEPENDENCY_PATHS = {
   "@pantheon-systems/pcc-react-sdk": ["packages", "react-sdk"],
 };
 
-// TODO: Make sure below ESLINT versions are not stale.
-// https://getpantheon.atlassian.net/browse/PCC-474
 const ESLINT_DEPENDENCIES = {
-  eslint: "^8.24.0",
-  "eslint-config-next": "^13.1.1",
+  eslint: "latest",
+  "eslint-config-next": "latest",
 };
 
 const ESLINT_CONFIG = {
@@ -41,11 +38,7 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-export async function sh(
-  cmd: string,
-  args: string[],
-  displayOutput: boolean = false,
-) {
+export async function sh(cmd: string, args: string[], displayOutput = false) {
   return new Promise(function (resolve, reject) {
     const pr = spawn(cmd, args, {
       stdio: displayOutput ? "inherit" : undefined,
