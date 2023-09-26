@@ -14,6 +14,7 @@ import {
   updateSiteConfig,
 } from "./commands/sites";
 import { createToken, listTokens, revokeToken } from "./commands/token";
+import printWhoAmI from "./commands/whoAmI";
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
@@ -72,6 +73,18 @@ yargs(hideBin(process.argv))
           default: false,
           demandOption: false,
         })
+        .option("non-interactive", {
+          describe: "Skips asking any questions to the user.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
+        })
+        .option("site-id", {
+          describe: "Id of site to pre-populate .env file with.",
+          type: "string",
+          default: false,
+          demandOption: false,
+        })
         .option("eslint", {
           describe: "Initialize with eslint config.",
           type: "boolean",
@@ -93,6 +106,8 @@ yargs(hideBin(process.argv))
       const usePnpm = args["use-pnpm"] as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
+      const nonInteractive = args.non_interactive as boolean;
+      const siteId = args.site_id as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;
 
@@ -108,6 +123,8 @@ yargs(hideBin(process.argv))
         skipInstallation: noInstall,
         packageManager,
         appName,
+        nonInteractive,
+        siteId,
         silentLogs: silent,
         eslint,
         useTypescript,
@@ -314,6 +331,14 @@ yargs(hideBin(process.argv))
             }),
         );
     },
+  )
+  .command(
+    "whoami",
+    "Print information about yourself.",
+    () => {
+      // noop
+    },
+    async () => await printWhoAmI(),
   )
   .command(
     "login",
