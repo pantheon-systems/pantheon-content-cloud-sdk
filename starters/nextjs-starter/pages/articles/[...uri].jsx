@@ -99,9 +99,9 @@ export async function getServerSideProps({
     // link (mostly for SEO purposes than anything else).
     return {
       redirect: {
-        destination: `${pantheonAPIOptions.resolvePath(article)}?${
-          query ? queryString.stringify(query) : ""
-        }#`,
+        destination: `${pantheonAPIOptions.resolvePath(
+          article,
+        )}?${queryString.stringify({ publishingLevel, ...query })}#`,
         permanent: false,
       },
     };

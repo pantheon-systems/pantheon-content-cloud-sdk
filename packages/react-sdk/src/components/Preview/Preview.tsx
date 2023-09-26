@@ -1,14 +1,16 @@
 import queryString from "query-string";
 import React from "react";
-import { IconCopy } from "../Icons/IconCopy";
-import { IconHideUI } from "../Icons/IconHideUI";
-import { IconLeftArrow } from "../Icons/IconLeftArrow";
 import "../../index.css";
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { motion } from "framer-motion";
+import { getCookie } from "../../utils/cookies";
+import { HoverButton } from "../Common/HoverButton";
+import { IconDocs } from "../Icons/IconDocs";
+import { IconUp } from "../Icons/IconUp";
 import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
 interface Props {
-  id: string;
+  article: Article;
   previewBarOverride?: React.ReactElement | undefined | null;
   timeout?: number;
 }
@@ -21,9 +23,10 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
   flexDirection: "row",
 };
 
-export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
-  const [isHidden, setIsHidden] = React.useState(true);
+export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
+  const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(true);
+  const [hasCopied, setHasCopied] = React.useState(false);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -48,7 +51,7 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
     return React.cloneElement(previewBarOverride, {
       isHidden,
       setIsHidden,
-      id,
+      article,
     });
   }
 
@@ -58,8 +61,7 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
         fontFamily: "Poppins, sans-serif",
         fontWeight: 700,
         zIndex: 5,
-        height: 0,
-        // display: isHidden ? "none" : "flex",
+        height: 58,
         position: "absolute",
         overflow: "clip",
         background: "white",
@@ -68,13 +70,11 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
         color: "black",
         left: "0",
         top: "0",
-        padding: "0",
+        padding: 0,
         borderBottom: "1px solid #CFCFD3",
         overflowY: "hidden",
         fontSize: "16px",
       }}
-      animate={{ height: isHidden ? 0 : 78, padding: isHidden ? 0 : 18 }}
-      transition={{ delay: isHidden ? 0 : 0.5 }}
     >
       <div
         style={{
@@ -84,50 +84,108 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
           alignItems: "center",
           columnGap: "1rem",
           width: "100%",
-          paddingRight: 36,
         }}
       >
-        <div
+        <motion.div
           style={{
             display: "flex",
             flexDirection: "row",
             columnGap: "1rem",
+            opacity: 0,
+            paddingTop: "-4px",
           }}
+          animate={{ opacity: isHidden ? 0 : 1 }}
+          transition={{ delay: isHidden ? 0 : 0.5 }}
         >
           <a
             style={{
               ...textWithIconStyle,
-              background: "#3017A1",
               fontFamily: "Poppins, sans-serif",
-              fontWeight: 700,
-              color: "#fff",
+              fontWeight: 500,
+              color: "#23232D",
               padding: "8px 12px",
-              borderRadius: "4px",
             }}
-            href={`https://docs.google.com/document/d/${id}/edit`}
+            href={`https://docs.google.com/document/d/${article.id}/edit`}
+            target="_blank"
           >
-            <IconLeftArrow /> GO BACK TO DOCS
+            <IconDocs /> {article.title}
           </a>
-          <button
-            style={{ ...textWithIconStyle }}
-            onClick={() => setIsHidden(true)}
-          >
-            <IconHideUI /> HIDE UI
-          </button>
-        </div>
-        <LivePreviewIndicator isLive={isLive} />
-        <button
+        </motion.div>
+        <motion.div
           style={{
-            ...textWithIconStyle,
-            border: "1px solid #23232D",
-            padding: "8px 12px",
-            borderRadius: "3px",
-            gap: "10px",
+            opacity: 0,
+            paddingTop: "-9px",
           }}
-          onClick={() => navigator.clipboard.writeText(window.location.href)}
+          animate={{ opacity: isHidden ? 0 : 1 }}
+          transition={{ delay: isHidden ? 0 : 0.5 }}
         >
-          <IconCopy /> Copy URL
-        </button>
+          <LivePreviewIndicator isLive={isLive} />
+        </motion.div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            columnGap: "4px",
+            alignItems: "center",
+          }}
+        >
+          <motion.div
+            style={{ opacity: 0, paddingTop: "-9px" }}
+            animate={{ opacity: isHidden ? 0 : 1 }}
+            transition={{ delay: isHidden ? 0 : 0.5 }}
+          >
+            <HoverButton
+              style={{
+                ...textWithIconStyle,
+                background: "#FFDC28",
+                padding: "8px 12px",
+                borderRadius: "3px",
+                gap: "10px",
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 700,
+                color: "#23232D",
+              }}
+              onClick={() => {
+                let parsedUrl = queryString.parseUrl(window.location.href, {
+                  parseFragmentIdentifier: true,
+                });
+
+                const query = {
+                  ...(parsedUrl.query || {}),
+                  pccGrant: getCookie("PCC-GRANT"),
+                }; 
+
+                navigator.clipboard.writeText(
+                  `${parsedUrl.url}?${queryString.stringify(query)}#${
+                    parsedUrl.fragmentIdentifier
+                  }`,
+                );
+                setHasCopied(true);
+              }}
+            >
+              {hasCopied ? "Copied URL" : "Copy URL"}
+            </HoverButton>
+          </motion.div>
+          <div
+            style={
+              isHidden
+                ? {
+                    background: "#F1F1F1",
+                    padding: "16px",
+                    borderRadius: "3px",
+                    boxShadow: "0px 3px 8px 0px #00000026",
+                    cursor: "pointer",
+                  }
+                : {
+                    padding: "16px",
+                    cursor: "pointer",
+                  }
+            }
+            onClick={() => setIsHidden(!isHidden)}
+          >
+            {isHidden ? <IconUp flip={true} /> : <IconUp />}
+          </div>
+        </div>
       </div>
     </motion.div>
   );

@@ -57,7 +57,7 @@ const ArticleRenderer = ({
       <div className={containerClassName}>
         {renderCSR && article != null
           ? createPortal(
-              <PreviewBar id={article.id} timeout={timeout} />,
+              <PreviewBar article={article} timeout={timeout} />,
               document.body,
             )
           : null}
@@ -99,7 +99,7 @@ const ArticleRenderer = ({
     <div className={containerClassName}>
       {renderCSR && article != null
         ? createPortal(
-            <PreviewBar id={article.id} timeout={timeout} />,
+            <PreviewBar article={article} timeout={timeout} />,
             document.body,
           )
         : null}

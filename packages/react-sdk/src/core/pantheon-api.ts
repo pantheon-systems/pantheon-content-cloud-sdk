@@ -71,9 +71,9 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     const command = Array.isArray(commandInput) ? commandInput : [commandInput];
 
     if (pccGrant) {
-      res.setHeader(
+      res.setHeader( 
         "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; HttpOnly; SameSite=Strict`,
+        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
       );
     }
 
@@ -97,6 +97,7 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
             )
           : null;
 
+      console.log("SDK", article);
       if (article == null) {
         article = {
           id: parsedArticleId,
