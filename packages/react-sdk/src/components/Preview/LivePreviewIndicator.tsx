@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import { useState } from "react";
 import { Arrow, useLayer } from "react-laag";
 import { IconDot } from "../Icons/IconDot";
@@ -73,7 +74,7 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
                 <br />
                 <span style={{ fontWeight: 500 }}>
                   To reconnect, navigate to the document and select the
-                  'Preview' button in the Content Cloud add-on.
+                  &apos;Preview&apos; button in the Content Cloud add-on.
                 </span>
               </div>
               <Arrow

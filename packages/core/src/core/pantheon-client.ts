@@ -85,8 +85,6 @@ export class PantheonClient {
       } else {
         this.apiKey = `pcc_grant ${config.pccGrant}`;
       }
-
-      console.log(this.apiKey);
     } else if (config.apiKey) {
       this.apiKey = config.apiKey;
     }

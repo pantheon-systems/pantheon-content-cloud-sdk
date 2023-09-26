@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PantheonAPI } from "../../src";
 
 describe("PantheonApi", () => {
@@ -6,7 +7,7 @@ describe("PantheonApi", () => {
       url: "/components",
       query: {
         commandInput: ["component", "LEAD_CAPTURE"],
-        width: 500,
+        width: "500",
         height: "650",
       },
       redirect: jest.fn(),
@@ -36,7 +37,7 @@ describe("PantheonApi", () => {
       url: "/components",
       query: {
         commandInput: ["component", "LEAD_CAPTURE"],
-        width: 500,
+        width: "500",
         height: "650",
       },
       redirect: jest.fn(),

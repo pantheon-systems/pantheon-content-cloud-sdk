@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import queryString from "query-string";
 import React from "react";
 import "../../index.css";
@@ -45,7 +46,7 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
     setTimeout(() => {
       setIsLive(false);
     }, timeout);
-  }, []);
+  }, [timeout]);
 
   if (previewBarOverride != null) {
     return React.cloneElement(previewBarOverride, {
@@ -106,6 +107,7 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
               padding: "8px 12px",
             }}
             href={`https://docs.google.com/document/d/${article.id}/edit`}
+            rel="noreferrer"
             target="_blank"
           >
             <IconDocs /> {article.title}
@@ -146,14 +148,14 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
                 color: "#23232D",
               }}
               onClick={() => {
-                let parsedUrl = queryString.parseUrl(window.location.href, {
+                const parsedUrl = queryString.parseUrl(window.location.href, {
                   parseFragmentIdentifier: true,
                 });
 
                 const query = {
                   ...(parsedUrl.query || {}),
                   pccGrant: getCookie("PCC-GRANT"),
-                }; 
+                };
 
                 navigator.clipboard.writeText(
                   `${parsedUrl.url}?${queryString.stringify(query)}#${

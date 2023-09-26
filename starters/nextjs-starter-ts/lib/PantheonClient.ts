@@ -7,7 +7,6 @@ export const pantheonClient = new PantheonClient({
 });
 
 export const buildPantheonClientWithGrant = (pccGrant) => {
-  console.log("buildPantheonClientWithGrant", { pccGrant });
   return new PantheonClient({
     pccHost: process.env.PCC_HOST,
     siteId: process.env.PCC_SITE_ID,
