@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { spawn } from "child_process";
 import {
   cpSync,
   existsSync,
@@ -28,11 +28,9 @@ const WORKSPACE_DEPENDENCY_PATHS = {
   "@pantheon-systems/pcc-react-sdk": ["packages", "react-sdk"],
 };
 
-// TODO: Make sure below ESLINT versions are not stale.
-// https://getpantheon.atlassian.net/browse/PCC-474
 const ESLINT_DEPENDENCIES = {
-  eslint: "^8.24.0",
-  "eslint-config-next": "^13.1.1",
+  eslint: "latest",
+  "eslint-config-next": "latest",
 };
 
 const ESLINT_CONFIG = {
@@ -40,17 +38,18 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-export async function sh(cmd: string) {
+export async function sh(cmd: string, args: string[], displayOutput = false) {
   return new Promise(function (resolve, reject) {
-    exec(cmd, (err, stdout, stderr) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ stdout, stderr });
-      }
+    const pr = spawn(cmd, args, {
+      stdio: displayOutput ? "inherit" : undefined,
+    });
+    pr.on("exit", (code) => {
+      if (code === 0) resolve(0);
+      else reject(`Exited with code: ${code}`);
     });
   });
 }
+
 /**
  * Handles initializing projects for PCC
  */
@@ -94,9 +93,12 @@ const init = async ({
     repo: "pantheon-content-cloud-sdk",
   });
   writeFileSync(path.join(TEMP_DIR_NAME, TAR_FILE_NAME), Buffer.from(data));
-  await sh(
-    `tar xvpf ${path.join(TEMP_DIR_NAME, TAR_FILE_NAME)} -C ${TEMP_DIR_NAME}`,
-  );
+  await sh("tar", [
+    "xvpf",
+    path.join(TEMP_DIR_NAME, TAR_FILE_NAME),
+    "-C",
+    TEMP_DIR_NAME,
+  ]);
   let files = readdirSync(TEMP_DIR_NAME);
   files = files.filter((item) => item !== TAR_FILE_NAME);
   renameSync(
@@ -174,30 +176,31 @@ const init = async ({
   writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
   // Committing changes to Git
-  await sh("git init");
-  await sh("git add .");
-  await sh(
-    'git commit -m "Initial commit from Pantheon Content Cloud Toolkit."',
-  );
+  await sh("git", ["init"]);
+  await sh("git", ["add", "."]);
+  await sh("git", [
+    "commit",
+    "-m",
+    '"Initial commit from Pantheon Content Cloud Toolkit."',
+  ]);
   setupProj.succeed("Completed setting up project!");
 
   // Create .env.local/.env.development
   const localEnvFileName =
     template === "gatsby" ? ".env.development" : ".env.local";
-  await sh(`cp .env.example ${localEnvFileName}`);
+  await sh("cp", [".env.example", localEnvFileName]);
 
   if (!skipInstallation) {
     // Installing dependencies
-    const installProj = new SpinnerLogger("Installing dependencies...", false);
-    installProj.start();
+    new SpinnerLogger("Installing dependencies...", silentLogs).info();
     try {
-      await sh(`${packageManager} install`);
+      await sh(packageManager, ["install"], true);
     } catch (e) {
       console.error(e);
       throw e;
     }
 
-    installProj.succeed("Installed dependencies!");
+    new SpinnerLogger("", silentLogs).succeed("Installed dependencies!");
   }
 
   // Cleaning up

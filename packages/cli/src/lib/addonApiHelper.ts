@@ -6,6 +6,7 @@ import { getLocalAuthDetails } from "./localStorage";
 
 const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
 const SITE_ENDPOINT = `${config.addOnApiEndpoint}/sites`;
+const DOCUMENT_ENDPOINT = `${config.addOnApiEndpoint}/articles`;
 const OAUTH_ENDPOINT = `${config.addOnApiEndpoint}/oauth`;
 
 class AddOnApiHelper {
@@ -20,6 +21,32 @@ class AddOnApiHelper {
       refreshToken,
     });
     return resp.data as Credentials;
+  }
+
+  static async getDocument(documentId: string): Promise<Article> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) throw new UserNotLoggedIn();
+
+    const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
+      headers: {
+        Authorization: `Bearer ${authDetails.id_token}`,
+      },
+    });
+
+    return resp.data as Article;
+  }
+
+  static async getPreviewJwt(siteId: string): Promise<string> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) throw new UserNotLoggedIn();
+
+    const resp = await axios.post(`${SITE_ENDPOINT}/${siteId}/preview`, null, {
+      headers: {
+        Authorization: `Bearer ${authDetails.id_token}`,
+      },
+    });
+
+    return resp.data.grantToken as string;
   }
 
   static async createApiKey(): Promise<string> {
@@ -97,6 +124,18 @@ class AddOnApiHelper {
     });
 
     return resp.data as Site[];
+  }
+  static async getSite(siteId: string): Promise<Site> {
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) throw new UserNotLoggedIn();
+
+    const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}`, {
+      headers: {
+        Authorization: `Bearer ${authDetails.id_token}`,
+      },
+    });
+
+    return resp.data as Site;
   }
 
   static async updateSite(id: string, url: string): Promise<void> {

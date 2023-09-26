@@ -5,24 +5,34 @@ import {
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
   article: Article | undefined;
 };
 
 export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
+  const publishingLevel = args?.publishingLevel;
+  const contentType = args?.contentType;
+
+  const memoizedArgs = useMemo(() => {
+    return {
+      ...(publishingLevel && { publishingLevel }),
+      ...(contentType && { contentType }),
+    };
+  }, [publishingLevel, contentType]);
+
   const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
     GET_ARTICLE_QUERY,
     {
-      variables: { id, ...args },
+      variables: { id, ...memoizedArgs },
     },
   );
 
   useEffect(() => {
     subscribeToMore({
       document: ARTICLE_UPDATE_SUBSCRIPTION,
-      variables: { id, ...args },
+      variables: { id, ...memoizedArgs },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
 
@@ -30,7 +40,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
         return { article };
       },
     });
-  }, [subscribeToMore, id, args]);
+  }, [id, memoizedArgs, subscribeToMore]);
 
   return {
     ...queryData,
