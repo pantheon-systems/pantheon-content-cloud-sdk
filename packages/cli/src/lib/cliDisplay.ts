@@ -50,4 +50,5 @@ export function printTable(input: { [key: string]: string | number }[]) {
     r = r.replace(/'/g, " ");
     result += `${r}\n`;
   }
+  console.log(result);
 }
