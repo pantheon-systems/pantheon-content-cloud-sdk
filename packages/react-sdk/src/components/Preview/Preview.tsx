@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import queryString from "query-string";
-import React from "react";
+import React, { useEffect } from "react";
 import "../../index.css";
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { motion } from "framer-motion";
 import { getCookie } from "../../utils/cookies";
@@ -10,10 +11,12 @@ import { IconDocs } from "../Icons/IconDocs";
 import { IconUp } from "../Icons/IconUp";
 import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
+// Default timeout for live preview: 10 minutes
+const LIVE_PREVIEW_TIMEOUT_MS = 1000 * 60 * 5;
+
 interface Props {
   article: Article;
   previewBarOverride?: React.ReactElement | undefined | null;
-  timeout?: number;
 }
 
 const textWithIconStyle: Partial<React.CSSProperties> = {
@@ -24,10 +27,33 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
   flexDirection: "row",
 };
 
-export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
+const pccGrant = getCookie("PCC-GRANT");
+
+function calculateTimePassed(iat: number) {
+  return Date.now() - iat * 1000;
+}
+
+export const PreviewBar = ({ article, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(false);
-  const [isLive, setIsLive] = React.useState(true);
+  const [isLive, setIsLive] = React.useState(false);
   const [hasCopied, setHasCopied] = React.useState(false);
+
+  useEffect(() => {
+    try {
+      // If there's no grant, then we can leave isLive as the default false.
+      if (!pccGrant) return;
+      const { iat } = parseJwt(pccGrant);
+      const livePreviewTimeRemaining =
+        LIVE_PREVIEW_TIMEOUT_MS - calculateTimePassed(iat);
+
+      if (livePreviewTimeRemaining >= 100) {
+        setIsLive(true);
+        setTimeout(() => {
+          setIsLive(false);
+        }, livePreviewTimeRemaining);
+      }
+    } catch (e) {}
+  }, []);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -38,15 +64,6 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
       }
     }
   }, []);
-
-  // Show the preview timeout warning after `timeout`
-  React.useEffect(() => {
-    if (!timeout) return;
-
-    setTimeout(() => {
-      setIsLive(false);
-    }, timeout);
-  }, [timeout]);
 
   if (previewBarOverride != null) {
     return React.cloneElement(previewBarOverride, {
@@ -72,7 +89,7 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
         left: "0",
         top: "0",
         padding: 0,
-        borderBottom: "1px solid #CFCFD3",
+        borderBottom: isHidden ? undefined : "1px solid #CFCFD3",
         overflowY: "hidden",
         fontSize: "16px",
       }}
@@ -154,7 +171,7 @@ export const PreviewBar = ({ article, previewBarOverride, timeout }: Props) => {
 
                 const query = {
                   ...(parsedUrl.query || {}),
-                  pccGrant: getCookie("PCC-GRANT"),
+                  pccGrant,
                 };
 
                 navigator.clipboard.writeText(

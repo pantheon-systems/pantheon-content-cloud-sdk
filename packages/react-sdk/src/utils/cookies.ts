@@ -1,5 +1,7 @@
 // From https://www.w3schools.com/js/js_cookies.asp
-export function getCookie(cname: string): string {
+export function getCookie(cname: string): string | null {
+  if (typeof document === "undefined") return null;
+
   const name = cname + "=";
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(";");
