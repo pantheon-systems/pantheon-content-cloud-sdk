@@ -116,7 +116,7 @@ yargs(hideBin(process.argv))
       const siteId = args.site_id as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;
-      const printVerbose = args.printVerbose as boolean;
+      const printVerbose = args.verbose as boolean;
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;

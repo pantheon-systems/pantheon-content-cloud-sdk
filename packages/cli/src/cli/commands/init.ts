@@ -67,6 +67,7 @@ const init = async ({
   eslint,
   appName,
   useTypescript,
+  printVerbose,
 }: {
   dirName: string;
   template: CliTemplateOptions;
@@ -223,7 +224,6 @@ const init = async ({
       ]);
 
       if (chooseSite) {
-        console.log(await AddOnApiHelper.listSites());
         siteId = (
           await inquirer.prompt({
             type: "list",
