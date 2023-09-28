@@ -175,8 +175,10 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
                 };
 
                 navigator.clipboard.writeText(
-                  `${parsedUrl.url}?${queryString.stringify(query)}#${
+                  `${parsedUrl.url}?${queryString.stringify(query)}${
                     parsedUrl.fragmentIdentifier
+                      ? `#${parsedUrl.fragmentIdentifier}`
+                      : ""
                   }`,
                 );
                 setHasCopied(true);
