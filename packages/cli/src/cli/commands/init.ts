@@ -201,7 +201,7 @@ const init = async ({
     // Installing dependencies
     new SpinnerLogger("Installing dependencies...", silentLogs).info();
     try {
-      await sh(packageManager, ["install"], true);
+      await sh(packageManager, ["install"], !silentLogs);
     } catch (e) {
       console.error(e);
       throw e;
