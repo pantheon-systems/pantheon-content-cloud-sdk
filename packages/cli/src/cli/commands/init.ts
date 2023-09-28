@@ -73,11 +73,12 @@ const init = async ({
   skipInstallation: boolean;
   packageManager: PackageManager;
   nonInteractive: boolean;
-  siteId: string | null | undefined;
+  siteId?: string | null | undefined;
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
   useTypescript: boolean;
+  printVerbose?: boolean;
 }) => {
   const logger = new Logger(silentLogs);
   if (!dirName) {
@@ -103,7 +104,7 @@ const init = async ({
   await sh(
     "tar",
     ["xvpf", path.join(TEMP_DIR_NAME, TAR_FILE_NAME), "-C", TEMP_DIR_NAME],
-    !silentLogs,
+    printVerbose,
   );
   let files = readdirSync(TEMP_DIR_NAME);
   files = files.filter((item) => item !== TAR_FILE_NAME);
@@ -213,7 +214,7 @@ const init = async ({
 
   if (!nonInteractive) {
     if (!siteId) {
-      let { chooseSite } = await inquirer.prompt([
+      const { chooseSite } = await inquirer.prompt([
         {
           type: "confirm",
           name: "chooseSite",
@@ -237,7 +238,7 @@ const init = async ({
       }
     }
 
-    let { createNewApiKey } = await inquirer.prompt([
+    const { createNewApiKey } = await inquirer.prompt([
       {
         type: "confirm",
         name: "createNewApiKey",
@@ -288,9 +289,10 @@ export default errorHandler<{
   packageManager: PackageManager;
   skipInstallation: boolean;
   nonInteractive: boolean;
-  siteId: string;
+  siteId?: string | null | undefined;
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
   useTypescript: boolean;
+  printVerbose?: boolean;
 }>(init);

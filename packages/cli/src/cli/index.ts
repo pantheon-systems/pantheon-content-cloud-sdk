@@ -96,6 +96,12 @@ yargs(hideBin(process.argv))
           type: "boolean",
           default: false,
           demandOption: false,
+        })
+        .option("verbose", {
+          describe: "Print verbose logs.",
+          type: "boolean",
+          default: false,
+          demandOption: false,
         });
     },
     async (args) => {
@@ -110,6 +116,7 @@ yargs(hideBin(process.argv))
       const siteId = args.site_id as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;
+      const printVerbose = args.printVerbose as boolean;
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
@@ -128,6 +135,7 @@ yargs(hideBin(process.argv))
         silentLogs: silent,
         eslint,
         useTypescript,
+        printVerbose,
       });
     },
   )
