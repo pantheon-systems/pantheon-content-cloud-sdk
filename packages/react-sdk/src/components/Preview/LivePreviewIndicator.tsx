@@ -67,7 +67,7 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
                 }}
               >
                 <span>
-                  This preview page is no longer connect to the document
+                  This preview page is no longer connected to the document
                   (updates to the document will not be displayed until this is
                   reconnected).{" "}
                 </span>
