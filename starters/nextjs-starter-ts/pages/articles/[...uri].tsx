@@ -87,10 +87,22 @@ export default function PageTemplate({ article }) {
 
 export async function getServerSideProps({
   req: { cookies },
-  query: { uri, ...query },
+  res,
+  query: { uri, publishingLevel, pccGrant, ...query },
 }) {
   const slugOrId = uri[uri.length - 1];
-  const article = await getArticleBySlugOrId(slugOrId, cookies["PCC-GRANT"]);
+  const article = await getArticleBySlugOrId(
+    slugOrId,
+    pccGrant || cookies["PCC-GRANT"],
+    publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
+  );
+
+  if (pccGrant) {
+    res.setHeader(
+      "Set-Cookie",
+      `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
+    );
+  }
 
   if (!article) {
     return {
@@ -104,9 +116,9 @@ export async function getServerSideProps({
     // link (mostly for SEO purposes than anything else).
     return {
       redirect: {
-        destination: `${pantheonAPIOptions.resolvePath(article)}?${
-          query ? queryString.stringify(query) : ""
-        }#`,
+        destination: `${pantheonAPIOptions.resolvePath(
+          article,
+        )}?${queryString.stringify({ publishingLevel, ...query })}#`,
         permanent: false,
       },
     };

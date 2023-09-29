@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import http from "http";
 import { dirname, join } from "path";
 import url, { fileURLToPath } from "url";
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { OAuth2Client } from "google-auth-library";
 import nunjucks from "nunjucks";
 import open from "open";
@@ -9,7 +10,6 @@ import ora from "ora";
 import destroyer from "server-destroy";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import config from "../../lib/config";
-import { parseJwt } from "../../lib/jwt";
 import {
   getLocalAuthDetails,
   persistAuthDetails,

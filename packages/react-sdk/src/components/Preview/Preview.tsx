@@ -1,14 +1,22 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import queryString from "query-string";
-import React from "react";
-import { IconHideUI } from "../Icons/IconHideUI";
-import { IconInfo } from "../Icons/IconInfo";
-import { IconLeftArrow } from "../Icons/IconLeftArrow";
-import { IconReload } from "../Icons/IconReload";
+import React, { useEffect } from "react";
+import "../../index.css";
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import { motion } from "framer-motion";
+import { getCookie } from "../../utils/cookies";
+import { HoverButton } from "../Common/HoverButton";
+import { IconDocs } from "../Icons/IconDocs";
+import { IconUp } from "../Icons/IconUp";
+import { LivePreviewIndicator } from "./LivePreviewIndicator";
+
+// Default timeout for live preview: 10 minutes
+const LIVE_PREVIEW_TIMEOUT_MS = 1000 * 60 * 5;
 
 interface Props {
-  id: string;
+  article: Article;
   previewBarOverride?: React.ReactElement | undefined | null;
-  timeout?: number;
 }
 
 const textWithIconStyle: Partial<React.CSSProperties> = {
@@ -19,13 +27,35 @@ const textWithIconStyle: Partial<React.CSSProperties> = {
   flexDirection: "row",
 };
 
-export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
-  const [isHidden, setIsHidden] = React.useState(true);
-  const [showReloadWarning, setShowReloadWarning] = React.useState(false);
+const pccGrant = getCookie("PCC-GRANT");
 
-  // TODO: Re-enable this if a general solution is found.
-  // https://getpantheon.atlassian.net/browse/PCC-51
-  // const [viewFormat, setViewFormat] = React.useState('desktop');
+function calculateTimePassed(iat: number) {
+  return Date.now() - iat * 1000;
+}
+
+export const PreviewBar = ({ article, previewBarOverride }: Props) => {
+  const [isHidden, setIsHidden] = React.useState(false);
+  const [isLive, setIsLive] = React.useState(false);
+  const [hasCopied, setHasCopied] = React.useState(false);
+
+  useEffect(() => {
+    try {
+      // If there's no grant, then we can leave isLive as the default false.
+      if (!pccGrant) return;
+      const { iat } = parseJwt(pccGrant);
+      const livePreviewTimeRemaining =
+        LIVE_PREVIEW_TIMEOUT_MS - calculateTimePassed(iat);
+
+      if (livePreviewTimeRemaining >= 100) {
+        setIsLive(true);
+        setTimeout(() => {
+          setIsLive(false);
+        }, livePreviewTimeRemaining);
+      }
+    } catch {
+      // Pass
+    }
+  }, []);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {
@@ -37,33 +67,22 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
     }
   }, []);
 
-  // Show the preview timeout warning after `timeout`
-  React.useEffect(() => {
-    if (!timeout) return;
-
-    setTimeout(() => {
-      setShowReloadWarning(true);
-    }, timeout);
-  }, []);
-
   if (previewBarOverride != null) {
     return React.cloneElement(previewBarOverride, {
       isHidden,
       setIsHidden,
-      id,
+      article,
     });
   }
 
   return (
-    <div
+    <motion.div
       style={{
-        fontFamily: "Roboto, sans-serif",
+        fontFamily: "Poppins, sans-serif",
+        fontWeight: 700,
         zIndex: 5,
-        display: isHidden ? "none" : "flex",
+        height: 58,
         position: "absolute",
-        justifyContent: "space-between",
-        alignItems: "center",
-        columnGap: "1rem",
         overflow: "clip",
         background: "white",
         width: "100%",
@@ -71,71 +90,126 @@ export const PreviewBar = ({ id, previewBarOverride, timeout }: Props) => {
         color: "black",
         left: "0",
         top: "0",
-        padding: "18px",
+        padding: 0,
+        borderBottom: isHidden ? undefined : "1px solid #CFCFD3",
+        overflowY: "hidden",
+        fontSize: "16px",
       }}
     >
       <div
         style={{
+          position: "absolute",
           display: "flex",
-          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           columnGap: "1rem",
+          width: "100%",
         }}
       >
-        <a
+        <motion.div
           style={{
-            ...textWithIconStyle,
-            background: "#DDE5E7",
-            color: "#212121",
-            padding: "8px 12px",
-            borderRadius: "4px",
+            display: "flex",
+            flexDirection: "row",
+            columnGap: "1rem",
+            opacity: 0,
+            paddingTop: "-4px",
           }}
-          href={`https://docs.google.com/document/d/${id}/edit`}
+          animate={{ opacity: isHidden ? 0 : 1 }}
+          transition={{ delay: isHidden ? 0 : 0.5 }}
         >
-          <IconLeftArrow /> GO BACK TO DOCS
-        </a>
-        <button
-          style={{ ...textWithIconStyle }}
-          onClick={() => location.reload()}
-        >
-          <IconReload /> RELOAD
-        </button>
-        <button
-          style={{ ...textWithIconStyle }}
-          onClick={() => setIsHidden(true)}
-        >
-          <IconHideUI /> HIDE UI
-        </button>
-      </div>
-      <div>
-        {showReloadWarning ? (
-          <div
+          <a
             style={{
-              display: "flex",
-              color: "#212121",
-              alignItems: "center",
-              columnGap: "4px",
-              flexDirection: "row",
+              ...textWithIconStyle,
+              fontFamily: "Poppins, sans-serif",
+              fontWeight: 500,
+              color: "#23232D",
+              padding: "8px 12px",
             }}
+            href={`https://docs.google.com/document/d/${article.id}/edit`}
+            rel="noreferrer"
+            target="_blank"
           >
-            <IconInfo />{" "}
-            <span
+            <IconDocs /> {article.title}
+          </a>
+        </motion.div>
+        <motion.div
+          style={{
+            opacity: 0,
+            paddingTop: "-9px",
+          }}
+          animate={{ opacity: isHidden ? 0 : 1 }}
+          transition={{ delay: isHidden ? 0 : 0.5 }}
+        >
+          <LivePreviewIndicator isLive={isLive} />
+        </motion.div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            columnGap: "4px",
+            alignItems: "center",
+          }}
+        >
+          <motion.div
+            style={{ opacity: 0, paddingTop: "-9px" }}
+            animate={{ opacity: isHidden ? 0 : 1 }}
+            transition={{ delay: isHidden ? 0 : 0.5 }}
+          >
+            <HoverButton
               style={{
-                color: "black",
-                opacity: "50%",
+                ...textWithIconStyle,
+                background: "#FFDC28",
+                padding: "8px 12px",
+                borderRadius: "3px",
+                gap: "10px",
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: 700,
+                color: "#23232D",
+              }}
+              onClick={() => {
+                const parsedUrl = queryString.parseUrl(window.location.href, {
+                  parseFragmentIdentifier: true,
+                });
+
+                const query = {
+                  ...(parsedUrl.query || {}),
+                  pccGrant,
+                };
+
+                navigator.clipboard.writeText(
+                  `${parsedUrl.url}?${queryString.stringify(query)}${
+                    parsedUrl.fragmentIdentifier
+                      ? `#${parsedUrl.fragmentIdentifier}`
+                      : ""
+                  }`,
+                );
+                setHasCopied(true);
               }}
             >
-              Real-time updates are finished. Please hit &quot;Preview&quot;
-              from add-on again to see real-time updates.
-            </span>
+              {hasCopied ? "Copied URL" : "Copy URL"}
+            </HoverButton>
+          </motion.div>
+          <div
+            style={
+              isHidden
+                ? {
+                    background: "#F1F1F1",
+                    padding: "16px",
+                    borderRadius: "3px",
+                    boxShadow: "0px 3px 8px 0px #00000026",
+                    cursor: "pointer",
+                  }
+                : {
+                    padding: "16px",
+                    cursor: "pointer",
+                  }
+            }
+            onClick={() => setIsHidden(!isHidden)}
+          >
+            {isHidden ? <IconUp flip={true} /> : <IconUp />}
           </div>
-        ) : null}
+        </div>
       </div>
-      {/* TODO: Re-enable this if a general solution is found. 
-       https://getpantheon.atlassian.net/browse/PCC-51 */}
-      {/* <ViewFormatChooser
-          viewFormat={viewFormat}
-          setViewFormat={setViewFormat}
-        /> */}
-    </div>
+    </motion.div>
   );
 };
