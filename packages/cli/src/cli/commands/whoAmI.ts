@@ -1,5 +1,5 @@
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import chalk from "chalk";
-import { parseJwt } from "../../lib/jwt";
 import { getLocalAuthDetails } from "../../lib/localStorage";
 import { errorHandler } from "../exceptions";
 
