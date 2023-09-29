@@ -87,10 +87,10 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
               }),
               parsedArticleId,
               // We will let downstream validate the publishingLevel param.
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               {
                 publishingLevel: publishingLevel
                   ?.toString()
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   .toUpperCase() as any,
               },
             )

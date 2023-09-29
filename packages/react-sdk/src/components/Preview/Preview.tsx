@@ -52,7 +52,9 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
           setIsLive(false);
         }, livePreviewTimeRemaining);
       }
-    } catch (e) {}
+    } catch {
+      // Pass
+    }
   }, []);
 
   React.useEffect(() => {
