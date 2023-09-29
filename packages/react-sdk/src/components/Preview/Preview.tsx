@@ -84,7 +84,7 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
         height: 58,
         position: "absolute",
         overflow: "clip",
-        background: "white",
+        background: isHidden ? "transparent" : "white",
         width: "100%",
         textAlign: "center",
         color: "black",
