@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-import { useState } from "react";
+import { setup, styled } from "goober";
+import React, { useState } from "react";
 import { Arrow, useLayer } from "react-laag";
 import { IconDot } from "../Icons/IconDot";
 import { IconInfo } from "../Icons/IconInfo";
@@ -7,6 +8,8 @@ import { IconInfo } from "../Icons/IconInfo";
 interface Props {
   isLive: boolean;
 }
+
+setup(React.createElement);
 
 export const LivePreviewIndicator = ({ isLive }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,31 +22,13 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
   });
 
   return (
-    <div
-      style={{
-        border: "1px solid #CFCFD3",
-        fontWeight: "600",
-        alignItems: "center",
-        borderRadius: "100px",
-        color: "#6D6D78",
-        padding: "4px 8px",
-        display: "flex",
-        fontSize: "12px",
-        flexDirection: "row",
-      }}
-    >
+    <Container>
       <IconDot fill={isLive ? "#218C5F" : "#CFCFD3"} />
-      <span style={{ padding: "0 4px" }}>
-        {isLive ? "Active Live Preview" : "Inactive Live Preview"}
-      </span>
+      <span>{isLive ? "Active Live Preview" : "Inactive Live Preview"}</span>
       {!isLive ? (
-        <div
-          onClick={() => setIsOpen(!isOpen)}
-          {...triggerProps}
-          style={{ cursor: "pointer" }}
-        >
+        <InfoButton onClick={() => setIsOpen(!isOpen)} {...triggerProps}>
           <IconInfo />
-        </div>
+        </InfoButton>
       ) : null}
       {isOpen
         ? renderLayer(
@@ -86,6 +71,31 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
             </div>,
           )
         : null}
-    </div>
+    </Container>
   );
 };
+
+const Container = styled("div")`
+  border: 1px solid #cfcfd3;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  border-radius: 100px;
+  color: #6d6d78;
+  padding: 0 8px;
+  font-size: 12px;
+  flex-direction: row;
+  width: fit-content;
+  height: 24px;
+
+  > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 8px;
+  }
+`;
+
+const InfoButton = styled("button", React.forwardRef)`
+  margin-left: 8px;
+`;

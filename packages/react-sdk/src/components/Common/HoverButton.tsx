@@ -1,30 +1,22 @@
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 
-export const HoverButton = ({
-  children,
-  style,
-  ...props
-}: PropsWithChildren<
-  React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
->) => {
-  const [isHover, setIsHover] = useState(false);
+type Props = Omit<React.HTMLAttributes<HTMLButtonElement>, "children"> & {
+  children: ((isHovered: boolean) => React.ReactNode) | React.ReactNode;
+};
+
+export const HoverButton = ({ children, style, ...props }: Props) => {
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <button
-      onMouseOver={() => setIsHover(true)}
-      onFocus={() => setIsHover(true)}
-      onMouseOut={() => setIsHover(false)}
-      onBlur={() => setIsHover(false)}
-      style={{
-        opacity: isHover ? 0.8 : 1,
-        ...style,
-      }}
+      onMouseOver={() => setIsHovered(true)}
+      onFocus={() => setIsHovered(true)}
+      onMouseOut={() => setIsHovered(false)}
+      onBlur={() => setIsHovered(false)}
+      style={style}
       {...props}
     >
-      {children}
+      {typeof children === "function" ? children(isHovered) : children}
     </button>
   );
 };

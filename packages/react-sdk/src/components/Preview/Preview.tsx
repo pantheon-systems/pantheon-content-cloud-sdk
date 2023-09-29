@@ -1,31 +1,26 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
-import queryString from "query-string";
-import React, { useEffect } from "react";
 import "../../index.css";
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { setup, styled } from "goober";
+import queryString from "query-string";
+import React, { useEffect } from "react";
 import { getCookie } from "../../utils/cookies";
 import { HoverButton } from "../Common/HoverButton";
 import { IconDocs } from "../Icons/IconDocs";
+import { IconHamburger } from "../Icons/IconHamburger";
 import { IconUp } from "../Icons/IconUp";
 import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
 // Default timeout for live preview: 10 minutes
 const LIVE_PREVIEW_TIMEOUT_MS = 1000 * 60 * 5;
 
+setup(React.createElement);
+
 interface Props {
   article: Article;
   previewBarOverride?: React.ReactElement | undefined | null;
 }
-
-const textWithIconStyle: Partial<React.CSSProperties> = {
-  display: "flex",
-  color: "#212121",
-  alignItems: "center",
-  columnGap: "4px",
-  flexDirection: "row",
-};
 
 const pccGrant = getCookie("PCC-GRANT");
 
@@ -37,6 +32,8 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(false);
   const [hasCopied, setHasCopied] = React.useState(false);
+  const [copyResetTimeoutId, setCopyResetTimeoutId] =
+    React.useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     try {
@@ -76,140 +73,212 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
   }
 
   return (
-    <motion.div
-      style={{
-        fontFamily: "Poppins, sans-serif",
-        fontWeight: 700,
-        zIndex: 5,
-        height: 58,
-        position: "absolute",
-        overflow: "clip",
-        background: isHidden ? "transparent" : "white",
-        width: "100%",
-        textAlign: "center",
-        color: "black",
-        left: "0",
-        top: "0",
-        padding: 0,
-        borderBottom: isHidden ? undefined : "1px solid #CFCFD3",
-        overflowY: "hidden",
-        fontSize: "16px",
-      }}
-    >
-      <div
-        style={{
-          position: "absolute",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          columnGap: "1rem",
-          width: "100%",
-        }}
-      >
-        <motion.div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            columnGap: "1rem",
-            opacity: 0,
-            paddingTop: "-4px",
-          }}
-          animate={{ opacity: isHidden ? 0 : 1 }}
-          transition={{ delay: isHidden ? 0 : 0.5 }}
-        >
-          <a
-            style={{
-              ...textWithIconStyle,
-              fontFamily: "Poppins, sans-serif",
-              fontWeight: 500,
-              color: "#23232D",
-              padding: "8px 12px",
-            }}
-            href={`https://docs.google.com/document/d/${article.id}/edit`}
-            rel="noreferrer"
-            target="_blank"
+    <Wrapper isHidden={isHidden}>
+      <AnimatePresence>
+        {!isHidden && (
+          <Container
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
           >
-            <IconDocs /> {article.title}
-          </a>
-        </motion.div>
-        <motion.div
-          style={{
-            opacity: 0,
-            paddingTop: "-9px",
-          }}
-          animate={{ opacity: isHidden ? 0 : 1 }}
-          transition={{ delay: isHidden ? 0 : 0.5 }}
-        >
-          <LivePreviewIndicator isLive={isLive} />
-        </motion.div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            columnGap: "4px",
-            alignItems: "center",
-          }}
-        >
-          <motion.div
-            style={{ opacity: 0, paddingTop: "-9px" }}
-            animate={{ opacity: isHidden ? 0 : 1 }}
-            transition={{ delay: isHidden ? 0 : 0.5 }}
-          >
-            <HoverButton
+            <TitleSection
+              href={`https://docs.google.com/document/d/${article.id}/edit`}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <IconDocs />
+              <span>{article.title}</span>
+            </TitleSection>
+            <div
               style={{
-                ...textWithIconStyle,
-                background: "#FFDC28",
-                padding: "8px 12px",
-                borderRadius: "3px",
-                gap: "10px",
-                fontFamily: "Poppins, sans-serif",
-                fontWeight: 700,
-                color: "#23232D",
-              }}
-              onClick={() => {
-                const parsedUrl = queryString.parseUrl(window.location.href, {
-                  parseFragmentIdentifier: true,
-                });
-
-                const query = {
-                  ...(parsedUrl.query || {}),
-                  pccGrant,
-                };
-
-                navigator.clipboard.writeText(
-                  `${parsedUrl.url}?${queryString.stringify(query)}${
-                    parsedUrl.fragmentIdentifier
-                      ? `#${parsedUrl.fragmentIdentifier}`
-                      : ""
-                  }`,
-                );
-                setHasCopied(true);
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                columnGap: "10px",
               }}
             >
-              {hasCopied ? "Copied URL" : "Copy URL"}
+              <LivePreviewIndicatorContainer>
+                <LivePreviewIndicator isLive={isLive} />
+              </LivePreviewIndicatorContainer>
+              <EndBlock>
+                <CopyUrlButtonContainer>
+                  <CopyUrlButton
+                    style={{
+                      borderRadius: "3px",
+                      fontWeight: 700,
+                      padding: "0 10px",
+                      color: "#23232D",
+                    }}
+                    onClick={() => {
+                      if (copyResetTimeoutId) {
+                        clearTimeout(copyResetTimeoutId);
+                        setCopyResetTimeoutId(null);
+                      }
+
+                      const parsedUrl = queryString.parseUrl(
+                        window.location.href,
+                        {
+                          parseFragmentIdentifier: true,
+                        },
+                      );
+
+                      const query = {
+                        ...(parsedUrl.query || {}),
+                        pccGrant,
+                      };
+
+                      navigator.clipboard.writeText(
+                        `${parsedUrl.url}?${queryString.stringify(query)}${
+                          parsedUrl.fragmentIdentifier
+                            ? `#${parsedUrl.fragmentIdentifier}`
+                            : ""
+                        }`,
+                      );
+                      setHasCopied(true);
+
+                      // Reset the copied state after 2 seconds
+                      const timeoutId = setTimeout(() => {
+                        setHasCopied(false);
+                      }, 2000);
+                      setCopyResetTimeoutId(timeoutId);
+                    }}
+                  >
+                    {hasCopied ? "Copied URL" : "Copy URL"}
+                  </CopyUrlButton>
+                </CopyUrlButtonContainer>
+              </EndBlock>
+            </div>
+          </Container>
+        )}
+      </AnimatePresence>
+      <ControllerContainer isHidden={isHidden}>
+        {isHidden ? (
+          <LivePreviewIndicatorContainer>
+            <LivePreviewIndicator isLive={isLive} />
+            <HoverButton onClick={() => setIsHidden((isHidden) => !isHidden)}>
+              {(isHovered) =>
+                isHovered ? (
+                  <IconUp
+                    flip={true}
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  />
+                ) : (
+                  <IconHamburger
+                    style={{
+                      marginLeft: "10px",
+                    }}
+                  />
+                )
+              }
             </HoverButton>
-          </motion.div>
-          <div
-            style={
-              isHidden
-                ? {
-                    background: "#F1F1F1",
-                    padding: "16px",
-                    borderRadius: "3px",
-                    boxShadow: "0px 3px 8px 0px #00000026",
-                    cursor: "pointer",
-                  }
-                : {
-                    padding: "16px",
-                    cursor: "pointer",
-                  }
-            }
-            onClick={() => setIsHidden(!isHidden)}
-          >
-            {isHidden ? <IconUp flip={true} /> : <IconUp />}
-          </div>
-        </div>
-      </div>
-    </motion.div>
+          </LivePreviewIndicatorContainer>
+        ) : (
+          <button onClick={() => setIsHidden((isHidden) => !isHidden)}>
+            <IconUp />
+          </button>
+        )}
+      </ControllerContainer>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled("div")<{ isHidden: boolean }>`
+  font-family: Poppins, sans-serif;
+  z-index: 5;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  border-bottom: ${({ isHidden }) =>
+    isHidden ? "1px solid transparent" : "1px solid #CFCFD3"};
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const Container = styled(motion.div)`
+  padding-left: 20px;
+  padding-block: 8px;
+  background: white;
+  display: grid;
+  gap: 1em;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    padding-block: 0;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+  }
+`;
+
+const TitleSection = styled("a")`
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #23232d;
+  min-width: 0;
+
+  > span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  > svg {
+    flex-shrink: 0;
+  }
+`;
+
+const LivePreviewIndicatorContainer = styled("div")`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EndBlock = styled("div")`
+  display: flex;
+  flex-direction: row;
+  column-gap: 4px;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const CopyUrlButtonContainer = styled("div")`
+  height: 32px;
+`;
+
+const ControllerContainer = styled("div")<{ isHidden: boolean }>`
+  cursor: pointer;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  ${({ isHidden }) =>
+    isHidden
+      ? `
+    background: #F1F1F1;
+    border-radius: 3px;
+    box-shadow: 0px 3px 8px 0px #00000026;
+  `
+      : `
+    background: #FFFFFF;
+      `}
+
+  @media (max-width: 768px) {
+    padding: 8px;
+    align-items: flex-start;
+  }
+`;
+
+const CopyUrlButton = styled("button")`
+  background-color: #ffdc28;
+  height: 100%;
+  font-size: 0.875rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
