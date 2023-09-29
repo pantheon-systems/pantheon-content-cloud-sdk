@@ -34,7 +34,7 @@ function calculateTimePassed(iat: number) {
 }
 
 export const PreviewBar = ({ article, previewBarOverride }: Props) => {
-  const [isHidden, setIsHidden] = React.useState(true);
+  const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(false);
   const [hasCopied, setHasCopied] = React.useState(false);
 
