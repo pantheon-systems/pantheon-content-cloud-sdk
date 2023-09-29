@@ -204,7 +204,6 @@ const Container = styled(motion.div)`
   display: grid;
   gap: 1em;
   width: 100%;
-  /* display: flex; */
 
   @media (min-width: 768px) {
     padding-block: 0;
