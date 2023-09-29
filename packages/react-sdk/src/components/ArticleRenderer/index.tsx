@@ -53,7 +53,7 @@ const ArticleRenderer = ({
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {renderCSR && article != null
+        {renderCSR && article != null && article.publishingLevel === "REALTIME"
           ? createPortal(<PreviewBar article={article} />, document.body)
           : null}
 
@@ -92,7 +92,7 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      {renderCSR && article != null
+      {renderCSR && article != null && article.publishingLevel === "REALTIME"
         ? createPortal(<PreviewBar article={article} />, document.body)
         : null}
 
