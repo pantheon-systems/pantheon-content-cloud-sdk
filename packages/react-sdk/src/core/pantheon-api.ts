@@ -4,6 +4,7 @@ import {
   PantheonClientConfig,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import queryString from "query-string";
 import { SmartComponentMap } from "../components/ArticleRenderer";
 
 interface ApiRequest {
@@ -64,13 +65,14 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
     // so we have to change it here to allow the external Pantheon system to access these APIs.
     res.setHeader("Access-Control-Allow-Origin", "*");
 
-    const { command: commandInput, pccGrant, publishingLevel } = req.query;
+    const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
+    const { publishingLevel } = restOfQuery;
     const command = Array.isArray(commandInput) ? commandInput : [commandInput];
 
     if (pccGrant) {
       res.setHeader(
         "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; HttpOnly; SameSite=Strict`,
+        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
       );
     }
 
@@ -85,8 +87,12 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
               }),
               parsedArticleId,
               // We will let downstream validate the publishingLevel param.
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { publishingLevel: publishingLevel?.toString() as any },
+              {
+                publishingLevel: publishingLevel
+                  ?.toString()
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  .toUpperCase() as any,
+              },
             )
           : null;
 
@@ -104,7 +110,9 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         302,
         resolvedPath +
           (publishingLevel && typeof publishingLevel === "string"
-            ? `?publishingLevel=${encodeURIComponent(publishingLevel)}`
+            ? `?publishingLevel=${encodeURIComponent(
+                publishingLevel,
+              ).toUpperCase()}`
             : ""),
       );
     } else if (command[0] === "component_schema") {
@@ -121,7 +129,17 @@ export function PantheonAPI(options?: PantheonAPIOptions) {
         );
       }
     } else if (command[0] === "component" && options?.componentPreviewPath) {
-      return res.redirect(302, options.componentPreviewPath(command[1]));
+      const previewPath = options.componentPreviewPath(command[1]);
+      const pathParts = previewPath.split("?");
+      const query = queryString.parse(pathParts[1] || "");
+
+      return res.redirect(
+        302,
+        `${pathParts[0]}?${queryString.stringify({
+          ...restOfQuery,
+          ...query,
+        })}`,
+      );
     } else {
       res.redirect(302, options?.notFoundPath || "/404");
     }

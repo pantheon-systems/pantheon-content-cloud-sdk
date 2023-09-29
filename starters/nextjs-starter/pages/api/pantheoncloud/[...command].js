@@ -1,8 +1,6 @@
 import {
   PantheonAPI,
-  PantheonAPIOptions,
   PantheonClient,
-  PantheonClientConfig,
 } from "@pantheon-systems/pcc-react-sdk";
 import LeadCapture from "../../../components/smart-components/lead-capture";
 

@@ -7,8 +7,10 @@ export function filterUndefinedProperties(obj: Record<string, any>) {
   return _obj;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function parameterize(obj: any, encode = true): string {
+export function parameterize(
+  obj: { [s: string]: string } | ArrayLike<string>,
+  encode = true,
+): string {
   const func = encode ? encodeURIComponent : (s: string): string => s;
   return Object.entries<string>(obj)
     .map(([k, v]) => `${func(k)}=${func(v)}`)
