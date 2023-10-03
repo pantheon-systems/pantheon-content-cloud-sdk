@@ -11,13 +11,13 @@
 npm
 
 ```console
-npm install @pantheon-systems/pcc --global
+npm install @pantheon-systems/pcc-cli --global
 ```
 
 yarn
 
 ```console
-yarn add @pantheon-systems/pcc --global
+yarn add @pantheon-systems/pcc-cli --global
 ```
 
 ## Usage
