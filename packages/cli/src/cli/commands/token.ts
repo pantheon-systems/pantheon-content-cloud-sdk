@@ -22,6 +22,7 @@ export const createToken = errorHandler<void>(async () => {
     throw e;
   }
 });
+
 export const listTokens = errorHandler<void>(async () => {
   const spinner = ora("Fetching list of existing tokens...").start();
   try {
@@ -47,6 +48,7 @@ export const listTokens = errorHandler<void>(async () => {
     throw e;
   }
 });
+
 export const revokeToken = errorHandler<string>(async (id: string) => {
   const spinner = ora("Revoking token for given ID...").start();
   try {

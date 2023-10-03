@@ -13,8 +13,11 @@ import os from "os";
 import path from "path";
 import { chdir, exit } from "process";
 import chalk from "chalk";
+import inquirer from "inquirer";
 import { Octokit } from "octokit";
+import AddOnApiHelper from "../../lib/addonApiHelper";
 import { Logger, SpinnerLogger } from "../../lib/logger";
+import { replaceEnvVariable } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
 
 const TEMP_DIR_NAME = path.join(os.tmpdir(), "react_sdk_90723");
@@ -58,19 +61,25 @@ const init = async ({
   template,
   skipInstallation,
   packageManager = "npm",
+  nonInteractive = false,
+  siteId = null,
   silentLogs,
   eslint,
   appName,
   useTypescript,
+  printVerbose,
 }: {
   dirName: string;
   template: CliTemplateOptions;
   skipInstallation: boolean;
   packageManager: PackageManager;
+  nonInteractive: boolean;
+  siteId?: string | null | undefined;
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
   useTypescript: boolean;
+  printVerbose?: boolean;
 }) => {
   const logger = new Logger(silentLogs);
   if (!dirName) {
@@ -93,12 +102,11 @@ const init = async ({
     repo: "pantheon-content-cloud-sdk",
   });
   writeFileSync(path.join(TEMP_DIR_NAME, TAR_FILE_NAME), Buffer.from(data));
-  await sh("tar", [
-    "xvpf",
-    path.join(TEMP_DIR_NAME, TAR_FILE_NAME),
-    "-C",
-    TEMP_DIR_NAME,
-  ]);
+  await sh(
+    "tar",
+    ["xvpf", path.join(TEMP_DIR_NAME, TAR_FILE_NAME), "-C", TEMP_DIR_NAME],
+    printVerbose,
+  );
   let files = readdirSync(TEMP_DIR_NAME);
   files = files.filter((item) => item !== TAR_FILE_NAME);
   renameSync(
@@ -203,6 +211,60 @@ const init = async ({
     new SpinnerLogger("", silentLogs).succeed("Installed dependencies!");
   }
 
+  let apiKey;
+
+  if (!nonInteractive) {
+    if (!siteId) {
+      const { chooseSite } = await inquirer.prompt([
+        {
+          type: "confirm",
+          name: "chooseSite",
+          message: "Pick site now?",
+        },
+      ]);
+
+      if (chooseSite) {
+        siteId = (
+          await inquirer.prompt({
+            type: "list",
+            name: "siteId",
+            choices: (await AddOnApiHelper.listSites())
+              .filter((x) => !x.__isPlayground)
+              .map((x) => `${x.url} (${x.id})`),
+          })
+        ).siteId
+          .split(" (")[1]
+          .replace(")", "");
+      }
+    }
+
+    const { createNewApiKey } = await inquirer.prompt([
+      {
+        type: "confirm",
+        name: "createNewApiKey",
+        message: "Create a new API key?",
+      },
+    ]);
+
+    if (createNewApiKey) {
+      apiKey = await AddOnApiHelper.createApiKey();
+    }
+  }
+
+  if (apiKey != null || siteId != null) {
+    let envFile = readFileSync(localEnvFileName).toString();
+
+    if (siteId != null) {
+      envFile = replaceEnvVariable(envFile, "PCC_SITE_ID", siteId);
+    }
+
+    if (apiKey != null) {
+      envFile = replaceEnvVariable(envFile, "PCC_API_KEY", apiKey);
+    }
+
+    writeFileSync(localEnvFileName, envFile);
+  }
+
   // Cleaning up
   process.chdir("../");
   rmSync(TEMP_DIR_NAME, { recursive: true });
@@ -226,8 +288,11 @@ export default errorHandler<{
   template: CliTemplateOptions;
   packageManager: PackageManager;
   skipInstallation: boolean;
+  nonInteractive: boolean;
+  siteId?: string | null | undefined;
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
   useTypescript: boolean;
+  printVerbose?: boolean;
 }>(init);

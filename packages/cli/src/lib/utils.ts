@@ -16,3 +16,16 @@ export function parameterize(
     .map(([k, v]) => `${func(k)}=${func(v)}`)
     .join("&");
 }
+
+export function replaceEnvVariable(
+  envFile: string,
+  key: string,
+  value: string,
+) {
+  const envFileLines = envFile.split("\n");
+  const index = envFileLines.findIndex((x) => x.indexOf(key) === 0);
+  const parts = envFileLines[index].split("=");
+  parts[1] = value;
+  envFileLines[index] = parts.join("=");
+  return envFileLines.join("\n");
+}

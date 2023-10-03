@@ -175,9 +175,11 @@ test("should raise error when project directory already exists", async () => {
       template: "nextjs",
       packageManager: "npm",
       skipInstallation: true,
+      nonInteractive: true,
       eslint: false,
       silentLogs: true,
       useTypescript: true,
+      printVerbose: true,
     });
   } catch (err) {
     expect(loggerSpy).toBeCalledWith(
