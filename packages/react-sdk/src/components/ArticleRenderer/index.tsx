@@ -87,7 +87,7 @@ const ArticleRenderer = ({
       smartComponentMap={smartComponentMap}
     />
   ) : (
-    <span>{article?.title}</span>
+    <h1>{article?.title}</h1>
   );
 
   return (
