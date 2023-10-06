@@ -19,14 +19,19 @@ export interface ArticleQueryArgs {
 
 type FilterableFields = "body" | "tag" | "title";
 
+type PublishStatus = "published" | "unpublished";
+
 export type ArticleSearchArgs = {
   bodyContains?: string;
   tagContains?: string;
   titleContains?: string;
+  publishStatus?: PublishStatus;
 };
 
 type ConvertedArticleSearchArgs = {
   [key in FilterableFields]: { contains: string } | undefined;
+} & {
+  publishStatus?: PublishStatus;
 };
 
 export function convertSearchParamsToGQL(
@@ -50,6 +55,7 @@ export function convertSearchParamsToGQL(
           contains: searchParams.titleContains,
         }
       : undefined,
+    publishStatus: searchParams.publishStatus,
   };
 
   return Object.keys(convertedObject).length
