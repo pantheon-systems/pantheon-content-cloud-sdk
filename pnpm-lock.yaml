@@ -444,6 +444,9 @@ importers:
       next-seo:
         specifier: ^5.4.0
         version: 5.4.0(next@13.1.1)(react-dom@18.2.0)(react@18.2.0)
+      query-string:
+        specifier: ^8.1.0
+        version: 8.1.0
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -526,6 +529,9 @@ importers:
       next-seo:
         specifier: ^5.4.0
         version: 5.4.0(next@13.1.1)(react-dom@18.2.0)(react@18.2.0)
+      query-string:
+        specifier: ^8.1.0
+        version: 8.1.0
       react:
         specifier: 18.2.0
         version: 18.2.0
