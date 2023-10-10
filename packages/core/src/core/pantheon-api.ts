@@ -3,7 +3,7 @@ import { getArticleBySlugOrId } from "../helpers";
 import { Article, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
-interface ApiRequest {
+export interface ApiRequest {
   /**
    * The query string parameters.
    */
@@ -12,7 +12,7 @@ interface ApiRequest {
   };
 }
 
-interface ApiResponse {
+export interface ApiResponse {
   /**
    * Function to set a header on the api response.
    */
