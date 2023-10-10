@@ -6,10 +6,6 @@ const route = useRoute()
 const articleId = route.params.id as string
 
 const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`)
-
-if (error) {
-  console.error(error)
-}
 </script>
 
 <template>
@@ -21,25 +17,30 @@ if (error) {
       Loading...
     </h2>
     <div v-else>
-      <ArticleRenderer :article="article" />
-      <!-- <ArticleRenderer article={article} renderTitle={(titleElement)=> (
-        <div>
-          <h1 className="text-3xl font-bold md:text-4xl">{titleElement}</h1>
+      <ArticleRenderer :article="article">
+        <template #titleRenderer="{ title }">
+          <div>
+            <h1 class="text-3xl font-bold md:text-4xl">
+              <span style="font-weight: bold;">
+                {{ title || "Untitled" }}
+              </span>
+            </h1>
+            <p class="py-2" v-if="article.updatedAt">
+              Last Updated:
+              {{
+                new Date(article.updatedAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }}
+            </p>
+            <hr class="mt-6 mb-8">
+          </div>
+        </template>
+      </ArticleRenderer>
 
-          {article.updatedAt ? (
-          <p className="py-2">
-            Last Updated:{" "}
-            {new Date(article.updatedAt).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            })}
-          </p>
-          ) : null}
-
-          <hr className="mt-6 mb-8" />
-        </div>
-        )}
+      <!-- <ArticleRenderer article={article} 
         smartComponentMap={pantheonAPIOptions.smartComponentMap}
         /> -->
 

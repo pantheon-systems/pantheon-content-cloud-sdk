@@ -1,5 +1,5 @@
+import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
-import { JSONElement } from ".";
 import {
   getStyleObjectFromString,
   unescapeHTMLEntities,
@@ -9,7 +9,7 @@ export default defineComponent({
   name: "TreeRenderer",
   props: {
     x: {
-      type: Object as PropType<JSONElement | JSONElement[]>,
+      type: Object as PropType<TreePantheonContent | TreePantheonContent[]>,
       required: true,
     },
   },

@@ -1,12 +1,12 @@
+import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType } from "vue-demi";
-import { JSONElement } from ".";
 import TreeRenderer from "./TreeRenderer";
 
 export default defineComponent({
   name: "TopLevelElement",
   props: {
     element: {
-      type: Object as PropType<JSONElement>,
+      type: Object as PropType<TreePantheonContent>,
       required: true,
     },
   },

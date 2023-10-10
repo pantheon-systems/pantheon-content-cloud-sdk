@@ -4,10 +4,6 @@ import ArticleLink from "../components/ArticleLink.vue";
 import { ArticleWithoutContent } from "@pantheon-systems/pcc-vue-sdk";
 
 const { data, error } = await useFetch<ArticleWithoutContent[]>("/api/articles/")
-
-if (error) {
-  console.error(error)
-}
 </script>
 
 <template>

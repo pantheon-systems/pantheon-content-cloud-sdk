@@ -1,8 +1,9 @@
-import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import type { Options as MarkdownItOptions } from "markdown-it";
-// @ts-expect-error - no types
-import MarkdownIt from "markdown-it/dist/markdown-it.js";
-import { computed, defineComponent, h, PropType } from "vue-demi";
+import {
+  Article,
+  TreePantheonContent,
+} from "@pantheon-systems/pcc-sdk-core/types";
+import { defineComponent, h, PropType, SlotsType } from "vue-demi";
+import MarkdownRenderer from "./MarkdownRenderer";
 import TopLevelElement from "./TopLevelElement";
 
 export type JSONElement = {
@@ -18,35 +19,6 @@ export type JSONElement = {
   attrs?: Record<string, string>;
 };
 
-const MarkdownRenderer = defineComponent({
-  name: "VueMarkdown",
-  props: {
-    source: {
-      type: String,
-      required: true,
-    },
-    options: {
-      type: Object as PropType<MarkdownItOptions>,
-      default: () => ({}),
-      required: false,
-    },
-  },
-  setup(props, { attrs }) {
-    const md = new MarkdownIt(props.options);
-
-    const content = computed(() => {
-      const src = props.source;
-      return md?.render(src);
-    });
-
-    return () =>
-      h("div", {
-        ...attrs,
-        innerHTML: content.value,
-      });
-  },
-});
-
 const Renderer = defineComponent({
   name: "Renderer",
   props: {
@@ -55,26 +27,71 @@ const Renderer = defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  slots: Object as SlotsType<{
+    titleRenderer: {
+      title: string | undefined;
+    };
+  }>,
+  setup(props, { slots }) {
     const { article } = props;
-    return () =>
-      h("div", {}, [
-        article.contentType === "TEXT_MARKDOWN"
-          ? h(MarkdownRenderer, {
-              source: article.content || "",
-              options: {
-                html: true,
-              },
-            })
-          : (article.content ? JSON.parse(article.content) : []).map(
-              (element: JSONElement) => {
-                return h(TopLevelElement, {
-                  element,
-                });
-              },
-            ),
+
+    if (article.contentType === "TEXT_MARKDOWN") {
+      return () =>
+        h(MarkdownRenderer, {
+          source: article.content || "",
+          options: {
+            html: true,
+          },
+        });
+    }
+
+    const parsedBody: TreePantheonContent[] = article?.content
+      ? JSON.parse(article.content)
+      : [];
+    const indexOfFirstHeader = parsedBody.findIndex((x) =>
+      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+    );
+
+    const indexOfFirstParagraph = parsedBody.findIndex((x) => x.tag === "p");
+    const resolvedTitleIndex =
+      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+
+    const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
+
+    return () => {
+      const titleText = getTextFromNode(titleElement);
+
+      return h("div", {}, [
+        slots.titleRenderer
+          ? h(
+              "div",
+              slots.titleRenderer({
+                title: titleText,
+              }),
+            )
+          : h(TopLevelElement, {
+              element: titleElement,
+            }),
+        parsedBody.map((element) => {
+          return h(TopLevelElement, {
+            element,
+          });
+        }),
       ]);
+    };
   },
 });
+
+function getTextFromNode(node: TreePantheonContent): string | undefined {
+  if (typeof node.data === "string" && node.data) {
+    return node.data;
+  }
+
+  if (node.children) {
+    return node.children.map(getTextFromNode).join("\n");
+  }
+
+  return undefined;
+}
 
 export default Renderer;
