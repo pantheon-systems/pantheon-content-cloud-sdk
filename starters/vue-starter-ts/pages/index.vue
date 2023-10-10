@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import ArticleLink from "../components/ArticleLink.vue";
 
-import { getArticles } from "@pantheon-systems/pcc-vue-sdk";
-import { getPantheonClient } from '../lib/pantheon-client'
+import { ArticleWithoutContent } from "@pantheon-systems/pcc-vue-sdk";
 
-const { data, error } = await useAsyncData('articles', async () => {
-  return await getArticles(getPantheonClient(), {
-    publishingLevel: 'PRODUCTION',
-  })
-})
+const { data, error } = await useFetch<ArticleWithoutContent[]>("/api/articles/")
 
 if (error) {
   console.error(error)
@@ -33,6 +28,9 @@ if (error) {
     <section>
       <h2 v-if="error" class="text-red-500">
         Failed to load articles, please try again.
+      </h2>
+      <h2 v-else-if="!data">
+        Loading...
       </h2>
       <div v-else class="grid gap-5 mx-auto mt-12 max-w-content lg:max-w-screen-lg lg:grid-cols-3">
         <article-link v-for="article in data" :key="article.id" :id="article.id" :title="article.title || 'Untitled'"
