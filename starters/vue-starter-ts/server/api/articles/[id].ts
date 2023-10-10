@@ -1,8 +1,9 @@
-import { getArticle } from "@pantheon-systems/pcc-vue-sdk";
+import { getArticleBySlugOrId } from "@pantheon-systems/pcc-vue-sdk";
 import { getPantheonClient } from "~/lib/pantheon";
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
+  const { publishingLevel } = getQuery(event);
 
   if (!id || typeof id !== "string") {
     throw createError({
@@ -11,7 +12,14 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return await getArticle(getPantheonClient(), id, {
-    publishingLevel: "PRODUCTION",
+  if (publishingLevel !== "PRODUCTION" && publishingLevel !== "REALTIME") {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Invalid publishing level",
+    });
+  }
+
+  return await getArticleBySlugOrId(getPantheonClient(), id, {
+    publishingLevel: publishingLevel,
   });
 });

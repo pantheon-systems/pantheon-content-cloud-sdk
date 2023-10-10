@@ -6,7 +6,13 @@ import LeadCapture from '~/components/smart-components/LeadCapture.vue'
 const route = useRoute()
 const articleId = route.params.id as string
 
-const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`)
+const { publishingLevel } = route.query
+
+const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`, {
+  query: {
+    publishingLevel
+  }
+})
 
 // Smart components for article rendering
 const smartComponentMap = {
