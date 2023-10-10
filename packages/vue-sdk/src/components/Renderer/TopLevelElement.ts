@@ -45,12 +45,7 @@ export default defineComponent({
     }
 
     if (element.tag === "p" || element.tag === "span") {
-      if (element.children?.some((x) => x.tag === "component")) {
-        // P cannot be parent of block-level elements
-        return h("div", {}, children);
-      }
-
-      return h(element.tag, {}, children);
+      return h("div", {}, children);
     }
     if (element.tag === "ul" && element.children?.length) {
       return h("ul", {}, children);

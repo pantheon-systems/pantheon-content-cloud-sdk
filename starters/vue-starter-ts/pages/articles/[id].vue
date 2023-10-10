@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import type { Article } from '@pantheon-systems/pcc-vue-sdk'
 import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
+import LeadCapture from '~/components/smart-components/LeadCapture.vue'
 
 const route = useRoute()
 const articleId = route.params.id as string
 
 const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`)
+
+// Smart components for article rendering
+const smartComponentMap = {
+  LEAD_CAPTURE: LeadCapture,
+}
 </script>
 
 <template>
@@ -17,7 +23,7 @@ const { data: article, error } = await useFetch<Article>(`/api/articles/${articl
       Loading...
     </h2>
     <div v-else>
-      <ArticleRenderer :article="article">
+      <ArticleRenderer :article="article" :smart-component-map="smartComponentMap">
         <template #titleRenderer="{ title }">
           <div>
             <h1 class="text-3xl font-bold md:text-4xl">
@@ -39,10 +45,6 @@ const { data: article, error } = await useFetch<Article>(`/api/articles/${articl
           </div>
         </template>
       </ArticleRenderer>
-
-      <!-- <ArticleRenderer article={article} 
-        smartComponentMap={pantheonAPIOptions.smartComponentMap}
-        /> -->
 
       <div v-if="article.tags" className="mt-2 text-sm leading-[1.25rem] text-theme-bg-black">
         <span class="font-normal">

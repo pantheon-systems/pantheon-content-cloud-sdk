@@ -21,3 +21,22 @@ export const getPantheonClient = () => {
     apiKey: PCC_API_KEY,
   });
 };
+
+export const smartComponentMap = {
+  LEAD_CAPTURE: {
+    title: "Lead Capture Form",
+    iconUrl: null,
+    fields: {
+      title: {
+        displayName: "Title",
+        required: true,
+        type: "string",
+      },
+      body: {
+        displayName: "Body",
+        required: false,
+        type: "string",
+      },
+    },
+  },
+};
