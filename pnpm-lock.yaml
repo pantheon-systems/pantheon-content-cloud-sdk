@@ -163,6 +163,9 @@ importers:
       graphql-ws:
         specifier: ^5.14.0
         version: 5.14.0(graphql@16.7.1)
+      query-string:
+        specifier: ^8.1.0
+        version: 8.1.0
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
@@ -325,6 +328,9 @@ importers:
       eslint-config-pcc-custom:
         specifier: workspace:*
         version: link:../../configs/eslint
+      h3:
+        specifier: ^1.8.2
+        version: 1.8.2
       tsup:
         specifier: ^7.0.0
         version: 7.1.0(typescript@5.1.6)
@@ -590,6 +596,9 @@ importers:
       '@pantheon-systems/pcc-vue-sdk':
         specifier: latest
         version: link:../../packages/vue-sdk
+      query-string:
+        specifier: ^8.1.0
+        version: 8.1.0
     devDependencies:
       '@nuxt/devtools':
         specifier: latest

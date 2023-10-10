@@ -64,3 +64,5 @@ export const SmartComponentMapZod = z.record(
     ),
   }),
 );
+
+export type SmartComponentMap = z.infer<typeof SmartComponentMapZod>;

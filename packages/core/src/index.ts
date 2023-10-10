@@ -1,4 +1,5 @@
 export * from "./core/pantheon-client";
+export * from "./core/pantheon-api";
 
 export * from "./lib/apollo-client";
 export * from "./lib/gql";
