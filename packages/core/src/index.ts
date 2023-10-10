@@ -5,3 +5,5 @@ export * from "./lib/gql";
 export * from "./lib/jwt";
 
 export * from "./helpers";
+
+export * from "./types";
