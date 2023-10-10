@@ -4,7 +4,7 @@ import {
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, SlotsType } from "vue-demi";
 import MarkdownRenderer from "./MarkdownRenderer";
-import TopLevelElement from "./TopLevelElement";
+import TopLevelElement, { SmartComponentMap } from "./TopLevelElement";
 
 export type JSONElement = {
   tag: string;
@@ -19,12 +19,16 @@ export type JSONElement = {
   attrs?: Record<string, string>;
 };
 
-const Renderer = defineComponent({
-  name: "Renderer",
+const ArticleRenderer = defineComponent({
+  name: "ArticleRenderer",
   props: {
     article: {
       type: Object as PropType<Article>,
       required: true,
+    },
+    smartComponentMap: {
+      type: Object as PropType<SmartComponentMap>,
+      required: false,
     },
   },
   slots: Object as SlotsType<{
@@ -75,6 +79,7 @@ const Renderer = defineComponent({
         parsedBody.map((element) => {
           return h(TopLevelElement, {
             element,
+            smartComponentMap: props.smartComponentMap,
           });
         }),
       ]);
@@ -82,7 +87,13 @@ const Renderer = defineComponent({
   },
 });
 
-function getTextFromNode(node: TreePantheonContent): string | undefined {
+function getTextFromNode(
+  node: TreePantheonContent | undefined,
+): string | undefined {
+  if (!node) {
+    return undefined;
+  }
+
   if (typeof node.data === "string" && node.data) {
     return node.data;
   }
@@ -94,4 +105,4 @@ function getTextFromNode(node: TreePantheonContent): string | undefined {
   return undefined;
 }
 
-export default Renderer;
+export default ArticleRenderer;
