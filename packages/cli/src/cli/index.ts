@@ -364,4 +364,6 @@ yargs(hideBin(process.argv))
     },
     async () => await logout(),
   )
-  .help(true).argv;
+  .help(true)
+  .parseAsync()
+  .then(() => process.exit());
