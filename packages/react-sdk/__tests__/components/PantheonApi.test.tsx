@@ -6,7 +6,7 @@ describe("PantheonApi", () => {
     const mockReq = {
       url: "/components",
       query: {
-        commandInput: ["component", "LEAD_CAPTURE"],
+        command: ["component", "LEAD_CAPTURE"],
         width: "500",
         height: "650",
       },
@@ -18,7 +18,6 @@ describe("PantheonApi", () => {
       resolvePath: (article) => `/articles/${article.slug || article.id}`,
       smartComponentMap: {
         LEAD_CAPTURE: {
-          reactComponent: () => <></>,
           title: "Lead Capture Form",
           iconUrl: null,
           fields: {
@@ -36,7 +35,7 @@ describe("PantheonApi", () => {
     const mockReq = {
       url: "/components",
       query: {
-        commandInput: ["component", "LEAD_CAPTURE"],
+        command: ["component", "LEAD_CAPTURE"],
         width: "500",
         height: "650",
       },
@@ -48,7 +47,6 @@ describe("PantheonApi", () => {
       resolvePath: (article) => `/articles/${article.slug || article.id}`,
       smartComponentMap: {
         LEAD_CAPTURE: {
-          reactComponent: () => <></>,
           title: "Lead Capture Form",
           iconUrl: null,
           fields: {

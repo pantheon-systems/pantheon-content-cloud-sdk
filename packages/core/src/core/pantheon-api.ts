@@ -8,7 +8,7 @@ export interface ApiRequest {
    * The query string parameters.
    */
   query: Record<string, string | string[]> & {
-    command: string;
+    command: string | string[];
   };
 }
 
