@@ -31,9 +31,10 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
     React.useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    // If no preview is active, then we can leave isLive as the default false.
     if (!article.previewActiveUntil) return;
 
-    const livePreviewTimeRemaining = Date.now() - article.previewActiveUntil;
+    const livePreviewTimeRemaining = article.previewActiveUntil - Date.now();
     if (livePreviewTimeRemaining >= 100) {
       setIsLive(true);
       setTimeout(() => {
