@@ -11,9 +11,6 @@ import { IconHamburger } from "../Icons/IconHamburger";
 import { IconUp } from "../Icons/IconUp";
 import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
-// Default timeout for live preview: 10 minutes
-const LIVE_PREVIEW_TIMEOUT_MS = 1000 * 60 * 10;
-
 setup(React.createElement);
 
 interface Props {
