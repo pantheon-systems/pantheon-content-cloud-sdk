@@ -269,16 +269,30 @@ const init = async ({
   process.chdir("../");
   rmSync(TEMP_DIR_NAME, { recursive: true });
 
-  // Messaging to get started
-  logger.log();
-  logger.log(
-    chalk.green(
-      `To get started please replace the placeholders in ${localEnvFileName}`,
-    ),
-  );
-  logger.log(chalk.green(`   cd ${dirName}`));
-  logger.log(chalk.green(`   vim .env.local`));
-  logger.log(chalk.green("And then run the website"));
+  if (apiKey == null || siteId == null) {
+    // Messaging to get started
+    logger.log();
+    logger.log(
+      chalk.green(
+        `To get started please replace the placeholders in ${localEnvFileName}`,
+      ),
+    );
+    logger.log(chalk.green(`   cd ${dirName}`));
+    logger.log(chalk.green(`   vim ${localEnvFileName}`));
+    logger.log(chalk.green("And then run the website"));
+  } else {
+    logger.log(
+      chalk.green(
+        `You have successfully populated the local environment file. You can edit this at any time by opening ${localEnvFileName}`,
+      ),
+    );
+    logger.log(
+      chalk.green(
+        "You are now ready to run the website locally, which you can do by executing in the command line:",
+      ),
+    );
+  }
+
   if (template === "nextjs") logger.log(chalk.green("   yarn dev"));
   else logger.log(chalk.green("   yarn start"));
 };
