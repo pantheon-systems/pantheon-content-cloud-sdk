@@ -3,7 +3,7 @@ import { getPantheonClient } from "~/lib/pantheon";
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
-  const { publishingLevel } = getQuery(event);
+  const { publishingLevel = "PRODUCTION" } = getQuery(event);
 
   if (!id || typeof id !== "string") {
     throw createError({
