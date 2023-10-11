@@ -37,7 +37,7 @@ Options:
   --version   Show version number                                      [boolean]
   --help      Show help                                                [boolean]
   --template  Template from which files should be copied.
-                               [string] [required] [choices: "nextjs", "gatsby"]
+                               [string] [required] [choices: "nextjs", "gatsby", "vue"]
 
 $ # Create project with nextjs template
 $ pcc init new_proj --template=nextjs

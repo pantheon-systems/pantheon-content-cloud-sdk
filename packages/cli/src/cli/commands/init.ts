@@ -25,6 +25,7 @@ const TAR_FILE_NAME = "sdk-repo.tar";
 const TEMPLATE_FOLDER_MAP = {
   nextjs: "nextjs-starter",
   gatsby: "gatsby-starter",
+  vue: "vue-starter",
 };
 
 const ESLINT_DEPENDENCIES = {
@@ -135,7 +136,7 @@ const init = async ({
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
-  if (eslint) {
+  if (eslint && template === "nextjs") {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
       ...ESLINT_DEPENDENCIES,
@@ -158,7 +159,11 @@ const init = async ({
 
   // Create .env.local/.env.development
   const localEnvFileName =
-    template === "gatsby" ? ".env.development" : ".env.local";
+    template === "gatsby"
+      ? ".env.development"
+      : template === "vue"
+      ? ".env"
+      : ".env.local";
   await sh("cp", [".env.example", localEnvFileName]);
 
   if (!skipInstallation) {
@@ -240,9 +245,10 @@ const init = async ({
     ),
   );
   logger.log(chalk.green(`   cd ${dirName}`));
-  logger.log(chalk.green(`   vim .env.local`));
+  logger.log(chalk.green(`   vim ${localEnvFileName}`));
   logger.log(chalk.green("And then run the website"));
-  if (template === "nextjs") logger.log(chalk.green("   yarn dev"));
+  if (template === "nextjs" || template === "vue")
+    logger.log(chalk.green("   yarn dev"));
   else logger.log(chalk.green("   yarn start"));
 };
 
