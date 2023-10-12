@@ -25,10 +25,7 @@ const TAR_FILE_NAME = "sdk-repo.tar";
 const TEMPLATE_FOLDER_MAP = {
   nextjs: "nextjs-starter",
   gatsby: "gatsby-starter",
-};
-
-const WORKSPACE_DEPENDENCY_PATHS = {
-  "@pantheon-systems/pcc-react-sdk": ["packages", "react-sdk"],
+  vue: "vue-starter",
 };
 
 const ESLINT_DEPENDENCIES = {
@@ -139,40 +136,7 @@ const init = async ({
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
-  // Resolve workspace dependencies
-  Object.keys(WORKSPACE_DEPENDENCY_PATHS).forEach((dep) => {
-    const isDep = packageJson.dependencies[dep];
-    const isDevDep = packageJson.devDependencies[dep];
-
-    if (!isDep && !isDevDep) return;
-
-    const depPath =
-      WORKSPACE_DEPENDENCY_PATHS[
-        dep as keyof typeof WORKSPACE_DEPENDENCY_PATHS
-      ];
-
-    // Resolve dependency version
-    const depPackagePath = path.join(
-      TEMP_DIR_NAME,
-      "pantheon-sdk",
-      ...depPath,
-      "package.json",
-    );
-
-    const depPackageJson = JSON.parse(
-      readFileSync(depPackagePath).toString(),
-    ) as {
-      version: string;
-    };
-
-    const depVersion = depPackageJson.version;
-
-    // Replace workspace identifier with version
-    if (isDep) packageJson.dependencies[dep] = depVersion;
-    if (isDevDep) packageJson.devDependencies[dep] = depVersion;
-  });
-
-  if (eslint) {
+  if (eslint && template === "nextjs") {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
       ...ESLINT_DEPENDENCIES,
@@ -195,7 +159,11 @@ const init = async ({
 
   // Create .env.local/.env.development
   const localEnvFileName =
-    template === "gatsby" ? ".env.development" : ".env.local";
+    template === "gatsby"
+      ? ".env.development"
+      : template === "vue"
+      ? ".env"
+      : ".env.local";
   await sh("cp", [".env.example", localEnvFileName]);
 
   if (!skipInstallation) {
@@ -293,7 +261,8 @@ const init = async ({
     );
   }
 
-  if (template === "nextjs") logger.log(chalk.green("   yarn dev"));
+  if (template === "nextjs" || template === "vue")
+    logger.log(chalk.green("   yarn dev"));
   else logger.log(chalk.green("   yarn start"));
 };
 

@@ -1,17 +1,27 @@
-import { defineComponent, h, PropType } from "vue-demi";
-import { JSONElement } from ".";
+import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
+import { DefineComponent, defineComponent, h, PropType } from "vue-demi";
 import TreeRenderer from "./TreeRenderer";
+
+export type SmartComponentMap = {
+  // Can't know prop types of component, so we use any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: InstanceType<DefineComponent<any, any, any>>;
+};
 
 export default defineComponent({
   name: "TopLevelElement",
   props: {
     element: {
-      type: Object as PropType<JSONElement>,
+      type: Object as PropType<TreePantheonContent>,
       required: true,
+    },
+    smartComponentMap: {
+      type: Object as PropType<SmartComponentMap>,
+      required: false,
     },
   },
   render() {
-    const { element } = this.$props;
+    const { element, smartComponentMap } = this.$props;
 
     if (element.tag === "hr") {
       return h("hr");
@@ -20,6 +30,7 @@ export default defineComponent({
     const children = element.children
       ? h(TreeRenderer, {
           x: element.children,
+          smartComponentMap,
         })
       : [];
 
@@ -34,7 +45,7 @@ export default defineComponent({
     }
 
     if (element.tag === "p" || element.tag === "span") {
-      return h(element.tag, {}, children);
+      return h("div", {}, children);
     }
     if (element.tag === "ul" && element.children?.length) {
       return h("ul", {}, children);
@@ -45,6 +56,7 @@ export default defineComponent({
     if (element.tag === "component") {
       return h(TreeRenderer, {
         x: element,
+        smartComponentMap,
       });
     }
     return null;

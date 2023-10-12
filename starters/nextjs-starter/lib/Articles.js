@@ -3,14 +3,24 @@ import * as PCCReactSDK from "@pantheon-systems/pcc-react-sdk";
 import { buildPantheonClientWithGrant } from "./PantheonClient";
 
 export async function getAllArticles(pccGrant) {
-  const posts = await getArticles(buildPantheonClientWithGrant(pccGrant), {
-    publishingLevel: "PRODUCTION",
-  });
+  const posts = await getArticles(
+    buildPantheonClientWithGrant(pccGrant),
+    {
+      publishingLevel: "PRODUCTION",
+    },
+    {
+      publishStatus: "published",
+    },
+  );
 
   return posts;
 }
 
-export async function getArticleBySlugOrId(id, pccGrant, publishingLevel="PRODUCTION") {
+export async function getArticleBySlugOrId(
+  id,
+  pccGrant,
+  publishingLevel = "PRODUCTION",
+) {
   const post = await PCCReactSDK.getArticleBySlugOrId(
     buildPantheonClientWithGrant(pccGrant),
     id,

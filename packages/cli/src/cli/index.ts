@@ -34,7 +34,7 @@ yargs(hideBin(process.argv))
         .option("template", {
           describe: "Template from which files should be copied.",
           type: "string",
-          choices: ["nextjs", "gatsby"],
+          choices: ["nextjs", "gatsby", "vue"],
           demandOption: true,
         })
         .option("appName", {

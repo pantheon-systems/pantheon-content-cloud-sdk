@@ -11,7 +11,13 @@ export default defineConfig({
   target: "es2019",
   outDir: "dist",
   globalName: "PccVue",
-  entry: ["src/index.ts", "src/components/index.ts"],
+  entry: [
+    "src/index.ts",
+    "src/components/index.ts",
+    // Different entry points for different environments so optional peer dependencies
+    // don't cause issues.
+    "src/platforms/nuxt.ts",
+  ],
   format: ["cjs", "esm"],
   external: ["vue", "vue-demi"],
   outExtension: ({ format }) => {

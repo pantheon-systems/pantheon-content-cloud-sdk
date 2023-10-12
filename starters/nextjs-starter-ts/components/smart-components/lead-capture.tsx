@@ -23,7 +23,7 @@ const LeadCapture = forwardRef<HTMLDivElement>(function (
         <div className="pt-2">
           <input className="w-full p-2 border rounded-md border-black/10" />
         </div>
-        <button className="px-4 py-2 mt-4 text-sm transition-opacity duration-200 rounded bg-pantheon hover:opacity-50">
+        <button className="px-4 py-2 mt-4 text-sm transition-opacity duration-200 rounded bg-[#FFDC28] hover:opacity-50">
           Submit
         </button>
       </div>

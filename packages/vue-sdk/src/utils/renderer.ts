@@ -1,4 +1,4 @@
-export const getStyleObjectFromString = (str?: string[]) => {
+export const getStyleObjectFromString = (str?: string[] | null) => {
   const style = {} as Record<string, string>;
 
   if (!str || str.length < 1) return style;

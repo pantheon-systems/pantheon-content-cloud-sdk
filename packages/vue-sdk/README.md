@@ -9,7 +9,7 @@
 ## Installation
 
 ```console
-npm install @pcc/vue
+npm install @pantheon-systems/pcc-vue-sdk
 ```
 
 ## Setup
@@ -18,7 +18,7 @@ Initialize the Pantheon Content Cloud plugin with your PCC instance URL and site
 identifier.
 
 ```javascript
-import { pccPlugin } from "@pcc/vue";
+import { pccPlugin } from "@pantheon-systems/pcc-vue-sdk";
 
 createApp(App)
   // Install the plugin
@@ -44,8 +44,8 @@ style and render in your app.
 
 ```vue
 <script setup>
-import { useArticle } from "@pcc/vue";
-import { ArticleRenderer } from "@pcc/vue/components";
+import { useArticle } from "@pantheon-systems/pcc-vue-sdk";
+import { ArticleRenderer } from "@pantheon-systems/pcc-vue-sdk/components";
 
 const { id } = defineProps({
   id: {
@@ -79,8 +79,8 @@ Fetch an article by ID.
 
 ```vue
 <script setup>
-import { useArticle } from "@pcc/vue";
-import { ArticleRenderer } from "@pcc/vue/components";
+import { useArticle } from "@pantheon-systems/pcc-vue-sdk";
+import { ArticleRenderer } from "@pantheon-systems/pcc-vue-sdk/components";
 
 const { id } = defineProps({
   id: {
@@ -109,7 +109,7 @@ content.
 
 ```vue
 <script setup>
-import { useArticles } from "@pcc/vue";
+import { useArticles } from "@pantheon-systems/pcc-vue-sdk";
 
 const { id } = defineProps({
   id: {

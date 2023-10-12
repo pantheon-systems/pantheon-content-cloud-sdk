@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@mdx-js/react": "^2.3.0",
-    "@pantheon-systems/pcc-react-sdk": "workspace:*",
+    "@pantheon-systems/pcc-react-sdk": "latest",
     "autoprefixer": "^10.4.14",
     "gatsby": "^5.10.0",
     "gatsby-plugin-mdx": "^5.10.0",

@@ -1,7 +1,10 @@
-import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { defineComponent, h, PropType } from "vue-demi";
-import VueMarkdown from "vue-markdown-render";
-import TopLevelElement from "./TopLevelElement";
+import {
+  Article,
+  TreePantheonContent,
+} from "@pantheon-systems/pcc-sdk-core/types";
+import { defineComponent, h, PropType, SlotsType } from "vue-demi";
+import MarkdownRenderer from "./MarkdownRenderer";
+import TopLevelElement, { SmartComponentMap } from "./TopLevelElement";
 
 export type JSONElement = {
   tag: string;
@@ -16,34 +19,90 @@ export type JSONElement = {
   attrs?: Record<string, string>;
 };
 
-const Renderer = defineComponent({
-  name: "Renderer",
+const ArticleRenderer = defineComponent({
+  name: "ArticleRenderer",
   props: {
     article: {
       type: Object as PropType<Article>,
       required: true,
     },
+    smartComponentMap: {
+      type: Object as PropType<SmartComponentMap>,
+      required: false,
+    },
   },
-  setup(props) {
+  slots: Object as SlotsType<{
+    titleRenderer: {
+      title: string | undefined;
+    };
+  }>,
+  setup(props, { slots }) {
     const { article } = props;
-    return () =>
-      h("div", {}, [
-        article.contentType === "TEXT_MARKDOWN"
-          ? h(VueMarkdown, {
-              source: article.content,
-              options: {
-                html: true,
-              },
-            })
-          : (article.content ? JSON.parse(article.content) : []).map(
-              (element: JSONElement) => {
-                return h(TopLevelElement, {
-                  element,
-                });
-              },
-            ),
+
+    if (article.contentType === "TEXT_MARKDOWN") {
+      return () =>
+        h(MarkdownRenderer, {
+          source: article.content || "",
+          options: {
+            html: true,
+          },
+        });
+    }
+
+    const parsedBody: TreePantheonContent[] = article?.content
+      ? JSON.parse(article.content)
+      : [];
+    const indexOfFirstHeader = parsedBody.findIndex((x) =>
+      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+    );
+
+    const indexOfFirstParagraph = parsedBody.findIndex((x) => x.tag === "p");
+    const resolvedTitleIndex =
+      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+
+    const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
+
+    return () => {
+      const titleText = getTextFromNode(titleElement);
+
+      return h("div", {}, [
+        slots.titleRenderer
+          ? h(
+              "div",
+              slots.titleRenderer({
+                title: titleText,
+              }),
+            )
+          : h(TopLevelElement, {
+              element: titleElement,
+            }),
+        parsedBody.map((element) => {
+          return h(TopLevelElement, {
+            element,
+            smartComponentMap: props.smartComponentMap,
+          });
+        }),
       ]);
+    };
   },
 });
 
-export default Renderer;
+function getTextFromNode(
+  node: TreePantheonContent | undefined,
+): string | undefined {
+  if (!node) {
+    return undefined;
+  }
+
+  if (typeof node.data === "string" && node.data) {
+    return node.data;
+  }
+
+  if (node.children) {
+    return node.children.map(getTextFromNode).join("\n");
+  }
+
+  return undefined;
+}
+
+export default ArticleRenderer;

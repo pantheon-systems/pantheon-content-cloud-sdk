@@ -5,7 +5,7 @@
   "packageManager": "pnpm@8.6.11",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --concurrency=20",
     "build": "turbo run build --filter=./packages/*",
     "lint": "turbo run lint --filter=./{packages,starters}/*",
     "build:starters": "turbo run build --filter=./starters/*",

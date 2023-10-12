@@ -1,23 +1,33 @@
+import {
+  TreePantheonContent,
+  TreePantheonContentSmartComponent,
+} from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
-import { JSONElement } from ".";
 import {
   getStyleObjectFromString,
   unescapeHTMLEntities,
 } from "../../utils/renderer";
+import type { SmartComponentMap } from "./TopLevelElement";
 
 export default defineComponent({
   name: "TreeRenderer",
   props: {
     x: {
-      type: Object as PropType<JSONElement | JSONElement[]>,
+      type: Object as PropType<TreePantheonContent | TreePantheonContent[]>,
       required: true,
+    },
+    smartComponentMap: {
+      type: Object as PropType<SmartComponentMap>,
+      required: false,
     },
   },
   render() {
-    const { x } = this.$props;
+    const { x, smartComponentMap } = this.$props;
 
     if (Array.isArray(x)) {
-      return x.map((span) => h(resolveComponent("TreeRenderer"), { x: span }));
+      return x.map((span) =>
+        h(resolveComponent("TreeRenderer"), { x: span, smartComponentMap }),
+      );
     }
 
     if (x == null) return null;
@@ -36,6 +46,7 @@ export default defineComponent({
         x.children
           ? h(resolveComponent("TreeRenderer"), {
               x: x.children,
+              smartComponentMap,
             })
           : [],
       );
@@ -51,6 +62,7 @@ export default defineComponent({
         x.children
           ? h(resolveComponent("TreeRenderer"), {
               x: x.children,
+              smartComponentMap,
             })
           : null,
       ]);
@@ -79,6 +91,13 @@ export default defineComponent({
         h("p", { attrs: { dir: "ltr" } }, "QUOTE TEXT"),
         h("p", { attrs: { dir: "ltr" } }, "- QUOTE ATTRIBUTION"),
       ]);
+    }
+
+    if (smartComponentMap?.[x.type?.toUpperCase()] != null) {
+      return h(smartComponentMap?.[x.type?.toUpperCase()], {
+        ...x.attrs,
+        ...(x as TreePantheonContentSmartComponent).attributes,
+      });
     }
 
     return null;

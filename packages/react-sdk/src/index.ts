@@ -1,4 +1,7 @@
-export type { PantheonClientConfig } from "@pantheon-systems/pcc-sdk-core";
+export type {
+  PantheonClientConfig,
+  PantheonAPIOptions,
+} from "@pantheon-systems/pcc-sdk-core";
 export { PantheonClient } from "@pantheon-systems/pcc-sdk-core";
 
 export {
@@ -10,7 +13,8 @@ export {
 export * from "@pantheon-systems/pcc-sdk-core/types";
 
 export * from "./core/pantheon-context";
-export * from "./core/pantheon-api";
+
+export { NextPantheonAPI as PantheonAPI } from "./core/pantheon-api";
 
 // Would be nice to have this as a separate entry point but
 // context is defined at module scope so can't be shared between

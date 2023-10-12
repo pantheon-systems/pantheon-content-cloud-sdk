@@ -3,9 +3,15 @@ import * as PCCReactSDK from "@pantheon-systems/pcc-react-sdk";
 import { buildPantheonClientWithGrant } from "./PantheonClient";
 
 export async function getAllArticles(pccGrant?: string) {
-  const posts = await getArticles(buildPantheonClientWithGrant(pccGrant), {
-    publishingLevel: "PRODUCTION",
-  });
+  const posts = await getArticles(
+    buildPantheonClientWithGrant(pccGrant),
+    {
+      publishingLevel: "PRODUCTION",
+    },
+    {
+      publishStatus: "published",
+    },
+  );
 
   return posts;
 }
