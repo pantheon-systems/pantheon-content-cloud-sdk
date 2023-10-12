@@ -42,7 +42,7 @@ export default defineComponent({
     if (articleComponents.includes(x.tag)) {
       return h(
         x.tag,
-        { style: styles, attrs: x.attrs },
+        { style: styles, ...x.attrs },
         x.children
           ? h(resolveComponent("TreeRenderer"), {
               x: x.children,
@@ -78,14 +78,16 @@ export default defineComponent({
 
     if (x.tag === "img" || x.tag === "image") {
       return h("img", {
-        attrs: { src: x.src, alt: x.alt, title: x.title },
+        src: x.src,
+        alt: x.alt,
+        title: x.title,
       });
     }
 
     if (x.type === "BLOCKQUOTE") {
       return h("blockquote", {}, [
-        h("p", { attrs: { dir: "ltr" } }, "QUOTE TEXT"),
-        h("p", { attrs: { dir: "ltr" } }, "- QUOTE ATTRIBUTION"),
+        h("p", { dir: "ltr" }, "QUOTE TEXT"),
+        h("p", { dir: "ltr" }, "- QUOTE ATTRIBUTION"),
       ]);
     }
 
