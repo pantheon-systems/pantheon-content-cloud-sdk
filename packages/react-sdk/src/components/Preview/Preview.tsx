@@ -1,5 +1,4 @@
 import "../../index.css";
-import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { setup, styled } from "goober";
@@ -12,9 +11,6 @@ import { IconHamburger } from "../Icons/IconHamburger";
 import { IconUp } from "../Icons/IconUp";
 import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
-// Default timeout for live preview: 10 minutes
-const LIVE_PREVIEW_TIMEOUT_MS = 1000 * 60 * 5;
-
 setup(React.createElement);
 
 interface Props {
@@ -24,10 +20,6 @@ interface Props {
 
 const pccGrant = getCookie("PCC-GRANT");
 
-function calculateTimePassed(iat: number) {
-  return Date.now() - iat * 1000;
-}
-
 export const PreviewBar = ({ article, previewBarOverride }: Props) => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(false);
@@ -36,23 +28,17 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
     React.useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    try {
-      // If there's no grant, then we can leave isLive as the default false.
-      if (!pccGrant) return;
-      const { iat } = parseJwt(pccGrant);
-      const livePreviewTimeRemaining =
-        LIVE_PREVIEW_TIMEOUT_MS - calculateTimePassed(iat);
+    // If no preview is active, then we can leave isLive as the default false.
+    if (!article.previewActiveUntil) return;
 
-      if (livePreviewTimeRemaining >= 100) {
-        setIsLive(true);
-        setTimeout(() => {
-          setIsLive(false);
-        }, livePreviewTimeRemaining);
-      }
-    } catch {
-      // Pass
+    const livePreviewTimeRemaining = article.previewActiveUntil - Date.now();
+    if (livePreviewTimeRemaining >= 100) {
+      setIsLive(true);
+      setTimeout(() => {
+        setIsLive(false);
+      }, livePreviewTimeRemaining);
     }
-  }, []);
+  }, [article]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && typeof location !== "undefined") {

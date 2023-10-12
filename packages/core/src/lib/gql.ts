@@ -24,6 +24,7 @@ export const GET_ARTICLE_QUERY = gql`
       publishingLevel
       contentType
       updatedAt
+      previewActiveUntil
     }
   }
 `;
@@ -50,6 +51,7 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       publishingLevel
       contentType
       updatedAt
+      previewActiveUntil
     }
   }
 `;
@@ -75,6 +77,7 @@ export const LIST_ARTICLES_QUERY = gql`
       publishingLevel
       contentType
       updatedAt
+      previewActiveUntil
     }
   }
 `;

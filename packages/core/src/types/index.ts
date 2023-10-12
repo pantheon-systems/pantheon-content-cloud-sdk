@@ -11,6 +11,7 @@ export interface Article {
   title: string | null;
   updatedAt: number | null;
   metadata: unknown | null;
+  previewActiveUntil: number | null;
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;
