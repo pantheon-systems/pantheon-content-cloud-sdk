@@ -68,15 +68,6 @@ const ArticleComponent = ({
     );
   }
 
-  if (textContent?.trim().length) {
-    const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
-    return React.createElement(
-      tag,
-      { style: styles },
-      unescapeHTMLEntities(textContent),
-    );
-  }
-
   if (x.tag === "span" && x.data == null) {
     return (
       <span>
@@ -133,6 +124,15 @@ const ArticleComponent = ({
         ...x.attrs,
         ...(x as TreePantheonContentSmartComponent).attributes,
       },
+    );
+  }
+
+  if (textContent?.trim().length) {
+    const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
+    return React.createElement(
+      tag,
+      { style: styles },
+      unescapeHTMLEntities(textContent),
     );
   }
 

@@ -52,11 +52,6 @@ export default defineComponent({
       );
     }
 
-    if (textContent != null) {
-      const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
-      return h(tag, { style: styles }, unescapeHTMLEntities(textContent));
-    }
-
     if (x.tag === "span" && x.data == null) {
       return h("span", {}, [
         x.children
@@ -69,15 +64,16 @@ export default defineComponent({
     }
 
     if (x.tag === "a") {
-      return h("a", {
-        attrs: {
+      return h(
+        "a",
+        {
           href: x.href,
           target: "_blank",
           rel: "noopener noreferrer",
+          style: styles,
         },
-        style: styles,
-        domProps: { innerHTML: x.data },
-      });
+        unescapeHTMLEntities(textContent ?? ""),
+      );
     }
 
     if (x.tag === "img" || x.tag === "image") {
@@ -98,6 +94,11 @@ export default defineComponent({
         ...x.attrs,
         ...(x as TreePantheonContentSmartComponent).attributes,
       });
+    }
+
+    if (textContent != null) {
+      const tag = isSuperscript ? "sup" : isSubscript ? "sub" : "span";
+      return h(tag, { style: styles }, unescapeHTMLEntities(textContent));
     }
 
     return null;
