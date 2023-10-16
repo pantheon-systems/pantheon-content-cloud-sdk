@@ -2,21 +2,20 @@ import {
   Article,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
-import { defineComponent, h, PropType, SlotsType } from "vue-demi";
+import {
+  DefineComponent,
+  defineComponent,
+  h,
+  PropType,
+  SlotsType,
+} from "vue-demi";
 import MarkdownRenderer from "./MarkdownRenderer";
-import TopLevelElement, { SmartComponentMap } from "./TopLevelElement";
+import PantheonTreeRenderer from "./PantheonTreeRenderer";
 
-export type JSONElement = {
-  tag: string;
-  data?: string;
-  children?: JSONElement[];
-  src?: string;
-  alt?: string;
-  style?: string[];
-  title?: string;
-  href?: string;
-  type?: string;
-  attrs?: Record<string, string>;
+export type SmartComponentMap = {
+  // Can't know prop types of component, so we use any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
 
 const ArticleRenderer = defineComponent({
@@ -73,11 +72,11 @@ const ArticleRenderer = defineComponent({
                 title: titleText,
               }),
             )
-          : h(TopLevelElement, {
+          : h(PantheonTreeRenderer, {
               element: titleElement,
             }),
         parsedBody.map((element) => {
-          return h(TopLevelElement, {
+          return h(PantheonTreeRenderer, {
             element,
             smartComponentMap: props.smartComponentMap,
           });
