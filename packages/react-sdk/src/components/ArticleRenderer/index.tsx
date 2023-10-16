@@ -7,8 +7,7 @@ import { createPortal } from "react-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
 import { PreviewBar } from "../Preview/Preview";
-import ArticleComponent from "./ArticleComponent";
-import TopLevelElement from "./TopLevelElement";
+import PantheonTreeRenderer from "./PantheonTreeRenderer";
 
 export type SmartComponentMap = {
   [key: string]: {
@@ -81,14 +80,7 @@ const ArticleRenderer = ({
 
   const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
 
-  const titleComponent = titleElement ? (
-    <ArticleComponent
-      x={titleElement.children}
-      smartComponentMap={smartComponentMap}
-    />
-  ) : (
-    <h1>{article?.title}</h1>
-  );
+  const titleText = getTextFromNode(titleElement);
 
   return (
     <div className={containerClassName}>
@@ -97,21 +89,42 @@ const ArticleRenderer = ({
         : null}
 
       <div className={headerClassName}>
-        {renderTitle ? renderTitle(titleComponent) : titleComponent}
+        {renderTitle
+          ? renderTitle(<span>{titleText}</span>)
+          : React.createElement(PantheonTreeRenderer, {
+              element: titleElement,
+              smartComponentMap,
+            })}
       </div>
       <div className={bodyClassName}>
-        {parsedBody?.map((x, idx: number) => (
-          // No stable key available
-          // eslint-disable-next-line react/no-array-index-key
-          <TopLevelElement
-            key={idx}
-            element={x}
-            smartComponentMap={smartComponentMap}
-          />
-        ))}
+        {parsedBody?.map((element, idx) =>
+          React.createElement(PantheonTreeRenderer, {
+            key: idx,
+            element,
+            smartComponentMap,
+          }),
+        )}
       </div>
     </div>
   );
 };
+
+function getTextFromNode(
+  node: TreePantheonContent | undefined,
+): string | undefined {
+  if (!node) {
+    return undefined;
+  }
+
+  if (typeof node.data === "string" && node.data) {
+    return node.data;
+  }
+
+  if (node.children) {
+    return node.children.map(getTextFromNode).join("\n");
+  }
+
+  return undefined;
+}
 
 export default ArticleRenderer;
