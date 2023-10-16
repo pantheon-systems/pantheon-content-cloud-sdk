@@ -29,12 +29,13 @@ const PantheonTreeRenderer = defineComponent({
   render() {
     const { element, smartComponentMap } = this.$props;
 
-    const children = element.children?.map((el) =>
-      h(resolveComponent("PantheonTreeRenderer"), {
-        element: el,
-        smartComponentMap,
-      }),
-    );
+    const children =
+      element.children?.map((el) =>
+        h(resolveComponent("PantheonTreeRenderer"), {
+          element: el,
+          smartComponentMap,
+        }),
+      ) ?? [];
 
     if (element.tag === "component") {
       const componentType =
@@ -48,13 +49,15 @@ const PantheonTreeRenderer = defineComponent({
       }
     }
 
+    const nodeChildren = [element.data, ...children].filter(Boolean);
+
     return h(
       element.tag,
       {
         style: getStyleObjectFromString(element?.style),
         ...element.attrs,
       },
-      [element.data, children],
+      nodeChildren.length ? nodeChildren : undefined,
     );
   },
 });
