@@ -49,6 +49,12 @@ const PantheonTreeRenderer = defineComponent({
       }
     }
 
+    if (element.tag === "style") {
+      return h("style", {
+        innerHTML: element.data,
+      });
+    }
+
     const nodeChildren = [element.data, ...children].filter(Boolean);
 
     return h(
