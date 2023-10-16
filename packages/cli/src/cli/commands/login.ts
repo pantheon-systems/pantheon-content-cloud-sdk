@@ -44,48 +44,47 @@ function login(): Promise<void> {
           scope: OAUTH_SCOPES,
         });
 
-        const server = http
-          .createServer(async (req, res) => {
-            try {
-              if (!req.url) {
-                throw new Error("No URL path provided");
-              }
-
-              if (req.url.indexOf("/oauth-redirect") > -1) {
-                const qs = new url.URL(req.url, "http://localhost:3030")
-                  .searchParams;
-                const code = qs.get("code");
-                const currDir = dirname(fileURLToPath(import.meta.url));
-                const content = readFileSync(
-                  join(currDir, "../templates/loginSuccess.html"),
-                );
-                const credentials = await AddOnApiHelper.getToken(
-                  code as string,
-                );
-                const jwtPayload = parseJwt(credentials.id_token as string);
-                await persistAuthDetails(credentials);
-
-                res.end(
-                  nunjucks.renderString(content.toString(), {
-                    email: jwtPayload.email,
-                  }),
-                );
-                server.destroy();
-
-                spinner.succeed(
-                  `You are successfully logged in as ${jwtPayload.email}`,
-                );
-                resolve();
-              }
-            } catch (e) {
-              spinner.fail();
-              reject(e);
+        const server = http.createServer(async (req, res) => {
+          try {
+            if (!req.url) {
+              throw new Error("No URL path provided");
             }
-          })
-          .listen(3030, () => {
-            open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
-          });
+
+            if (req.url.indexOf("/oauth-redirect") > -1) {
+              const qs = new url.URL(req.url, "http://localhost:3030")
+                .searchParams;
+              const code = qs.get("code");
+              const currDir = dirname(fileURLToPath(import.meta.url));
+              const content = readFileSync(
+                join(currDir, "../templates/loginSuccess.html"),
+              );
+              const credentials = await AddOnApiHelper.getToken(code as string);
+              const jwtPayload = parseJwt(credentials.id_token as string);
+              await persistAuthDetails(credentials);
+
+              res.end(
+                nunjucks.renderString(content.toString(), {
+                  email: jwtPayload.email,
+                }),
+              );
+              server.destroy();
+
+              spinner.succeed(
+                `You are successfully logged in as ${jwtPayload.email}`,
+              );
+              resolve();
+            }
+          } catch (e) {
+            spinner.fail();
+            reject(e);
+          }
+        });
+
         destroyer(server);
+
+        server.listen(3030, () => {
+          open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
+        });
       } catch (e) {
         spinner.fail();
         reject(e);
