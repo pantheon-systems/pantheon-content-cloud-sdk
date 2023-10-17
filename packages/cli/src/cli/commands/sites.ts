@@ -65,7 +65,7 @@ export const listSites = errorHandler<void>(async () => {
       sites.map((item) => {
         return {
           Id: item.id,
-          Url: item.url,
+          Url: item.url || "",
           "Created At": item.created
             ? dayjs(item.created).format("DD MMM YYYY, hh:mm A")
             : "NA",
