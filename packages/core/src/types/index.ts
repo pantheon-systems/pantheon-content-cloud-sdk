@@ -27,27 +27,32 @@ export enum ContentType {
   TREE_PANTHEON = "TREE_PANTHEON",
 }
 
-export interface TreePantheonContent {
-  tag: string;
-  attrs: {
-    [key: string | "rowspan" | "colspan"]:
-      | unknown
-      | unknown[]
-      | null
-      | undefined;
-  };
-  children: TreePantheonContent[] | null | undefined;
-  data?: string | null | undefined;
-  style?: string[] | null | undefined;
-  href?: string | null | undefined;
-  alt?: string | null | undefined;
-  title?: string | null | undefined;
-  src?: string | null | undefined;
-  type: string;
-}
+type Attrs = Record<string, string> & {
+  colspan?: string;
+  rowspan?: string;
+  width?: string;
+  height?: string;
+  href?: string;
+  src?: string;
+  alt?: string;
+  title?: string;
+};
 
-export interface TreePantheonContentSmartComponent extends TreePantheonContent {
-  attributes: { [key: string]: string | null | boolean | number | unknown };
+export interface PantheonTreeNode<T extends "component" | string = string> {
+  tag: T;
+  parentNode: PantheonTreeNode | null;
+  prevNode: PantheonTreeNode | null;
+  nextNode: PantheonTreeNode | null;
+  children: PantheonTreeNode[];
+  data: string | null;
+  style: string[] | null;
+  attrs: Attrs;
+  id?: string;
+  type?: string;
+}
+export interface PantheonTree {
+  version: string;
+  children: PantheonTreeNode[];
 }
 
 export const SmartComponentMapZod = z.record(

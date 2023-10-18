@@ -1,4 +1,4 @@
-import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
+import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import {
   DefineComponent,
   defineComponent,
@@ -18,7 +18,7 @@ const PantheonTreeRenderer = defineComponent({
   name: "PantheonTreeRenderer",
   props: {
     element: {
-      type: Object as PropType<TreePantheonContent>,
+      type: Object as PropType<PantheonTreeNode>,
       required: true,
     },
     smartComponentMap: {
@@ -42,6 +42,11 @@ const PantheonTreeRenderer = defineComponent({
         (element.attrs?.type as string | undefined)?.toUpperCase() ??
         // Backwards compatibility
         element.type?.toUpperCase();
+
+      if (!componentType) {
+        return null;
+      }
+
       const component = smartComponentMap?.[componentType];
 
       if (component) {

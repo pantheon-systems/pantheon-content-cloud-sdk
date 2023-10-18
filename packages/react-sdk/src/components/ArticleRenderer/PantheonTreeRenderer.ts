@@ -1,18 +1,18 @@
-import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
+import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import React from "react";
 import { SmartComponentMap } from ".";
 import { convertAttributes } from "../../utils/attributes";
 import { getStyleObjectFromString } from "../../utils/styles";
 
 interface Props {
-  element: TreePantheonContent;
+  element: PantheonTreeNode;
   smartComponentMap?: SmartComponentMap;
 }
 
 const PantheonTreeRenderer = ({
   element,
   smartComponentMap,
-}: Props): React.ReactElement => {
+}: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
       React.createElement(PantheonTreeRenderer, {
@@ -27,10 +27,18 @@ const PantheonTreeRenderer = ({
       (element.attrs?.type as string | undefined)?.toUpperCase() ??
       // Backwards compatibility
       element.type?.toUpperCase();
+
+    if (!componentType) {
+      return null;
+    }
+
     const component = smartComponentMap?.[componentType];
 
     if (component) {
-      return React.createElement(component.reactComponent, element.attrs);
+      return React.createElement(
+        component.reactComponent,
+        element.attrs as Record<string, unknown>,
+      );
     }
   }
 

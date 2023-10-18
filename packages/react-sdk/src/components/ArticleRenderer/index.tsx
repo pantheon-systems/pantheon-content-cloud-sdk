@@ -1,6 +1,7 @@
 import {
   Article,
-  TreePantheonContent,
+  PantheonTree,
+  PantheonTreeNode,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -67,8 +68,8 @@ const ArticleRenderer = ({
     );
   }
 
-  const parsedBody: TreePantheonContent[] = article?.content
-    ? JSON.parse(article.content)
+  const parsedBody = article?.content
+    ? (JSON.parse(article.content) as PantheonTree).children
     : [];
   const indexOfFirstHeader = parsedBody.findIndex((x) =>
     ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
@@ -110,7 +111,7 @@ const ArticleRenderer = ({
 };
 
 function getTextFromNode(
-  node: TreePantheonContent | undefined,
+  node: PantheonTreeNode | undefined,
 ): string | undefined {
   if (!node) {
     return undefined;

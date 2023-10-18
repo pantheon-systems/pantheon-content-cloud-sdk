@@ -1,6 +1,7 @@
 import {
   Article,
-  TreePantheonContent,
+  PantheonTree,
+  PantheonTreeNode,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import {
   DefineComponent,
@@ -48,9 +49,11 @@ const ArticleRenderer = defineComponent({
         });
     }
 
-    const parsedBody: TreePantheonContent[] = article?.content
-      ? JSON.parse(article.content)
-      : [];
+    const rawContent = article?.content ? JSON.parse(article.content) : [];
+    const parsedBody = Array.isArray(rawContent)
+      ? (rawContent as PantheonTreeNode[])
+      : (rawContent as PantheonTree).children;
+
     const indexOfFirstHeader = parsedBody.findIndex((x) =>
       ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
     );
@@ -87,7 +90,7 @@ const ArticleRenderer = defineComponent({
 });
 
 function getTextFromNode(
-  node: TreePantheonContent | undefined,
+  node: PantheonTreeNode | undefined,
 ): string | undefined {
   if (!node) {
     return undefined;
