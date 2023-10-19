@@ -2,6 +2,7 @@ import {
   Article,
   PantheonTree,
   PantheonTreeNode,
+  TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -9,6 +10,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
 import { PreviewBar } from "../Preview/Preview";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
+import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
 export type SmartComponentMap = {
   [key: string]: {
@@ -48,6 +50,10 @@ const ArticleRenderer = ({
     setRenderCSR(true);
   }, []);
 
+  if (!article?.content) {
+    return null;
+  }
+
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
@@ -68,18 +74,27 @@ const ArticleRenderer = ({
     );
   }
 
-  const parsedBody = article?.content
-    ? (JSON.parse(article.content) as PantheonTree).children
-    : [];
-  const indexOfFirstHeader = parsedBody.findIndex((x) =>
+  const content = JSON.parse(article.content) as
+    | PantheonTree
+    | TreePantheonContent[];
+
+  const renderer =
+    // V1 content is array of TreePantheonContent
+    Array.isArray(content) ? PantheonTreeRenderer : PantheonTreeV2Renderer;
+
+  const parsedContent = Array.isArray(content)
+    ? content
+    : content.children || [];
+
+  const indexOfFirstHeader = parsedContent.findIndex((x) =>
     ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
   );
 
-  const indexOfFirstParagraph = parsedBody.findIndex((x) => x.tag === "p");
+  const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
   const resolvedTitleIndex =
     indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-  const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
+  const [titleElement] = parsedContent.splice(resolvedTitleIndex, 1);
 
   const titleText = getTextFromNode(titleElement);
 
@@ -92,14 +107,16 @@ const ArticleRenderer = ({
       <div className={headerClassName}>
         {renderTitle
           ? renderTitle(<span>{titleText}</span>)
-          : React.createElement(PantheonTreeRenderer, {
+          : // @ts-expect-error Dynamic component props
+            React.createElement(renderer, {
               element: titleElement,
               smartComponentMap,
             })}
       </div>
       <div className={bodyClassName}>
-        {parsedBody?.map((element, idx) =>
-          React.createElement(PantheonTreeRenderer, {
+        {parsedContent?.map((element, idx) =>
+          // @ts-expect-error Dynamic component props
+          React.createElement(renderer, {
             key: idx,
             element,
             smartComponentMap,
@@ -111,7 +128,7 @@ const ArticleRenderer = ({
 };
 
 function getTextFromNode(
-  node: PantheonTreeNode | undefined,
+  node: PantheonTreeNode | TreePantheonContent | undefined,
 ): string | undefined {
   if (!node) {
     return undefined;
