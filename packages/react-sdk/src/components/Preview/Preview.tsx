@@ -194,7 +194,7 @@ const Container = styled(motion.div)`
   @media (min-width: 768px) {
     padding-block: 0;
     grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
+    grid-template-columns: 0.45fr 0.55fr;
   }
 `;
 
