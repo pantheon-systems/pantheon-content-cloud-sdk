@@ -19,12 +19,35 @@ export type ArticleWithoutContent = Omit<Article, "content">;
 export enum PublishingLevel {
   PRODUCTION = "PRODUCTION",
   REALTIME = "REALTIME",
-  STAGING = "STAGING",
 }
 
 export enum ContentType {
   TEXT_MARKDOWN = "TEXT_MARKDOWN",
   TREE_PANTHEON = "TREE_PANTHEON",
+  TREE_PANTHEON_V2 = "TREE_PANTHEON_V2",
+}
+
+export interface TreePantheonContent {
+  tag: string;
+  attrs: {
+    [key: string | "rowspan" | "colspan"]:
+      | unknown
+      | unknown[]
+      | null
+      | undefined;
+  };
+  children: TreePantheonContent[] | null | undefined;
+  data?: string | null | undefined;
+  style?: string[] | null | undefined;
+  href?: string | null | undefined;
+  alt?: string | null | undefined;
+  title?: string | null | undefined;
+  src?: string | null | undefined;
+  type: string;
+}
+
+export interface TreePantheonContentSmartComponent extends TreePantheonContent {
+  attributes: { [key: string]: string | null | boolean | number | unknown };
 }
 
 type Attrs = Record<string, string> & {
