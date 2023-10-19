@@ -29,9 +29,9 @@ if (process.env.IS_CICD !== "true") {
 const nextConfig = {
   reactStrictMode: true,
   env: {
-    PCC_HOST: process.env.PCC_HOST,
     PCC_SITE_ID: process.env.PCC_SITE_ID,
     PCC_API_KEY: process.env.PCC_API_KEY,
+    ...(process.env.PCC_HOST && { PCC_HOST: process.env.PCC_HOST }),
   },
   output: "standalone",
 };

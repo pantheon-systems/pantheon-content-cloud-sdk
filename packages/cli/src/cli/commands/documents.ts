@@ -78,7 +78,7 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
       document = await AddOnApiHelper.getDocument(documentId);
     } catch (err) {
       fetchLogger.stop();
-      if ((err as { response: { status: number } }).response.status === 404) {
+      if ((err as { response?: { status: number } }).response?.status === 404) {
         logger.error(
           chalk.red("ERROR: Article not found for given document ID."),
         );
