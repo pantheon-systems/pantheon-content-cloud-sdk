@@ -1,18 +1,7 @@
 import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
-import {
-  DefineComponent,
-  defineComponent,
-  h,
-  PropType,
-  resolveComponent,
-} from "vue-demi";
+import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
 import { getStyleObjectFromString } from "../../utils/renderer";
-
-export type SmartComponentMap = {
-  // Can't know prop types of component, so we use any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: InstanceType<DefineComponent<any, any, any>>;
-};
+import { SmartComponentMap } from "./index";
 
 const PantheonTreeRenderer = defineComponent({
   name: "PantheonTreeRenderer",
