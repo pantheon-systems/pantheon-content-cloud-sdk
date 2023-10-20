@@ -117,12 +117,6 @@ export async function getArticleBySlugOrId(
   slugOrId: number | string,
   args?: ArticleQueryArgs,
 ) {
-  console.log(
-    "getArticleBySlugOrId",
-    slugOrId,
-    args?.contentType,
-    args?.publishingLevel,
-  );
   // First attempt to retrieve by slug, and fallback to by id if the matching slug
   // couldn't be found.
   try {
