@@ -18,6 +18,7 @@ test("should be able to init starter kit for nextjs template", async () => {
     "nextjs",
     "--use-pnpm",
     "--non-interactive",
+    "--verbose",
   ]);
 
   // Dependencies are installed
