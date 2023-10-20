@@ -44,17 +44,10 @@ export function sh(cmd: string, args: string[], displayOutput = false) {
       stdio: displayOutput ? "inherit" : undefined,
     });
 
-    function processExit(code: number) {
+    pr.on("exit", (code) => {
       if (code === 0) resolve(0);
       else reject(`Exited with code: ${code}`);
-    }
-
-    if (pr.exitCode != null) {
-      console.log("IMMEDIATELY EXITED");
-      processExit(pr.exitCode);
-    } else {
-      pr.on("exit", processExit);
-    }
+    });
   });
 }
 
@@ -168,7 +161,6 @@ const init = async ({
     path.join(dirName, ".env.example"),
     path.join(dirName, localEnvFileName),
   ]);
-  console.log("Finish copy");
 
   if (!skipInstallation) {
     // Installing dependencies
