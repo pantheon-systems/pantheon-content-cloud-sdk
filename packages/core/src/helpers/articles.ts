@@ -117,6 +117,12 @@ export async function getArticleBySlugOrId(
   slugOrId: number | string,
   args?: ArticleQueryArgs,
 ) {
+  console.log(
+    "getArticleBySlugOrId",
+    slugOrId,
+    args?.contentType,
+    args?.publishingLevel,
+  );
   // First attempt to retrieve by slug, and fallback to by id if the matching slug
   // couldn't be found.
   try {
@@ -155,6 +161,7 @@ export async function getArticleBySlugOrId(
 
 function buildContentType(contentType?: keyof typeof ContentType) {
   if (
+    !contentType ||
     contentType === ContentType.TREE_PANTHEON_V2 ||
     contentType === ContentType.TREE_PANTHEON
   ) {
