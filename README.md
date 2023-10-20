@@ -49,3 +49,37 @@ allow you to quickly get up and running with Pantheon Content Cloud.
    ```sh
    node packages/cli/dist/index.js sites list
    ```
+
+## Contributing: Versions and Releases
+
+### Generating a Changeset
+
+To generate a new changeset, run `pnpm changeset` in the root of the repository.
+The generated Markdown files in the `.changeset` directory should be committed
+to the repository.
+
+### Publishing New Versions
+
+Version numbers are automatically semantically bumped by the `changeset` GitHub
+Action.
+
+### Releases
+
+#### Stable Releases
+
+To publish a new stable release, trigger the `release.yml` GitHub Action. A pull
+request will be created with the changeset and the version bump. Once the pull
+request is merged, the `release.yml` GitHub Action will publish the new version.
+
+The published version will be tagged with the version number and installable
+with the tag `latest`.
+
+#### Canary Releases
+
+To publish a new canary release, trigger the `release-canary.yml` GitHub Action.
+A pull request will be created with the changeset and the version bump. Once the
+pull request is merged, the `release-canary.yml` GitHub Action will publish the
+new version.
+
+The published version will be tagged with the version number and installable
+with the tag `canary`.
