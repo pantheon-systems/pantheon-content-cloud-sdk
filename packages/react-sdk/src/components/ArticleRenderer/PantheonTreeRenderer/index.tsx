@@ -1,6 +1,6 @@
 import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
 import React from "react";
-import { SmartComponentMap } from ".";
+import { SmartComponentMap } from "../index";
 import ArticleComponent from "./ArticleComponent";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   smartComponentMap?: SmartComponentMap;
 }
 
-const TopLevelElement = ({ element, smartComponentMap }: Props) => {
+const PantheonTreeRenderer = ({ element, smartComponentMap }: Props) => {
   if (element.tag === "hr") {
     return <hr />;
   }
@@ -56,4 +56,4 @@ const TopLevelElement = ({ element, smartComponentMap }: Props) => {
   return null;
 };
 
-export default TopLevelElement;
+export default PantheonTreeRenderer;

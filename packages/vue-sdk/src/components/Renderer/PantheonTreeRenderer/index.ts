@@ -1,15 +1,10 @@
 import { TreePantheonContent } from "@pantheon-systems/pcc-sdk-core/types";
-import { DefineComponent, defineComponent, h, PropType } from "vue-demi";
+import { defineComponent, h, PropType } from "vue-demi";
+import { SmartComponentMap } from "../index";
 import TreeRenderer from "./TreeRenderer";
 
-export type SmartComponentMap = {
-  // Can't know prop types of component, so we use any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: InstanceType<DefineComponent<any, any, any>>;
-};
-
 export default defineComponent({
-  name: "TopLevelElement",
+  name: "PantheonTreeRenderer",
   props: {
     element: {
       type: Object as PropType<TreePantheonContent>,

@@ -3,10 +3,10 @@ import type {
   TreePantheonContentSmartComponent,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import * as React from "react";
-import { SmartComponentMap } from ".";
-import { getStyleObjectFromString } from "../../utils/styles";
-import { unescapeHTMLEntities } from "../../utils/unescape";
-import TopLevelElement from "./TopLevelElement";
+import { getStyleObjectFromString } from "../../../utils/styles";
+import { unescapeHTMLEntities } from "../../../utils/unescape";
+import { SmartComponentMap } from "../index";
+import PantheonTreeRenderer from "./index";
 
 interface Props {
   x: TreePantheonContent | TreePantheonContent[] | null | undefined;
@@ -90,7 +90,7 @@ const ArticleComponent = ({
 
   if (x.tag === "p") {
     return (
-      <TopLevelElement element={x} smartComponentMap={smartComponentMap} />
+      <PantheonTreeRenderer element={x} smartComponentMap={smartComponentMap} />
     );
   }
 

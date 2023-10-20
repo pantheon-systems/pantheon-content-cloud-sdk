@@ -19,12 +19,12 @@ export type ArticleWithoutContent = Omit<Article, "content">;
 export enum PublishingLevel {
   PRODUCTION = "PRODUCTION",
   REALTIME = "REALTIME",
-  STAGING = "STAGING",
 }
 
 export enum ContentType {
   TEXT_MARKDOWN = "TEXT_MARKDOWN",
   TREE_PANTHEON = "TREE_PANTHEON",
+  TREE_PANTHEON_V2 = "TREE_PANTHEON_V2",
 }
 
 export interface TreePantheonContent {
@@ -48,6 +48,34 @@ export interface TreePantheonContent {
 
 export interface TreePantheonContentSmartComponent extends TreePantheonContent {
   attributes: { [key: string]: string | null | boolean | number | unknown };
+}
+
+type Attrs = Record<string, string> & {
+  colspan?: string;
+  rowspan?: string;
+  width?: string;
+  height?: string;
+  href?: string;
+  src?: string;
+  alt?: string;
+  title?: string;
+};
+
+export interface PantheonTreeNode<T extends "component" | string = string> {
+  tag: T;
+  parentNode: PantheonTreeNode | null;
+  prevNode: PantheonTreeNode | null;
+  nextNode: PantheonTreeNode | null;
+  children: PantheonTreeNode[];
+  data: string | null;
+  style: string[] | null;
+  attrs: Attrs;
+  id?: string;
+  type?: string;
+}
+export interface PantheonTree {
+  version: string;
+  children: PantheonTreeNode[];
 }
 
 export const SmartComponentMapZod = z.record(

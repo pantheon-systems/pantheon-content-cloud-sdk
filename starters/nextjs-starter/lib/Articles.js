@@ -26,7 +26,6 @@ export async function getArticleBySlugOrId(
     id,
     {
       publishingLevel: publishingLevel,
-      contentType: "TREE_PANTHEON",
     },
   );
 

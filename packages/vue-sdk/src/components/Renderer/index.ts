@@ -1,22 +1,24 @@
 import {
   Article,
+  PantheonTree,
+  PantheonTreeNode,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
-import { defineComponent, h, PropType, SlotsType } from "vue-demi";
+import {
+  DefineComponent,
+  defineComponent,
+  h,
+  PropType,
+  SlotsType,
+} from "vue-demi";
 import MarkdownRenderer from "./MarkdownRenderer";
-import TopLevelElement, { SmartComponentMap } from "./TopLevelElement";
+import PantheonTreeRenderer from "./PantheonTreeRenderer";
+import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
-export type JSONElement = {
-  tag: string;
-  data?: string;
-  children?: JSONElement[];
-  src?: string;
-  alt?: string;
-  style?: string[];
-  title?: string;
-  href?: string;
-  type?: string;
-  attrs?: Record<string, string>;
+export type SmartComponentMap = {
+  // Can't know prop types of component, so we use any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
 
 const ArticleRenderer = defineComponent({
@@ -39,6 +41,8 @@ const ArticleRenderer = defineComponent({
   setup(props, { slots }) {
     const { article } = props;
 
+    if (!article.content) return () => null;
+
     if (article.contentType === "TEXT_MARKDOWN") {
       return () =>
         h(MarkdownRenderer, {
@@ -49,18 +53,27 @@ const ArticleRenderer = defineComponent({
         });
     }
 
-    const parsedBody: TreePantheonContent[] = article?.content
-      ? JSON.parse(article.content)
-      : [];
-    const indexOfFirstHeader = parsedBody.findIndex((x) =>
+    const content = JSON.parse(article.content) as
+      | PantheonTree
+      | TreePantheonContent[];
+
+    const renderer =
+      // V1 content is array of TreePantheonContent
+      Array.isArray(content) ? PantheonTreeRenderer : PantheonTreeV2Renderer;
+
+    const parsedContent = Array.isArray(content)
+      ? content
+      : content.children || [];
+
+    const indexOfFirstHeader = parsedContent.findIndex((x) =>
       ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
     );
 
-    const indexOfFirstParagraph = parsedBody.findIndex((x) => x.tag === "p");
+    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
     const resolvedTitleIndex =
       indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-    const [titleElement] = parsedBody.splice(resolvedTitleIndex, 1);
+    const [titleElement] = parsedContent.splice(resolvedTitleIndex, 1);
 
     return () => {
       const titleText = getTextFromNode(titleElement);
@@ -73,11 +86,13 @@ const ArticleRenderer = defineComponent({
                 title: titleText,
               }),
             )
-          : h(TopLevelElement, {
+          : // @ts-expect-error Dynamic component props
+            h(renderer, {
               element: titleElement,
             }),
-        parsedBody.map((element) => {
-          return h(TopLevelElement, {
+        parsedContent.map((element) => {
+          // @ts-expect-error Dynamic component props
+          return h(renderer, {
             element,
             smartComponentMap: props.smartComponentMap,
           });
@@ -88,7 +103,7 @@ const ArticleRenderer = defineComponent({
 });
 
 function getTextFromNode(
-  node: TreePantheonContent | undefined,
+  node: PantheonTreeNode | TreePantheonContent | undefined,
 ): string | undefined {
   if (!node) {
     return undefined;

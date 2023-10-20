@@ -102,7 +102,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
-    "@pantheon-systems/pcc-sdk-core": "workspace:*",
+    "@pantheon-systems/pcc-sdk-core": "latest",
     "framer-motion": "^10.16.4",
     "goober": "^2.1.13",
     "query-string": "^8.1.0",

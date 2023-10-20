@@ -6,8 +6,8 @@ import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
 import {
   getStyleObjectFromString,
   unescapeHTMLEntities,
-} from "../../utils/renderer";
-import type { SmartComponentMap } from "./TopLevelElement";
+} from "../../../utils/renderer";
+import type { SmartComponentMap } from "../index";
 
 export default defineComponent({
   name: "TreeRenderer",
@@ -42,7 +42,7 @@ export default defineComponent({
     if (articleComponents.includes(x.tag)) {
       return h(
         x.tag,
-        { style: styles, attrs: x.attrs },
+        { style: styles, ...x.attrs },
         x.children
           ? h(resolveComponent("TreeRenderer"), {
               x: x.children,
@@ -70,26 +70,22 @@ export default defineComponent({
 
     if (x.tag === "a") {
       return h("a", {
-        attrs: {
-          href: x.href,
-          target: "_blank",
-          rel: "noopener noreferrer",
-        },
+        href: x.href,
+        target: "_blank",
+        rel: "noopener noreferrer",
         style: styles,
         domProps: { innerHTML: x.data },
       });
     }
 
     if (x.tag === "img" || x.tag === "image") {
-      return h("img", {
-        attrs: { src: x.src, alt: x.alt, title: x.title },
-      });
+      return h("img", { src: x.src, alt: x.alt, title: x.title });
     }
 
     if (x.type === "BLOCKQUOTE") {
       return h("blockquote", {}, [
-        h("p", { attrs: { dir: "ltr" } }, "QUOTE TEXT"),
-        h("p", { attrs: { dir: "ltr" } }, "- QUOTE ATTRIBUTION"),
+        h("p", { dir: "ltr" }, "QUOTE TEXT"),
+        h("p", { dir: "ltr" }, "- QUOTE ATTRIBUTION"),
       ]);
     }
 

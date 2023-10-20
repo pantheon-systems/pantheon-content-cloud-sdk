@@ -68,9 +68,15 @@ export async function getArticles(
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
 ) {
+  const { contentType = ContentType.TREE_PANTHEON_V2 } = args || {};
+
   const articles = await client.apolloClient.query({
     query: LIST_ARTICLES_QUERY,
-    variables: Object.assign({}, args, convertSearchParamsToGQL(searchParams)),
+    variables: Object.assign(
+      {},
+      { contentType, ...args },
+      convertSearchParamsToGQL(searchParams),
+    ),
   });
 
   return articles.data.articles as ArticleWithoutContent[];
@@ -81,9 +87,11 @@ export async function getArticle(
   id: number | string,
   args?: ArticleQueryArgs,
 ) {
+  const contentType = buildContentType(args?.contentType);
+
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { id: id.toString(), ...args },
+    variables: { id: id.toString(), contentType, ...args },
   });
 
   return article.data.article as Article;
@@ -94,9 +102,11 @@ export async function getArticleBySlug(
   slug: string,
   args?: ArticleQueryArgs,
 ) {
+  const contentType = buildContentType(args?.contentType);
+
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { slug, ...args },
+    variables: { slug, contentType, ...args },
   });
 
   return article.data.article as Article;
@@ -141,4 +151,16 @@ export async function getArticleBySlugOrId(
 
     return null;
   }
+}
+
+function buildContentType(contentType?: keyof typeof ContentType) {
+  if (
+    contentType === ContentType.TREE_PANTHEON_V2 ||
+    contentType === ContentType.TREE_PANTHEON
+  ) {
+    // Ask for the latest version of the tree
+    return ContentType.TREE_PANTHEON_V2;
+  }
+
+  return contentType;
 }
