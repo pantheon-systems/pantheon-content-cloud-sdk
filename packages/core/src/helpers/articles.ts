@@ -68,13 +68,14 @@ export async function getArticles(
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
 ) {
-  const { contentType = ContentType.TREE_PANTHEON_V2 } = args || {};
+  const { contentType: requestedContentType, ...rest } = args || {};
+  const contentType = buildContentType(requestedContentType);
 
   const articles = await client.apolloClient.query({
     query: LIST_ARTICLES_QUERY,
     variables: Object.assign(
       {},
-      { contentType, ...args },
+      { contentType, ...rest },
       convertSearchParamsToGQL(searchParams),
     ),
   });
@@ -87,11 +88,12 @@ export async function getArticle(
   id: number | string,
   args?: ArticleQueryArgs,
 ) {
-  const contentType = buildContentType(args?.contentType);
+  const { contentType: requestedContentType, ...rest } = args || {};
+  const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { id: id.toString(), contentType, ...args },
+    variables: { id: id.toString(), contentType, ...rest },
   });
 
   return article.data.article as Article;
@@ -102,11 +104,12 @@ export async function getArticleBySlug(
   slug: string,
   args?: ArticleQueryArgs,
 ) {
-  const contentType = buildContentType(args?.contentType);
+  const { contentType: requestedContentType, ...rest } = args || {};
+  const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { slug, contentType, ...args },
+    variables: { slug, contentType, ...rest },
   });
 
   return article.data.article as Article;
