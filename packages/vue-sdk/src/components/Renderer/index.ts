@@ -10,7 +10,9 @@ import {
   h,
   PropType,
   SlotsType,
+  Teleport,
 } from "vue-demi";
+import PreviewBar from "../Preview";
 import MarkdownRenderer from "./MarkdownRenderer";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
@@ -45,12 +47,20 @@ const ArticleRenderer = defineComponent({
 
     if (article.contentType === "TEXT_MARKDOWN") {
       return () =>
-        h(MarkdownRenderer, {
-          source: article.content || "",
-          options: {
-            html: true,
-          },
-        });
+        h("div", {}, [
+          article.publishingLevel === "REALTIME"
+            ? h(Teleport, { to: "body" }, [
+                h(PreviewBar, { article }),
+                h("p", "Hello"),
+              ])
+            : null,
+          h(MarkdownRenderer, {
+            source: article.content || "",
+            options: {
+              html: true,
+            },
+          }),
+        ]);
     }
 
     const content = JSON.parse(article.content) as
@@ -79,6 +89,12 @@ const ArticleRenderer = defineComponent({
       const titleText = getTextFromNode(titleElement);
 
       return h("div", {}, [
+        article.publishingLevel === "REALTIME"
+          ? h(Teleport, { to: "body" }, [
+              h(PreviewBar, { article }),
+              h("p", "Hello"),
+            ])
+          : null,
         slots.titleRenderer
           ? h(
               "div",
