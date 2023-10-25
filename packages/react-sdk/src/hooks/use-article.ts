@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
   ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
+  buildContentType,
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
@@ -13,7 +14,7 @@ type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
 
 export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
   const publishingLevel = args?.publishingLevel;
-  const contentType = args?.contentType;
+  const contentType = buildContentType(args?.contentType);
 
   const memoizedArgs = useMemo(() => {
     return {
