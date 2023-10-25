@@ -156,7 +156,7 @@ export async function getArticleBySlugOrId(
   }
 }
 
-function buildContentType(contentType?: keyof typeof ContentType) {
+export function buildContentType(contentType?: keyof typeof ContentType) {
   if (
     !contentType ||
     contentType === ContentType.TREE_PANTHEON_V2 ||
