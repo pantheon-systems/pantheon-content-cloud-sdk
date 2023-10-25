@@ -64,8 +64,8 @@
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1.0.0-rc.1",
-    "vue": "^2.6.11 || >=3.0.0",
-    "h3": "^1.8.2"
+    "h3": "^1.8.2",
+    "vue": "^2.6.11 || >=3.0.0"
   },
   "peerDependenciesMeta": {
     "@vue/composition-api": {
@@ -79,6 +79,7 @@
     "@apollo/client": "^3.7.17",
     "@pantheon-systems/pcc-sdk-core": "latest",
     "@vue/apollo-composable": "^4.0.0-beta.7",
+    "graphql": "^16.8.1",
     "markdown-it": "^13.0.2",
     "vue-demi": "latest"
   },
