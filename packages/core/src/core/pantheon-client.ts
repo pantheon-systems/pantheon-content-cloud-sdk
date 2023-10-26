@@ -138,6 +138,14 @@ export class PantheonClient {
     this.apolloClient = new ApolloClient({
       link: splitLink,
       cache: new InMemoryCache(),
+      defaultOptions: {
+        query: {
+          fetchPolicy: "no-cache",
+        },
+        watchQuery: {
+          fetchPolicy: "no-cache",
+        },
+      },
     });
 
     if (this.debug) {
