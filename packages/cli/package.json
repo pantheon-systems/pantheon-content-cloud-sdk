@@ -28,7 +28,8 @@
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "lint": "eslint . && prettier --check .",
-    "lint:fix": "eslint . --fix && prettier --write ."
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "preinstall": "node scripts/checkNodeVersion.js"
   },
   "engines": {
     "node": ">=16.0.0"
