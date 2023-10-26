@@ -12,7 +12,7 @@ import {
   SlotsType,
   Teleport,
 } from "vue-demi";
-import PreviewBar from "../Preview";
+import PreviewBar from "../Preview/index.vue";
 import MarkdownRenderer from "./MarkdownRenderer";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
@@ -49,10 +49,7 @@ const ArticleRenderer = defineComponent({
       return () =>
         h("div", {}, [
           article.publishingLevel === "REALTIME"
-            ? h(Teleport, { to: "body" }, [
-                h(PreviewBar, { article }),
-                h("p", "Hello"),
-              ])
+            ? h(Teleport, { to: "body" }, [h(PreviewBar, { article })])
             : null,
           h(MarkdownRenderer, {
             source: article.content || "",
@@ -90,10 +87,7 @@ const ArticleRenderer = defineComponent({
 
       return h("div", {}, [
         article.publishingLevel === "REALTIME"
-          ? h(Teleport, { to: "body" }, [
-              h(PreviewBar, { article }),
-              h("p", "Hello"),
-            ])
+          ? h(Teleport, { to: "body" }, [h(PreviewBar, { article })])
           : null,
         slots.titleRenderer
           ? h(

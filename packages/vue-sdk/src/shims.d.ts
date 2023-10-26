@@ -1,4 +1,4 @@
-declare module "*.css" {
-  const content: Record<string, string>;
-  export default content;
+declare module "*.vue" {
+  import { defineComponent } from "vue-demi";
+  export default defineComponent<any, any, any>();
 }
