@@ -38,11 +38,12 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-export async function sh(cmd: string, args: string[], displayOutput = false) {
+export function sh(cmd: string, args: string[], displayOutput = false) {
   return new Promise(function (resolve, reject) {
     const pr = spawn(cmd, args, {
       stdio: displayOutput ? "inherit" : undefined,
     });
+
     pr.on("exit", (code) => {
       if (code === 0) resolve(0);
       else reject(`Exited with code: ${code}`);
@@ -147,14 +148,6 @@ const init = async ({
 
   writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
 
-  // Committing changes to Git
-  await sh("git", ["init"]);
-  await sh("git", ["add", "."]);
-  await sh("git", [
-    "commit",
-    "-m",
-    '"Initial commit from Pantheon Content Cloud Toolkit."',
-  ]);
   setupProj.succeed("Completed setting up project!");
 
   // Create .env.local/.env.development
@@ -164,7 +157,10 @@ const init = async ({
       : template === "vue"
       ? ".env"
       : ".env.local";
-  await sh("cp", [".env.example", localEnvFileName]);
+  await sh("cp", [
+    path.join(dirName, ".env.example"),
+    path.join(dirName, localEnvFileName),
+  ]);
 
   if (!skipInstallation) {
     // Installing dependencies

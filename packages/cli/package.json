@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-cli",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud CLI",
-  "version": "2.0.5",
+  "version": "2.0.7",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -28,7 +28,8 @@
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "lint": "eslint . && prettier --check .",
-    "lint:fix": "eslint . --fix && prettier --write ."
+    "lint:fix": "eslint . --fix && prettier --write .",
+    "preinstall": "node scripts/checkNodeVersion.js"
   },
   "engines": {
     "node": ">=16.0.0"

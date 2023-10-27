@@ -1,5 +1,6 @@
 import {
   ArticleQueryArgs,
+  buildContentType,
   LIST_ARTICLES_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { ArticleWithoutContent } from "@pantheon-systems/pcc-sdk-core/types";
@@ -14,8 +15,9 @@ type Return = ReturnType<typeof useQuery<ListArticlesResponse>> & {
 };
 
 export const useArticles = (args?: ArticleQueryArgs): Return => {
+  const contentType = buildContentType(args?.contentType);
   const queryData = useQuery<ListArticlesResponse>(LIST_ARTICLES_QUERY, {
-    variables: args,
+    variables: { ...args, contentType },
   });
 
   return {

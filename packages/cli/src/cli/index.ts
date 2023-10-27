@@ -112,7 +112,7 @@ yargs(hideBin(process.argv))
       const usePnpm = args["use-pnpm"] as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
-      const nonInteractive = args.non_interactive as boolean;
+      const nonInteractive = args.nonInteractive as boolean;
       const siteId = args.site_id as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;

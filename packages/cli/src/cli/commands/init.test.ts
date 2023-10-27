@@ -11,7 +11,15 @@ const PCC = "./dist/index.js";
 
 test("should be able to init starter kit for nextjs template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, ["init", appFolder, "--template", "nextjs", "--use-pnpm"]);
+  await sh(PCC, [
+    "init",
+    appFolder,
+    "--template",
+    "nextjs",
+    "--use-pnpm",
+    "--non-interactive",
+    "--verbose",
+  ]);
 
   // Dependencies are installed
   expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
@@ -37,7 +45,14 @@ test("should be able to init starter kit for nextjs template", async () => {
 
 test("should be able to init starter kit for gatsby template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, ["init", appFolder, "--template", "gatsby", "--use-pnpm"]);
+  await sh(PCC, [
+    "init",
+    appFolder,
+    "--template",
+    "gatsby",
+    "--use-pnpm",
+    "--non-interactive",
+  ]);
 
   // Dependencies are installed
   expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
@@ -71,6 +86,7 @@ test("should be able to init starter kit for nextjs template with typescript", a
     "nextjs",
     "--use-pnpm",
     "--ts",
+    "--non-interactive",
   ]);
 
   // Dependencies are installed
@@ -104,6 +120,7 @@ test("should be able to init starter kit for gatsby template with typescript", a
     "gatsby",
     "--use-pnpm",
     "--ts",
+    "--non-interactive",
   ]);
 
   // Dependencies are installed
@@ -143,6 +160,7 @@ test("should be able to init starter kit with eslint and app name", async () => 
     "nextjs",
     "--noInstall",
     "--eslint",
+    "--non-interactive",
   ]);
 
   // Eslint is initialized
@@ -209,6 +227,7 @@ test("should raise error when template name is incorrect", async () => {
       "react",
       "--noInstall",
       "--eslint",
+      "--non-interactive",
     ]);
   } catch (err) {
     error = 1;
