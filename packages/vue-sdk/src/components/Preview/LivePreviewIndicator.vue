@@ -2,6 +2,9 @@
 import IconDot from './assets/IconDot.vue';
 import IconInfo from './assets/IconInfo.vue';
 
+import { Tooltip } from 'floating-vue'
+import 'floating-vue/dist/style.css'
+
 defineProps({
   isLive: Boolean,
 });
@@ -13,22 +16,29 @@ defineProps({
     <IconDot :fill="isLive ? '#218C5F' : '#CFCFD3'" />
     <span>{{ isLive ? "Active Live Preview" : "Inactive Live Preview" }}</span>
 
-    <button v-if="!isLive">
-      <IconInfo />
-    </button>
+    <Tooltip>
+      <div class="info-tooltip-button">
+        <button v-if="!isLive">
+          <IconInfo />
+        </button>
+      </div>
 
-    <!-- <div>
-    <span>
-      This preview page is no longer connected to the document
-      (updates to the document will not be displayed until this is
-      reconnected).{" "}
-    </span>
-    <br />
-    <span>
-      To reconnect, navigate to the document and select the
-      &apos;Preview&apos; button in the Content Cloud add-on.
-    </span>
-  </div> -->
+      <template #popper>
+        <div class="info-tooltip">
+          <span>
+            This preview page is no longer connected to the document
+            (updates to the document will not be displayed until this is
+            reconnected).
+          </span>
+          <br />
+          <span style="font-weight: 500;">
+            To reconnect, navigate to the document and select the
+            &apos;Preview&apos; button in the Content Cloud add-on.
+          </span>
+        </div>
+      </template>
+    </Tooltip>
+
   </div>
 </template>
 
@@ -56,6 +66,19 @@ defineProps({
   >button {
     margin-left: 8px;
   }
+}
+
+.info-tooltip-button {
+  display: flex;
+  margin-left: 8px;
+}
+
+
+.info-tooltip {
+  font-size: 0.8rem;
+  font-weight: 400;
+  background: #283139;
+  max-width: 320px;
 }
 </style>
 

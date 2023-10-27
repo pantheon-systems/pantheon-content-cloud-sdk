@@ -1,60 +1,71 @@
 <script setup lang="ts">
 import type { Article } from '@pantheon-systems/pcc-sdk-core/types';
-import { PropType, ref } from 'vue-demi';
+import queryString from "query-string";
+import { PropType, ref, watchEffect } from 'vue-demi';
+
 import DocsLogo from './assets/DocsLogo.vue'
 import IconUp from './assets/IconUp.vue';
 import LivePreviewIndicator from './LivePreviewIndicator.vue';
+import HamburgerIcon from './assets/HamburgerIcon.vue';
+import HoverButton from '../Common/HoverButton.vue';
 
-console.log("preview setup");
-
-defineProps({
+const props = defineProps({
   article: Object as PropType<Article>,
 });
 
+const isLive = ref(false);
 const isHidden = ref(false);
 const hasCopied = ref(false);
-const isLive = ref(false);
+const copyResetTimeoutId = ref<NodeJS.Timeout | null>(null);
 
+function copyURL() {
+  if (copyResetTimeoutId.value) {
+    clearTimeout(copyResetTimeoutId.value);
+    copyResetTimeoutId.value = null;
+  }
 
-// const onCopy = () => {
-//   if (copyResetTimeoutId) {
-//     clearTimeout(copyResetTimeoutId);
-//     setCopyResetTimeoutId(null);
-//   }
+  const parsedUrl = queryString.parseUrl(
+    window.location.href,
+    {
+      parseFragmentIdentifier: true,
+    },
+  );
 
-//   const parsedUrl = queryString.parseUrl(
-//     window.location.href,
-//     {
-//       parseFragmentIdentifier: true,
-//     },
-//   );
+  navigator.clipboard.writeText(
+    `${parsedUrl.url}?${queryString.stringify(parsedUrl.query)}${parsedUrl.fragmentIdentifier
+      ? `#${parsedUrl.fragmentIdentifier}`
+      : ""
+    }`,
+  );
 
-//   const query = {
-//     ...(parsedUrl.query || {}),
-//     pccGrant,
-//   };
+  hasCopied.value = true;
 
-//   navigator.clipboard.writeText(
-//     `${parsedUrl.url}?${queryString.stringify(query)}${parsedUrl.fragmentIdentifier
-//       ? `#${parsedUrl.fragmentIdentifier}`
-//       : ""
-//     }`,
-//   );
-//   setHasCopied(true);
+  // Reset the copied state after 2 seconds
+  const timeoutId = setTimeout(() => {
+    hasCopied.value = false;
+  }, 2000);
 
-//   // Reset the copied state after 2 seconds
-//   const timeoutId = setTimeout(() => {
-//     setHasCopied(false);
-//   }, 2000);
-//   setCopyResetTimeoutId(timeoutId);
-// }
+  copyResetTimeoutId.value = timeoutId;
+}
 
+watchEffect(() => {
+  const article = props.article;
 
+  if (!article?.previewActiveUntil) return;
+
+  const livePreviewTimeRemaining = article.previewActiveUntil - Date.now();
+  if (livePreviewTimeRemaining >= 100) {
+    isLive.value = true;
+    setTimeout(() => {
+      isLive.value = false;
+    }, livePreviewTimeRemaining);
+  }
+});
 </script>
 
 <template>
-  <div class="wrapper">
-    <div class="container">
+  <div :class="['wrapper', isHidden && 'hidden']">
+    <div v-if="!isHidden" class="container">
       <a class="title-link">
         <DocsLogo />
         <span>{{ article?.title }}</span>
@@ -64,7 +75,7 @@ const isLive = ref(false);
 
         <div class="end-block">
           <div class="copy-url-container">
-            <button>
+            <button @click="copyURL">
               {{ hasCopied ? "Copied URL" : "Copy URL" }}
             </button>
           </div>
@@ -72,17 +83,20 @@ const isLive = ref(false);
       </div>
     </div>
 
-    <div class="controller-container">
+
+    <div :class="['controller-container', isHidden && 'active']">
       <div v-if="isHidden">
         <LivePreviewIndicator :isLive=isLive />
-        <button @click="isHidden = !isHidden">
-          <template v-if="isHidden">
-            <IconUp :flip=true />
+        <HoverButton @click="isHidden = !isHidden">
+          <template v-slot="{ isHovered }">
+            <template v-if="!isHidden || isHovered">
+              <IconUp :flip=true />
+            </template>
+            <template v-else>
+              <HamburgerIcon />
+            </template>
           </template>
-          <template v-else>
-            <!-- <IconHamburger :style="{ margin - left: '10px' } " /> -->
-          </template>
-        </button>
+        </HoverButton>
       </div>
       <button v-else @click="isHidden = !isHidden">
         <IconUp />
@@ -103,6 +117,11 @@ const isLive = ref(false);
   display: flex;
   justify-content: flex-end;
   background: white;
+}
+
+.wrapper.hidden {
+  border-bottom: 1px solid transparent;
+  background: transparent;
 }
 
 .container {
@@ -181,6 +200,20 @@ const isLive = ref(false);
   @media (max-width: 768px) {
     padding: 8px;
     align-items: flex-start;
+  }
+}
+
+.controller-container.active {
+  background: #F1F1F1;
+  border-radius: 3px;
+  box-shadow: 0px 3px 8px 0px #00000026;
+
+  >div {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
   }
 }
 </style>
