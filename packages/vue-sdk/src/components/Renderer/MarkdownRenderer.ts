@@ -16,7 +16,10 @@ const MarkdownRenderer = defineComponent({
       required: false,
     },
   },
-  setup(props, { attrs }) {
+  render() {
+    const props = this.$props;
+    const attrs = this.$attrs;
+
     const md = new MarkdownIt(props.options);
 
     const content = computed(() => {
@@ -24,11 +27,10 @@ const MarkdownRenderer = defineComponent({
       return md?.render(src);
     });
 
-    return () =>
-      h("div", {
-        ...attrs,
-        innerHTML: content.value,
-      });
+    return h("div", {
+      ...attrs,
+      innerHTML: content.value,
+    });
   },
 });
 

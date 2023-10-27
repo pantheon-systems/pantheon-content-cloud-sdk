@@ -40,27 +40,29 @@ const ArticleRenderer = defineComponent({
       title: string | undefined;
     };
   }>,
-  setup(props, { slots }) {
-    const { article } = props;
+  render() {
+    const props = this.$props;
+    const slots = this.$slots;
 
-    if (!article.content) return () => null;
+    if (!props.article.content) return null;
 
-    if (article.contentType === "TEXT_MARKDOWN") {
-      return () =>
-        h("div", {}, [
-          article.publishingLevel === "REALTIME"
-            ? h(Teleport, { to: "body" }, [h(PreviewBar, { article })])
-            : null,
-          h(MarkdownRenderer, {
-            source: article.content || "",
-            options: {
-              html: true,
-            },
-          }),
-        ]);
+    if (props.article.contentType === "TEXT_MARKDOWN") {
+      return h("div", {}, [
+        props.article.publishingLevel === "REALTIME"
+          ? h(Teleport, { to: "body" }, [
+              h(PreviewBar, { article: props.article }),
+            ])
+          : null,
+        h(MarkdownRenderer, {
+          source: props.article.content || "",
+          options: {
+            html: true,
+          },
+        }),
+      ]);
     }
 
-    const content = JSON.parse(article.content) as
+    const content = JSON.parse(props.article.content) as
       | PantheonTree
       | TreePantheonContent[];
 
@@ -81,34 +83,33 @@ const ArticleRenderer = defineComponent({
       indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
     const [titleElement] = parsedContent.splice(resolvedTitleIndex, 1);
+    const titleText = getTextFromNode(titleElement);
 
-    return () => {
-      const titleText = getTextFromNode(titleElement);
-
-      return h("div", {}, [
-        article.publishingLevel === "REALTIME"
-          ? h(Teleport, { to: "body" }, [h(PreviewBar, { article })])
-          : null,
-        slots.titleRenderer
-          ? h(
-              "div",
-              slots.titleRenderer({
-                title: titleText,
-              }),
-            )
-          : // @ts-expect-error Dynamic component props
-            h(renderer, {
-              element: titleElement,
+    return h("div", {}, [
+      props.article.publishingLevel === "REALTIME"
+        ? h(Teleport, { to: "body" }, [
+            h(PreviewBar, { article: props.article }),
+          ])
+        : null,
+      slots.titleRenderer
+        ? h(
+            "div",
+            slots.titleRenderer({
+              title: titleText,
             }),
-        parsedContent.map((element) => {
-          // @ts-expect-error Dynamic component props
-          return h(renderer, {
-            element,
-            smartComponentMap: props.smartComponentMap,
-          });
-        }),
-      ]);
-    };
+          )
+        : // @ts-expect-error Dynamic component props
+          h(renderer, {
+            element: titleElement,
+          }),
+      parsedContent.map((element) => {
+        // @ts-expect-error Dynamic component props
+        return h(renderer, {
+          element,
+          smartComponentMap: props.smartComponentMap,
+        });
+      }),
+    ]);
   },
 });
 
