@@ -6,7 +6,7 @@ const route = useRoute()
 const config = useRuntimeConfig()
 
 const pccGrant = useCookie('PCC-GRANT')
-const pccSiteId = config.public.NUXT_PCC_SITE_ID
+const pccSiteId = config.public.siteId
 
 const pantheonConfig = {
   siteId: pccSiteId,

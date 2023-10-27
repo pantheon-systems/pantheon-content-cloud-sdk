@@ -3,11 +3,11 @@ import {
   PantheonClientConfig,
 } from "@pantheon-systems/pcc-vue-sdk";
 
-const { NUXT_PCC_SITE_ID, PCC_API_KEY } = process.env;
+const { PCC_SITE_ID, PCC_API_KEY } = process.env;
 
 export const getPantheonClient = (options?: Partial<PantheonClientConfig>) => {
-  if (!NUXT_PCC_SITE_ID) {
-    throw new Error("Missing NUXT_PCC_SITE_ID");
+  if (!PCC_SITE_ID) {
+    throw new Error("Missing PCC_SITE_ID");
   }
 
   if (!PCC_API_KEY) {
@@ -15,7 +15,7 @@ export const getPantheonClient = (options?: Partial<PantheonClientConfig>) => {
   }
 
   return new PantheonClient({
-    siteId: NUXT_PCC_SITE_ID,
+    siteId: PCC_SITE_ID,
     apiKey: PCC_API_KEY,
     ...options,
   });

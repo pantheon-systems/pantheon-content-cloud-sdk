@@ -17,7 +17,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      NUXT_PCC_SITE_ID: process.env.NUXT_PCC_SITE_ID,
+      siteId: process.env.PCC_SITE_ID,
     },
   },
 });
