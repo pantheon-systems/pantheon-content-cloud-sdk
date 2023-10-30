@@ -8,6 +8,7 @@ import IconUp from './assets/IconUp.vue';
 import LivePreviewIndicator from './LivePreviewIndicator.vue';
 import HamburgerIcon from './assets/HamburgerIcon.vue';
 import HoverButton from '../Common/HoverButton.vue';
+import { getCookie } from '../../utils/cookies';
 
 const props = defineProps({
   article: Object as PropType<Article>,
@@ -17,6 +18,7 @@ const isLive = ref(false);
 const isHidden = ref(false);
 const hasCopied = ref(false);
 const copyResetTimeoutId = ref<NodeJS.Timeout | null>(null);
+const pccGrant = getCookie("PCC-GRANT");
 
 function copyURL() {
   if (copyResetTimeoutId.value) {
@@ -31,8 +33,13 @@ function copyURL() {
     },
   );
 
+  const query = {
+    ...parsedUrl.query,
+    pccGrant,
+  }
+
   navigator.clipboard.writeText(
-    `${parsedUrl.url}?${queryString.stringify(parsedUrl.query)}${parsedUrl.fragmentIdentifier
+    `${parsedUrl.url}?${queryString.stringify(query)}${parsedUrl.fragmentIdentifier
       ? `#${parsedUrl.fragmentIdentifier}`
       : ""
     }`,
