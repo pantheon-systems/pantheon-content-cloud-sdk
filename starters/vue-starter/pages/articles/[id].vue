@@ -5,17 +5,17 @@ import ArticleView from '../../components/article/ArticleView.vue';
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const pccGrant = useCookie('PCC-GRANT')
+const { publishingLevel } = route.query
 const pccSiteId = config.public.siteId
+const pccGrant = useCookie('PCC-GRANT').value ?? route.query.pccGrant?.toString()
 
 const pantheonConfig = {
   siteId: pccSiteId,
-  pccGrant: pccGrant.value,
+  pccGrant,
   apiKey: "not-needed-on-client",
 }
 
 const articleId = route.params.id
-const { publishingLevel } = route.query
 
 const { data: article, error } = await useFetch(`/api/articles/${articleId}`, {
   query: {
