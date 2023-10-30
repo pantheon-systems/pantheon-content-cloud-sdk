@@ -7,7 +7,7 @@ const config = useRuntimeConfig()
 
 const { publishingLevel } = route.query
 const pccSiteId = config.public.siteId
-const pccGrant = useCookie('PCC-GRANT').value ?? route.query.pccGrant?.toString()
+const pccGrant = (route.query.pccGrant?.toString() ?? useCookie('PCC-GRANT').value) || undefined
 
 const pantheonConfig = {
   siteId: pccSiteId,

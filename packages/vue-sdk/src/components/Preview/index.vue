@@ -31,13 +31,12 @@ function copyURL() {
   });
 
   const query = {
-    ...parsedUrl.query,
     pccGrant,
+    ...parsedUrl.query,
   };
 
   navigator.clipboard.writeText(
-    `${parsedUrl.url}?${queryString.stringify(query)}${
-      parsedUrl.fragmentIdentifier ? `#${parsedUrl.fragmentIdentifier}` : ""
+    `${parsedUrl.url}?${queryString.stringify(query)}${parsedUrl.fragmentIdentifier ? `#${parsedUrl.fragmentIdentifier}` : ""
     }`,
   );
 
@@ -150,13 +149,13 @@ watchEffect(() => {
   color: #23232d;
   min-width: 0;
 
-  > span {
+  >span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  > svg {
+  >svg {
     flex-shrink: 0;
   }
 }
@@ -170,7 +169,7 @@ watchEffect(() => {
 }
 
 .copy-url-container {
-  > button {
+  >button {
     background-color: #ffdc28;
     height: 32px;
     font-size: 0.875rem;
@@ -210,7 +209,7 @@ watchEffect(() => {
   border-radius: 3px;
   box-shadow: 0px 3px 8px 0px #00000026;
 
-  > div {
+  >div {
     display: flex;
     flex-direction: row;
     column-gap: 10px;
