@@ -11,7 +11,7 @@
     "build:starters": "turbo run build --filter=./starters/*",
     "lint:starters": "turbo run lint --filter=./starters/*",
     "ci:publish": "changeset publish",
-    "publish:packages": "pnpm build && pnpm publish --filter \"./packages/**\""
+    "publish:packages": "pnpm build && pnpm ci:publish"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.2",
