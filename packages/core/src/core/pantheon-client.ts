@@ -142,9 +142,6 @@ export class PantheonClient {
         query: {
           fetchPolicy: "no-cache",
         },
-        watchQuery: {
-          fetchPolicy: "no-cache",
-        },
       },
     });
 
