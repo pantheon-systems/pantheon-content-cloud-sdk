@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { Article } from '@pantheon-systems/pcc-sdk-core/types';
+import type { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import queryString from "query-string";
-import { PropType, ref, watchEffect } from 'vue-demi';
+import { PropType, ref, watchEffect } from "vue-demi";
 
-import DocsLogo from './assets/DocsLogo.vue'
-import IconUp from './assets/IconUp.vue';
-import LivePreviewIndicator from './LivePreviewIndicator.vue';
-import HamburgerIcon from './assets/HamburgerIcon.vue';
-import HoverButton from '../Common/HoverButton.vue';
-import { getCookie } from '../../utils/cookies';
+import DocsLogo from "./assets/DocsLogo.vue";
+import IconUp from "./assets/IconUp.vue";
+import LivePreviewIndicator from "./LivePreviewIndicator.vue";
+import HamburgerIcon from "./assets/HamburgerIcon.vue";
+import HoverButton from "../Common/HoverButton.vue";
+import { getCookie } from "../../utils/cookies";
 
 const props = defineProps({
   article: Object as PropType<Article>,
@@ -26,22 +26,18 @@ function copyURL() {
     copyResetTimeoutId.value = null;
   }
 
-  const parsedUrl = queryString.parseUrl(
-    window.location.href,
-    {
-      parseFragmentIdentifier: true,
-    },
-  );
+  const parsedUrl = queryString.parseUrl(window.location.href, {
+    parseFragmentIdentifier: true,
+  });
 
   const query = {
     ...parsedUrl.query,
     pccGrant,
-  }
+  };
 
   navigator.clipboard.writeText(
-    `${parsedUrl.url}?${queryString.stringify(query)}${parsedUrl.fragmentIdentifier
-      ? `#${parsedUrl.fragmentIdentifier}`
-      : ""
+    `${parsedUrl.url}?${queryString.stringify(query)}${
+      parsedUrl.fragmentIdentifier ? `#${parsedUrl.fragmentIdentifier}` : ""
     }`,
   );
 
@@ -78,7 +74,7 @@ watchEffect(() => {
         <span>{{ article?.title }}</span>
       </a>
       <div class="lpi-wrapper">
-        <LivePreviewIndicator :isLive=isLive />
+        <LivePreviewIndicator :isLive="isLive" />
 
         <div class="end-block">
           <div class="copy-url-container">
@@ -90,14 +86,13 @@ watchEffect(() => {
       </div>
     </div>
 
-
     <div :class="['controller-container', isHidden && 'active']">
       <div v-if="isHidden">
-        <LivePreviewIndicator :isLive=isLive />
+        <LivePreviewIndicator :isLive="isLive" />
         <HoverButton @click="isHidden = !isHidden">
           <template v-slot="{ isHovered }">
             <template v-if="!isHidden || isHovered">
-              <IconUp :flip=true />
+              <IconUp :flip="true" />
             </template>
             <template v-else>
               <HamburgerIcon />
@@ -119,7 +114,7 @@ watchEffect(() => {
   position: absolute;
   top: 0;
   width: 100%;
-  border-bottom: 1px solid #CFCFD3;
+  border-bottom: 1px solid #cfcfd3;
   transition: all 0.2s ease-in-out;
   display: flex;
   justify-content: flex-end;
@@ -155,13 +150,13 @@ watchEffect(() => {
   color: #23232d;
   min-width: 0;
 
-  >span {
+  > span {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  >svg {
+  > svg {
     flex-shrink: 0;
   }
 }
@@ -175,7 +170,7 @@ watchEffect(() => {
 }
 
 .copy-url-container {
-  >button {
+  > button {
     background-color: #ffdc28;
     height: 32px;
     font-size: 0.875rem;
@@ -211,11 +206,11 @@ watchEffect(() => {
 }
 
 .controller-container.active {
-  background: #F1F1F1;
+  background: #f1f1f1;
   border-radius: 3px;
   box-shadow: 0px 3px 8px 0px #00000026;
 
-  >div {
+  > div {
     display: flex;
     flex-direction: row;
     column-gap: 10px;
