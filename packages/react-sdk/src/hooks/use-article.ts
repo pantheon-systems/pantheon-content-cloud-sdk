@@ -1,3 +1,4 @@
+import { type QueryHookOptions } from "@apollo/client";
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
   ARTICLE_UPDATE_SUBSCRIPTION,
@@ -12,7 +13,16 @@ type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
   article: Article | undefined;
 };
 
-export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
+type ApolloQueryOptions = Omit<
+  QueryHookOptions<{ article: Article }>,
+  "variables"
+>;
+
+export const useArticle = (
+  id: string,
+  args?: ArticleQueryArgs,
+  apolloQueryOptions?: ApolloQueryOptions,
+): Return => {
   const publishingLevel = args?.publishingLevel;
   const contentType = buildContentType(args?.contentType);
 
@@ -26,11 +36,14 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
   const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
     GET_ARTICLE_QUERY,
     {
+      ...apolloQueryOptions,
       variables: { id, ...memoizedArgs },
     },
   );
 
   useEffect(() => {
+    if (apolloQueryOptions?.skip) return;
+
     subscribeToMore({
       document: ARTICLE_UPDATE_SUBSCRIPTION,
       variables: { id, ...memoizedArgs },
@@ -41,7 +54,7 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
         return { article };
       },
     });
-  }, [id, memoizedArgs, subscribeToMore]);
+  }, [id, memoizedArgs, subscribeToMore, apolloQueryOptions?.skip]);
 
   return {
     ...queryData,

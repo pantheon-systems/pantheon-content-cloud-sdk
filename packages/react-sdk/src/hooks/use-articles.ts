@@ -1,3 +1,4 @@
+import { type QueryHookOptions } from "@apollo/client";
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
   ArticleQueryArgs,
@@ -16,12 +17,19 @@ type Return = ReturnType<typeof useQuery<ListArticlesResponse>> & {
   articles: ArticleWithoutContent[] | undefined;
 };
 
+type ApolloQueryOptions = Omit<
+  QueryHookOptions<ListArticlesResponse>,
+  "variables"
+>;
+
 export const useArticles = (
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
+  apolloQueryOptions?: ApolloQueryOptions,
 ): Return => {
   const contentType = buildContentType(args?.contentType);
   const queryData = useQuery<ListArticlesResponse>(LIST_ARTICLES_QUERY, {
+    ...apolloQueryOptions,
     variables: Object.assign(
       {},
       { ...args, contentType },
