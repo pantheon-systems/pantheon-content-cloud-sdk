@@ -1,9 +1,6 @@
 import { forwardRef } from "react";
-import { useBaseSmartComponent } from "./hooks/useBaseSmartComponent";
 
 const LeadCapture = forwardRef(function ({ title, body }, ref) {
-  useBaseSmartComponent();
-
   return (
     <div className="w-full p-1">
       <div
