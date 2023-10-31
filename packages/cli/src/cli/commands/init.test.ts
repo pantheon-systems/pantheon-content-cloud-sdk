@@ -3,7 +3,8 @@ import path from "path";
 import chalk from "chalk";
 import tmp from "tmp";
 import { Logger } from "../../lib/logger";
-import init, { sh } from "./init";
+import { sh } from "../../lib/utils";
+import init from "./init";
 
 jest.setTimeout(180000);
 
