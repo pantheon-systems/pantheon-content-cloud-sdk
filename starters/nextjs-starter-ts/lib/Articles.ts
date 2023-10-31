@@ -19,7 +19,7 @@ export async function getAllArticles(pccGrant?: string) {
 export async function getArticleBySlugOrId(
   id: number | string,
   pccGrant?: string,
-  publishingLevel = "PRODUCTION",
+  publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
 ) {
   const post = await PCCReactSDK.getArticleBySlugOrId(
     buildPantheonClientWithGrant(pccGrant),
