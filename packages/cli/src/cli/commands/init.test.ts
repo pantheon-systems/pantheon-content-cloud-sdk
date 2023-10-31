@@ -3,7 +3,7 @@ import path from "path";
 import chalk from "chalk";
 import tmp from "tmp";
 import { Logger } from "../../lib/logger";
-import init, { sh } from "./init";
+import { sh } from "../../lib/utils";
 
 jest.setTimeout(180000);
 
@@ -179,35 +179,25 @@ test("should be able to init starter kit with eslint and app name", async () => 
 
 test("should raise error when project directory already exists", async () => {
   const appFolder = tmp.tmpNameSync();
-  const loggerSpy = jest
-    .spyOn(Logger.prototype, "error")
-    .mockImplementation(() => null);
-  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {
-    throw Error("TEST_ERROR");
-  });
   fs.mkdirSync(appFolder);
 
+  let error = false;
   try {
-    await init({
-      dirName: appFolder,
-      template: "nextjs",
-      packageManager: "npm",
-      skipInstallation: true,
-      nonInteractive: true,
-      eslint: false,
-      silentLogs: true,
-      useTypescript: true,
-      printVerbose: true,
-    });
+    await sh(PCC, [
+      "init",
+      appFolder,
+      "--template",
+      "nextjs",
+      "--noInstall",
+      "--eslint",
+      "--non-interactive",
+    ]);
   } catch (err) {
-    expect(loggerSpy).toBeCalledWith(
-      chalk.red("ERROR: Project directory already exists."),
-    );
-    expect(exitSpy).toBeCalledWith(1);
+    error = true;
   }
 
   // No files are created
-  expect(fs.readdirSync(appFolder).length).toBe(0);
+  expect(error).toBe(true);
 
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });

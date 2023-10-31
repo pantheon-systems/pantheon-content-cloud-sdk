@@ -1,4 +1,3 @@
-import { spawn } from "child_process";
 import {
   cpSync,
   existsSync,
@@ -17,7 +16,7 @@ import inquirer from "inquirer";
 import { Octokit } from "octokit";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { Logger, SpinnerLogger } from "../../lib/logger";
-import { replaceEnvVariable } from "../../lib/utils";
+import { replaceEnvVariable, sh } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
 
 const TEMP_DIR_NAME = path.join(os.tmpdir(), "react_sdk_90723");
@@ -38,18 +37,6 @@ const ESLINT_CONFIG = {
 };
 
 const octokit = new Octokit();
-export function sh(cmd: string, args: string[], displayOutput = false) {
-  return new Promise(function (resolve, reject) {
-    const pr = spawn(cmd, args, {
-      stdio: displayOutput ? "inherit" : undefined,
-    });
-
-    pr.on("exit", (code) => {
-      if (code === 0) resolve(0);
-      else reject(`Exited with code: ${code}`);
-    });
-  });
-}
 
 /**
  * Handles initializing projects for PCC

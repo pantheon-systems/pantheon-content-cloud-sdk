@@ -1,5 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
+import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import config from "./config";
 import { getLocalAuthDetails } from "./localStorage";
@@ -23,13 +24,24 @@ class AddOnApiHelper {
     return resp.data as Credentials;
   }
 
-  static async getDocument(documentId: string): Promise<Article> {
-    const authDetails = await getLocalAuthDetails();
+  static async getIdToken(): Promise<string> {
+    let authDetails = await getLocalAuthDetails();
+
+    // If auth details not found, try user logging in
+    if (!authDetails) await login();
+
+    authDetails = await getLocalAuthDetails();
     if (!authDetails) throw new UserNotLoggedIn();
+
+    return authDetails.id_token as string;
+  }
+
+  static async getDocument(documentId: string): Promise<Article> {
+    const idToken = await this.getIdToken();
 
     const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
@@ -37,12 +49,11 @@ class AddOnApiHelper {
   }
 
   static async getPreviewJwt(siteId: string): Promise<string> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.post(`${SITE_ENDPOINT}/${siteId}/preview`, null, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
@@ -50,15 +61,14 @@ class AddOnApiHelper {
   }
 
   static async createApiKey(): Promise<string> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.post(
       API_KEY_ENDPOINT,
       {},
       {
         headers: {
-          Authorization: `Bearer ${authDetails.id_token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       },
     );
@@ -66,12 +76,11 @@ class AddOnApiHelper {
   }
 
   static async listApiKeys(): Promise<ApiKey[]> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.get(API_KEY_ENDPOINT, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
@@ -79,13 +88,12 @@ class AddOnApiHelper {
   }
 
   static async revokeApiKey(id: string): Promise<void> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     try {
       await axios.delete(`${API_KEY_ENDPOINT}/${id}`, {
         headers: {
-          Authorization: `Bearer ${authDetails.id_token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       });
     } catch (err) {
@@ -98,15 +106,14 @@ class AddOnApiHelper {
   }
 
   static async createSite(url: string): Promise<string> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.post(
       SITE_ENDPOINT,
       { name: "", url, emailList: "" },
       {
         headers: {
-          Authorization: `Bearer ${authDetails.id_token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       },
     );
@@ -114,24 +121,22 @@ class AddOnApiHelper {
   }
 
   static async listSites(): Promise<Site[]> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.get(SITE_ENDPOINT, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
     return resp.data as Site[];
   }
   static async getSite(siteId: string): Promise<Site> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}`, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
     });
 
@@ -139,15 +144,14 @@ class AddOnApiHelper {
   }
 
   static async updateSite(id: string, url: string): Promise<void> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     await axios.patch(
       `${SITE_ENDPOINT}/${id}`,
       { url },
       {
         headers: {
-          Authorization: `Bearer ${authDetails.id_token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       },
     );
@@ -165,8 +169,7 @@ class AddOnApiHelper {
       webhookSecret?: string;
     },
   ): Promise<void> {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const configuredWebhook = webhookUrl || webhookSecret;
 
@@ -183,7 +186,7 @@ class AddOnApiHelper {
       },
       {
         headers: {
-          Authorization: `Bearer ${authDetails.id_token}`,
+          Authorization: `Bearer ${idToken}`,
         },
       },
     );
@@ -199,12 +202,11 @@ class AddOnApiHelper {
       offset?: number;
     },
   ) {
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    const idToken = await this.getIdToken();
 
     const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}/webhookLogs`, {
       headers: {
-        Authorization: `Bearer ${authDetails.id_token}`,
+        Authorization: `Bearer ${idToken}`,
       },
       params: {
         limit,

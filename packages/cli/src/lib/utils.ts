@@ -1,3 +1,5 @@
+import { spawn } from "child_process";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function filterUndefinedProperties(obj: Record<string, any>) {
   const _obj = obj;
@@ -28,4 +30,17 @@ export function replaceEnvVariable(
   parts[1] = value;
   envFileLines[index] = parts.join("=");
   return envFileLines.join("\n");
+}
+
+export function sh(cmd: string, args: string[], displayOutput = false) {
+  return new Promise(function (resolve, reject) {
+    const pr = spawn(cmd, args, {
+      stdio: displayOutput ? "inherit" : undefined,
+    });
+
+    pr.on("exit", (code) => {
+      if (code === 0) resolve(0);
+      else reject(`Exited with code: ${code}`);
+    });
+  });
 }
