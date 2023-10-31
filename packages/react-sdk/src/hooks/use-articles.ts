@@ -30,11 +30,11 @@ export const useArticles = (
   const contentType = buildContentType(args?.contentType);
   const queryData = useQuery<ListArticlesResponse>(LIST_ARTICLES_QUERY, {
     ...apolloQueryOptions,
-    variables: Object.assign(
-      {},
-      { ...args, contentType },
-      convertSearchParamsToGQL(searchParams),
-    ),
+    variables: {
+      ...args,
+      ...convertSearchParamsToGQL(searchParams),
+      contentType,
+    },
   });
 
   return {

@@ -27,11 +27,11 @@ export const useArticles = (
   const queryData = useQuery<ListArticlesResponse>(
     LIST_ARTICLES_QUERY,
     {
-      variables: Object.assign(
-        {},
-        { ...args, contentType },
-        convertSearchParamsToGQL(searchParams),
-      ),
+      variables: {
+        ...args,
+        ...convertSearchParamsToGQL(searchParams),
+        contentType,
+      },
     },
     apolloQueryOptions ?? {},
   );
