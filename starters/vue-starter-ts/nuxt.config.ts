@@ -15,4 +15,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  runtimeConfig: {
+    public: {
+      siteId: process.env.PCC_SITE_ID,
+    },
+  },
 });

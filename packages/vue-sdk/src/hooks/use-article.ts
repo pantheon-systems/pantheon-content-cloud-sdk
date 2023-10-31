@@ -1,17 +1,19 @@
 import {
+  ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
   buildContentType,
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { useQuery } from "@vue/apollo-composable";
+import { Ref, ref } from "vue-demi";
 
 type GetArticleQueryResult = {
-  article: Article;
+  article: Article | undefined;
 };
 
 type Return = ReturnType<typeof useQuery<GetArticleQueryResult>> & {
-  article: Article | undefined;
+  article: Ref<Article | undefined>;
 };
 
 export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
@@ -25,20 +27,23 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
     },
   );
 
+  const article = ref(queryData.result?.value?.article);
+
   subscribeToMore({
-    document: GET_ARTICLE_QUERY,
-    variables: { id, ...args },
+    document: ARTICLE_UPDATE_SUBSCRIPTION,
+    variables: { id, ...args, contentType },
     updateQuery: (prev, { subscriptionData }) => {
       if (!subscriptionData.data) return prev;
 
-      const { article } = subscriptionData.data;
-      return { article };
+      article.value = subscriptionData.data.article;
+
+      return subscriptionData.data;
     },
   });
 
   return {
     ...queryData,
     subscribeToMore,
-    article: queryData.result?.value?.article,
+    article,
   };
 };

@@ -27,7 +27,7 @@ export interface PantheonClientConfig {
   /**
    * NOT FOR EXTERNAL USE.
    */
-  pccHost: string;
+  pccHost?: string;
 
   /**
    * ID of the site you want to query
