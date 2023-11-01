@@ -73,11 +73,11 @@ export async function getArticles(
 
   const articles = await client.apolloClient.query({
     query: LIST_ARTICLES_QUERY,
-    variables: Object.assign(
-      {},
-      { contentType, ...rest },
-      convertSearchParamsToGQL(searchParams),
-    ),
+    variables: {
+      ...rest,
+      ...convertSearchParamsToGQL(searchParams),
+      contentType,
+    },
   });
 
   return articles.data.articles as ArticleWithoutContent[];

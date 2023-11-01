@@ -21,7 +21,8 @@
   },
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "scripts"
   ],
   "scripts": {
     "test": "jest --silent",

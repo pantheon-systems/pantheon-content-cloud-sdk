@@ -10,25 +10,9 @@ import {
 } from "../lib/apollo-client";
 import { DefaultLogger, Logger, NoopLogger } from "../lib/logger";
 
-export interface PantheonClientConfig {
-  /**
-   * API Key for your PCC Workspace
-   * @example
-   * // If your API Key is ABC-DEF
-   * const pantheonClient = new PantheonClient({
-   *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
-   * });
-   */
-  apiKey: string;
-
+export type PantheonClientConfig = {
   debug?: boolean;
-
-  /**
-   * NOT FOR EXTERNAL USE.
-   */
   pccHost?: string;
-
   /**
    * ID of the site you want to query
    * @example
@@ -39,7 +23,16 @@ export interface PantheonClientConfig {
    * });
    */
   siteId: string;
-
+  /**
+   * API Key for your PCC Workspace
+   * @example
+   * // If your API Key is ABC-DEF
+   * const pantheonClient = new PantheonClient({
+   *   siteId: '12345',
+   *   apiKey: 'ABC-DEF',
+   * });
+   */
+  apiKey?: string;
   /**
    * Optional parameter to provide a PCC Grant in place of an API Key.
    * Useful for preventing preview content from being viewed publicly.
@@ -53,7 +46,7 @@ export interface PantheonClientConfig {
    * });
    */
   pccGrant?: string;
-}
+} & ({ apiKey: string } | { pccGrant: string });
 
 export class PantheonClient {
   public host: string;

@@ -5,7 +5,7 @@ import {
   GET_ARTICLE_QUERY,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { useQuery } from "@vue/apollo-composable";
+import { useQuery, type UseQueryOptions } from "@vue/apollo-composable";
 import { Ref, ref } from "vue-demi";
 
 type GetArticleQueryResult = {
@@ -16,7 +16,13 @@ type Return = ReturnType<typeof useQuery<GetArticleQueryResult>> & {
   article: Ref<Article | undefined>;
 };
 
-export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
+type ApolloQueryOptions = UseQueryOptions;
+
+export const useArticle = (
+  id: string,
+  args?: ArticleQueryArgs,
+  apolloQueryOptions?: ApolloQueryOptions,
+): Return => {
   const contentType = buildContentType(args?.contentType);
   const { subscribeToMore, ...queryData } = useQuery<GetArticleQueryResult>(
     GET_ARTICLE_QUERY,
@@ -25,21 +31,24 @@ export const useArticle = (id: string, args?: ArticleQueryArgs): Return => {
       ...args,
       contentType,
     },
+    apolloQueryOptions ?? {},
   );
 
   const article = ref(queryData.result?.value?.article);
 
-  subscribeToMore({
-    document: ARTICLE_UPDATE_SUBSCRIPTION,
-    variables: { id, ...args, contentType },
-    updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData.data) return prev;
+  if (apolloQueryOptions?.enabled !== false) {
+    subscribeToMore({
+      document: ARTICLE_UPDATE_SUBSCRIPTION,
+      variables: { id, ...args, contentType },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
 
-      article.value = subscriptionData.data.article;
+        article.value = subscriptionData.data.article;
 
-      return subscriptionData.data;
-    },
-  });
+        return subscriptionData.data;
+      },
+    });
+  }
 
   return {
     ...queryData,
