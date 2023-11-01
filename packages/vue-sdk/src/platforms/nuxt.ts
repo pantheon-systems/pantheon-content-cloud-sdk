@@ -4,6 +4,7 @@ import {
 } from "@pantheon-systems/pcc-sdk-core";
 import {
   defineEventHandler,
+  parseCookies,
   getQuery,
   getRouterParams,
   sendRedirect,
@@ -15,6 +16,7 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
     return PantheonAPI(options)(
       {
         query: { ...getQuery(event), command: getRouterParams(event).command },
+        cookies: parseCookies(event),
       },
       {
         setHeader: (key, value) => {
