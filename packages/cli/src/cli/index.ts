@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import checkUpdate from "../lib/checkUpdate";
 import { generatePreviewLink } from "./commands/documents";
 import init from "./commands/init";
 import login from "./commands/login";
@@ -19,6 +20,7 @@ import printWhoAmI from "./commands/whoAmI";
 yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
+  .middleware(checkUpdate)
   .strictCommands()
   .demandCommand()
   .command(
