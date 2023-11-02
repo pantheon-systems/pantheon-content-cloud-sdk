@@ -32,7 +32,12 @@ export function replaceEnvVariable(
   return envFileLines.join("\n");
 }
 
-export function sh(cmd: string, args: string[], displayOutput = false, cwd?: string) {
+export function sh(
+  cmd: string,
+  args: string[],
+  displayOutput = false,
+  cwd?: string,
+) {
   return new Promise(function (resolve, reject) {
     const pr = spawn(cmd, args, {
       stdio: displayOutput ? "inherit" : undefined,
