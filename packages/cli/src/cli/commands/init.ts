@@ -120,10 +120,12 @@ const init = async ({
     dirName,
     { recursive: true },
   );
-  
+
   const absoluteDirPath = path.resolve(dirName);
 
-  const packageJson = JSON.parse(readFileSync(path.join(absoluteDirPath, "package.json")).toString());
+  const packageJson = JSON.parse(
+    readFileSync(path.join(absoluteDirPath, "package.json")).toString(),
+  );
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
@@ -133,10 +135,16 @@ const init = async ({
       ...ESLINT_DEPENDENCIES,
     };
 
-    writeFileSync(path.join(absoluteDirPath, ".eslintrc.json"), JSON.stringify(ESLINT_CONFIG, null, 2));
+    writeFileSync(
+      path.join(absoluteDirPath, ".eslintrc.json"),
+      JSON.stringify(ESLINT_CONFIG, null, 2),
+    );
   }
 
-  writeFileSync(path.join(absoluteDirPath, "package.json"), JSON.stringify(packageJson, null, 2) + "\n");
+  writeFileSync(
+    path.join(absoluteDirPath, "package.json"),
+    JSON.stringify(packageJson, null, 2) + "\n",
+  );
 
   setupProj.succeed("Completed setting up project!");
 
@@ -151,8 +159,8 @@ const init = async ({
   copyFileSync(
     path.join(absoluteDirPath, ".env.example"),
     path.join(absoluteDirPath, localEnvFileName),
-  )
-  
+  );
+
   if (!skipInstallation) {
     // Installing dependencies
     new SpinnerLogger("Installing dependencies...", silentLogs).info();
@@ -207,7 +215,9 @@ const init = async ({
   }
 
   if (apiKey != null || siteId != null) {
-    let envFile = readFileSync(path.join(absoluteDirPath, localEnvFileName)).toString();
+    let envFile = readFileSync(
+      path.join(absoluteDirPath, localEnvFileName),
+    ).toString();
 
     if (siteId != null) {
       envFile = replaceEnvVariable(envFile, "PCC_SITE_ID", siteId);
