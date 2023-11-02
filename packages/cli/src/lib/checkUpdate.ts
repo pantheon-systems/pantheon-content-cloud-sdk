@@ -21,8 +21,8 @@ const checkUpdate = async () => {
     const msg = {
       updateAvailable: `Update available! ${chalk.dim(version)} → ${chalk.green(
         latestVersion,
-      )}`,
-      runUpdate: `Run ${chalk.cyan(`npm i -g ${name}`)} to update`,
+      )}.`,
+      runUpdate: `Run ${chalk.cyan(`npm i -g ${name}`)} to update.`,
     };
 
     // notify the user about the available update
