@@ -13,6 +13,9 @@ jobs:
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       IS_CICD: true
+    defaults:
+      run:
+        working-directory: ./packages/cli
 
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +37,7 @@ jobs:
           --global user.name "PCC"
 
       - name: Build
-        run: pnpm build
+        run: pnpm build:test
 
       - name: Test
         run: pnpm --filter '*cli*' test
