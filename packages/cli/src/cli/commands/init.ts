@@ -1,27 +1,20 @@
 import {
   copyFileSync,
-  cpSync,
   existsSync,
-  mkdirSync,
-  readdirSync,
   readFileSync,
-  renameSync,
-  rmSync,
+  rmdirSync,
   writeFileSync,
 } from "fs";
-import os from "os";
 import path from "path";
 import { exit } from "process";
 import chalk from "chalk";
 import inquirer from "inquirer";
-import { Octokit } from "octokit";
 import AddOnApiHelper from "../../lib/addonApiHelper";
+import { downloadTemplateDirectory } from "../../lib/downloadTemplateDirectory";
 import { Logger, SpinnerLogger } from "../../lib/logger";
 import { replaceEnvVariable, sh } from "../../lib/utils";
 import { errorHandler } from "../exceptions";
 
-const TEMP_DIR_NAME = path.join(os.tmpdir(), "react_sdk_90723");
-const TAR_FILE_NAME = "sdk-repo.tar";
 const TEMPLATE_FOLDER_MAP = {
   nextjs: "nextjs-starter",
   gatsby: "gatsby-starter",
@@ -36,8 +29,6 @@ const ESLINT_DEPENDENCIES = {
 const ESLINT_CONFIG = {
   extends: "next/core-web-vitals",
 };
-
-const octokit = new Octokit();
 
 /**
  * Handles initializing projects for PCC
@@ -77,55 +68,35 @@ const init = async ({
     exit(1);
   }
 
-  if (existsSync(TEMP_DIR_NAME)) rmSync(TEMP_DIR_NAME, { recursive: true });
-  mkdirSync(TEMP_DIR_NAME);
+  if (existsSync(dirName)) {
+    logger.error(chalk.red("ERROR: Project directory already exists."));
+    exit(1);
+  }
 
   // Cloning starter kit locally
   const fetchStarter = new SpinnerLogger("Fetching starter kit...", silentLogs);
   fetchStarter.start();
-  const { data } = await octokit.request("GET /repos/{owner}/{repo}/tarball", {
-    owner: "pantheon-systems",
-    repo: "pantheon-content-cloud-sdk",
-  });
-  writeFileSync(path.join(TEMP_DIR_NAME, TAR_FILE_NAME), Buffer.from(data));
-  await sh(
-    "tar",
-    ["xvpf", path.join(TEMP_DIR_NAME, TAR_FILE_NAME), "-C", TEMP_DIR_NAME],
+
+  const starterPath = `starters/${TEMPLATE_FOLDER_MAP[template]}${
+    useTypescript ? "-ts" : ""
+  }/`;
+
+  const absoluteProjectPath = await downloadTemplateDirectory(
+    starterPath,
+    dirName,
     printVerbose,
   );
-  let files = readdirSync(TEMP_DIR_NAME);
-  files = files.filter((item) => item !== TAR_FILE_NAME);
-  renameSync(
-    path.join(TEMP_DIR_NAME, files[0]),
-    path.join(TEMP_DIR_NAME, "pantheon-sdk"),
-  );
+
   fetchStarter.succeed("Fetched starter kit!");
 
   // Setting up new project
   const setupProj = new SpinnerLogger("Setting up project...", silentLogs);
   setupProj.start();
-  if (existsSync(dirName)) {
-    setupProj.stop();
-    logger.error(chalk.red("ERROR: Project directory already exists."));
-    exit(1);
-  }
-
-  cpSync(
-    path.join(
-      TEMP_DIR_NAME,
-      "pantheon-sdk",
-      "starters",
-      `${TEMPLATE_FOLDER_MAP[template]}${useTypescript ? "-ts" : ""}`,
-    ),
-    dirName,
-    { recursive: true },
-  );
-
-  const absoluteDirPath = path.resolve(dirName);
 
   const packageJson = JSON.parse(
-    readFileSync(path.join(absoluteDirPath, "package.json")).toString(),
+    readFileSync(path.join(absoluteProjectPath, "package.json")).toString(),
   );
+
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
@@ -136,13 +107,13 @@ const init = async ({
     };
 
     writeFileSync(
-      path.join(absoluteDirPath, ".eslintrc.json"),
+      path.join(absoluteProjectPath, ".eslintrc.json"),
       JSON.stringify(ESLINT_CONFIG, null, 2),
     );
   }
 
   writeFileSync(
-    path.join(absoluteDirPath, "package.json"),
+    path.join(absoluteProjectPath, "package.json"),
     JSON.stringify(packageJson, null, 2) + "\n",
   );
 
@@ -157,15 +128,15 @@ const init = async ({
       : ".env.local";
 
   copyFileSync(
-    path.join(absoluteDirPath, ".env.example"),
-    path.join(absoluteDirPath, localEnvFileName),
+    path.join(absoluteProjectPath, ".env.example"),
+    path.join(absoluteProjectPath, localEnvFileName),
   );
 
   if (!skipInstallation) {
     // Installing dependencies
     new SpinnerLogger("Installing dependencies...", silentLogs).info();
     try {
-      await sh(packageManager, ["install"], !silentLogs, absoluteDirPath);
+      await sh(packageManager, ["install"], !silentLogs, absoluteProjectPath);
     } catch (e) {
       console.error(e);
       throw e;
@@ -216,7 +187,7 @@ const init = async ({
 
   if (apiKey != null || siteId != null) {
     let envFile = readFileSync(
-      path.join(absoluteDirPath, localEnvFileName),
+      path.join(absoluteProjectPath, localEnvFileName),
     ).toString();
 
     if (siteId != null) {
@@ -227,11 +198,8 @@ const init = async ({
       envFile = replaceEnvVariable(envFile, "PCC_API_KEY", apiKey);
     }
 
-    writeFileSync(path.join(absoluteDirPath, localEnvFileName), envFile);
+    writeFileSync(path.join(absoluteProjectPath, localEnvFileName), envFile);
   }
-
-  // Cleaning up
-  rmSync(TEMP_DIR_NAME, { recursive: true });
 
   if (apiKey == null || siteId == null) {
     // Messaging to get started
@@ -274,4 +242,11 @@ export default errorHandler<{
   appName?: string;
   useTypescript: boolean;
   printVerbose?: boolean;
-}>(init);
+}>(init, (args) => {
+  // Cleanup template directory if it exists
+  const { dirName } = args;
+
+  if (existsSync(dirName)) {
+    rmdirSync(dirName, { recursive: true });
+  }
+});
