@@ -1,4 +1,10 @@
-import { copyFileSync, existsSync, readFileSync, writeFileSync } from "fs";
+import {
+  copyFileSync,
+  existsSync,
+  readFileSync,
+  rmdirSync,
+  writeFileSync,
+} from "fs";
 import path from "path";
 import { exit } from "process";
 import chalk from "chalk";
@@ -236,4 +242,11 @@ export default errorHandler<{
   appName?: string;
   useTypescript: boolean;
   printVerbose?: boolean;
-}>(init);
+}>(init, (args) => {
+  // Cleanup template directory if it exists
+  const { dirName } = args;
+
+  if (existsSync(dirName)) {
+    rmdirSync(dirName, { recursive: true });
+  }
+});
