@@ -1,4 +1,5 @@
 import {
+  copyFileSync,
   cpSync,
   existsSync,
   mkdirSync,
@@ -10,7 +11,7 @@ import {
 } from "fs";
 import os from "os";
 import path from "path";
-import { chdir, exit } from "process";
+import { exit } from "process";
 import chalk from "chalk";
 import inquirer from "inquirer";
 import { Octokit } from "octokit";
@@ -119,8 +120,12 @@ const init = async ({
     dirName,
     { recursive: true },
   );
-  chdir(dirName);
-  const packageJson = JSON.parse(readFileSync("./package.json").toString());
+
+  const absoluteDirPath = path.resolve(dirName);
+
+  const packageJson = JSON.parse(
+    readFileSync(path.join(absoluteDirPath, "package.json")).toString(),
+  );
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
@@ -130,10 +135,16 @@ const init = async ({
       ...ESLINT_DEPENDENCIES,
     };
 
-    writeFileSync("./.eslintrc.json", JSON.stringify(ESLINT_CONFIG, null, 2));
+    writeFileSync(
+      path.join(absoluteDirPath, ".eslintrc.json"),
+      JSON.stringify(ESLINT_CONFIG, null, 2),
+    );
   }
 
-  writeFileSync("./package.json", JSON.stringify(packageJson, null, 2) + "\n");
+  writeFileSync(
+    path.join(absoluteDirPath, "package.json"),
+    JSON.stringify(packageJson, null, 2) + "\n",
+  );
 
   setupProj.succeed("Completed setting up project!");
 
@@ -144,13 +155,17 @@ const init = async ({
       : template === "vue"
       ? ".env"
       : ".env.local";
-  await sh("cp", [".env.example", localEnvFileName]);
+
+  copyFileSync(
+    path.join(absoluteDirPath, ".env.example"),
+    path.join(absoluteDirPath, localEnvFileName),
+  );
 
   if (!skipInstallation) {
     // Installing dependencies
     new SpinnerLogger("Installing dependencies...", silentLogs).info();
     try {
-      await sh(packageManager, ["install"], !silentLogs);
+      await sh(packageManager, ["install"], !silentLogs, absoluteDirPath);
     } catch (e) {
       console.error(e);
       throw e;
@@ -200,7 +215,9 @@ const init = async ({
   }
 
   if (apiKey != null || siteId != null) {
-    let envFile = readFileSync(localEnvFileName).toString();
+    let envFile = readFileSync(
+      path.join(absoluteDirPath, localEnvFileName),
+    ).toString();
 
     if (siteId != null) {
       envFile = replaceEnvVariable(envFile, "PCC_SITE_ID", siteId);
@@ -210,11 +227,10 @@ const init = async ({
       envFile = replaceEnvVariable(envFile, "PCC_API_KEY", apiKey);
     }
 
-    writeFileSync(localEnvFileName, envFile);
+    writeFileSync(path.join(absoluteDirPath, localEnvFileName), envFile);
   }
 
   // Cleaning up
-  process.chdir("../");
   rmSync(TEMP_DIR_NAME, { recursive: true });
 
   if (apiKey == null || siteId == null) {
