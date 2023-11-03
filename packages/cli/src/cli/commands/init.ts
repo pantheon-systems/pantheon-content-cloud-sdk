@@ -144,7 +144,7 @@ const init = async ({
       : template === "vue"
       ? ".env"
       : ".env.local";
-  await sh("cp", [".env.example", localEnvFileName], true);
+  await sh("cp", [".env.example", localEnvFileName]);
 
   if (!skipInstallation) {
     // Installing dependencies
