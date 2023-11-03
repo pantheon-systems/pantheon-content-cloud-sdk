@@ -1,8 +1,6 @@
 import fs, { readFileSync } from "fs";
 import path from "path";
-import chalk from "chalk";
 import tmp from "tmp";
-import { Logger } from "../../lib/logger";
 import { sh } from "../../lib/utils";
 
 jest.setTimeout(180000);
