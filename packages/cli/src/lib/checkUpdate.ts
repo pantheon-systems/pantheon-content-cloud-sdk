@@ -10,6 +10,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const checkUpdate = async () => {
+  if(process.env.NODE_ENV === 'test')
+    return
+
   const { name, version } = JSON.parse(
     fs.readFileSync(__dirname + "/../package.json").toString(),
   );
