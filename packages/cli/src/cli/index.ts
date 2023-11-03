@@ -17,10 +17,17 @@ import {
 import { createToken, listTokens, revokeToken } from "./commands/token";
 import printWhoAmI from "./commands/whoAmI";
 
+const INSIDE_TEST = process.env.NODE_ENV === "test";
+
+const configureMiddleware = (func: () => void) => {
+  if (INSIDE_TEST) return () => {};
+  return func;
+};
+
 yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
-  .middleware(checkUpdate)
+  .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
   .command(
