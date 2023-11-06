@@ -37,11 +37,12 @@ export function sh(
   args: string[],
   displayOutput = false,
   cwd?: string,
+  shell?: string,
 ) {
   return new Promise(function (resolve, reject) {
     const pr = spawn(cmd, args, {
       stdio: displayOutput ? "inherit" : undefined,
-      shell: true,
+      shell: shell ?? true,
       ...(cwd && { cwd }),
     });
 
