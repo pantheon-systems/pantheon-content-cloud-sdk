@@ -15,6 +15,7 @@ const executePCC = async (command: string, args: string[]) => {
     [PCC, command, ...args, ...defaultArgs],
     true,
     ".",
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     process.env.TEST_SHELL,
   );
 };
