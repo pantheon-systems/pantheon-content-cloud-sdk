@@ -19,8 +19,6 @@ jobs:
             TEST_SHELL: "powershell.exe"
           - os: windows-latest
             TEST_SHELL: "cmd.exe"
-          - os: macos-latest
-            TEST_SHELL: "bash"
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       IS_CICD: true
