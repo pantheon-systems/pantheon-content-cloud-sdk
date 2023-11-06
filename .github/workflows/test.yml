@@ -8,17 +8,19 @@ on:
 
 jobs:
   test:
-    name: "Unit Test: ${{ matrix.os }}"
+    name: "Test: ${{ matrix.os }}, Shell: ${{ matrix.TEST_SHELL }}"
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         include:
+          - os: ubuntu-latest
+            TEST_SHELL: "bash"
           - os: windows-latest
             TEST_SHELL: "powershell.exe"
           - os: windows-latest
             TEST_SHELL: "cmd.exe"
-
+          - os: macos-latest
+            TEST_SHELL: "bash"
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       IS_CICD: true
