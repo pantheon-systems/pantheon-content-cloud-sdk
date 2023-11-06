@@ -15,6 +15,7 @@ export const pantheonAPIOptions: PantheonAPIOptions = {
       ...props,
     }),
   resolvePath: (article) => `/articles/${article.slug || article.id}`,
+  getSiteId: () => process.env.PCC_SITE_ID,
   smartComponentMap: {
     LEAD_CAPTURE: {
       reactComponent: LeadCapture,

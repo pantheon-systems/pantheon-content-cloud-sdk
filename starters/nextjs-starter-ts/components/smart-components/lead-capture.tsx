@@ -1,5 +1,4 @@
 import { forwardRef } from "react";
-import { useBaseSmartComponent } from "./hooks/useBaseSmartComponent";
 
 interface Props {
   title: string;
@@ -10,8 +9,6 @@ const LeadCapture = forwardRef<HTMLDivElement>(function (
   { title, body }: Props,
   ref,
 ) {
-  useBaseSmartComponent();
-
   return (
     <div className="w-full p-1">
       <div

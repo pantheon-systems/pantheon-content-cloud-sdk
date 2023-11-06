@@ -1,5 +1,6 @@
 import queryString from "query-string";
 import { getArticleBySlugOrId } from "../helpers";
+import { parseJwt } from "../lib/jwt";
 import { Article, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
@@ -10,6 +11,8 @@ export interface ApiRequest {
   query: Record<string, string | string[]> & {
     command: string | string[];
   };
+
+  cookies?: Record<string, string | string[]>;
 }
 
 export interface ApiResponse {
@@ -40,6 +43,11 @@ export interface PantheonAPIOptions {
    *
    */
   resolvePath?: (article: Partial<Article> & Pick<Article, "id">) => string;
+
+  /**
+   * A function which returns the PCC site id currently in use.
+   */
+  getSiteId?: () => string;
 
   /**
    * Return the canonical path for previewing a component
@@ -89,6 +97,29 @@ export const PantheonAPI =
         "Set-Cookie",
         `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
       );
+    } else if (
+      options?.getSiteId != null &&
+      req.cookies?.["PCC-GRANT"] != null
+    ) {
+      try {
+        const resolvedSiteId = options.getSiteId();
+        const pccGrantFromCookie = parseJwt(
+          req.cookies["PCC-GRANT"].toString(),
+        );
+
+        // Remove the grant cookie if it was set for a different site.
+        if (
+          resolvedSiteId != null &&
+          // Only apply this auto-delete logic if the grant was created with a siteid.
+          pccGrantFromCookie.siteId != null &&
+          pccGrantFromCookie.siteId !== resolvedSiteId
+        ) {
+          await res.setHeader(
+            "Set-Cookie",
+            `PCC-GRANT=deleted; Path=/; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+          );
+        }
+      } catch (e) {}
     }
 
     if (command[0] === "document") {
