@@ -40,4 +40,4 @@ jobs:
         run: pnpm build:test
 
       - name: Test
-        run: pnpm --filter '*cli*' test
+        run: pnpm test
