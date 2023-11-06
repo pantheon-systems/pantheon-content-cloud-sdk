@@ -40,8 +40,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
+      - name: Build All Packages
         run: pnpm build
+
+      - name: Build CLI for testing
+        run: pnpm --filter '*cli*' build:test
 
       - name: Test
         run: pnpm --filter '*cli*' test
