@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: "Test: ${{ matrix.os }}, Shell: ${{ matrix.shell }}"
+    name: "${{ matrix.os }}, Shell: ${{ matrix.shell }}"
     runs-on: ${{ matrix.os }}
     defaults:
       run:
