@@ -1,11 +1,9 @@
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { ensureFile } from "fs-extra";
-import { Credentials, OAuth2Client } from "google-auth-library";
+import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
 import AddOnApiHelper from "./addonApiHelper";
-
-const client = new OAuth2Client();
 
 export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
 export const getLocalAuthDetails = async (): Promise<Credentials | null> => {
