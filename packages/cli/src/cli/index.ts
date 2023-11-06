@@ -25,6 +25,8 @@ const configureMiddleware = (func: () => void) => {
   return func;
 };
 
+const LONG_LIVED_COMMANDS = ["site webhooks history"];
+
 yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
@@ -376,4 +378,9 @@ yargs(hideBin(process.argv))
   )
   .help(true)
   .parseAsync()
-  .then(() => process.exit());
+  .then((res) => {
+    const command = res._.join(" ");
+    if (LONG_LIVED_COMMANDS.includes(command)) return;
+
+    process.exit();
+  });
