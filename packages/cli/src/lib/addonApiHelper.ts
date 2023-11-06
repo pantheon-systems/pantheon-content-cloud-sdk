@@ -25,8 +25,13 @@ class AddOnApiHelper {
   }
 
   static async getCurrentTime(): Promise<number> {
-    const resp = await axios.get(`${config.addOnApiEndpoint}/ping`);
-    return Number(resp.data.timestamp);
+    try {
+      const resp = await axios.get(`${config.addOnApiEndpoint}/ping`);
+      return Number(resp.data.timestamp);
+    } catch {
+      // If ping fails, return current time
+      return Date.now();
+    }
   }
 
   static async getIdToken(): Promise<string> {
