@@ -8,8 +8,20 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-
+    name: "${{ matrix.os }}, Shell: ${{ matrix.shell }}"
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: ${{ matrix.shell }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            shell: bash
+          - os: windows-latest
+            shell: powershell
+          - os: windows-latest
+            shell: cmd
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       IS_CICD: true
@@ -27,11 +39,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-      - name: Configure Git
-        run:
-          git config --global user.email "pcc@pantheon.io" &&  git config
-          --global user.name "PCC"
 
       - name: Build All Packages
         run: pnpm build

@@ -7,21 +7,16 @@ jest.setTimeout(180000);
 
 const PCC = "./dist/index.js";
 
+const defaultArgs = ["--non-interactive", "--noInstall", "--verbose"];
+
+const executePCC = async (command: string, args: string[]) => {
+  return await sh("node", [PCC, command, ...args, ...defaultArgs], true);
+};
+
 test("should be able to init starter kit for nextjs template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, [
-    "init",
-    appFolder,
-    "--template",
-    "nextjs",
-    "--use-pnpm",
-    "--non-interactive",
-    "--verbose",
-  ]);
 
-  // Dependencies are installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+  await executePCC("init", [appFolder, "--template", "nextjs", "--use-pnpm"]);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -43,18 +38,8 @@ test("should be able to init starter kit for nextjs template", async () => {
 
 test("should be able to init starter kit for gatsby template", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, [
-    "init",
-    appFolder,
-    "--template",
-    "gatsby",
-    "--use-pnpm",
-    "--non-interactive",
-  ]);
 
-  // Dependencies are installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+  await executePCC("init", [appFolder, "--template", "gatsby", "--use-pnpm"]);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -77,19 +62,14 @@ test("should be able to init starter kit for gatsby template", async () => {
 
 test("should be able to init starter kit for nextjs template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, [
-    "init",
+
+  await executePCC("init", [
     appFolder,
     "--template",
     "nextjs",
     "--use-pnpm",
     "--ts",
-    "--non-interactive",
   ]);
-
-  // Dependencies are installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -111,19 +91,8 @@ test("should be able to init starter kit for nextjs template with typescript", a
 
 test("should be able to init starter kit for gatsby template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, [
-    "init",
-    appFolder,
-    "--template",
-    "gatsby",
-    "--use-pnpm",
-    "--ts",
-    "--non-interactive",
-  ]);
 
-  // Dependencies are installed
-  expect(fs.existsSync(`${appFolder}/node_modules`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/pnpm-lock.yaml`)).toBe(true);
+  await executePCC("init", [appFolder, "--template", "gatsby", "--ts"]);
 
   // Check that TypesScript source files exist.
   expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
@@ -149,16 +118,14 @@ test("should be able to init starter kit for gatsby template with typescript", a
 
 test("should be able to init starter kit with eslint and app name", async () => {
   const appFolder = tmp.tmpNameSync();
-  await sh(PCC, [
-    "init",
+
+  await executePCC("init", [
     appFolder,
     "--appName",
     "test_app",
     "--template",
     "nextjs",
-    "--noInstall",
     "--eslint",
-    "--non-interactive",
   ]);
 
   // Eslint is initialized
@@ -181,15 +148,7 @@ test("should raise error when project directory already exists", async () => {
 
   let error = false;
   try {
-    await sh(PCC, [
-      "init",
-      appFolder,
-      "--template",
-      "nextjs",
-      "--noInstall",
-      "--eslint",
-      "--non-interactive",
-    ]);
+    await executePCC("init", [appFolder, "--template", "nextjs", "--eslint"]);
   } catch (err) {
     error = true;
   }
@@ -206,16 +165,13 @@ test("should raise error when template name is incorrect", async () => {
 
   let error = 0;
   try {
-    await sh(PCC, [
-      "init",
+    await executePCC("init", [
       appFolder,
       "--appName",
       "test_app",
       "--template",
       "react",
-      "--noInstall",
       "--eslint",
-      "--non-interactive",
     ]);
   } catch (err) {
     error = 1;

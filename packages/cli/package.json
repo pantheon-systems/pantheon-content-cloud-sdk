@@ -25,7 +25,7 @@
     "scripts"
   ],
   "scripts": {
-    "test": "jest --silent",
+    "test": "jest",
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "build:test": "tsup --env.NODE_ENV test",
@@ -62,6 +62,7 @@
     "@types/node": "^20.4.6",
     "@types/nunjucks": "^3.2.3",
     "@types/server-destroy": "^1.0.1",
+    "@types/tmp": "^0.2.5",
     "@types/yargs": "^17.0.24",
     "babel-jest": "^29.6.3",
     "eslint": "^8.46.0",
