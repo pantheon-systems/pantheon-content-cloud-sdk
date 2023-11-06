@@ -33,8 +33,11 @@ jobs:
           git config --global user.email "pcc@pantheon.io" &&  git config
           --global user.name "PCC"
 
-      - name: Build
+      - name: Build All Packages
         run: pnpm build
+
+      - name: Build CLI for testing
+        run: pnpm --filter '*cli*' build:test
 
       - name: Test
         run: pnpm --filter '*cli*' test

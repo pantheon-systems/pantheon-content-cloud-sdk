@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import checkUpdate from "../lib/checkUpdate";
 import { generatePreviewLink } from "./commands/documents";
 import init from "./commands/init";
 import login from "./commands/login";
@@ -16,9 +17,18 @@ import {
 import { createToken, listTokens, revokeToken } from "./commands/token";
 import printWhoAmI from "./commands/whoAmI";
 
+const INSIDE_TEST = process.env.NODE_ENV === "test";
+
+const configureMiddleware = (func: () => void) => {
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  if (INSIDE_TEST) return () => {};
+  return func;
+};
+
 yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
+  .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
   .command(
