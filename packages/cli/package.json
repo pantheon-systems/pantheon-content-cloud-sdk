@@ -25,7 +25,7 @@
     "scripts"
   ],
   "scripts": {
-    "test": "jest --silent",
+    "test": "jest",
     "build": "tsup --env.NODE_ENV production",
     "build:staging": "tsup --env.NODE_ENV staging",
     "build:test": "tsup --env.NODE_ENV test",
