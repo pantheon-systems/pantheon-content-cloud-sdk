@@ -10,23 +10,13 @@ const PCC = "./dist/index.js";
 const defaultArgs = ["--non-interactive", "--noInstall", "--verbose"];
 
 const executePCC = async (command: string, args: string[]) => {
-  return await sh("node", [
-    PCC,
-    command,
-    ...args,
-    ...defaultArgs,
-  ], true);
-}
+  return await sh("node", [PCC, command, ...args, ...defaultArgs], true);
+};
 
 test("should be able to init starter kit for nextjs template", async () => {
   const appFolder = tmp.tmpNameSync();
 
-  await executePCC("init",[
-    appFolder,
-    "--template",
-    "nextjs",
-    "--use-pnpm",
-  ])
+  await executePCC("init", [appFolder, "--template", "nextjs", "--use-pnpm"]);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -49,12 +39,7 @@ test("should be able to init starter kit for nextjs template", async () => {
 test("should be able to init starter kit for gatsby template", async () => {
   const appFolder = tmp.tmpNameSync();
 
-  await executePCC("init",[
-    appFolder,
-    "--template",
-    "gatsby",
-    "--use-pnpm",
-  ])
+  await executePCC("init", [appFolder, "--template", "gatsby", "--use-pnpm"]);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -78,13 +63,13 @@ test("should be able to init starter kit for gatsby template", async () => {
 test("should be able to init starter kit for nextjs template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
 
-  await executePCC("init",[
+  await executePCC("init", [
     appFolder,
     "--template",
     "nextjs",
     "--use-pnpm",
     "--ts",
-  ])
+  ]);
 
   // Eslint not initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
@@ -107,12 +92,7 @@ test("should be able to init starter kit for nextjs template with typescript", a
 test("should be able to init starter kit for gatsby template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
 
-  await executePCC("init",[
-    appFolder,
-    "--template",
-    "gatsby",
-    "--ts",
-  ])
+  await executePCC("init", [appFolder, "--template", "gatsby", "--ts"]);
 
   // Check that TypesScript source files exist.
   expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
@@ -139,14 +119,14 @@ test("should be able to init starter kit for gatsby template with typescript", a
 test("should be able to init starter kit with eslint and app name", async () => {
   const appFolder = tmp.tmpNameSync();
 
-  await executePCC("init",[
+  await executePCC("init", [
     appFolder,
     "--appName",
     "test_app",
     "--template",
     "nextjs",
     "--eslint",
-  ])
+  ]);
 
   // Eslint is initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(true);
@@ -168,12 +148,7 @@ test("should raise error when project directory already exists", async () => {
 
   let error = false;
   try {
-    await executePCC("init",[
-      appFolder,
-      "--template",
-      "nextjs",
-      "--eslint",
-    ])
+    await executePCC("init", [appFolder, "--template", "nextjs", "--eslint"]);
   } catch (err) {
     error = true;
   }
@@ -190,7 +165,7 @@ test("should raise error when template name is incorrect", async () => {
 
   let error = 0;
   try {
-    await executePCC("init",[
+    await executePCC("init", [
       appFolder,
       "--appName",
       "test_app",
