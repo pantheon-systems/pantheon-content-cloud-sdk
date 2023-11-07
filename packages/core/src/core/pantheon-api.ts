@@ -119,7 +119,9 @@ export const PantheonAPI =
             `PCC-GRANT=deleted; Path=/; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
           );
         }
-      } catch (e) {}
+      } catch (e) {
+        // eslint-disable-next-line no-empty
+      }
     }
 
     if (command[0] === "document") {

@@ -1,5 +1,6 @@
 import axios, { HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
+import ora from "ora";
 import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import config from "./config";
@@ -38,10 +39,12 @@ class AddOnApiHelper {
     let authDetails = await getLocalAuthDetails();
 
     // If auth details not found, try user logging in
-    if (!authDetails) await login();
-
-    authDetails = await getLocalAuthDetails();
-    if (!authDetails) throw new UserNotLoggedIn();
+    if (!authDetails) {
+      ora().clear();
+      await login();
+      authDetails = await getLocalAuthDetails();
+      if (!authDetails) throw new UserNotLoggedIn();
+    }
 
     return authDetails.id_token as string;
   }
