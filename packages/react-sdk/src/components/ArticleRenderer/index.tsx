@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
-import { PreviewBar } from "../Preview/Preview";
+import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
@@ -34,6 +34,7 @@ interface Props {
   headerClassName?: string;
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
+  previewBarProps?: PreviewBarExternalProps;
 }
 
 const ArticleRenderer = ({
@@ -43,6 +44,7 @@ const ArticleRenderer = ({
   containerClassName,
   renderTitle,
   smartComponentMap,
+  previewBarProps,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -60,7 +62,10 @@ const ArticleRenderer = ({
     return (
       <div className={containerClassName}>
         {renderCSR && article != null && article.publishingLevel === "REALTIME"
-          ? createPortal(<PreviewBar article={article} />, document.body)
+          ? createPortal(
+              <PreviewBar {...previewBarProps} article={article} />,
+              document.body,
+            )
           : null}
 
         {article?.content ? (
@@ -101,7 +106,10 @@ const ArticleRenderer = ({
   return (
     <div className={containerClassName}>
       {renderCSR && article != null && article.publishingLevel === "REALTIME"
-        ? createPortal(<PreviewBar article={article} />, document.body)
+        ? createPortal(
+            <PreviewBar {...previewBarProps} article={article} />,
+            document.body,
+          )
         : null}
 
       <div className={headerClassName}>

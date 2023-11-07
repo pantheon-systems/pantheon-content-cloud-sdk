@@ -13,14 +13,22 @@ import { LivePreviewIndicator } from "./LivePreviewIndicator";
 
 setup(React.createElement);
 
-interface Props {
-  article: Article;
+export interface PreviewBarExternalProps {
   previewBarOverride?: React.ReactElement | undefined | null;
+  collapsedPreviewBarProps?: React.HTMLAttributes<HTMLDivElement>;
+}
+
+interface PreviewBarInternalProps {
+  article: Article;
 }
 
 const pccGrant = getCookie("PCC-GRANT");
 
-export const PreviewBar = ({ article, previewBarOverride }: Props) => {
+export const PreviewBar = ({
+  article,
+  previewBarOverride,
+  collapsedPreviewBarProps,
+}: PreviewBarInternalProps & PreviewBarExternalProps) => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(false);
   const [hasCopied, setHasCopied] = React.useState(false);
@@ -59,7 +67,10 @@ export const PreviewBar = ({ article, previewBarOverride }: Props) => {
   }
 
   return (
-    <Wrapper isHidden={isHidden}>
+    <Wrapper
+      isHidden={isHidden}
+      {...(isHidden ? collapsedPreviewBarProps : {})}
+    >
       <AnimatePresence>
         {!isHidden && (
           <Container
