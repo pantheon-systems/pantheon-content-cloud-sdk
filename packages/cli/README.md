@@ -76,11 +76,13 @@ $ pcc site components --url https://www.example.com
 ```
 
 ## Create site from Vue template
+
 ```bash
 $ pcc init my-vue-site --template=vue
 ```
 
 ## Create site from Gatsby template
+
 ```bash
 $ pcc init my-gatsby-site --template=gatsby
 ```
