@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ArticleLink from "../components/ArticleLink.vue";
 
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-vue-sdk";
+import type { ArticleWithoutContent } from "@pantheon-systems/pcc-vue-sdk";
 
 const { data, error } = await useFetch<ArticleWithoutContent[]>("/api/articles/")
 </script>
