@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       exclude: [/packages\/vue-sdk/],
     },
   },
+  build: {
+    transpile: [/@pantheon-systems\/pcc-vue-sdk/],
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
