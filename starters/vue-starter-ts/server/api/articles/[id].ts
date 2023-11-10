@@ -1,5 +1,5 @@
 import { getArticleBySlugOrId } from "@pantheon-systems/pcc-vue-sdk";
-import { getPantheonClient } from "~/lib/pantheon";
+import { getPantheonClient } from "../../lib/pantheon";
 
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, "id");
