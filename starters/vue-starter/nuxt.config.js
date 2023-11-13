@@ -15,6 +15,9 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  build: {
+    transpile: [/@pantheon-systems\/pcc-vue-sdk/],
+  },
   runtimeConfig: {
     public: {
       siteId: process.env.PCC_SITE_ID,

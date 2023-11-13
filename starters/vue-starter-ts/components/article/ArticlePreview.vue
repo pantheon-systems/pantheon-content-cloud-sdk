@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useArticle, pccPlugin, type Article, type PantheonClientConfig } from '@pantheon-systems/pcc-vue-sdk'
 import ArticleView from './ArticleView.vue';
-import { ref, watch, onMounted, PropType } from 'vue';
+import { ref, watch, onMounted, type PropType } from 'vue';
 
 const props = defineProps({
   article: {
