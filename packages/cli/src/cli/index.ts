@@ -64,7 +64,7 @@ yargs(hideBin(process.argv))
         .option("use-npm", {
           describe: "Use NPM package manager for installing dependencies.",
           type: "boolean",
-          default: false,
+          default: true,
           demandOption: false,
         })
         .option("use-pnpm", {
@@ -76,7 +76,7 @@ yargs(hideBin(process.argv))
         .option("use-yarn", {
           describe: "Use Yarn package manager for installing dependencies.",
           type: "boolean",
-          default: true,
+          default: false,
           demandOption: false,
         })
         .option("silent", {
