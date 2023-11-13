@@ -54,7 +54,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.18.0"
   },
   "devDependencies": {
     "@babel/core": "7.21.8",
@@ -101,7 +101,7 @@
     "prettier": "^3.0.0"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.17",
+    "@apollo/client": "^3.8.7",
     "@pantheon-systems/pcc-sdk-core": "latest",
     "framer-motion": "^10.16.4",
     "goober": "^2.1.13",
