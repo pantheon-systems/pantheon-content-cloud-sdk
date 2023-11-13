@@ -204,7 +204,7 @@ importers:
   packages/react-sdk:
     dependencies:
       '@apollo/client':
-        specifier: ^3.8.7
+        specifier: ^3.7.17
         version: 3.8.7(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
         specifier: latest
@@ -847,10 +847,10 @@ packages:
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-module-transforms': 7.23.0(@babel/core@7.21.8)
       '@babel/helpers': 7.23.1
-      '@babel/parser': 7.23.0
+      '@babel/parser': 7.23.3
       '@babel/template': 7.22.15
       '@babel/traverse': 7.23.0
-      '@babel/types': 7.23.0
+      '@babel/types': 7.23.3
       convert-source-map: 1.9.0
       debug: 4.3.4
       gensync: 1.0.0-beta.2
@@ -1318,13 +1318,6 @@ packages:
     dependencies:
       '@babel/types': 7.23.3
     dev: false
-
-  /@babel/parser@7.23.0:
-    resolution: {integrity: sha512-vvPKKdMemU85V9WE/l5wZEmImpCtLqbnTvqDS2U1fJ96KrxoW7KrXhNsNCblQlg8Ck4b85yxdTyelsMUgFUXiw==}
-    engines: {node: '>=6.0.0'}
-    hasBin: true
-    dependencies:
-      '@babel/types': 7.23.3
 
   /@babel/parser@7.23.3:
     resolution: {integrity: sha512-uVsWNvlVsIninV2prNz/3lHCb+5CJ+e+IUBfbjToAHODtfGYLfCFuY4AU7TskI+dAKk+njsPiBjq1gKTvZOBaw==}
@@ -3147,7 +3140,7 @@ packages:
       '@babel/plugin-transform-unicode-escapes': 7.22.5(@babel/core@7.22.9)
       '@babel/plugin-transform-unicode-regex': 7.22.5(@babel/core@7.22.9)
       '@babel/preset-modules': 0.1.6(@babel/core@7.22.9)
-      '@babel/types': 7.22.5
+      '@babel/types': 7.23.3
       babel-plugin-polyfill-corejs2: 0.3.3(@babel/core@7.22.9)
       babel-plugin-polyfill-corejs3: 0.6.0(@babel/core@7.22.9)
       babel-plugin-polyfill-regenerator: 0.4.1(@babel/core@7.22.9)
@@ -3285,14 +3278,6 @@ packages:
 
   /@babel/types@7.22.5:
     resolution: {integrity: sha512-zo3MIHGOkPOfoRXitsgHLjEXmlDaD/5KU1Uzuc9GNiZPhSqVxVRtxuPaSBZDsYZ9qV88AjtMtWW7ww98loJ9KA==}
-    engines: {node: '>=6.9.0'}
-    dependencies:
-      '@babel/helper-string-parser': 7.22.5
-      '@babel/helper-validator-identifier': 7.22.20
-      to-fast-properties: 2.0.0
-
-  /@babel/types@7.23.0:
-    resolution: {integrity: sha512-0oIyUfKoI3mSqMvsxBdclDwxXKXAUA8v/apZbc+iSyARYou1o8ZGDxbUYyLFoW2arqS2jDGqJuZvv1d/io1axg==}
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/helper-string-parser': 7.22.5
