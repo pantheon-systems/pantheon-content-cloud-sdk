@@ -39,8 +39,8 @@ Options:
   --template  Template from which files should be copied.
                                [string] [required] [choices: "nextjs", "gatsby", "vue"]
 
-$ # Create project with nextjs template
-$ pcc init new_proj --template=nextjs
+$ # Create project with nextjs template (this is  default)
+$ pcc init new_proj
 ✔ Fetched starter kit!
 ✔ Completed setting up project!
 
@@ -73,6 +73,18 @@ $ pcc site components --url https://live-collabcms-fe-demo.appa.pantheon.site --
 $ # Retrieve component schema from your site (replace www.example.com)
 $ pcc site components --url https://www.example.com
 
+```
+
+## Create site from Vue template
+
+```bash
+$ pcc init my-vue-site --template=vue
+```
+
+## Create site from Gatsby template
+
+```bash
+$ pcc init my-gatsby-site --template=gatsby
 ```
 
 ## Example of creating a site and API key for it

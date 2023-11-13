@@ -47,6 +47,7 @@ yargs(hideBin(process.argv))
           describe: "Template from which files should be copied.",
           type: "string",
           choices: ["nextjs", "gatsby", "vue"],
+          default: "nextjs",
           demandOption: true,
         })
         .option("appName", {
@@ -63,7 +64,7 @@ yargs(hideBin(process.argv))
         .option("use-npm", {
           describe: "Use NPM package manager for installing dependencies.",
           type: "boolean",
-          default: true,
+          default: false,
           demandOption: false,
         })
         .option("use-pnpm", {
@@ -75,7 +76,7 @@ yargs(hideBin(process.argv))
         .option("use-yarn", {
           describe: "Use Yarn package manager for installing dependencies.",
           type: "boolean",
-          default: false,
+          default: true,
           demandOption: false,
         })
         .option("silent", {
@@ -112,7 +113,7 @@ yargs(hideBin(process.argv))
         .option("verbose", {
           describe: "Print verbose logs.",
           type: "boolean",
-          default: false,
+          default: true,
           demandOption: false,
         });
     },
