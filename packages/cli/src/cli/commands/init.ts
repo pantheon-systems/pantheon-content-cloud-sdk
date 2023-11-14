@@ -223,11 +223,13 @@ const init = async ({
         "You are now ready to run the website locally, which you can do by executing in the command line:",
       ),
     );
+
+    logger.log(chalk.green(`   cd ${dirName}`));
   }
 
   if (template === "nextjs" || template === "vue")
-    logger.log(chalk.green("   yarn dev"));
-  else logger.log(chalk.green("   yarn start"));
+    logger.log(chalk.green(`  ${packageManager} run dev`));
+  else logger.log(chalk.green(`   ${packageManager} run start`));
 };
 
 export default errorHandler<{
