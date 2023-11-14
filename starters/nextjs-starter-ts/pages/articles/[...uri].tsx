@@ -98,10 +98,7 @@ export async function getServerSideProps({
   );
 
   if (pccGrant) {
-    res.setHeader(
-      "Set-Cookie",
-      `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
-    );
+    res.setHeader("Set-Cookie", `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
   }
 
   if (!article) {
