@@ -54,7 +54,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=18.18.0"
+    "node": ">=18.10.0"
   },
   "devDependencies": {
     "@babel/core": "7.21.8",
