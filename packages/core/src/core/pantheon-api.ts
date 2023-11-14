@@ -95,7 +95,7 @@ export const PantheonAPI =
     if (pccGrant) {
       await res.setHeader(
         "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Strict`,
+        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`,
       );
     } else if (
       options?.getSiteId != null &&
@@ -116,7 +116,7 @@ export const PantheonAPI =
         ) {
           await res.setHeader(
             "Set-Cookie",
-            `PCC-GRANT=deleted; Path=/; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+            `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
           );
         }
       } catch (e) {
