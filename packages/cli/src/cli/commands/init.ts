@@ -210,7 +210,10 @@ const init = async ({
       ),
     );
     logger.log(chalk.green(`   cd ${dirName}`));
-    logger.log(chalk.green(`   vim ${localEnvFileName}`));
+
+    const textEditor = process.platform === "win32" ? "notepad" : "vim";
+
+    logger.log(chalk.green(`   ${textEditor} ${localEnvFileName}`));
     logger.log(chalk.green("And then run the website"));
   } else {
     logger.log(
