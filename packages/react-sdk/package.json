@@ -109,6 +109,7 @@
     "query-string": "^8.1.0",
     "react-laag": "^2.0.5",
     "react-markdown": "^8.0.7",
-    "rehype-raw": "^6.1.1"
+    "rehype-raw": "^6.1.1",
+    "unist-util-visit": "^5.0.0"
   }
 }

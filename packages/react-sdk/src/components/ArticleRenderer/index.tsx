@@ -6,9 +6,8 @@ import {
 } from "@pantheon-systems/pcc-sdk-core/types";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
-import rehypeRaw from "rehype-raw";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
+import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
@@ -69,9 +68,9 @@ const ArticleRenderer = ({
           : null}
 
         {article?.content ? (
-          <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-            {String(article.content)}
-          </ReactMarkdown>
+          <MarkdownRenderer smartComponentMap={smartComponentMap}>
+            {article.content}
+          </MarkdownRenderer>
         ) : (
           <span>No content to display</span>
         )}
