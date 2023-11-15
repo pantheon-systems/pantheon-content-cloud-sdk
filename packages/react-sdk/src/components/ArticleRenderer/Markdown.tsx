@@ -29,7 +29,7 @@ const MarkdownRenderer = ({
 
           if (smartComponentMap && smartComponentMap[type]) {
             const { reactComponent: Component } = smartComponentMap[type];
-            const decodedAttrs = base64Decode(attrs);
+            const decodedAttrs = isomorphicBase64Decode(attrs);
 
             return (
               <div>
@@ -51,9 +51,16 @@ const MarkdownRenderer = ({
   );
 };
 
-function base64Decode(str: string): Record<string, unknown> {
+function isomorphicBase64Decode(str: string): Record<string, unknown> {
   try {
-    const stringifiedJSON = Buffer.from(str, "base64").toString("utf8");
+    let stringifiedJSON: string | undefined;
+    if (typeof Buffer !== "undefined") {
+      stringifiedJSON = Buffer.from(str, "base64").toString("utf8");
+    } else if (typeof atob !== "undefined") {
+      stringifiedJSON = atob(str);
+    }
+
+    if (!stringifiedJSON) throw new Error("Failed to decode base64 string");
 
     return JSON.parse(stringifiedJSON);
   } catch (e) {
