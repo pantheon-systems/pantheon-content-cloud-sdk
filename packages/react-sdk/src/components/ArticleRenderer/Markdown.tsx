@@ -1,3 +1,4 @@
+import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
 import { visit } from "unist-util-visit";
@@ -23,7 +24,7 @@ const MarkdownRenderer = ({
     <ReactMarkdown
       rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
       components={{
-        ["pcc-component" as "div"]: ({ node }) => {
+        ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
           const { attrs, id, type } =
             node.properties as typeof node.properties & ComponentProperties;
 
