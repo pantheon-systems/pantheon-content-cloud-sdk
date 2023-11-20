@@ -55,6 +55,7 @@ const ArticleRenderer = defineComponent({
           : null,
         h(MarkdownRenderer, {
           source: props.article.content || "",
+          smartComponentMap: props.smartComponentMap,
           options: {
             html: true,
           },

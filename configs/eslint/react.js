@@ -18,4 +18,7 @@ module.exports = {
       version: "detect",
     },
   },
+  rules: {
+    "react/prop-types": "off", // We use TypeScript for prop type checking
+  },
 };
