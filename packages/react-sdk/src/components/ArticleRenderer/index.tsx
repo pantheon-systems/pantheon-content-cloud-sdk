@@ -3,6 +3,7 @@ import {
   PantheonTree,
   PantheonTreeNode,
   TreePantheonContent,
+  type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -12,17 +13,11 @@ import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
 export type SmartComponentMap = {
-  [key: string]: {
-    reactComponent: React.FunctionComponent;
-    title: string;
-    iconUrl?: string | null | undefined;
-    fields: {
-      [key: string]: {
-        displayName: string | null | undefined;
-        required?: boolean | null | undefined;
-        type: string;
-      };
-    };
+  [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
+    reactComponent:
+      | React.ReactNode
+      | React.ComponentType
+      | React.FunctionComponent;
   };
 };
 
