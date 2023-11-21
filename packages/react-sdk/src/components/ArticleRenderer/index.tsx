@@ -14,10 +14,7 @@ import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
-    reactComponent:
-      | React.ReactNode
-      | React.ComponentType
-      | React.FunctionComponent;
+    reactComponent: Parameters<typeof React.createElement>[0];
   };
 };
 
