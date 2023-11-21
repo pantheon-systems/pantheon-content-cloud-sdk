@@ -1,4 +1,5 @@
 import {
+  getAllTags,
   getArticleBySlugOrId as getArticle,
   getArticles,
   PantheonClient,
@@ -37,4 +38,10 @@ export async function getArticleBySlugOrId(id, publishingLevel = "PRODUCTION") {
   });
 
   return post;
+}
+
+export async function getTags() {
+  const tags = await getAllTags(pantheonClient);
+
+  return tags;
 }
