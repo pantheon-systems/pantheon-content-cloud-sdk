@@ -4,7 +4,7 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "@pantheon-systems/pcc-react-sdk";
-import LeadCapture from "../../../components/smart-components/lead-capture";
+import { serverSmartComponentMap } from "../../../components/smart-components";
 
 export const pantheonAPIOptions: PantheonAPIOptions = {
   getPantheonClient: (props?: Partial<PantheonClientConfig>) =>
@@ -16,25 +16,7 @@ export const pantheonAPIOptions: PantheonAPIOptions = {
     }),
   resolvePath: (article) => `/articles/${article.slug || article.id}`,
   getSiteId: () => process.env.PCC_SITE_ID,
-  smartComponentMap: {
-    LEAD_CAPTURE: {
-      reactComponent: LeadCapture,
-      title: "Lead Capture Form",
-      iconUrl: null,
-      fields: {
-        title: {
-          displayName: "Title",
-          required: true,
-          type: "string",
-        },
-        body: {
-          displayName: "Body",
-          required: false,
-          type: "string",
-        },
-      },
-    },
-  },
+  smartComponentMap: serverSmartComponentMap,
 };
 
 export default PantheonAPI(pantheonAPIOptions);

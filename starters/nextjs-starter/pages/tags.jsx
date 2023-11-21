@@ -1,4 +1,3 @@
-import { getAllTags, getArticles } from "@pantheon-systems/pcc-react-sdk";
 import { useSetAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -7,7 +6,7 @@ import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { searchQueryAtom } from "../components/searchbar";
 import { Tags } from "../components/tags";
-import { pantheonClient } from "../lib/PantheonClient";
+import { getAllArticles, getTags } from "../lib/Articles";
 
 export default function TagSearch({ articles, tags, searchString }) {
   const setSearchQuery = useSetAtom(searchQueryAtom);
@@ -56,7 +55,7 @@ export default function TagSearch({ articles, tags, searchString }) {
       {searchString.trim().length ? (
         <>
           {" "}
-          <h3 className="text-3xl text-center">
+          <h3 className="mt-4 text-3xl text-center">
             Article with tag &quot;{searchString}&quot;
           </h3>
           <section>
@@ -73,20 +72,22 @@ export default function TagSearch({ articles, tags, searchString }) {
 }
 
 export async function getServerSideProps({ query }) {
-  const articles = await getArticles(
-    pantheonClient,
-    {
-      publishingLevel: "PRODUCTION",
-    },
-    {
-      tagContains: query.q,
-    },
-  );
+  const [articles, tags] = await Promise.all([
+    getAllArticles(
+      {
+        publishingLevel: "PRODUCTION",
+      },
+      {
+        tagContains: query.q,
+      },
+    ),
+    getTags(),
+  ]);
 
   return {
     props: {
       articles,
-      tags: await getAllTags(pantheonClient),
+      tags,
       searchString: query.q || "",
     },
   };
