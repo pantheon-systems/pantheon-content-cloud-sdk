@@ -66,13 +66,13 @@ async function fetchFiles(directory: string, printVerbose?: boolean) {
     const { data } = await axios.get(
       `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`,
       {
-        responseType: "text",
+        responseType: "arraybuffer",
       },
     );
 
     return {
       path: path.replace(directory, ""),
-      contents: Buffer.from(data, "utf-8"),
+      contents: data,
     };
   });
 
