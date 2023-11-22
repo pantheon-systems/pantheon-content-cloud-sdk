@@ -23,6 +23,11 @@ export type SmartComponentMap = {
   [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
 
+export type PreviewBarProps = {
+  previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
+  collapsedPreviewBarProps?: Record<string, unknown>;
+};
+
 const ArticleRenderer = defineComponent({
   name: "ArticleRenderer",
   props: {
@@ -32,6 +37,18 @@ const ArticleRenderer = defineComponent({
     },
     smartComponentMap: {
       type: Object as PropType<SmartComponentMap>,
+      required: false,
+    },
+    bodyClass: {
+      type: String,
+      required: false,
+    },
+    headerClass: {
+      type: String,
+      required: false,
+    },
+    previewBarProps: {
+      type: Object as PropType<PreviewBarProps>,
       required: false,
     },
   },
@@ -89,7 +106,7 @@ const ArticleRenderer = defineComponent({
     return h("div", {}, [
       props.article.publishingLevel === "REALTIME"
         ? h(Teleport, { to: "body" }, [
-            h(PreviewBar, { article: props.article }),
+            h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
       slots.titleRenderer
@@ -99,17 +116,21 @@ const ArticleRenderer = defineComponent({
               title: titleText,
             }),
           )
-        : // @ts-expect-error Dynamic component props
-          h(renderer, {
-            element: titleElement,
-          }),
-      parsedContent.map((element) => {
-        // @ts-expect-error Dynamic component props
-        return h(renderer, {
-          element,
-          smartComponentMap: props.smartComponentMap,
-        });
-      }),
+        : h("div", { class: props.headerClass }, [
+            // @ts-expect-error Dynamic component props
+            h(renderer, {
+              element: titleElement,
+            }),
+          ]),
+      h("div", { class: props.bodyClass }, [
+        parsedContent.map((element) => {
+          // @ts-expect-error Dynamic component props
+          return h(renderer, {
+            element,
+            smartComponentMap: props.smartComponentMap,
+          });
+        }),
+      ]),
     ]);
   },
 });
