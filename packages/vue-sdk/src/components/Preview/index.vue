@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import type { PreviewBarProps } from "../Renderer";
 import queryString from "query-string";
 import { PropType, ref, watchEffect } from "vue-demi";
 
@@ -9,9 +9,18 @@ import LivePreviewIndicator from "./LivePreviewIndicator.vue";
 import HamburgerIcon from "./assets/HamburgerIcon.vue";
 import HoverButton from "../Common/HoverButton.vue";
 import { getCookie } from "../../utils/cookies";
+import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 
 const props = defineProps({
   article: Object as PropType<Article>,
+  previewBarOverride: {
+    type: Object as PropType<PreviewBarProps["previewBarOverride"]>,
+    required: false,
+  },
+  collapsedPreviewBarProps: {
+    type: Object as PropType<PreviewBarProps["collapsedPreviewBarProps"]>,
+    required: false,
+  },
 });
 
 const isLive = ref(false);
@@ -67,7 +76,15 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div :class="['wrapper', isHidden && 'hidden']">
+  <div v-if="previewBarOverride">
+    <component
+      :is="previewBarOverride"
+      :article="article"
+      :isHidden="isHidden"
+    />
+  </div>
+
+  <div v-else :class="['wrapper', isHidden && 'hidden']">
     <div v-if="!isHidden" class="container">
       <a class="title-link">
         <DocsLogo />
@@ -86,7 +103,10 @@ watchEffect(() => {
       </div>
     </div>
 
-    <div :class="['controller-container', isHidden && 'active']">
+    <div
+      v-bind="isHidden ? collapsedPreviewBarProps : null"
+      :class="['controller-container', isHidden && 'active']"
+    >
       <div v-if="isHidden">
         <LivePreviewIndicator :isLive="isLive" />
         <HoverButton @click="isHidden = !isHidden">
