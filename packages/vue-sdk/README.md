@@ -47,6 +47,9 @@ style and render in your app.
 import { useArticle } from "@pantheon-systems/pcc-vue-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-vue-sdk/components";
 
+// Import the default styles
+import "@pantheon-systems/pcc-vue-sdk/components/style.css";
+
 const { id } = defineProps({
   id: {
     type: String,
@@ -81,6 +84,9 @@ Fetch an article by ID.
 <script setup>
 import { useArticle } from "@pantheon-systems/pcc-vue-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-vue-sdk/components";
+
+// Import the default styles
+import "@pantheon-systems/pcc-vue-sdk/components/style.css";
 
 const { id } = defineProps({
   id: {

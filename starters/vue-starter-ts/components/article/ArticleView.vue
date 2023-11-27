@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
+import '@pantheon-systems/pcc-vue-sdk/components/style.css'
+
 import LeadCapture from '../smart-components/LeadCapture.vue'
 import type { Article } from '@pantheon-systems/pcc-vue-sdk'
 import type { PropType } from 'vue';
