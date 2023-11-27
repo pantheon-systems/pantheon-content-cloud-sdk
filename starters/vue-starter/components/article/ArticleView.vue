@@ -1,5 +1,7 @@
 <script setup>
 import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
+import '@pantheon-systems/pcc-vue-sdk/components/style.css'
+
 import LeadCapture from '~/components/smart-components/LeadCapture.vue'
 
 defineProps({
