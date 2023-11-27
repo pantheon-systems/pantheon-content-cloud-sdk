@@ -17,6 +17,7 @@
       "require": "./dist/components/index.js",
       "import": "./dist/components/index.mjs"
     },
+    "./components/style.css": "./dist/components/index.css",
     "./nuxt": {
       "types": "./dist/platforms/nuxt.d.ts",
       "require": "./dist/platforms/nuxt.cjs",

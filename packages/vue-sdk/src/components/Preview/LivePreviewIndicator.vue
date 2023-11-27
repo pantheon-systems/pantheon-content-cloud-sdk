@@ -3,7 +3,6 @@ import IconDot from "./assets/IconDot.vue";
 import IconInfo from "./assets/IconInfo.vue";
 
 import { Tooltip } from "floating-vue";
-import "floating-vue/dist/style.css";
 
 defineProps({
   isLive: Boolean,
@@ -40,6 +39,8 @@ defineProps({
 </template>
 
 <style scoped lang="scss">
+@import "floating-vue/dist/style.css";
+
 .lpi-container {
   border: 1px solid #cfcfd3;
   font-weight: 600;
