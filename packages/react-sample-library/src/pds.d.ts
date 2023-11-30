@@ -1,4 +1,4 @@
-declare module '*.css';
+declare module "*.css";
 
 declare module "@pantheon-systems/pds-toolkit-react" {
   declare interface Blockquote {
@@ -11,4 +11,3 @@ declare module "@pantheon-systems/pds-toolkit-react" {
     // className: string;
   }
 }
-

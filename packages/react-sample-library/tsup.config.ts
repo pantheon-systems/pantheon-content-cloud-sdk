@@ -1,4 +1,3 @@
-import GlobalsPlugin from "esbuild-plugin-globals";
 import { defineConfig } from "tsup";
 
 export default defineConfig({
@@ -25,6 +24,5 @@ export default defineConfig({
     if (format === "esm") return { js: ".mjs" };
     return { js: ".js" };
   },
-  esbuildPlugins: [
-  ],
+  esbuildPlugins: [],
 });
