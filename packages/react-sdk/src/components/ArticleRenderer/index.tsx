@@ -18,6 +18,23 @@ export type SmartComponentMap = {
   };
 };
 
+type ExtraProps = {
+  children: any;
+  style: Record<string, string>;
+};
+
+export type Components = Partial<{
+  [TagName in keyof JSX.IntrinsicElements]:
+    | (new (
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.ElementClass)
+    // Function component:
+    | ((
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.Element | string | null | undefined)
+    // Tag name:
+    | keyof JSX.IntrinsicElements;
+}>;
 interface Props {
   article?: Article;
   bodyClassName?: string;
@@ -26,6 +43,7 @@ interface Props {
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
+  components?: Components;
 }
 
 const ArticleRenderer = ({
@@ -36,6 +54,7 @@ const ArticleRenderer = ({
   renderTitle,
   smartComponentMap,
   previewBarProps,
+  components,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -60,7 +79,10 @@ const ArticleRenderer = ({
           : null}
 
         {article?.content ? (
-          <MarkdownRenderer smartComponentMap={smartComponentMap}>
+          <MarkdownRenderer
+            smartComponentMap={smartComponentMap}
+            componentsMap={components}
+          >
             {article.content}
           </MarkdownRenderer>
         ) : (
@@ -119,6 +141,7 @@ const ArticleRenderer = ({
             key: idx,
             element,
             smartComponentMap,
+            componentsMap: components,
           }),
         )}
       </div>

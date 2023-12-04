@@ -1,14 +1,53 @@
+import crypto from "crypto";
+import * as _ from "lodash";
+import React from "react";
 import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
-import type { SmartComponentMap } from ".";
+import type { Components, SmartComponentMap } from ".";
 
 interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
+  componentsMap?: Components;
 }
+
+const retrieveValue = (node: any): string | null => {
+  if (node.value) return node.value as string;
+  for (const i of node.children || []) return retrieveValue(i);
+  return null;
+};
+
+const generateUniqueIds = () => {
+  const ids = new Set();
+  return (value: string) => {
+    let result = _.kebabCase(value);
+    if (ids.has(result)) {
+      result = `${result}-${crypto.randomBytes(3).toString("hex")}`;
+      ids.add(result);
+    } else {
+      ids.add(result);
+    }
+    return result;
+  };
+};
+
+const HeaderWithId = (props: ReactMarkdownProps) => {
+  const { node, children } = props;
+  const { tagName, properties } = node;
+  const generateId = generateUniqueIds();
+  const title = retrieveValue(node);
+  return React.createElement(
+    tagName,
+    {
+      ...properties,
+      id: generateId(title || ""),
+    },
+    children,
+  );
+};
 
 interface ComponentProperties {
   attrs: string;
@@ -24,6 +63,12 @@ const MarkdownRenderer = ({
     <ReactMarkdown
       rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
       components={{
+        h1: HeaderWithId,
+        h2: HeaderWithId,
+        h3: HeaderWithId,
+        h4: HeaderWithId,
+        h5: HeaderWithId,
+        h6: HeaderWithId,
         ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
           const { attrs, id, type } =
             node.properties as typeof node.properties & ComponentProperties;
