@@ -1,17 +1,19 @@
 import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import React from "react";
-import { SmartComponentMap } from ".";
+import { ComponentsMap, SmartComponentMap } from ".";
 import { convertAttributes } from "../../utils/attributes";
 import { getStyleObjectFromString } from "../../utils/styles";
 
 interface Props {
   element: PantheonTreeNode;
   smartComponentMap?: SmartComponentMap;
+  componentsMap?: ComponentsMap;
 }
 
 const PantheonTreeRenderer = ({
   element,
   smartComponentMap,
+  componentsMap,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
@@ -55,7 +57,7 @@ const PantheonTreeRenderer = ({
   const nodeChildren = [element.data, ...children].filter(Boolean);
 
   return React.createElement(
-    element.tag,
+    componentsMap?.[element.tag as "div"] || element.tag,
     {
       style: getStyleObjectFromString(element?.style),
       ...convertAttributes(element.attrs),
