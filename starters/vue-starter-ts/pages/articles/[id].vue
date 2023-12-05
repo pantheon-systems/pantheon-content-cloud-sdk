@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ArticlePreview from '../../components/article/ArticlePreview.vue';
 import ArticleView from '../../components/article/ArticleView.vue';
-import type { PantheonClientConfig } from '@pantheon-systems/pcc-vue-sdk';
+import { type Article, type PantheonClientConfig } from '@pantheon-systems/pcc-vue-sdk';
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -18,7 +18,7 @@ const pantheonConfig = {
 
 const articleId = route.params.id
 
-const { data: article, error } = await useFetch(`/api/articles/${articleId}`, {
+const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`, {
   query: {
     publishingLevel
   }
