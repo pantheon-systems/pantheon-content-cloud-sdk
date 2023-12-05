@@ -86,8 +86,8 @@ export const SmartComponentMapZod = z.record(
     fields: z.record(
       z.string(),
       z.object({
-        displayName: z.string().nullable().optional(),
-        required: z.boolean().nullable().optional(),
+        displayName: z.string(),
+        required: z.boolean(),
         type: z.enum(["string", "number", "boolean", "date", "file"]),
       }),
     ),
