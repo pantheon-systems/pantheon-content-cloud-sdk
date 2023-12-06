@@ -21,6 +21,7 @@ interface ComponentProperties {
 const MarkdownRenderer = ({
   children,
   smartComponentMap,
+  componentMap,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
@@ -48,6 +49,7 @@ const MarkdownRenderer = ({
             </div>
           );
         },
+        ...componentMap,
       }}
     >
       {children}
