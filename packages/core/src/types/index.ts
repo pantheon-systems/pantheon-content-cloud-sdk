@@ -78,19 +78,40 @@ export interface PantheonTree {
   children: PantheonTreeNode[];
 }
 
+const fieldTypes = z.enum(["string", "number", "boolean", "date"]);
+
+const baseFieldSchema = z.object({
+  type: fieldTypes,
+  displayName: z.string(),
+  required: z.boolean(),
+});
+
+const enumFieldSchema = baseFieldSchema.merge(
+  z.object({
+    type: z.literal("enum"),
+    options: z.array(
+      z.union([
+        z.string(),
+        z.object({
+          label: z.string(),
+          value: z.string(),
+        }),
+      ]),
+    ),
+  }),
+);
+
+const fieldSchema = z.discriminatedUnion("type", [
+  baseFieldSchema,
+  enumFieldSchema,
+]);
+
 export const SmartComponentMapZod = z.record(
   z.string(),
   z.object({
     title: z.string(),
     iconUrl: z.string().nullable().optional(),
-    fields: z.record(
-      z.string(),
-      z.object({
-        displayName: z.string().nullable().optional(),
-        required: z.boolean().nullable().optional(),
-        type: z.string().nullable(),
-      }),
-    ),
+    fields: z.record(z.string(), fieldSchema),
   }),
 );
 
