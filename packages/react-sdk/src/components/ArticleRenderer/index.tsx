@@ -24,7 +24,7 @@ type ExtraProps = {
   node?: Element;
 };
 
-export type ComponentsMap = Partial<{
+export type ComponentMap = Partial<{
   [TagName in keyof JSX.IntrinsicElements]:
     | (new (
         props: JSX.IntrinsicElements[TagName] & ExtraProps,
@@ -45,7 +45,7 @@ interface Props {
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
-  componentsMap?: ComponentsMap;
+  componentMap?: ComponentMap;
 }
 
 const ArticleRenderer = ({
@@ -56,7 +56,7 @@ const ArticleRenderer = ({
   renderTitle,
   smartComponentMap,
   previewBarProps,
-  componentsMap,
+  componentMap,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -83,7 +83,7 @@ const ArticleRenderer = ({
         {article?.content ? (
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
-            componentsMap={componentsMap}
+            componentMap={componentMap}
           >
             {article.content}
           </MarkdownRenderer>
@@ -143,7 +143,7 @@ const ArticleRenderer = ({
             key: idx,
             element,
             smartComponentMap,
-            componentsMap,
+            componentMap,
           }),
         )}
       </div>

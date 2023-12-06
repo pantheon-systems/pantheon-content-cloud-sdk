@@ -4,12 +4,12 @@ import rehypeRaw from "rehype-raw";
 import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
-import type { ComponentsMap, SmartComponentMap } from ".";
+import type { ComponentMap, SmartComponentMap } from ".";
 
 interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
-  componentsMap?: ComponentsMap;
+  componentMap?: ComponentMap;
 }
 
 interface ComponentProperties {
