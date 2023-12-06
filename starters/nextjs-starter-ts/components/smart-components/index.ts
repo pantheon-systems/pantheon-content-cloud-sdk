@@ -1,3 +1,4 @@
+import { SmartComponentMap } from "@pantheon-systems/pcc-react-sdk";
 import LeadCapture from "./lead-capture";
 
 export const serverSmartComponentMap = {
@@ -17,7 +18,7 @@ export const serverSmartComponentMap = {
       },
     },
   },
-};
+} satisfies SmartComponentMap;
 
 export const clientSmartComponentMap = {
   LEAD_CAPTURE: {

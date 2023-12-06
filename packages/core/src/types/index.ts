@@ -78,7 +78,7 @@ export interface PantheonTree {
   children: PantheonTreeNode[];
 }
 
-const fieldTypes = z.enum(["string", "number", "boolean", "date"]);
+const fieldTypes = z.enum(["string", "number", "boolean", "date", "file"]);
 
 const baseFieldSchema = z.object({
   type: fieldTypes,

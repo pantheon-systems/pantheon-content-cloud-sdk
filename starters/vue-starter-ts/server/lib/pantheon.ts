@@ -1,6 +1,7 @@
 import {
   PantheonClient,
   PantheonClientConfig,
+  type SmartComponentMap,
 } from "@pantheon-systems/pcc-vue-sdk";
 
 const { PCC_SITE_ID, PCC_API_KEY } = process.env;
@@ -38,4 +39,4 @@ export const smartComponentMap = {
       },
     },
   },
-};
+} satisfies SmartComponentMap;

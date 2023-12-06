@@ -1,0 +1,71 @@
+{
+  "name": "@pantheon-systems/pcc-react-sample-library",
+  "author": "@pantheon-systems",
+  "description": "Pantheon Content Cloud Sample Component Library for React",
+  "version": "2.0.15",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "private": true,
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/index.d.ts"
+      ],
+      "components": [
+        "./dist/components/index.d.ts"
+      ],
+      "nuxt": [
+        "./dist/platforms/nuxt.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "dist/css/*.css",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rimraf dist/",
+    "copy-files": "copyfiles -f -u 1 node_modules/@pantheon-systems/pds-toolkit-react/**/*.css src/**/*.css dist/css/",
+    "dev": "pnpm run build --watch",
+    "build": "pnpm run clean && tsup && pnpm run copy-files",
+    "lint": "eslint . && prettier --check . && tsc --noEmit",
+    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^13.0.2",
+    "@types/node": "^20.3.1",
+    "copyfiles": "^2.4.1",
+    "esbuild-plugin-globals": "^0.2.0",
+    "eslint": "^8.46.0",
+    "eslint-config-pcc-custom": "workspace:*",
+    "h3": "^1.8.2",
+    "rimraf": "^5.0.5",
+    "sass": "^1.69.5",
+    "tsup": "^7.0.0",
+    "typescript": "^5.1.3",
+    "vite": "^4.4.10"
+  },
+  "peerDependencies": {
+    "h3": "^1.8.2"
+  },
+  "peerDependenciesMeta": {
+    "@vue/composition-api": {
+      "optional": true
+    },
+    "h3": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@pantheon-systems/pcc-sdk-core": "latest",
+    "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
+    "markdown-it": "^13.0.2",
+    "query-string": "^8.1.0"
+  },
+  "sideEffects": false
+}
