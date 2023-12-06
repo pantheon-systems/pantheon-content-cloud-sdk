@@ -1,11 +1,8 @@
 import { Avatar as BaseAvatar } from "@pantheon-systems/pds-toolkit-react";
 import { SmartComponentMap } from "@pantheon-systems/pcc-sdk-core/types";
 
-import "@pantheon-systems/pds-toolkit-react/_dist/css/pds-core.css";
-import "@pantheon-systems/pds-toolkit-react/_dist/css/pds-layouts.css";
-import "@pantheon-systems/pds-toolkit-react/_dist/css/pds-components.css";
-
 // TODO: Infer the type of the props from the smart component definition
+// https://getpantheon.atlassian.net/browse/PCC-827
 type Props = {
   image: string;
   size?: "sm" | "md";
