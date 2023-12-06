@@ -1,33 +1,16 @@
-import React from "react";
 import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
+import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
 import type { ComponentsMap, SmartComponentMap } from ".";
-import { generateUniqueHeaderIds } from "../../utils/headers";
-import { retrieveTextValue } from "../../utils/markdown";
 
 interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
   componentsMap?: ComponentsMap;
 }
-
-const HeaderWithId = (props: ReactMarkdownProps) => {
-  const { node, children } = props;
-  const { tagName, properties } = node;
-  const generateId = generateUniqueHeaderIds();
-  const title = retrieveTextValue(node);
-  return React.createElement(
-    tagName,
-    {
-      ...properties,
-      id: generateId(title || ""),
-    },
-    children,
-  );
-};
 
 interface ComponentProperties {
   attrs: string;
@@ -42,13 +25,8 @@ const MarkdownRenderer = ({
   return (
     <ReactMarkdown
       rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
+      remarkPlugins={[remarkHeaderId]}
       components={{
-        h1: HeaderWithId,
-        h2: HeaderWithId,
-        h3: HeaderWithId,
-        h4: HeaderWithId,
-        h5: HeaderWithId,
-        h6: HeaderWithId,
         ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
           const { attrs, id, type } =
             node.properties as typeof node.properties & ComponentProperties;
