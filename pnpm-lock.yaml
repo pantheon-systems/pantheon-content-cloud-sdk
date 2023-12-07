@@ -252,12 +252,24 @@ importers:
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react':
+        specifier: '>=17'
+        version: 18.2.18
+      '@types/react-dom':
+        specifier: '>=17'
+        version: 18.2.7
       markdown-it:
         specifier: ^13.0.2
         version: 13.0.2
       query-string:
         specifier: ^8.1.0
         version: 8.1.0
+      react:
+        specifier: '>=17'
+        version: 18.2.0
+      react-dom:
+        specifier: '>=17'
+        version: 18.2.0(react@18.2.0)
     devDependencies:
       '@types/markdown-it':
         specifier: ^13.0.2
