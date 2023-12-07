@@ -11,7 +11,6 @@ import {
   onMounted,
 } from "vue-demi";
 import type { ComponentMap, SmartComponentMap } from "./";
-import Renderer from "markdown-it/lib/renderer";
 
 const MarkdownRenderer = defineComponent({
   name: "VueMarkdown",
@@ -54,20 +53,8 @@ const MarkdownRenderer = defineComponent({
     const md = new MarkdownIt({
       html: true,
     } satisfies MarkdownItOptions);
-
-    md.renderer.render;
-    md.renderer.rules.h2 = (
-      _tokens: (typeof Token)[],
-      _idx: number,
-      _options: MarkdownIt.Options,
-      _env: any,
-      _self: Renderer,
-    ) => {
-      return "";
-    };
     md.use(MarkdownItAttrs);
     md.use(MarkdownItAnchor);
-
     const content = computed(() => {
       const src = props.source;
       return md?.render(src);
