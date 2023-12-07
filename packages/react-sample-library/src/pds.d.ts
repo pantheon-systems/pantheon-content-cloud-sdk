@@ -10,4 +10,13 @@ declare module "@pantheon-systems/pds-toolkit-react" {
     // We should set this in order to override?
     // className: string;
   }
+
+  declare interface AvatarProps {
+    imageSrc: string;
+    avatarSize?: "sm" | "md";
+    className?: string;
+    fallbackIcon?: "user" | "users";
+  }
+
+  declare const Avatar: import("react").FC<AvatarProps>;
 }
