@@ -1,6 +1,7 @@
-import type { Options as MarkdownItOptions } from "markdown-it";
-// @ts-expect-error - no types
-import MarkdownIt from "markdown-it/dist/markdown-it.js";
+import type { Options as MarkdownItOptions, Token } from "markdown-it";
+import MarkdownIt from "markdown-it";
+import MarkdownItAnchor from "markdown-it-anchor";
+import MarkdownItAttrs from "markdown-it-attrs";
 import {
   computed,
   defineComponent,
@@ -9,7 +10,8 @@ import {
   defineCustomElement,
   onMounted,
 } from "vue-demi";
-import type { SmartComponentMap } from "./";
+import type { ComponentMap, SmartComponentMap } from "./";
+import Renderer from "markdown-it/lib/renderer";
 
 const MarkdownRenderer = defineComponent({
   name: "VueMarkdown",
@@ -20,6 +22,11 @@ const MarkdownRenderer = defineComponent({
     },
     smartComponentMap: {
       type: Object as PropType<SmartComponentMap>,
+      default: () => ({}),
+      required: false,
+    },
+    componentMap: {
+      type: Object as PropType<ComponentMap>,
       default: () => ({}),
       required: false,
     },
@@ -47,6 +54,19 @@ const MarkdownRenderer = defineComponent({
     const md = new MarkdownIt({
       html: true,
     } satisfies MarkdownItOptions);
+
+    md.renderer.render;
+    md.renderer.rules.h2 = (
+      _tokens: (typeof Token)[],
+      _idx: number,
+      _options: MarkdownIt.Options,
+      _env: any,
+      _self: Renderer,
+    ) => {
+      return "";
+    };
+    md.use(MarkdownItAttrs);
+    md.use(MarkdownItAnchor);
 
     const content = computed(() => {
       const src = props.source;

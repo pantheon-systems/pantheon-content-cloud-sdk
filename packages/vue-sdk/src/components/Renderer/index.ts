@@ -23,6 +23,24 @@ export type SmartComponentMap = {
   [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
 
+type ExtraProps = {
+  // If Content type is Markdown
+  node?: Element;
+};
+
+export type ComponentMap = Partial<{
+  [TagName in keyof JSX.IntrinsicElements]:
+    | (new (
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.ElementClass)
+    // Function component:
+    | ((
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.Element | string | null | undefined)
+    // Tag name:
+    | keyof JSX.IntrinsicElements;
+}>;
+
 export type PreviewBarProps = {
   previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
   collapsedPreviewBarProps?: Record<string, unknown>;
@@ -37,6 +55,10 @@ const ArticleRenderer = defineComponent({
     },
     smartComponentMap: {
       type: Object as PropType<SmartComponentMap>,
+      required: false,
+    },
+    componentMap: {
+      type: Object as PropType<ComponentMap>,
       required: false,
     },
     bodyClass: {
@@ -73,6 +95,7 @@ const ArticleRenderer = defineComponent({
         h(MarkdownRenderer, {
           source: props.article.content || "",
           smartComponentMap: props.smartComponentMap,
+          componentMap: props.componentMap,
           options: {
             html: true,
           },
@@ -128,6 +151,7 @@ const ArticleRenderer = defineComponent({
           return h(renderer, {
             element,
             smartComponentMap: props.smartComponentMap,
+            componentMap: props.componentMap,
           });
         }),
       ]),
