@@ -1,5 +1,5 @@
 import { Avatar as BaseAvatar } from "@pantheon-systems/pds-toolkit-react";
-import { SmartComponentMap } from "@pantheon-systems/pcc-sdk-core/types";
+import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
