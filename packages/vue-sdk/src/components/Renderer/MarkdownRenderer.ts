@@ -1,10 +1,4 @@
-import {
-  computed,
-  defineComponent,
-  h,
-  PropType,
-  defineCustomElement,
-} from "vue-demi";
+import { computed, defineComponent, h, PropType } from "vue-demi";
 import type { ComponentMap, SmartComponentMap } from "./";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -123,6 +117,8 @@ const MarkdownRenderer = defineComponent({
       // visit(hastTree, transform)
       return hastTree;
     });
+
+    const pccComponent = buildPccCustomComponent(props.smartComponentMap);
     return h(
       "div",
       {
@@ -131,10 +127,9 @@ const MarkdownRenderer = defineComponent({
       toJsxRuntime(content.value, {
         Fragment,
         components: {
-          ["pcc-component" as "div"]: props.smartComponentMap.LEAD_CAPTURE,
+          ["pcc-component" as "div"]: pccComponent,
           ...props.componentMap,
         },
-        // TODO: Fix type warnings
         jsx: jsx,
         jsxs: jsx,
       }),
@@ -148,12 +143,8 @@ interface ComponentProps extends Record<string, unknown> {
   type: string;
 }
 
-const buildPccCustomElement = (
-  smartComponentMap: SmartComponentMap,
-  styles: NodeListOf<HTMLStyleElement>,
-  styleLinks: NodeListOf<HTMLLinkElement>,
-) => {
-  return defineCustomElement({
+const buildPccCustomComponent = (smartComponentMap: SmartComponentMap) => {
+  return defineComponent({
     props: {
       id: {
         type: String,
@@ -180,21 +171,12 @@ const buildPccCustomElement = (
         {
           class: "pcc-component",
         },
-        [
-          // Browsers will dedupe these requests automatically
-          ...Array.from(styleLinks).map((link) =>
-            h("link", {
-              rel: "stylesheet",
-              href: link.href,
-            }),
-          ),
-          component
-            ? h(component, decodedAttrs)
-            : h("u", {}, `PCC Component - ${type}`),
-        ],
+        // Browsers will dedupe these requests automatically
+        component
+          ? h(component, decodedAttrs)
+          : h("u", {}, `PCC Component - ${type}`),
       );
     },
-    styles: Array.from(styles).map((style) => style.innerHTML),
   });
 };
 
