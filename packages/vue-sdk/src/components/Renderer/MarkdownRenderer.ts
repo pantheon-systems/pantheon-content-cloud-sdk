@@ -33,7 +33,6 @@ function fixComponentParentRehypePlugin() {
   };
 }
 
-// TODO: Check if need URL transform
 export function urlTransform(value: string) {
   // Same as:
   // <https://github.com/micromark/micromark/blob/929275e/packages/micromark-util-sanitize-uri/dev/index.js#L34>
