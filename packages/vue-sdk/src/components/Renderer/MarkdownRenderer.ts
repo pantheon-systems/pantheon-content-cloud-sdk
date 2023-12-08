@@ -58,6 +58,8 @@ export function urlTransform(value: string) {
   return "";
 }
 
+//TODO: Type this properly
+/* eslint-disable @typescript-eslint/no-explicit-any */
 function transform(node: any, index: any, parent: any) {
   if (node.type === "raw" && parent && typeof index === "number") {
     parent.children[index] = { type: "text", value: node.value };
@@ -109,6 +111,7 @@ const MarkdownRenderer = defineComponent({
         .use(remarkParse)
         .use(remarkHeadingId)
         .use(remarkRehype, { allowDangerousHtml: true })
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         .use(rehypeRaw as any, { allowDangerousHtml: true })
         .use(fixComponentParentRehypePlugin);
 
