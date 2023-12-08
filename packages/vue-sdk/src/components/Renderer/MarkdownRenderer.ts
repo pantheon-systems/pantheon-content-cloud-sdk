@@ -5,7 +5,7 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import remarkHeadingId from "remark-heading-id";
 import rehypeRaw from "rehype-raw";
-import { toJsxRuntime } from "hast-util-to-jsx-runtime";
+import { toJsxRuntime, Jsx } from "hast-util-to-jsx-runtime";
 import { Fragment, jsx } from "vue/jsx-runtime";
 import type { UnistParent } from "unist-util-visit/lib";
 import { visit } from "unist-util-visit";
@@ -131,8 +131,8 @@ const MarkdownRenderer = defineComponent({
           ["pcc-component" as "div"]: pccComponent,
           ...props.componentMap,
         },
-        jsx: jsx,
-        jsxs: jsx,
+        jsx: jsx as Jsx,
+        jsxs: jsx as Jsx,
       }),
     );
   },
