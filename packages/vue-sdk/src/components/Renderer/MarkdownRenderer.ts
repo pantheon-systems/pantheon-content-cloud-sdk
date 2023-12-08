@@ -4,7 +4,6 @@ import {
   h,
   PropType,
   defineCustomElement,
-  onMounted,
 } from "vue-demi";
 import type { ComponentMap, SmartComponentMap } from "./";
 import { unified } from "unified";
@@ -106,22 +105,6 @@ const MarkdownRenderer = defineComponent({
       required: false,
     },
   },
-  setup(props) {
-    onMounted(() => {
-      const styleTags = document.querySelectorAll("style");
-      const styleLinks = document.querySelectorAll(
-        "link[rel=stylesheet]",
-      ) as NodeListOf<HTMLLinkElement>;
-
-      // Taking the web components approach means we can't use the components in SSR
-      // TODO: Figure out how to make this work with SSR
-      // https://getpantheon.atlassian.net/browse/PCC-763
-      customElements.define(
-        "pcc-component",
-        buildPccCustomElement(props.smartComponentMap, styleTags, styleLinks),
-      );
-    });
-  },
   render() {
     const props = this.$props;
     const attrs = this.$attrs;
@@ -149,6 +132,7 @@ const MarkdownRenderer = defineComponent({
         Fragment,
         components: {
           ["pcc-component" as "div"]: props.smartComponentMap.LEAD_CAPTURE,
+          ...props.componentMap,
         },
         // TODO: Fix type warnings
         jsx: jsx,

@@ -22,24 +22,11 @@ export type SmartComponentMap = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
-
-type ExtraProps = {
-  // If Content type is Markdown
-  node?: Element;
+export type ComponentMap = {
+  // Can't know prop types of component, so we use any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
-
-export type ComponentMap = Partial<{
-  [TagName in keyof JSX.IntrinsicElements]:
-    | (new (
-        props: JSX.IntrinsicElements[TagName] & ExtraProps,
-      ) => JSX.ElementClass)
-    // Function component:
-    | ((
-        props: JSX.IntrinsicElements[TagName] & ExtraProps,
-      ) => JSX.Element | string | null | undefined)
-    // Tag name:
-    | keyof JSX.IntrinsicElements;
-}>;
 
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
