@@ -88,6 +88,7 @@
     "floating-vue": "2.0.0-beta.24",
     "graphql": "^16.8.1",
     "hast-util-to-jsx-runtime": "^2.3.0",
+    "html-url-attributes": "^3.0.0",
     "query-string": "^8.1.0",
     "rehype-raw": "^6.1.1",
     "remark-heading-id": "^1.0.1",
