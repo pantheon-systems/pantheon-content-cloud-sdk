@@ -58,7 +58,7 @@ const PantheonTreeRenderer = defineComponent({
     const nodeChildren = [element.data, ...children].filter(Boolean);
 
     return h(
-      (componentMap?.[element.tag as "div"] as any) || element.tag,
+      componentMap?.[element.tag as "div"] || element.tag,
       {
         style: getStyleObjectFromString(element?.style),
         ...element.attrs,
