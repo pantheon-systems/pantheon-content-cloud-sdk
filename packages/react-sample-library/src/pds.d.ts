@@ -48,6 +48,15 @@ declare module "@pantheon-systems/pds-toolkit-react" {
     type: "info" | "warning" | "critical" | "discovery";
   }
 
+  declare interface SectionBannerNotificationProps {
+    message: string;
+    type: "info" | "success" | "warning" | "critical" | "discovery";
+    isDismissible: boolean;
+    id: string;
+    title: string;
+    className: string;
+  }
+
   declare interface TooltipProps {
     content: string;
     triggerAccessibleText: string;
@@ -62,5 +71,6 @@ declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Blockquote: import("react").FC<BlockquoteProps>;
   declare const CTALink: import("react").FC<CTALinkProps>;
   declare const InlineBannerNotification: import("react").FC<InlineBannerNotificationProps>;
+  declare const SectionBannerNotification: import("react").FC<SectionBannerNotificationProps>;
   declare const Tooltip: import("react").FC<TooltipProps>;
 }
