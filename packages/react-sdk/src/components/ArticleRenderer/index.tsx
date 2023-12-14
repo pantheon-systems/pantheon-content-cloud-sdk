@@ -5,6 +5,7 @@ import {
   TreePantheonContent,
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
+import { Element } from "hast";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
@@ -18,6 +19,22 @@ export type SmartComponentMap = {
   };
 };
 
+type ExtraProps = {
+  // If Content type is Markdown
+  node?: Element;
+};
+
+export type ComponentMap = Partial<{
+  [TagName in keyof JSX.IntrinsicElements]:
+    | (new (
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.ElementClass)
+    // Function component:
+    | ((props: JSX.IntrinsicElements[TagName] & ExtraProps) => JSX.Element)
+    // Tag name:
+    | keyof JSX.IntrinsicElements;
+}>;
+
 interface Props {
   article?: Article;
   bodyClassName?: string;
@@ -26,6 +43,7 @@ interface Props {
   renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
+  componentMap?: ComponentMap;
 }
 
 const ArticleRenderer = ({
@@ -36,6 +54,7 @@ const ArticleRenderer = ({
   renderTitle,
   smartComponentMap,
   previewBarProps,
+  componentMap,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -60,7 +79,10 @@ const ArticleRenderer = ({
           : null}
 
         {article?.content ? (
-          <MarkdownRenderer smartComponentMap={smartComponentMap}>
+          <MarkdownRenderer
+            smartComponentMap={smartComponentMap}
+            componentMap={componentMap}
+          >
             {article.content}
           </MarkdownRenderer>
         ) : (
@@ -119,6 +141,7 @@ const ArticleRenderer = ({
             key: idx,
             element,
             smartComponentMap,
+            componentMap,
           }),
         )}
       </div>

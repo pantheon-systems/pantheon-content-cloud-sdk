@@ -1,7 +1,7 @@
 import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
 import { getStyleObjectFromString } from "../../utils/renderer";
-import { SmartComponentMap } from "./index";
+import { ComponentMap, SmartComponentMap } from "./index";
 
 const PantheonTreeRenderer = defineComponent({
   name: "PantheonTreeRenderer",
@@ -14,15 +14,21 @@ const PantheonTreeRenderer = defineComponent({
       type: Object as PropType<SmartComponentMap>,
       required: false,
     },
+    componentMap: {
+      type: Object as PropType<ComponentMap>,
+      default: () => ({}),
+      required: false,
+    },
   },
   render() {
-    const { element, smartComponentMap } = this.$props;
+    const { element, smartComponentMap, componentMap } = this.$props;
 
     const children =
       element.children?.map((el) =>
         h(resolveComponent("PantheonTreeRenderer"), {
           element: el,
           smartComponentMap,
+          componentMap,
         }),
       ) ?? [];
 
@@ -52,7 +58,7 @@ const PantheonTreeRenderer = defineComponent({
     const nodeChildren = [element.data, ...children].filter(Boolean);
 
     return h(
-      element.tag,
+      componentMap?.[element.tag as "div"] || element.tag,
       {
         style: getStyleObjectFromString(element?.style),
         ...element.attrs,

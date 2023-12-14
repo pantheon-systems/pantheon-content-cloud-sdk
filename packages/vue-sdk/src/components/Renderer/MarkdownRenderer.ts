@@ -1,15 +1,94 @@
-import type { Options as MarkdownItOptions } from "markdown-it";
-// @ts-expect-error - no types
-import MarkdownIt from "markdown-it/dist/markdown-it.js";
 import {
   computed,
+  DefineComponent,
   defineComponent,
   h,
   PropType,
-  defineCustomElement,
-  onMounted,
 } from "vue-demi";
-import type { SmartComponentMap } from "./";
+import type { ComponentMap, SmartComponentMap } from "./";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import remarkHeadingId from "remark-heading-id";
+import rehypeRaw from "rehype-raw";
+import { toJsxRuntime, Jsx } from "hast-util-to-jsx-runtime";
+import { Fragment, jsx } from "vue/jsx-runtime";
+import type { UnistParent } from "unist-util-visit/lib";
+import { visit } from "unist-util-visit";
+import { urlAttributes } from "html-url-attributes";
+
+const safeProtocol = /^(https?|ircs?|mailto|xmpp)$/i;
+
+function fixComponentParentRehypePlugin() {
+  return (tree: UnistParent) => {
+    visit(
+      tree,
+      { type: "element", tagName: "pcc-component" },
+      (node, _, parent) => {
+        if (
+          parent &&
+          "tagName" in parent &&
+          // @ts-expect-error TODO: Type this properly
+          parent.tagName !== "div"
+        ) {
+          // @ts-expect-error TODO: Type this properly
+          parent.tagName = "div";
+        }
+      },
+    );
+  };
+}
+
+export function urlTransform(value: string) {
+  // Same as:
+  // <https://github.com/micromark/micromark/blob/929275e/packages/micromark-util-sanitize-uri/dev/index.js#L34>
+  // But without the `encode` part.
+  const colon = value.indexOf(":");
+  const questionMark = value.indexOf("?");
+  const numberSign = value.indexOf("#");
+  const slash = value.indexOf("/");
+
+  if (
+    // If there is no protocol, it’s relative.
+    colon < 0 ||
+    // If the first colon is after a `?`, `#`, or `/`, it’s not a protocol.
+    (slash > -1 && colon > slash) ||
+    (questionMark > -1 && colon > questionMark) ||
+    (numberSign > -1 && colon > numberSign) ||
+    // It is a protocol, it should be allowed.
+    safeProtocol.test(value.slice(0, colon))
+  ) {
+    return value;
+  }
+
+  return "";
+}
+
+//TODO: Type this properly
+/* eslint-disable @typescript-eslint/no-explicit-any */
+function transform(node: any, index: any, parent: any) {
+  if (node.type === "raw" && parent && typeof index === "number") {
+    parent.children[index] = { type: "text", value: node.value };
+    return index;
+  }
+
+  if (node.type === "element") {
+    let key: string;
+
+    for (key in urlAttributes) {
+      if (
+        Object.hasOwn(urlAttributes, key) &&
+        Object.hasOwn(node.properties, key)
+      ) {
+        const value = node.properties[key];
+        const test = urlAttributes[key];
+        if (test === null || test.includes(node.tagName)) {
+          node.properties[key] = urlTransform(String(value || ""));
+        }
+      }
+    }
+  }
+}
 
 const MarkdownRenderer = defineComponent({
   name: "VueMarkdown",
@@ -23,40 +102,49 @@ const MarkdownRenderer = defineComponent({
       default: () => ({}),
       required: false,
     },
-  },
-  setup(props) {
-    onMounted(() => {
-      const styleTags = document.querySelectorAll("style");
-      const styleLinks = document.querySelectorAll(
-        "link[rel=stylesheet]",
-      ) as NodeListOf<HTMLLinkElement>;
-
-      // Taking the web components approach means we can't use the components in SSR
-      // TODO: Figure out how to make this work with SSR
-      // https://getpantheon.atlassian.net/browse/PCC-763
-      customElements.define(
-        "pcc-component",
-        buildPccCustomElement(props.smartComponentMap, styleTags, styleLinks),
-      );
-    });
+    componentMap: {
+      type: Object as PropType<ComponentMap>,
+      default: () => ({}),
+      required: false,
+    },
   },
   render() {
     const props = this.$props;
     const attrs = this.$attrs;
 
-    const md = new MarkdownIt({
-      html: true,
-    } satisfies MarkdownItOptions);
-
     const content = computed(() => {
-      const src = props.source;
-      return md?.render(src);
+      const processor = unified()
+        .use(remarkParse)
+        .use(remarkHeadingId)
+        .use(remarkRehype, { allowDangerousHtml: true })
+        /* eslint-disable @typescript-eslint/no-explicit-any */
+        .use(rehypeRaw as any, { allowDangerousHtml: true })
+        .use(fixComponentParentRehypePlugin);
+
+      const mdastTree = processor.parse(props.source);
+      const hastTree = processor.runSync(mdastTree);
+      visit(hastTree, transform);
+      return hastTree;
     });
 
-    return h("div", {
-      ...attrs,
-      innerHTML: content.value,
-    });
+    const pccComponent = buildPccCustomComponent(
+      props.smartComponentMap,
+    ) as DefineComponent<any, any, any>;
+    return h(
+      "div",
+      {
+        ...attrs,
+      },
+      toJsxRuntime(content.value, {
+        Fragment,
+        components: {
+          ["pcc-component" as "div"]: pccComponent,
+          ...props.componentMap,
+        },
+        jsx: jsx as Jsx,
+        jsxs: jsx as Jsx,
+      }),
+    );
   },
 });
 
@@ -66,12 +154,8 @@ interface ComponentProps extends Record<string, unknown> {
   type: string;
 }
 
-const buildPccCustomElement = (
-  smartComponentMap: SmartComponentMap,
-  styles: NodeListOf<HTMLStyleElement>,
-  styleLinks: NodeListOf<HTMLLinkElement>,
-) => {
-  return defineCustomElement({
+const buildPccCustomComponent = (smartComponentMap: SmartComponentMap) => {
+  return defineComponent({
     props: {
       id: {
         type: String,
@@ -98,21 +182,11 @@ const buildPccCustomElement = (
         {
           class: "pcc-component",
         },
-        [
-          // Browsers will dedupe these requests automatically
-          ...Array.from(styleLinks).map((link) =>
-            h("link", {
-              rel: "stylesheet",
-              href: link.href,
-            }),
-          ),
-          component
-            ? h(component, decodedAttrs)
-            : h("u", {}, `PCC Component - ${type}`),
-        ],
+        component
+          ? h(component, decodedAttrs)
+          : h("u", {}, `PCC Component - ${type}`),
       );
     },
-    styles: Array.from(styles).map((style) => style.innerHTML),
   });
 };
 
