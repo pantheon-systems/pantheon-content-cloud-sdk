@@ -1,5 +1,3 @@
-import { ReactElement } from "react";
-
 declare module "*.css";
 
 declare module "@pantheon-systems/pds-toolkit-react" {
@@ -39,7 +37,7 @@ declare module "@pantheon-systems/pds-toolkit-react" {
   declare interface CTALinkProps {
     size: "sm" | "md";
     className: string;
-    linkContent: ReactElement;
+    linkContent: React.ReactElement;
   }
 
   declare interface InlineBannerNotificationProps {
