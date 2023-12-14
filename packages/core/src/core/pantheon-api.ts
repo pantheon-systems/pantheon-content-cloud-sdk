@@ -124,6 +124,15 @@ export const PantheonAPI =
       }
     }
 
+    if (command[0] === "status") {
+      const status = {
+        smartComponents: Boolean(options?.smartComponentMap),
+        smartComponentPreview: Boolean(options?.componentPreviewPath),
+      };
+
+      return await res.json(status);
+    }
+
     if (command[0] === "document") {
       const parsedArticleId = command[1];
 
