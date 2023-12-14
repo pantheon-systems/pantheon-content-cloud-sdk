@@ -22,6 +22,11 @@ export type SmartComponentMap = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: InstanceType<DefineComponent<any, any, any>>;
 };
+export type ComponentMap = {
+  // Can't know prop types of component, so we use any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: InstanceType<DefineComponent<any, any, any>>;
+};
 
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +43,10 @@ const ArticleRenderer = defineComponent({
     },
     smartComponentMap: {
       type: Object as PropType<SmartComponentMap>,
+      required: false,
+    },
+    componentMap: {
+      type: Object as PropType<ComponentMap>,
       required: false,
     },
     bodyClass: {
@@ -74,6 +83,7 @@ const ArticleRenderer = defineComponent({
         h(MarkdownRenderer, {
           source: props.article.content || "",
           smartComponentMap: props.smartComponentMap,
+          componentMap: props.componentMap,
           options: {
             html: true,
           },
@@ -129,6 +139,7 @@ const ArticleRenderer = defineComponent({
           return h(renderer, {
             element,
             smartComponentMap: props.smartComponentMap,
+            componentMap: props.componentMap,
           });
         }),
       ]),

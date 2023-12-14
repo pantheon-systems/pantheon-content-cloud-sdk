@@ -1,13 +1,16 @@
+import { Components } from "react-markdown";
 import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
+import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
-import type { SmartComponentMap } from ".";
+import type { ComponentMap, SmartComponentMap } from ".";
 
 interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
+  componentMap?: ComponentMap;
 }
 
 interface ComponentProperties {
@@ -19,11 +22,14 @@ interface ComponentProperties {
 const MarkdownRenderer = ({
   children,
   smartComponentMap,
+  componentMap,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
       rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
+      remarkPlugins={[remarkHeaderId]}
       components={{
+        ...(componentMap as Components),
         ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
           const { attrs, id, type } =
             node.properties as typeof node.properties & ComponentProperties;
