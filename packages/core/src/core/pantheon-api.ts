@@ -186,6 +186,8 @@ export const PantheonAPI =
           ...query,
         })}`,
       );
+    } else if (command[0] === "health") {
+      return await res.json({ status: "ok" });
     } else {
       return await res.redirect(302, options?.notFoundPath || "/404");
     }
