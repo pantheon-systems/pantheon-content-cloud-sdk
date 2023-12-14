@@ -1,5 +1,5 @@
 import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
-import React, { ComponentClass, FunctionComponent } from "react";
+import React from "react";
 import { ComponentMap, SmartComponentMap } from ".";
 import { convertAttributes } from "../../utils/attributes";
 import { getStyleObjectFromString } from "../../utils/styles";

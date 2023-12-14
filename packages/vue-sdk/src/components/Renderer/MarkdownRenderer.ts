@@ -1,4 +1,10 @@
-import { computed, defineComponent, h, PropType } from "vue-demi";
+import {
+  computed,
+  DefineComponent,
+  defineComponent,
+  h,
+  PropType,
+} from "vue-demi";
 import type { ComponentMap, SmartComponentMap } from "./";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -123,7 +129,7 @@ const MarkdownRenderer = defineComponent({
 
     const pccComponent = buildPccCustomComponent(
       props.smartComponentMap,
-    ) as any;
+    ) as DefineComponent<any, any, any>;
     return h(
       "div",
       {
