@@ -30,9 +30,7 @@ export type ComponentMap = Partial<{
         props: JSX.IntrinsicElements[TagName] & ExtraProps,
       ) => JSX.ElementClass)
     // Function component:
-    | ((
-        props: JSX.IntrinsicElements[TagName] & ExtraProps,
-      ) => JSX.Element | string | null | undefined)
+    | ((props: JSX.IntrinsicElements[TagName] & ExtraProps) => JSX.Element)
     // Tag name:
     | keyof JSX.IntrinsicElements;
 }>;

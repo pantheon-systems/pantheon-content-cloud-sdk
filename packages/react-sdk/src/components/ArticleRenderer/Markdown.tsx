@@ -1,3 +1,4 @@
+import { Components } from "react-markdown";
 import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
 import rehypeRaw from "rehype-raw";
@@ -28,6 +29,7 @@ const MarkdownRenderer = ({
       rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
       remarkPlugins={[remarkHeaderId]}
       components={{
+        ...(componentMap as Components),
         ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
           const { attrs, id, type } =
             node.properties as typeof node.properties & ComponentProperties;
@@ -49,7 +51,6 @@ const MarkdownRenderer = ({
             </div>
           );
         },
-        ...componentMap,
       }}
     >
       {children}

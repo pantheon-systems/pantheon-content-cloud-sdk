@@ -121,7 +121,9 @@ const MarkdownRenderer = defineComponent({
       return hastTree;
     });
 
-    const pccComponent = buildPccCustomComponent(props.smartComponentMap);
+    const pccComponent = buildPccCustomComponent(
+      props.smartComponentMap,
+    ) as any;
     return h(
       "div",
       {
