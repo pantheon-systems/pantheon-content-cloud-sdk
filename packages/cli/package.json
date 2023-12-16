@@ -47,7 +47,7 @@
     "google-auth-library": "^8.9.0",
     "inquirer": "^8.2.6",
     "nunjucks": "^3.2.4",
-    "octokit": "^2.1.0",
+    "octokit": "^3.1.2",
     "open": "^9.1.0",
     "ora": "^6.3.1",
     "package-json": "^8.1.1",
