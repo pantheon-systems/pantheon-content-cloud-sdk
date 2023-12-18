@@ -54,7 +54,7 @@ export const ServerSmartComponentMap: ServersideSmartComponentMap = {};
 Object.entries(ClientSmartComponentMap).forEach(([k, v]) => {
   const serverSideConfig: Omit<typeof v, "reactComponent"> &
     Partial<{
-      reactComponent: (typeof v)["reactComponent"];
+      reactComponent: unknown;
     }> = Object.assign({}, v);
   delete serverSideConfig.reactComponent;
   ServerSmartComponentMap[k] = serverSideConfig;

@@ -19,7 +19,8 @@ export type ServersideSmartComponentMap = {
 
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
-    reactComponent: (props: unknown) => React.JSX.Element;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    reactComponent: (props: any) => React.JSX.Element;
   };
 };
 
