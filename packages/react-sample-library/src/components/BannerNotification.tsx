@@ -6,12 +6,9 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export const reactComponent = ({
-  type,
-  message,
-}: BannerNotificationProps) => {
+export const reactComponent = ({ type, message }: BannerNotificationProps) => {
   return <BaseBannerNotification type={type} message={message} />;
-}
+};
 
 export const smartComponentDefinition = {
   title: "Banner Notification",

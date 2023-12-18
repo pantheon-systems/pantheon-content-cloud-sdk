@@ -18,7 +18,7 @@ export const reactComponent = ({
       hasStatusType={hasStatusType}
     />
   );
-}
+};
 
 export const smartComponentDefinition = {
   title: "Badge",

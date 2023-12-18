@@ -19,7 +19,7 @@ export type ServersideSmartComponentMap = {
 
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
-    reactComponent: (props: any) => React.JSX.Element;
+    reactComponent: (props: unknown) => React.JSX.Element;
   };
 };
 

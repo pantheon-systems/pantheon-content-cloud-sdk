@@ -22,7 +22,7 @@ export const reactComponent = ({
       className={className}
     />
   );
-}
+};
 
 export const smartComponentDefinition = {
   title: "Blockquote",

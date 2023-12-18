@@ -12,7 +12,7 @@ export const reactComponent = ({
   type,
 }: InlineBannerNotificationProps) => {
   return <BaseInlineBannerNotification title={title} text={text} type={type} />;
-}
+};
 
 export const smartComponentDefinition = {
   title: "Inline Banner Notification",
