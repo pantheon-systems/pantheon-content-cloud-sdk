@@ -10,12 +10,12 @@ type Props = {
   fallbackIcon?: "user" | "users";
 };
 
-export default function Avatar({
+export const reactComponent = ({
   image,
   size,
   className,
   fallbackIcon,
-}: Props) {
+}: Props) => {
   return (
     <BaseAvatar
       imageSrc={image}
@@ -24,9 +24,9 @@ export default function Avatar({
       fallbackIcon={fallbackIcon}
     />
   );
-}
+};
 
-Avatar.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "Avatar",
   iconUrl: null,
   fields: {

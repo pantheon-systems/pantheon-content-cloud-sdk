@@ -6,13 +6,13 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export default function Blockquote({
+export const reactComponent = ({
   type,
   quote,
   person,
   source,
   className,
-}: BlockquoteProps) {
+}: BlockquoteProps) => {
   return (
     <BaseBlockquote
       type={type}
@@ -24,7 +24,7 @@ export default function Blockquote({
   );
 }
 
-Blockquote.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "Blockquote",
   iconUrl: null,
   fields: {

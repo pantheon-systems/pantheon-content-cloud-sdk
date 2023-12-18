@@ -6,14 +6,14 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export default function SectionBannerNotification({
+export const reactComponent = ({
   message,
   type,
   isDismissible,
   id,
   title,
   className,
-}: SectionBannerNotificationProps) {
+}: SectionBannerNotificationProps) => {
   return (
     <BaseSectionBannerNotification
       message={message}
@@ -26,7 +26,7 @@ export default function SectionBannerNotification({
   );
 }
 
-SectionBannerNotification.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "Section Banner Notification",
   iconUrl: null,
   fields: {

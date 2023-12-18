@@ -6,13 +6,13 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export default function Tooltip({
+export const reactComponent = ({
   content,
   triggerIcon,
   triggerAccessibleText,
   triggerText,
   className,
-}: TooltipProps) {
+}: TooltipProps) => {
   return (
     <BaseTooltip
       content={content}
@@ -22,9 +22,9 @@ export default function Tooltip({
       className={className}
     />
   );
-}
+};
 
-Tooltip.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "Tooltip",
   iconUrl: null,
   fields: {
