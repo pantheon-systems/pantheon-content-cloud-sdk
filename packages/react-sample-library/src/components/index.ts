@@ -49,12 +49,12 @@ export const ClientSmartComponentMap: SmartComponentMap = {
 };
 
 // Clone the client-side map and remove reactComponent from each entry.
-export const ServerSmartComponentMap: ServersideSmartComponentMap =
-  Object.assign({}, ClientSmartComponentMap);
+export const ServerSmartComponentMap: ServersideSmartComponentMap = {};
 
-Object.entries(ServerSmartComponentMap).forEach(([k, v]) => {
-  ServerSmartComponentMap[k] = Object.assign({}, v);
-  delete ServerSmartComponentMap[k].reactComponent;
+Object.keys(ClientSmartComponentMap).forEach((k) => {
+  const serverSideConfig: any = Object.assign({}, ClientSmartComponentMap[k]);
+  delete serverSideConfig.reactComponent;
+  ServerSmartComponentMap[k] = serverSideConfig;
 });
 
 export {

@@ -19,7 +19,7 @@ export type ServersideSmartComponentMap = {
 
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
-    reactComponent: Parameters<typeof React.createElement>[0];
+    reactComponent: (props: any) => React.JSX.Element;
   };
 };
 
