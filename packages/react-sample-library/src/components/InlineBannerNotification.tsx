@@ -6,15 +6,15 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export default function InlineBannerNotification({
+export const reactComponent = ({
   title,
   text,
   type,
-}: InlineBannerNotificationProps) {
+}: InlineBannerNotificationProps) => {
   return <BaseInlineBannerNotification title={title} text={text} type={type} />;
-}
+};
 
-InlineBannerNotification.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "Inline Banner Notification",
   iconUrl: null,
   fields: {

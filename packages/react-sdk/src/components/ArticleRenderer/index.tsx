@@ -13,9 +13,14 @@ import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
+export type ServersideSmartComponentMap = {
+  [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K];
+};
+
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
-    reactComponent: Parameters<typeof React.createElement>[0];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    reactComponent: (props: any) => React.JSX.Element;
   };
 };
 

@@ -10,7 +10,7 @@ interface Props {
   linkText: string;
 }
 
-export default function CTALink({ size, className, href, linkText }: Props) {
+export const reactComponent = ({ size, className, href, linkText }: Props) => {
   return (
     <BaseCTALink
       size={size}
@@ -18,9 +18,9 @@ export default function CTALink({ size, className, href, linkText }: Props) {
       linkContent={<a href={href}>{linkText}</a>}
     />
   );
-}
+};
 
-CTALink.smartComponentDefinition = {
+export const smartComponentDefinition = {
   title: "CTA Link",
   iconUrl: null,
   fields: {

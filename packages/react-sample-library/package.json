@@ -2,11 +2,10 @@
   "name": "@pantheon-systems/pcc-react-sample-library",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Sample Component Library for React",
-  "version": "2.0.17",
+  "version": "2.0.18",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "private": true,
   "typesVersions": {
     "*": {
       "*": [
@@ -70,6 +69,7 @@
   },
   "dependencies": {
     "@pantheon-systems/pcc-sdk-core": "latest",
+    "@pantheon-systems/pcc-react-sdk": "latest",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
     "markdown-it": "^13.0.2",
     "query-string": "^8.1.0"
