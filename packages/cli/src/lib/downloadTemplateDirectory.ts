@@ -1,9 +1,14 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import axios from "axios";
+import fetch from "node-fetch";
 import { Octokit } from "octokit";
 
-const octokit = new Octokit();
+const octokit = new Octokit({
+  request: {
+    fetch,
+  },
+});
 
 const owner = "pantheon-systems";
 const repo = "pantheon-content-cloud-sdk";
