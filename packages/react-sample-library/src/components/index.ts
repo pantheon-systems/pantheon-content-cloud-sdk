@@ -4,6 +4,7 @@ import {
 } from "@pantheon-systems/pcc-react-sdk/components";
 import * as Avatar from "./Avatar";
 import * as Badge from "./Badge";
+import * as IndicatorBadge from "./IndicatorBadge";
 import * as BannerNotification from "./BannerNotification";
 import * as Blockquote from "./Blockquote";
 import * as CTALink from "./CTALink";
@@ -21,6 +22,10 @@ export const ClientSmartComponentMap: SmartComponentMap = {
   PANTHEON_BADGE: {
     ...Badge.smartComponentDefinition,
     reactComponent: Badge.reactComponent,
+  },
+  PANTHEON_INDICATOR_BADGE: {
+    ...IndicatorBadge.smartComponentDefinition,
+    reactComponent: IndicatorBadge.reactComponent,
   },
   PANTHEON_BANNER_NOTIFICATION: {
     ...BannerNotification.smartComponentDefinition,
@@ -63,6 +68,7 @@ Object.entries(ClientSmartComponentMap).forEach(([k, v]) => {
 export {
   Avatar,
   Badge,
+  IndicatorBadge,
   BannerNotification,
   Blockquote,
   CTALink,

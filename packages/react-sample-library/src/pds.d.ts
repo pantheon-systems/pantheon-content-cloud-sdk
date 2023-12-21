@@ -15,6 +15,7 @@ declare interface CTALinkProps {
 // Reuse prop definitions when they are the same
 // as the base component's props
 type BadgeProps = import("./components/Badge").Props;
+type IndicatorBadgeProps = import("./components/IndicatorBadge").Props;
 type BannerProps = import("./components/BannerNotification").Props;
 type BlockquoteProps = import("./components/Blockquote").Props;
 type InlineBannerNotificationProps =
@@ -27,6 +28,7 @@ declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Avatar: import("react").FC<AvatarProps>;
   declare const CTALink: import("react").FC<CTALinkProps>;
   declare const Badge: import("react").FC<BadgeProps>;
+  declare const IndicatorBadge: import("react").FC<IndicatorBadgeProps>;
   declare const Banner: import("react").FC<BannerProps>;
   declare const Blockquote: import("react").FC<BlockquoteProps>;
   declare const InlineMessage: import("react").FC<InlineBannerNotificationProps>;
