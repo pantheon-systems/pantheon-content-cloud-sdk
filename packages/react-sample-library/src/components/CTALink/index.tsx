@@ -4,12 +4,28 @@ import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
 interface Props {
-  size: "sm" | "md";
-  className: string;
+  /**
+   * Size of the CTA Link
+   * @default md
+   */
+  size?: "sm" | "md";
+  /**
+   * Additional class names
+   */
+  className?: string;
+  /**
+   * Link location
+   */
   href: string;
+  /**
+   * Link text
+   */
   linkText: string;
 }
 
+/**
+ * CTA Links are stylized anchor elements that allow the user to navigate to another location.
+ */
 export const reactComponent = ({ size, className, href, linkText }: Props) => {
   return (
     <BaseCTALink

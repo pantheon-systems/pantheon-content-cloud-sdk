@@ -1,8 +1,27 @@
 import { SectionMessage as BaseSectionBannerNotification } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
+export interface Props {
+  /**
+   * Message text.
+   */
+  message: string;
+  /**
+   * Message type.
+   */
+  type: "info" | "success" | "warning" | "critical" | "discovery";
+  /**
+   * Includes dismiss functionality.
+   */
+  isDismissible?: boolean;
+  id: number;
+  title?: string;
+  className?: string;
+}
+
+/**
+ * In-page messaging
+ */
 export const reactComponent = ({
   message,
   type,
@@ -10,7 +29,7 @@ export const reactComponent = ({
   id,
   title,
   className,
-}: SectionBannerNotificationProps) => {
+}: Props) => {
   return (
     <BaseSectionBannerNotification
       message={message}
