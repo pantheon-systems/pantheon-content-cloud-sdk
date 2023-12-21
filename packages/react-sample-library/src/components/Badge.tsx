@@ -1,7 +1,4 @@
-import {
-  Badge as BaseBadge,
-  BadgeProps,
-} from "@pantheon-systems/pds-toolkit-react";
+import { Badge as BaseBadge } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
