@@ -1,16 +1,42 @@
-import { Badge as BaseBadge } from "@pantheon-systems/pds-toolkit-react";
+import {
+  Badge as BaseBadge,
+} from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
+export interface Props {
+  /**
+   * Status type for badge. Only renders if `hasStatusType` is true.
+   */
+  statusType?:
+    | "status"
+    | "info"
+    | "frozen"
+    | "critical"
+    | "warning"
+    | "discovery"
+    | "neutral";
+  /**
+   * Text for badge
+   */
+  label: string;
+  /**
+   * Should the badge be associated with a certain status type.
+   */
+  hasStatusType?: boolean;
+}
+
+
+/**
+ * A visual label to convey a status
+ */
 export const reactComponent = ({
-  successType,
+  statusType,
   label,
   hasStatusType,
-}: BadgeProps) => {
+}: Props) => {
   return (
     <BaseBadge
-      successType={successType}
+      statusType={statusType}
       label={label}
       hasStatusType={hasStatusType}
     />
@@ -21,8 +47,8 @@ export const smartComponentDefinition = {
   title: "Badge",
   iconUrl: null,
   fields: {
-    successType: {
-      displayName: "Success Type",
+    statusType: {
+      displayName: "Status Type",
       type: "enum",
       required: true,
       options: [

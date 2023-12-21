@@ -1,4 +1,4 @@
 {
-  "extends": ["pcc-custom"],
+  "extends": ["pcc-custom", "plugin:storybook/recommended"],
   "ignorePatterns": ["dist/*"]
 }

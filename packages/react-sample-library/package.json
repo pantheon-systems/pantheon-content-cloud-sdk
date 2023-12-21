@@ -17,7 +17,9 @@
     "dev": "pnpm run build --watch",
     "build": "pnpm run clean && tsup && pnpm run copy-files",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "exports": {
     ".": {
@@ -34,11 +36,24 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^7.6.6",
+    "@storybook/addon-interactions": "^7.6.6",
+    "@storybook/addon-links": "^7.6.6",
+    "@storybook/addon-onboarding": "^1.0.10",
+    "@storybook/blocks": "^7.6.6",
+    "@storybook/nextjs": "^7.6.6",
+    "@storybook/react": "^7.6.6",
+    "@storybook/test": "^7.6.6",
     "@types/node": "^20.3.1",
     "copyfiles": "^2.4.1",
+    "esbuild-sass-plugin": "^2.16.1",
     "eslint": "^8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
+    "eslint-plugin-storybook": "^0.6.15",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
+    "storybook": "^7.6.6",
     "tsup": "^7.0.0",
     "typescript": "^5.1.3"
   },
