@@ -1,6 +1,4 @@
-import {
-  Badge as BaseBadge,
-} from "@pantheon-systems/pds-toolkit-react";
+import { Badge as BaseBadge } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 export interface Props {
@@ -25,15 +23,10 @@ export interface Props {
   hasStatusType?: boolean;
 }
 
-
 /**
  * A visual label to convey a status
  */
-export const reactComponent = ({
-  statusType,
-  label,
-  hasStatusType,
-}: Props) => {
+export const reactComponent = ({ statusType, label, hasStatusType }: Props) => {
   return (
     <BaseBadge
       statusType={statusType}

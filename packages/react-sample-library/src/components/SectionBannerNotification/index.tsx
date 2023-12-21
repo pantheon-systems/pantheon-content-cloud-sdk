@@ -8,7 +8,7 @@ export interface Props {
   message: string;
   /**
    * Message type.
-   */  
+   */
   type: "info" | "success" | "warning" | "critical" | "discovery";
   /**
    * Includes dismiss functionality.
@@ -18,7 +18,6 @@ export interface Props {
   title?: string;
   className?: string;
 }
-
 
 /**
  * In-page messaging

@@ -92,5 +92,4 @@ export const smartComponentDefinition = {
       required: false,
     },
   },
-} satisfies SmartComponentMap[string]; 
-
+} satisfies SmartComponentMap[string];

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import {reactComponent as BannerNotification} from "./index";
+import { reactComponent as BannerNotification } from "./index";
 
 const meta = {
-  title: 'Components/Notification/Banner',
+  title: "Components/Notification/Banner",
   component: BannerNotification,
 } satisfies Meta<typeof BannerNotification>;
 
@@ -13,7 +13,7 @@ export default meta;
 
 export const Default: Story = {
   args: {
-		message: 'This is a banner',
-    type: 'info'
-  }
-}
+    message: "This is a banner",
+    type: "info",
+  },
+};

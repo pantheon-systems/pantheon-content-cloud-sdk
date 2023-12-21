@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import {reactComponent as SectionBannerNotification} from "./index";
+import { reactComponent as SectionBannerNotification } from "./index";
 
 const meta = {
-  title: 'Components/Notification/Section Message',
+  title: "Components/Notification/Section Message",
   component: SectionBannerNotification,
 } satisfies Meta<typeof SectionBannerNotification>;
 
@@ -16,5 +16,5 @@ export const Default: Story = {
     id: 1,
     message: "Section Message",
     type: "info",
-  }
-}
+  },
+};

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import {reactComponent as Badge} from "./index";
+import { reactComponent as Badge } from "./index";
 
 const meta = {
-  title: 'Components/Badge',
+  title: "Components/Badge",
   component: Badge,
 } satisfies Meta<typeof Badge>;
 
@@ -13,8 +13,8 @@ export default meta;
 
 export const Default: Story = {
   args: {
-		label: 'Info',
-		hasStatusType: true,
-		statusType: 'info',
-  }
-}
+    label: "Info",
+    hasStatusType: true,
+    statusType: "info",
+  },
+};

@@ -10,11 +10,7 @@ export interface Props {
 /**
  * A message that is displayed inline with other content
  */
-export const reactComponent = ({
-  title,
-  text,
-  type,
-}: Props) => {
+export const reactComponent = ({ title, text, type }: Props) => {
   return <BaseInlineBannerNotification title={title} text={text} type={type} />;
 };
 
