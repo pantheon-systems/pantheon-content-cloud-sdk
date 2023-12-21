@@ -1,13 +1,17 @@
 import {
-  InlineMessage as BaseInlineMessage,
-  InlineMessageProps,
+  InlineBannerNotification as BaseInlineBannerNotification,
+  InlineBannerNotificationProps,
 } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
 // TODO: Infer the type of the props from the smart component definition
 // https://getpantheon.atlassian.net/browse/PCC-827
-export const reactComponent = ({ title, text, type }: InlineMessageProps) => {
-  return <BaseInlineMessage title={title} text={text} type={type} />;
+export const reactComponent = ({
+  title,
+  text,
+  type,
+}: InlineBannerNotificationProps) => {
+  return <BaseInlineBannerNotification title={title} text={text} type={type} />;
 };
 
 export const smartComponentDefinition = {
