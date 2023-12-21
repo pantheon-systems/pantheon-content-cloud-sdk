@@ -8,6 +8,7 @@ import * as IndicatorBadge from "./IndicatorBadge";
 import * as BannerNotification from "./BannerNotification";
 import * as Blockquote from "./Blockquote";
 import * as CTALink from "./CTALink";
+import * as Card from "./Card";
 import * as InlineBannerNotification from "./InlineBannerNotification";
 import * as SectionBannerNotification from "./SectionBannerNotification";
 import * as Tooltip from "./Tooltip";
@@ -22,6 +23,10 @@ export const ClientSmartComponentMap: SmartComponentMap = {
   PANTHEON_BADGE: {
     ...Badge.smartComponentDefinition,
     reactComponent: Badge.reactComponent,
+  },
+  PANTHEON_CARD: {
+    ...Card.smartComponentDefinition,
+    reactComponent: Card.reactComponent,
   },
   PANTHEON_INDICATOR_BADGE: {
     ...IndicatorBadge.smartComponentDefinition,
@@ -68,6 +73,7 @@ Object.entries(ClientSmartComponentMap).forEach(([k, v]) => {
 export {
   Avatar,
   Badge,
+  Card,
   IndicatorBadge,
   BannerNotification,
   Blockquote,
