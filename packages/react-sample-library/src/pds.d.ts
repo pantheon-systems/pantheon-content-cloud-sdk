@@ -21,7 +21,7 @@ declare module "@pantheon-systems/pds-toolkit-react" {
     hasStatusType: boolean;
   }
 
-  declare interface BannerNotificationProps {
+  declare interface BannerProps {
     type: "warning" | "critical" | "info";
     message: string;
   }
@@ -40,13 +40,13 @@ declare module "@pantheon-systems/pds-toolkit-react" {
     linkContent: React.ReactElement;
   }
 
-  declare interface InlineBannerNotificationProps {
+  declare interface InlineMessageProps {
     title: string;
     text: string;
     type: "info" | "warning" | "critical" | "discovery";
   }
 
-  declare interface SectionBannerNotificationProps {
+  declare interface SectionMessageProps {
     message: string;
     type: "info" | "success" | "warning" | "critical" | "discovery";
     isDismissible: boolean;
@@ -65,10 +65,10 @@ declare module "@pantheon-systems/pds-toolkit-react" {
 
   declare const Avatar: import("react").FC<AvatarProps>;
   declare const Badge: import("react").FC<BadgeProps>;
-  declare const BannerNotification: import("react").FC<BannerNotificationProps>;
+  declare const Banner: import("react").FC<BannerProps>;
   declare const Blockquote: import("react").FC<BlockquoteProps>;
   declare const CTALink: import("react").FC<CTALinkProps>;
-  declare const InlineBannerNotification: import("react").FC<InlineBannerNotificationProps>;
-  declare const SectionBannerNotification: import("react").FC<SectionBannerNotificationProps>;
+  declare const InlineMessage: import("react").FC<InlineMessageProps>;
+  declare const SectionMessage: import("react").FC<SectionMessageProps>;
   declare const Tooltip: import("react").FC<TooltipProps>;
 }

@@ -1,6 +1,6 @@
 import {
-  SectionBannerNotification as BaseSectionBannerNotification,
-  SectionBannerNotificationProps,
+  SectionMessage as BaseSectionMessage,
+  SectionMessageProps,
 } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
@@ -13,9 +13,9 @@ export const reactComponent = ({
   id,
   title,
   className,
-}: SectionBannerNotificationProps) => {
+}: SectionMessageProps) => {
   return (
-    <BaseSectionBannerNotification
+    <BaseSectionMessage
       message={message}
       type={type}
       isDismissible={isDismissible}
