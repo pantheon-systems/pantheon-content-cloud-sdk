@@ -3,7 +3,7 @@
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Sample Component Library for React",
   "version": "2.0.18",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
@@ -22,7 +22,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
+      "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./dist/*.css": {
