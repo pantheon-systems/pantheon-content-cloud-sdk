@@ -34,7 +34,7 @@ yargs(hideBin(process.argv))
   .strictCommands()
   .demandCommand()
   .command(
-    "init <project_directory> [options]",
+    "init",
     "Sets up project with required files.",
     (yargs) => {
       yargs
@@ -153,7 +153,7 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
-    "token <cmd> [options]",
+    "token",
     "Enables you to manage tokens for a PCC project.",
     (yargs) => {
       yargs
@@ -193,7 +193,7 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
-    "site <cmd> [options]",
+    "site",
     "Enables you to manage sites for a PCC project.",
     (yargs) => {
       yargs
@@ -212,7 +212,7 @@ yargs(hideBin(process.argv))
           async (args) => await createSite(args.url as string),
         )
         .command(
-          "components [options]",
+          "components",
           "Shows component schema of the site.",
           (yargs) => {
             yargs.option("url", {
@@ -282,47 +282,42 @@ yargs(hideBin(process.argv))
               >),
             }),
         )
-        .command(
-          "webhooks <cmd> [options]",
-          "Manage webhooks for a given site.",
-          (yargs) => {
-            yargs
-              .strictCommands()
-              .demandCommand()
-              .command(
-                "history <id>",
-                "View webhook event delivery logs for a given site.",
-                (yargs) => {
-                  yargs
-                    .strictCommands()
-                    .positional("<id>", {
-                      describe:
-                        "ID of the site for which you want to see logs.",
-                      demandOption: true,
-                      type: "string",
-                    })
-                    .option("limit", {
-                      describe: "Number of logs to fetch at a time.",
-                      type: "number",
-                      default: 100,
-                      demandOption: false,
-                    });
-                },
-                async (args) =>
-                  await showLogs({
-                    id: args.id as string,
-                    limit: args.limit as number,
-                  }),
-              );
-          },
-        );
+        .command("webhooks", "Manage webhooks for a given site.", (yargs) => {
+          yargs
+            .strictCommands()
+            .demandCommand()
+            .command(
+              "history <id>",
+              "View webhook event delivery logs for a given site.",
+              (yargs) => {
+                yargs
+                  .strictCommands()
+                  .positional("<id>", {
+                    describe: "ID of the site for which you want to see logs.",
+                    demandOption: true,
+                    type: "string",
+                  })
+                  .option("limit", {
+                    describe: "Number of logs to fetch at a time.",
+                    type: "number",
+                    default: 100,
+                    demandOption: false,
+                  });
+              },
+              async (args) =>
+                await showLogs({
+                  id: args.id as string,
+                  limit: args.limit as number,
+                }),
+            );
+        });
     },
     async () => {
       // noop
     },
   )
   .command(
-    "document <cmd> [options]",
+    "document",
     "Enables you to manage documents for a PCC Project.",
     (yargs) => {
       yargs
