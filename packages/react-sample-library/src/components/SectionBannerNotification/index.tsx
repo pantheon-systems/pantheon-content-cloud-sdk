@@ -1,23 +1,5 @@
 import { SectionMessage as BaseSectionBannerNotification } from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
-
-export interface Props {
-  /**
-   * Message text.
-   */
-  message: string;
-  /**
-   * Message type.
-   */
-  type: "info" | "success" | "warning" | "critical" | "discovery";
-  /**
-   * Includes dismiss functionality.
-   */
-  isDismissible?: boolean;
-  id: number;
-  title?: string;
-  className?: string;
-}
+import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
 /**
  * In-page messaging
@@ -29,7 +11,7 @@ export const reactComponent = ({
   id,
   title,
   className,
-}: Props) => {
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseSectionBannerNotification
       message={message}
@@ -46,6 +28,9 @@ export const smartComponentDefinition = {
   title: "Section Banner Notification",
   iconUrl: null,
   fields: {
+    /**
+     * Message type.
+     */
     type: {
       displayName: "Type",
       type: "enum",
@@ -73,16 +58,25 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    /**
+     * Message text.
+     */
     message: {
       displayName: "Message",
       type: "string",
       required: true,
     },
+    /**
+     * Includes dismiss functionality.
+     */
     isDismissible: {
       displayName: "Is dismissible",
       type: "boolean",
       required: false,
     },
+    /**
+     * Message id.
+     */
     id: {
       displayName: "Id",
       type: "number",
@@ -94,9 +88,9 @@ export const smartComponentDefinition = {
       required: false,
     },
     className: {
-      displayName: "Class name",
+      displayName: "Additional CSS classes",
       type: "string",
       required: false,
     },
   },
-} satisfies SmartComponentMap[string];
+} as const;

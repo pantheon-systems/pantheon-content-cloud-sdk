@@ -1,37 +1,21 @@
 import { Badge as BaseBadge } from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
-
-export interface Props {
-  /**
-   * Status type for badge. Only renders if `hasStatusType` is true.
-   */
-  statusType?:
-    | "status"
-    | "info"
-    | "frozen"
-    | "critical"
-    | "warning"
-    | "discovery"
-    | "neutral";
-  /**
-   * Text for badge
-   */
-  label: string;
-  /**
-   * Should the badge be associated with a certain status type.
-   */
-  hasStatusType?: boolean;
-}
+import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
 /**
  * A visual label to convey a status
  */
-export const reactComponent = ({ statusType, label, hasStatusType }: Props) => {
+export const reactComponent = ({
+  statusType,
+  label,
+  hasStatusType,
+  className,
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseBadge
       statusType={statusType}
       label={label}
       hasStatusType={hasStatusType}
+      className={className}
     />
   );
 };
@@ -40,6 +24,9 @@ export const smartComponentDefinition = {
   title: "Badge",
   iconUrl: null,
   fields: {
+    /**
+     * Status type for badge. Only renders if `hasStatusType` is true.
+     */
     statusType: {
       displayName: "Status Type",
       type: "enum",
@@ -75,15 +62,26 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    /**
+     * Text to display in the badge
+     */
     label: {
       displayName: "Label",
       type: "string",
-      required: false,
+      required: true,
     },
+    /**
+     * Should the badge be associated with a certain status type
+     */
     hasStatusType: {
       displayName: "Has status type",
       type: "boolean",
       required: false,
     },
+    className: {
+      displayName: "Additional CSS classes",
+      type: "string",
+      required: false,
+    },
   },
-} satisfies SmartComponentMap[string];
+} as const;
