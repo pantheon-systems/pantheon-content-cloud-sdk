@@ -29,12 +29,12 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
-  .usage("$0 <cmd>")
+  .usage("$0 [command]")
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
   .command(
-    "init",
+    "init <project_directory>",
     "Sets up project with required files.",
     (yargs) => {
       yargs
@@ -136,7 +136,7 @@ yargs(hideBin(process.argv))
       if (useYarn) packageManager = "yarn";
       else if (usePnpm) packageManager = "pnpm";
       else packageManager = "npm";
-
+      console.log("111111111111", dirName);
       await init({
         dirName,
         template,
@@ -242,7 +242,7 @@ yargs(hideBin(process.argv))
           async () => await listSites(),
         )
         .command(
-          "configure <id> [options]",
+          "configure <id>",
           "Configure properties for a given site.",
           (yargs) => {
             yargs
