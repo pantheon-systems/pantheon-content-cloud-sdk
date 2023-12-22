@@ -200,7 +200,7 @@ yargs(hideBin(process.argv))
         .strictCommands()
         .demandCommand()
         .command(
-          "create [options]",
+          "create",
           "Creates new site.",
           (yargs) => {
             yargs.option("url", {
