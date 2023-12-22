@@ -1,67 +1,27 @@
 declare module "*.css";
-interface AvatarProps {
-  imageSrc?: string;
+declare interface AvatarProps {
+  imageSrc: string;
   avatarSize?: "sm" | "md";
   className?: string;
   fallbackIcon?: "user" | "users";
 }
 
-interface BadgeProps {
-  label: string;
-  statusType?:
-    | "status"
-    | "info"
-    | "frozen"
-    | "critical"
-    | "warning"
-    | "discovery"
-    | "neutral";
-  hasStatusType?: boolean;
-  className?: string;
-}
-interface CTALinkProps {
+declare interface CTALinkProps {
   size?: "sm" | "md";
   className?: string;
   linkContent: React.ReactElement;
 }
 
-interface BannerProps {
-  type: "warning" | "critical" | "info";
-  message: string;
-  className?: string;
-}
-
-interface BlockquoteProps {
-  type?: "full-width" | "inline";
-  quote: string;
-  person: string;
-  source: string;
-  className?: string;
-}
-
-interface InlineBannerNotificationProps {
-  title: string;
-  type: "info" | "warning" | "critical" | "discovery";
-  text?: string;
-  className?: string;
-}
-
-interface TooltipProps {
-  content: string;
-  triggerAccessibleText?: string;
-  triggerIcon?: "circleInfo" | "circleQuestion" | "circleExclamation";
-  triggerText?: string;
-  className?: string;
-}
-
-interface SectionBannerNotificationProps {
-  message: string;
-  type: "info" | "success" | "warning" | "critical" | "discovery";
-  isDismissible?: boolean;
-  id: number;
-  title?: string;
-  className?: string;
-}
+// Reuse prop definitions when they are the same
+// as the base component's props
+type BadgeProps = import("./components/Badge").Props;
+type BannerProps = import("./components/BannerNotification").Props;
+type BlockquoteProps = import("./components/Blockquote").Props;
+type InlineBannerNotificationProps =
+  import("./components/InlineBannerNotification").Props;
+type SectionBannerNotificationProps =
+  import("./components/SectionBannerNotification").Props;
+type TooltipProps = import("./components/Tooltip").Props;
 
 declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Avatar: import("react").FC<AvatarProps>;

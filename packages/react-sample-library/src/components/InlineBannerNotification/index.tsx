@@ -1,32 +1,23 @@
 import { InlineMessage as BaseInlineBannerNotification } from "@pantheon-systems/pds-toolkit-react";
-import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
+import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
+
+export interface Props {
+  title: string;
+  type: "info" | "warning" | "critical" | "discovery";
+  text?: string;
+}
 
 /**
  * A message that is displayed inline with other content
  */
-export const reactComponent = ({
-  title,
-  text,
-  type,
-  className,
-}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
-  return (
-    <BaseInlineBannerNotification
-      title={title}
-      text={text}
-      type={type}
-      className={className}
-    />
-  );
+export const reactComponent = ({ title, text, type }: Props) => {
+  return <BaseInlineBannerNotification title={title} text={text} type={type} />;
 };
 
 export const smartComponentDefinition = {
   title: "Inline Banner Notification",
   iconUrl: null,
   fields: {
-    /**
-     * Banner style and Icon types
-     */
     type: {
       displayName: "Type",
       type: "enum",
@@ -50,26 +41,15 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    /**
-     * Text for the title section
-     */
     title: {
       displayName: "Title",
       type: "string",
       required: true,
     },
-    /**
-     * Text for the message section
-     */
     text: {
       displayName: "Text",
       type: "string",
       required: false,
     },
-    className: {
-      displayName: "Additional CSS classes",
-      type: "string",
-      required: false,
-    },
   },
-} as const;
+} satisfies SmartComponentMap[string];

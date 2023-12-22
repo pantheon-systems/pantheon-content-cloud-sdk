@@ -1,6 +1,32 @@
 import { Blockquote as BaseBlockquote } from "@pantheon-systems/pds-toolkit-react";
-import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
+import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
+interface Props {
+  /**
+   * Set type to full width or inline blockquote
+   * @default full-width
+   */
+  type?: "full-width" | "inline";
+  /**
+   * Quote text
+   */
+  quote: string;
+  /**
+   * Person who said the quote
+   */
+  person: string;
+  /**
+   * Source of the quote
+   */
+  source: string;
+  /**
+   * Additional class names
+   */
+  className?: string;
+}
+
+// TODO: Infer the type of the props from the smart component definition
+// https://getpantheon.atlassian.net/browse/PCC-827
 /**
  * The Blockquote component is used to show a quote and the quote author in a full-width or inline format.
  */
@@ -10,7 +36,7 @@ export const reactComponent = ({
   person,
   source,
   className,
-}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
+}: Props) => {
   return (
     <BaseBlockquote
       type={type}
@@ -26,14 +52,10 @@ export const smartComponentDefinition = {
   title: "Blockquote",
   iconUrl: null,
   fields: {
-    /**
-     * Set type to full width or inline blockquote
-     * @default full-width
-     */
     type: {
       displayName: "Type",
       type: "enum",
-      required: false,
+      required: true,
       options: [
         {
           label: "Full width",
@@ -45,34 +67,25 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    /**
-     * Quote text
-     */
     quote: {
       displayName: "Quote",
       type: "string",
       required: true,
     },
-    /**
-     * Person who said the quote
-     */
     person: {
       displayName: "Person",
       type: "string",
-      required: true,
+      required: false,
     },
-    /**
-     * Source of the quote
-     */
     source: {
       displayName: "Source",
       type: "string",
-      required: true,
+      required: false,
     },
     className: {
-      displayName: "Additional CSS classes",
+      displayName: "Classname",
       type: "string",
       required: false,
     },
   },
-} as const;
+} satisfies SmartComponentMap[string];

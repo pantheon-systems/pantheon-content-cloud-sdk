@@ -1,15 +1,32 @@
 import { CTALink as BaseCTALink } from "@pantheon-systems/pds-toolkit-react";
-import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
+import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
+
+// TODO: Infer the type of the props from the smart component definition
+// https://getpantheon.atlassian.net/browse/PCC-827
+interface Props {
+  /**
+   * Size of the CTA Link
+   * @default md
+   */
+  size?: "sm" | "md";
+  /**
+   * Additional class names
+   */
+  className?: string;
+  /**
+   * Link location
+   */
+  href: string;
+  /**
+   * Link text
+   */
+  linkText: string;
+}
 
 /**
  * CTA Links are stylized anchor elements that allow the user to navigate to another location.
  */
-export const reactComponent = ({
-  size,
-  className,
-  href,
-  linkText,
-}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
+export const reactComponent = ({ size, className, href, linkText }: Props) => {
   return (
     <BaseCTALink
       size={size}
@@ -23,11 +40,7 @@ export const smartComponentDefinition = {
   title: "CTA Link",
   iconUrl: null,
   fields: {
-    /**
-     * Size of the CTA Link
-     * @default md
-     */
-    size: {
+    type: {
       displayName: "Size",
       type: "enum",
       required: true,
@@ -42,26 +55,20 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    /**
-     * Link location
-     */
     href: {
       displayName: "Href",
       type: "string",
       required: true,
     },
-    /**
-     * Link text
-     */
     linkText: {
       displayName: "Link text",
       type: "string",
       required: true,
     },
     className: {
-      displayName: "Additional CSS classes",
+      displayName: "Classname",
       type: "string",
       required: false,
     },
   },
-} as const;
+} satisfies SmartComponentMap[string];

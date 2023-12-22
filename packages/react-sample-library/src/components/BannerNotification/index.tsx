@@ -1,18 +1,19 @@
 import { Banner as BaseBannerNotification } from "@pantheon-systems/pds-toolkit-react";
-import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
+import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
-export const reactComponent = ({
-  message,
-  type,
-  className,
-}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
-  return (
-    <BaseBannerNotification
-      message={message}
-      type={type}
-      className={className}
-    />
-  );
+export interface Props {
+  /**
+   * Banner style and Icon types
+   */
+  type: "warning" | "critical" | "info";
+  /**
+   * Banner message
+   */
+  message: string;
+}
+
+export const reactComponent = ({ type, message }: Props) => {
+  return <BaseBannerNotification type={type} message={message} />;
 };
 
 /**
@@ -22,9 +23,6 @@ export const smartComponentDefinition = {
   title: "Banner Notification",
   iconUrl: null,
   fields: {
-    /**
-     * Banner style and Icon types
-     */
     type: {
       displayName: "Type",
       type: "enum",
@@ -44,18 +42,10 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    /**
-     * The message to display
-     */
     message: {
       displayName: "Message",
       type: "string",
       required: true,
     },
-    className: {
-      displayName: "Additional CSS classes",
-      type: "string",
-      required: false,
-    },
   },
-} as const;
+} satisfies SmartComponentMap[string];
