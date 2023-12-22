@@ -86,20 +86,18 @@ const baseFieldSchema = z.object({
   required: z.boolean(),
 });
 
-const optionsSchema = z.array(
-  z.union([
-    z.string(),
-    z.object({
-      label: z.string(),
-      value: z.string(),
-    }),
-  ]),
-);
-
 const enumFieldSchema = baseFieldSchema.merge(
   z.object({
     type: z.literal("enum"),
-    options: z.union([optionsSchema, optionsSchema.readonly()]),
+    options: z.array(
+      z.union([
+        z.string(),
+        z.object({
+          label: z.string(),
+          value: z.string(),
+        }),
+      ]),
+    ),
   }),
 );
 
@@ -118,47 +116,3 @@ export const SmartComponentMapZod = z.record(
 );
 
 export type SmartComponentMap = z.infer<typeof SmartComponentMapZod>;
-
-/**
- * Helper to generate a prop type from a smart component map
- */
-export type InferSmartComponentProps<
-  T extends SmartComponentMap[keyof SmartComponentMap],
-> = Optional<
-  {
-    [K in keyof T["fields"]]: T["fields"][K] extends SmartComponentMapField
-      ? InferFieldProps<T["fields"][K]>
-      : never;
-  },
-  OptionalFields<T["fields"]>
->;
-
-type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
-
-type OptionalFields<
-  T extends SmartComponentMap[keyof SmartComponentMap]["fields"],
-> = {
-  [K in keyof T]: T[K] extends {
-    required: infer R;
-  }
-    ? R extends false
-      ? K
-      : never
-    : never;
-}[keyof T];
-
-type SmartComponentMapField =
-  SmartComponentMap[keyof SmartComponentMap]["fields"][keyof SmartComponentMap[keyof SmartComponentMap]["fields"]];
-
-type InferFieldProps<T extends SmartComponentMapField> = T extends {
-  type: "enum";
-  options: readonly { value: infer V }[];
-}
-  ? V
-  : T extends { type: "number" }
-  ? number
-  : T extends { type: "boolean" }
-  ? boolean
-  : T extends { type: "string" } | { type: "file" } | { type: "date" }
-  ? string
-  : unknown;
