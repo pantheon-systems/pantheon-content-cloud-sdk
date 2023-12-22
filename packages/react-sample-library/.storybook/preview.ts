@@ -5,6 +5,11 @@ import "@pantheon-systems/pds-toolkit-react/_dist/css/pds-layouts.css";
 import "@pantheon-systems/pds-toolkit-react/_dist/css/pds-components.css";
 
 const preview: Preview = {
+  argTypes: {
+    className: {
+      description: "Additional classnames",
+    },
+  },
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
