@@ -30,7 +30,7 @@ export const smartComponentDefinition = {
     size: {
       displayName: "Size",
       type: "enum",
-      required: true,
+      required: false,
       options: [
         {
           label: "Small",
