@@ -29,7 +29,7 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
-  .usage("$0 [command]")
+  .usage("$0")
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
@@ -154,7 +154,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "token",
-    "Enables you to manage tokens for a PCC project.",
+    "Manage tokens for a PCC project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -194,7 +194,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "site",
-    "Enables you to manage sites for a PCC project.",
+    "Manage sites for a PCC project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -316,38 +316,34 @@ yargs(hideBin(process.argv))
       // noop
     },
   )
-  .command(
-    "document",
-    "Enables you to manage documents for a PCC Project.",
-    (yargs) => {
-      yargs
-        .strictCommands()
-        .demandCommand()
-        .command(
-          "preview <id>",
-          "Generates preview link for a given document ID.",
-          (yargs) => {
-            yargs
-              .strictCommands()
-              .positional("<id>", {
-                describe: "ID of the document.",
-                demandOption: true,
-                type: "string",
-              })
-              .option("baseUrl", {
-                describe: "Base URL for the generated preview link.",
-                type: "string",
-                demandOption: false,
-              });
-          },
-          async (args) =>
-            await generatePreviewLink({
-              documentId: args.id as string,
-              baseUrl: args.baseUrl as string,
-            }),
-        );
-    },
-  )
+  .command("document", "Manage documents for a PCC Project.", (yargs) => {
+    yargs
+      .strictCommands()
+      .demandCommand()
+      .command(
+        "preview <id>",
+        "Generates preview link for a given document ID.",
+        (yargs) => {
+          yargs
+            .strictCommands()
+            .positional("<id>", {
+              describe: "ID of the document.",
+              demandOption: true,
+              type: "string",
+            })
+            .option("baseUrl", {
+              describe: "Base URL for the generated preview link.",
+              type: "string",
+              demandOption: false,
+            });
+        },
+        async (args) =>
+          await generatePreviewLink({
+            documentId: args.id as string,
+            baseUrl: args.baseUrl as string,
+          }),
+      );
+  })
   .command(
     "whoami",
     "Print information about yourself.",
