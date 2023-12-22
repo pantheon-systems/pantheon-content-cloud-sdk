@@ -29,7 +29,7 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
-  .usage("$0")
+  .usage("$0 [commands]")
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
@@ -47,7 +47,7 @@ yargs(hideBin(process.argv))
           describe: "Template from which files should be copied.",
           type: "string",
           choices: ["nextjs", "gatsby", "vue"],
-          default: "nextjs",
+          // Not setting default since user should explicitly set it.
           demandOption: true,
         })
         .option("appName", {
@@ -136,7 +136,6 @@ yargs(hideBin(process.argv))
       if (useYarn) packageManager = "yarn";
       else if (usePnpm) packageManager = "pnpm";
       else packageManager = "npm";
-      console.log("111111111111", dirName);
       await init({
         dirName,
         template,
