@@ -86,6 +86,12 @@ interface CardProps {
   className?: string;
 }
 
+interface IndicatorBadgeProps {
+  variant: "silver" | "gold" | "platinum" | "diamond" | "early-access";
+  customLabel?: string;
+  className?: string;
+}
+
 declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Avatar: import("react").FC<AvatarProps>;
   declare const CTALink: import("react").FC<CTALinkProps>;

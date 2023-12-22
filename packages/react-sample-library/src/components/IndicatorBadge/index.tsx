@@ -1,25 +1,14 @@
 import { IndicatorBadge as BaseIndicatorBadge } from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
-
-export interface Props {
-  /**
-   * Badge variant
-   */
-  variant: "silver" | "gold" | "platinum" | "diamond" | "early-access";
-  /**
-   * Optional custom label, will override the default label for each variant.
-   */
-  customLabel?: string;
-  /**
-   * Additional class names
-   */
-  className?: string;
-}
+import { InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
 /**
  * A visual label to indicate a special status or category
  */
-export const reactComponent = ({ variant, className, customLabel }: Props) => {
+export const reactComponent = ({
+  variant,
+  customLabel,
+  className,
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseIndicatorBadge
       variant={variant}
@@ -33,6 +22,9 @@ export const smartComponentDefinition = {
   title: "Indicator Badge",
   iconUrl: null,
   fields: {
+    /**
+     * Badge variant
+     */
     variant: {
       displayName: "Variant",
       type: "enum",
@@ -60,15 +52,18 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    /**
+     * Optional custom label, will override the default label for each variant.
+     */
     customLabel: {
       displayName: "Custom Label",
       type: "string",
       required: false,
     },
     className: {
-      displayName: "Classname",
-      type: "boolean",
+      displayName: "Additional CSS classes",
+      type: "string",
       required: false,
     },
   },
-} satisfies SmartComponentMap[string];
+} as const;

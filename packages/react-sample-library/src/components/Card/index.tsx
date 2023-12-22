@@ -1,58 +1,5 @@
-import { SmartComponentMap } from "@pantheon-systems/pcc-sdk-core/types";
+import { InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core/types";
 import { Card as BaseCard } from "@pantheon-systems/pds-toolkit-react";
-
-export interface Props {
-  /**
-   * Heading for card
-   */
-  headingText: string;
-  /**
-   * Text for primary link
-   */
-  primaryLinkText: string;
-  /**
-   * Url for primary link
-   */
-  primaryLinkUrl: string;
-  /**
-   * Heading level for card
-   * @default "h2"
-   */
-  headingLevel?: "h2" | "h3" | "h4" | "span";
-  /**
-   * Element to render card as
-   * @default "div"
-   */
-  elementToRender?: "div" | "article" | "aside";
-  /**
-   * Link to image for card
-   */
-  image?: string;
-  /**
-   * Alt text for image
-   */
-  imageAlt?: string;
-  /**
-   * Card kicker text
-   */
-  kickerText?: string;
-  /**
-   * Short description or summary.
-   */
-  bodyText?: string;
-  /**
-   * Text for secondary link
-   */
-  secondaryLinkText?: string;
-  /**
-   * Url for secondary link
-   */
-  secondaryLinkUrl?: string;
-  /**
-   * Additional classnames
-   */
-  className?: string;
-}
 
 /**
  * A container to summarize information with a subsequent call to action
@@ -70,7 +17,7 @@ export const reactComponent = ({
   elementToRender,
   secondaryLinkUrl,
   className,
-}: Props) => {
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   const primaryLink = {
     text: primaryLinkText,
     url: primaryLinkUrl,
@@ -110,21 +57,34 @@ export const smartComponentDefinition = {
   title: "Card",
   iconUrl: null,
   fields: {
+    /**
+     * Heading for card
+     */
     headingText: {
       displayName: "Heading Text",
       type: "string",
       required: true,
     },
+    /**
+     * Text for primary link
+     */
     primaryLinkText: {
       displayName: "Primary Link Text",
       type: "string",
       required: true,
     },
+    /**
+     * Url for primary link
+     */
     primaryLinkUrl: {
       displayName: "Primary Link Url",
       type: "string",
       required: true,
     },
+    /**
+     * Heading level for card
+     * @default "h2"
+     */
     headingLevel: {
       displayName: "Heading Level",
       type: "enum",
@@ -148,40 +108,81 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    /**
+     * Link to image for card
+     */
     image: {
       displayName: "Image",
       type: "file",
       required: false,
     },
+    /**
+     * Alt text for image
+     */
     imageAlt: {
       displayName: "Image Alt",
       type: "string",
       required: false,
     },
+    /**
+     * Card kicker text
+     */
     kickerText: {
       displayName: "Kicker Text",
       type: "string",
       required: false,
     },
+    /**
+     * Short description or summary.
+     */
     bodyText: {
       displayName: "Body Text",
       type: "string",
       required: false,
     },
+    /**
+     * Text for secondary link
+     */
     secondaryLinkText: {
       displayName: "Secondary Link Text",
       type: "string",
       required: false,
     },
+    /**
+     * Url for secondary link
+     */
     secondaryLinkUrl: {
       displayName: "Secondary Link Url",
       type: "string",
       required: false,
     },
+    /**
+     * Element to render card as
+     * @default "div"
+     */
+    elementToRender: {
+      displayName: "Element to render",
+      type: "enum",
+      required: false,
+      options: [
+        {
+          label: "div",
+          value: "div",
+        },
+        {
+          label: "article",
+          value: "article",
+        },
+        {
+          label: "aside",
+          value: "aside",
+        },
+      ],
+    },
     className: {
-      displayName: "Classname",
+      displayName: "Additional CSS classes",
       type: "string",
       required: false,
     },
   },
-} satisfies SmartComponentMap[string];
+} as const;
