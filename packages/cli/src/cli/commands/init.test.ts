@@ -10,7 +10,17 @@ const PCC = "./dist/index.js";
 const defaultArgs = ["--non-interactive", "--noInstall", "--verbose"];
 
 const executePCC = async (command: string, args: string[]) => {
-  return await sh("node", [PCC, command, ...args, ...defaultArgs], true);
+  try {
+    return await sh("node", [PCC, command, ...args, ...defaultArgs], true);
+  } catch (e) {
+    console.error("executePCC encountered an issue", e, "args used:", [
+      PCC,
+      command,
+      ...args,
+      ...defaultArgs,
+    ]);
+    throw e;
+  }
 };
 
 test("should be able to init starter kit for nextjs template", async () => {
