@@ -84,6 +84,7 @@ const baseFieldSchema = z.object({
   type: fieldTypes,
   displayName: z.string(),
   required: z.boolean(),
+  defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional(),
 });
 
 const optionsSchema = z.array(
