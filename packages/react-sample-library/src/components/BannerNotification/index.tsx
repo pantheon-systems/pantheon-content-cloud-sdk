@@ -1,15 +1,24 @@
-import {
-  BannerNotificationProps,
-  BannerNotification as BaseBannerNotification,
-} from "@pantheon-systems/pds-toolkit-react";
+import { Banner as BaseBannerNotification } from "@pantheon-systems/pds-toolkit-react";
 import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
-export const reactComponent = ({ type, message }: BannerNotificationProps) => {
+export interface Props {
+  /**
+   * Banner style and Icon types
+   */
+  type: "warning" | "critical" | "info";
+  /**
+   * Banner message
+   */
+  message: string;
+}
+
+export const reactComponent = ({ type, message }: Props) => {
   return <BaseBannerNotification type={type} message={message} />;
 };
 
+/**
+ * A prominent user message displayed at the top of the page
+ */
 export const smartComponentDefinition = {
   title: "Banner Notification",
   iconUrl: null,
