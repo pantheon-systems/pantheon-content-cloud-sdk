@@ -58,13 +58,21 @@ const PantheonTreeRenderer = ({
   const nodeChildren = [element.data, ...children].filter(Boolean);
 
   return React.createElement(
-    componentMap?.[element.tag as "div"] || element.tag,
+    componentMap?.[element.tag as "div"] || tagMap[element.tag] || element.tag,
     {
       style: getStyleObjectFromString(element?.style),
       ...convertAttributes(element.attrs),
     },
     nodeChildren.length ? nodeChildren : undefined,
   );
+};
+
+/**
+ * Map of Google Doc tag names to valid HTML tag names
+ */
+const tagMap: Record<string, string> = {
+  title: "h1",
+  subtitle: "h2",
 };
 
 export default PantheonTreeRenderer;
