@@ -48,7 +48,7 @@
     "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "devDependencies": {
     "@types/markdown-it": "^13.0.2",
