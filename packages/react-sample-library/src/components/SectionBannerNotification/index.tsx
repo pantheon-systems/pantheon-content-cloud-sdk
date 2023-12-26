@@ -29,6 +29,22 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * Message text.
+     */
+    message: {
+      displayName: "Message",
+      type: "string",
+      required: true,
+    },
+    /**
+     * Message id.
+     */
+    id: {
+      displayName: "Message ID",
+      type: "number",
+      required: true,
+    },
+    /**
      * Message type.
      */
     type: {
@@ -58,13 +74,10 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    /**
-     * Message text.
-     */
-    message: {
-      displayName: "Message",
+    title: {
+      displayName: "Title",
       type: "string",
-      required: true,
+      required: false,
     },
     /**
      * Includes dismiss functionality.
@@ -72,19 +85,6 @@ export const smartComponentDefinition = {
     isDismissible: {
       displayName: "Is dismissible",
       type: "boolean",
-      required: false,
-    },
-    /**
-     * Message id.
-     */
-    id: {
-      displayName: "Id",
-      type: "number",
-      required: true,
-    },
-    title: {
-      displayName: "Title",
-      type: "string",
       required: false,
     },
     className: {

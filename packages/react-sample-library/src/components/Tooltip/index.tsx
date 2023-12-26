@@ -27,6 +27,22 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * Text to display in tooltip
+     */
+    content: {
+      displayName: "Content",
+      type: "string",
+      required: true,
+    },
+    /**
+     * Text to use as the trigger instead of an icon. Leave blank to use the icon.
+     */
+    triggerText: {
+      displayName: "Trigger text",
+      type: "string",
+      required: false,
+    },
+    /**
      * Icon to trigger tooltip
      * @default circleInfo
      */
@@ -48,22 +64,6 @@ export const smartComponentDefinition = {
           value: "circleExclamation",
         },
       ],
-    },
-    /**
-     * Text to display in tooltip
-     */
-    content: {
-      displayName: "Content",
-      type: "string",
-      required: true,
-    },
-    /**
-     * Text to use as the trigger instead of an icon. Leave blank to use the icon.
-     */
-    triggerText: {
-      displayName: "Trigger text",
-      type: "string",
-      required: false,
     },
     /**
      * The accessible text for the trigger. Only necessary when the trigger is an icon.

@@ -25,6 +25,14 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * Text for the title section
+     */
+    title: {
+      displayName: "Title",
+      type: "string",
+      required: true,
+    },
+    /**
      * Banner style and Icon types
      */
     type: {
@@ -51,18 +59,10 @@ export const smartComponentDefinition = {
       ],
     },
     /**
-     * Text for the title section
-     */
-    title: {
-      displayName: "Title",
-      type: "string",
-      required: true,
-    },
-    /**
      * Text for the message section
      */
     text: {
-      displayName: "Text",
+      displayName: "Message Text",
       type: "string",
       required: false,
     },

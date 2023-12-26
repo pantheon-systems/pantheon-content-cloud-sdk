@@ -14,7 +14,6 @@ export default meta;
 export const Default: Story = {
   args: {
     label: "Info",
-    hasStatusType: true,
     statusType: "info",
   },
 };

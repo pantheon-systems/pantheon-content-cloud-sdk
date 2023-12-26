@@ -7,14 +7,13 @@ import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 export const reactComponent = ({
   statusType,
   label,
-  hasStatusType,
   className,
 }: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseBadge
-      statusType={statusType}
       label={label}
-      hasStatusType={hasStatusType}
+      statusType={statusType}
+      hasStatusType={statusType != null}
       className={className}
     />
   );
@@ -25,12 +24,20 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * Text to display in the badge
+     */
+    label: {
+      displayName: "Label",
+      type: "string",
+      required: true,
+    },
+    /**
      * Status type for badge. Only renders if `hasStatusType` is true.
      */
     statusType: {
       displayName: "Status Type",
       type: "enum",
-      required: true,
+      required: false,
       options: [
         {
           label: "Status",
@@ -61,22 +68,6 @@ export const smartComponentDefinition = {
           value: "neutral",
         },
       ],
-    },
-    /**
-     * Text to display in the badge
-     */
-    label: {
-      displayName: "Label",
-      type: "string",
-      required: true,
-    },
-    /**
-     * Should the badge be associated with a certain status type
-     */
-    hasStatusType: {
-      displayName: "Has status type",
-      type: "boolean",
-      required: false,
     },
     className: {
       displayName: "Additional CSS classes",
