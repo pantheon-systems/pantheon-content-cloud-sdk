@@ -24,6 +24,22 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * Link text
+     */
+    linkText: {
+      displayName: "Link text",
+      type: "string",
+      required: true,
+    },
+    /**
+     * Link location
+     */
+    href: {
+      displayName: "Link URL",
+      type: "string",
+      required: true,
+    },
+    /**
      * Size of the CTA Link
      * @default md
      */
@@ -41,22 +57,6 @@ export const smartComponentDefinition = {
           value: "md",
         },
       ],
-    },
-    /**
-     * Link location
-     */
-    href: {
-      displayName: "Href",
-      type: "string",
-      required: true,
-    },
-    /**
-     * Link text
-     */
-    linkText: {
-      displayName: "Link text",
-      type: "string",
-      required: true,
     },
     className: {
       displayName: "Additional CSS classes",

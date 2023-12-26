@@ -30,7 +30,7 @@ export const smartComponentDefinition = {
     image: {
       type: "file",
       required: false,
-      displayName: "Image",
+      displayName: "Image URL",
     },
     /**
      * Size of the avatar

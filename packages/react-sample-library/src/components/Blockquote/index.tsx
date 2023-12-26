@@ -27,25 +27,6 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
-     * Set type to full width or inline blockquote
-     * @default full-width
-     */
-    type: {
-      displayName: "Type",
-      type: "enum",
-      required: false,
-      options: [
-        {
-          label: "Full width",
-          value: "full-width",
-        },
-        {
-          label: "Inline",
-          value: "inline",
-        },
-      ],
-    },
-    /**
      * Quote text
      */
     quote: {
@@ -68,6 +49,25 @@ export const smartComponentDefinition = {
       displayName: "Source",
       type: "string",
       required: true,
+    },
+    /**
+     * Set type to full width or inline blockquote
+     * @default full-width
+     */
+    type: {
+      displayName: "Type",
+      type: "enum",
+      required: false,
+      options: [
+        {
+          label: "Full width",
+          value: "full-width",
+        },
+        {
+          label: "Inline",
+          value: "inline",
+        },
+      ],
     },
     className: {
       displayName: "Additional CSS classes",
