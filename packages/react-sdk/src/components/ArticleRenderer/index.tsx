@@ -121,6 +121,7 @@ const ArticleRenderer = ({
   // @ts-expect-error Dynamic component props
   const titleElement = React.createElement(renderer, {
     element: titleContent,
+    componentMap,
     smartComponentMap,
   });
 
