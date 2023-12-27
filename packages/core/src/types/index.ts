@@ -152,9 +152,13 @@ type SmartComponentMapField =
 
 type InferFieldProps<T extends SmartComponentMapField> = T extends {
   type: "enum";
-  options: readonly { value: infer V }[];
+  options: infer O;
 }
-  ? V
+  ? O extends readonly { value: infer V }[]
+    ? V
+    : O extends readonly string[]
+    ? O[number]
+    : unknown
   : T extends { type: "number" }
   ? number
   : T extends { type: "boolean" }
