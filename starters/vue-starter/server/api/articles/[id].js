@@ -1,4 +1,3 @@
-import { readFileSync } from "fs";
 import { getArticleBySlugOrId } from "@pantheon-systems/pcc-vue-sdk";
 import { getPantheonClient } from "../../lib/pantheon";
 
@@ -23,13 +22,6 @@ export default defineEventHandler(async (event) => {
   const article = await getArticleBySlugOrId(getPantheonClient(), id, {
     publishingLevel: publishingLevel,
   });
-
-  const content = readFileSync(
-    "/Users/andrew/dev/pg/pantheon/pantheon-content-cloud/test.json",
-    "utf-8",
-  );
-
-  article.content = content;
 
   return article;
 });

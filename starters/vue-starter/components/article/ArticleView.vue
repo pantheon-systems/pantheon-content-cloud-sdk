@@ -31,10 +31,10 @@ const smartComponentMap = {
     </h2>
     <div v-else>
       <ArticleRenderer :article="article" :smart-component-map="smartComponentMap">
-        <template #titleRenderer="{ title }">
+        <template #titleRenderer="title">
           <div>
             <div class="text-3xl font-bold md:text-4xl">
-              {{ title }}
+              <component :is="title"/>
             </div>
             <p class="py-2" v-if="article.updatedAt">
               Last Updated:
