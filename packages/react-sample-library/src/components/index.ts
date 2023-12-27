@@ -10,6 +10,7 @@ import * as Blockquote from "./Blockquote";
 import * as CTALink from "./CTALink";
 import * as Card from "./cards/Card";
 import * as SelectionCard from "./cards/SelectionCard";
+import * as SiteCard from "./cards/SiteCard";
 import * as InlineBannerNotification from "./InlineBannerNotification";
 import * as SectionBannerNotification from "./SectionBannerNotification";
 import * as Tooltip from "./Tooltip";
@@ -32,6 +33,10 @@ export const ClientSmartComponentMap: SmartComponentMap = {
   PANTHEON_SELECTION_CARD: {
     ...SelectionCard.smartComponentDefinition,
     reactComponent: SelectionCard.reactComponent,
+  },
+  PANTHEON_SITE_CARD: {
+    ...SiteCard.smartComponentDefinition,
+    reactComponent: SiteCard.reactComponent,
   },
   PANTHEON_INDICATOR_BADGE: {
     ...IndicatorBadge.smartComponentDefinition,
