@@ -87,6 +87,8 @@ interface CardProps {
 }
 
 interface SelectionCardProps {
+  title: string;
+  selectionLink: React.ReactNode;
   badge?: "early-access";
   icon?:
     | "drupal"
@@ -97,11 +99,20 @@ interface SelectionCardProps {
     | "drupal-next"
     | "wp-gatsby"
     | "wp-next";
-  selectionLink: React.ReactNode;
   subtitle?: string;
   summary?: string;
   supplementalLinks?: React.ReactNode[];
-  title: string;
+  className?: string;
+}
+
+interface SiteCardProps {
+  headingLevel: "h2" | "h3" | "h4" | "span";
+  siteImage: string;
+  siteLink: React.ReactNode;
+  siteName: string;
+  sitePlan: string;
+  siteStatus: "Active" | "Frozen";
+  gotoText?: string;
   className?: string;
 }
 
@@ -117,6 +128,7 @@ declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Badge: import("react").FC<BadgeProps>;
   declare const Card: import("react").FC<CardProps>;
   declare const SelectionCard: import("react").FC<SelectionCardProps>;
+  declare const SiteCard: import("react").FC<SiteCardProps>;
   declare const IndicatorBadge: import("react").FC<IndicatorBadgeProps>;
   declare const Banner: import("react").FC<BannerProps>;
   declare const Blockquote: import("react").FC<BlockquoteProps>;
