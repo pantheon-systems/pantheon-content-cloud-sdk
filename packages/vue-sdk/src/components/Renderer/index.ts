@@ -63,9 +63,7 @@ const ArticleRenderer = defineComponent({
     },
   },
   slots: Object as SlotsType<{
-    titleRenderer: {
-      title: VNode | undefined;
-    };
+    titleRenderer: VNode | undefined;
   }>,
   render() {
     const props = this.$props;
@@ -127,13 +125,11 @@ const ArticleRenderer = defineComponent({
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      h("div", { class: ["title", props.headerClass] }, [
-        h(
-          slots.titleRenderer
-            ? slots.titleRenderer({ title: titleElement })
-            : titleElement,
-        ),
-      ]),
+      h(
+        "div",
+        { class: ["title", props.headerClass] },
+        slots.titleRenderer?.(titleElement) ?? titleElement,
+      ),
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props
