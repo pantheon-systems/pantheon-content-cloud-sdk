@@ -58,7 +58,9 @@ const PantheonTreeRenderer = defineComponent({
     const nodeChildren = [element.data, ...children].filter(Boolean);
 
     return h(
-      componentMap?.[element.tag as "div"] || element.tag,
+      componentMap?.[element.tag as "div"] ||
+        tagMap[element.tag] ||
+        element.tag,
       {
         style: getStyleObjectFromString(element?.style),
         ...element.attrs,
@@ -67,5 +69,13 @@ const PantheonTreeRenderer = defineComponent({
     );
   },
 });
+
+/**
+ * Map of Google Doc tag names to valid HTML tag names
+ */
+const tagMap: Record<string, string> = {
+  title: "h1",
+  subtitle: "h2",
+};
 
 export default PantheonTreeRenderer;

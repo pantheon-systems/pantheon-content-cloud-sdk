@@ -1,7 +1,6 @@
 import {
   Article,
   PantheonTree,
-  PantheonTreeNode,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import {
@@ -11,6 +10,7 @@ import {
   PropType,
   SlotsType,
   Teleport,
+  VNode,
 } from "vue-demi";
 import PreviewBar from "../Preview/index.vue";
 import MarkdownRenderer from "./MarkdownRenderer";
@@ -64,7 +64,7 @@ const ArticleRenderer = defineComponent({
   },
   slots: Object as SlotsType<{
     titleRenderer: {
-      title: string | undefined;
+      title: VNode | undefined;
     };
   }>,
   render() {
@@ -111,8 +111,15 @@ const ArticleRenderer = defineComponent({
     const resolvedTitleIndex =
       indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-    const [titleElement] = parsedContent.splice(resolvedTitleIndex, 1);
-    const titleText = getTextFromNode(titleElement);
+    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+
+    const titleElement =
+      // @ts-expect-error Dynamic component props
+      h(renderer, {
+        element: titleContent,
+        smartComponentMap: props.smartComponentMap,
+        componentMap: props.componentMap,
+      });
 
     return h("div", {}, [
       props.article.publishingLevel === "REALTIME"
@@ -120,19 +127,13 @@ const ArticleRenderer = defineComponent({
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      slots.titleRenderer
-        ? h(
-            "div",
-            slots.titleRenderer({
-              title: titleText,
-            }),
-          )
-        : h("div", { class: props.headerClass }, [
-            // @ts-expect-error Dynamic component props
-            h(renderer, {
-              element: titleElement,
-            }),
-          ]),
+      h("div", { class: ["title", props.headerClass] }, [
+        h(
+          slots.titleRenderer
+            ? slots.titleRenderer({ title: titleElement })
+            : titleElement,
+        ),
+      ]),
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props
@@ -146,23 +147,5 @@ const ArticleRenderer = defineComponent({
     ]);
   },
 });
-
-function getTextFromNode(
-  node: PantheonTreeNode | TreePantheonContent | undefined,
-): string | undefined {
-  if (!node) {
-    return undefined;
-  }
-
-  if (typeof node.data === "string" && node.data) {
-    return node.data;
-  }
-
-  if (node.children) {
-    return node.children.map(getTextFromNode).join("\n");
-  }
-
-  return undefined;
-}
 
 export default ArticleRenderer;

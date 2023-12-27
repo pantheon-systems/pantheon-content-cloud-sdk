@@ -33,11 +33,9 @@ const smartComponentMap = {
       <ArticleRenderer :article="article" :smart-component-map="smartComponentMap">
         <template #titleRenderer="{ title }">
           <div>
-            <h1 class="text-3xl font-bold md:text-4xl">
-              <span style="font-weight: bold;">
-                {{ title || "Untitled" }}
-              </span>
-            </h1>
+            <div class="text-3xl font-bold md:text-4xl">
+              {{ title }}
+            </div>
             <p class="py-2" v-if="article.updatedAt">
               Last Updated:
               {{
