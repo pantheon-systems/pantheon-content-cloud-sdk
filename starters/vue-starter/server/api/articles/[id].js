@@ -19,9 +19,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const article = await getArticleBySlugOrId(getPantheonClient(), id, {
+  return await getArticleBySlugOrId(getPantheonClient(), id, {
     publishingLevel: publishingLevel,
   });
-
-  return article;
 });
