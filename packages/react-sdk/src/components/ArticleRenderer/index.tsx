@@ -1,7 +1,6 @@
 import {
   Article,
   PantheonTree,
-  PantheonTreeNode,
   TreePantheonContent,
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
@@ -117,9 +116,14 @@ const ArticleRenderer = ({
   const resolvedTitleIndex =
     indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-  const [titleElement] = parsedContent.splice(resolvedTitleIndex, 1);
+  const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
 
-  const titleText = getTextFromNode(titleElement);
+  // @ts-expect-error Dynamic component props
+  const titleElement = React.createElement(renderer, {
+    element: titleContent,
+    componentMap,
+    smartComponentMap,
+  });
 
   return (
     <div className={containerClassName}>
@@ -131,13 +135,7 @@ const ArticleRenderer = ({
         : null}
 
       <div className={headerClassName}>
-        {renderTitle
-          ? renderTitle(<span>{titleText}</span>)
-          : // @ts-expect-error Dynamic component props
-            React.createElement(renderer, {
-              element: titleElement,
-              smartComponentMap,
-            })}
+        {renderTitle ? renderTitle(titleElement) : titleElement}
       </div>
       <div className={bodyClassName}>
         {parsedContent?.map((element, idx) =>
@@ -153,23 +151,5 @@ const ArticleRenderer = ({
     </div>
   );
 };
-
-function getTextFromNode(
-  node: PantheonTreeNode | TreePantheonContent | undefined,
-): string | undefined {
-  if (!node) {
-    return undefined;
-  }
-
-  if (typeof node.data === "string" && node.data) {
-    return node.data;
-  }
-
-  if (node.children) {
-    return node.children.map(getTextFromNode).join("\n");
-  }
-
-  return undefined;
-}
 
 export default ArticleRenderer;
