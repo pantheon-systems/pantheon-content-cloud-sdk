@@ -92,14 +92,6 @@
       "optional": true
     }
   },
-  "resolutions": {
-    "glob-parent": ">=5.1.2",
-    "parse-url": ">=8.1.0",
-    "trim": ">=0.0.3",
-    "trim-newlines": ">=3.0.1",
-    "yaml": ">=2.2.2",
-    "prettier": "^3.0.0"
-  },
   "dependencies": {
     "@apollo/client": "^3.7.17",
     "@pantheon-systems/pcc-sdk-core": "latest",
