@@ -26,10 +26,7 @@ const PantheonTreeRenderer = ({
     ) ?? [];
 
   if (element.tag === "component") {
-    const componentType =
-      (element.attrs?.type as string | undefined)?.toUpperCase() ??
-      // Backwards compatibility
-      element.type?.toUpperCase();
+    const componentType = element.type?.toUpperCase();
 
     if (!componentType) {
       return null;
