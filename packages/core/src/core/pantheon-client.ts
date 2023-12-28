@@ -64,7 +64,7 @@ export class PantheonClient {
     // It defaults to our production API endpoint. In a future release it will
     // be a more human-friendly URL.
     const pccHost =
-      config.pccHost?.replace(/\/+$/, "") ||
+      config.pccHost?.replace(/\/(?<=\/)\/*$/, "") ||
       "https://pcc-gfttxsojwq-uc.a.run.app";
 
     this.host = pccHost;
