@@ -1,5 +1,8 @@
 import { CTALink as BaseCTALink } from "@pantheon-systems/pds-toolkit-react";
-import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
+import {
+  SmartComponentMap,
+  type InferSmartComponentProps,
+} from "@pantheon-systems/pcc-sdk-core";
 
 /**
  * CTA Links are stylized anchor elements that allow the user to navigate to another location.
@@ -7,14 +10,13 @@ import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 export const reactComponent = ({
   size,
   className,
-  href,
-  linkText,
+  link,
 }: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseCTALink
       size={size}
       className={className}
-      linkContent={<a href={href}>{linkText}</a>}
+      linkContent={<a href={link.href}>{link.text}</a>}
     />
   );
 };
@@ -24,20 +26,30 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
-     * Link text
+     * Link
      */
-    linkText: {
-      displayName: "Link text",
-      type: "string",
+    link: {
+      displayName: "Link",
+      type: "object",
       required: true,
-    },
-    /**
-     * Link location
-     */
-    href: {
-      displayName: "Link URL",
-      type: "string",
-      required: true,
+      fields: {
+        /**
+         * Link text
+         */
+        text: {
+          displayName: "Link text",
+          type: "string",
+          required: true,
+        },
+        /**
+         * Link location
+         */
+        href: {
+          displayName: "Link URL",
+          type: "string",
+          required: true,
+        },
+      },
     },
     /**
      * Size of the CTA Link
@@ -64,4 +76,4 @@ export const smartComponentDefinition = {
       required: false,
     },
   },
-} as const;
+} as const satisfies SmartComponentMap[string];
