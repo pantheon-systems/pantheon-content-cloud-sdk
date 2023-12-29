@@ -104,9 +104,21 @@ const enumFieldSchema = baseFieldSchema.merge(
   }),
 );
 
+const objectFieldSchema = baseFieldSchema.merge(
+  z.object({
+    type: z.literal("object"),
+    multiple: z.boolean().optional(),
+    fields: z.union([
+      z.record(z.string(), baseFieldSchema),
+      z.record(z.string(), baseFieldSchema).readonly(),
+    ]),
+  }),
+);
+
 const fieldSchema = z.discriminatedUnion("type", [
   baseFieldSchema,
   enumFieldSchema,
+  objectFieldSchema,
 ]);
 
 export const SmartComponentMapZod = z.record(
@@ -114,6 +126,7 @@ export const SmartComponentMapZod = z.record(
   z.object({
     title: z.string(),
     iconUrl: z.string().nullable().optional(),
+    exampleImageUrl: z.string().nullable().optional(),
     fields: z.record(z.string(), fieldSchema),
   }),
 );
@@ -121,36 +134,30 @@ export const SmartComponentMapZod = z.record(
 export type SmartComponentMap = z.infer<typeof SmartComponentMapZod>;
 
 /**
- * Helper to generate a prop type from a smart component map
+ * Infers properties for a smart component based on field definitions.
  */
 export type InferSmartComponentProps<
   T extends SmartComponentMap[keyof SmartComponentMap],
 > = Optional<
   {
-    [K in keyof T["fields"]]: T["fields"][K] extends SmartComponentMapField
-      ? InferFieldProps<T["fields"][K]>
-      : never;
+    [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]>;
   },
   OptionalFields<T["fields"]>
 >;
 
+// Utility type to make certain keys of a type optional.
 type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
-type OptionalFields<
-  T extends SmartComponentMap[keyof SmartComponentMap]["fields"],
-> = {
-  [K in keyof T]: T[K] extends {
-    required: infer R;
-  }
-    ? R extends false
-      ? K
-      : never
-    : never;
+// Extracts keys that represent optional fields in a record.
+type OptionalFields<T> = {
+  [K in keyof T]: T[K] extends { required: false } ? K : never;
 }[keyof T];
 
+// Generic type for a field in a smart component.
 type SmartComponentMapField =
   SmartComponentMap[keyof SmartComponentMap]["fields"][keyof SmartComponentMap[keyof SmartComponentMap]["fields"]];
 
+// Infers TypeScript type for a field based on its type definition.
 type InferFieldProps<T extends SmartComponentMapField> = T extends {
   type: "enum";
   options: infer O;
@@ -164,6 +171,20 @@ type InferFieldProps<T extends SmartComponentMapField> = T extends {
   ? number
   : T extends { type: "boolean" }
   ? boolean
-  : T extends { type: "string" } | { type: "file" } | { type: "date" }
+  : T extends { type: "string" | "file" | "date" }
   ? string
+  : T extends {
+      type: "object";
+      multiple: boolean;
+      fields: Record<string, unknown>;
+    }
+  ? T["multiple"] extends true
+    ? Optional<
+        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+        OptionalFields<T["fields"]>
+      >[]
+    : Optional<
+        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+        OptionalFields<T["fields"]>
+      >
   : unknown;
