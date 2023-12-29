@@ -13,7 +13,9 @@ export default meta;
 
 export const Default: Story = {
   args: {
-    href: "https://www.pantheon.io",
-    linkText: "Pantheon",
+    link: {
+      href: "https://www.pantheon.io",
+      text: "Pantheon",
+    },
   },
 };

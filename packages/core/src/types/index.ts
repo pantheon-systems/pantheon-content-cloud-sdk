@@ -175,7 +175,6 @@ type InferFieldProps<T extends SmartComponentMapField> = T extends {
   ? string
   : T extends {
       type: "object";
-      multiple: boolean;
       fields: Record<string, unknown>;
     }
   ? T["multiple"] extends true
