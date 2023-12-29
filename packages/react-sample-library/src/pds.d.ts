@@ -116,6 +116,13 @@ interface SiteCardProps {
   className?: string;
 }
 
+interface LinksCardProps {
+  headingText: string;
+  linkItems: React.ReactNode[];
+  headingLevel: "h2" | "h3" | "h4";
+  className?: string;
+}
+
 interface IndicatorBadgeProps {
   variant: "silver" | "gold" | "platinum" | "diamond" | "early-access";
   customLabel?: string;
@@ -129,6 +136,7 @@ declare module "@pantheon-systems/pds-toolkit-react" {
   declare const Card: import("react").FC<CardProps>;
   declare const SelectionCard: import("react").FC<SelectionCardProps>;
   declare const SiteCard: import("react").FC<SiteCardProps>;
+  declare const LinksCard: import("react").FC<LinksCardProps>;
   declare const IndicatorBadge: import("react").FC<IndicatorBadgeProps>;
   declare const Banner: import("react").FC<BannerProps>;
   declare const Blockquote: import("react").FC<BlockquoteProps>;
