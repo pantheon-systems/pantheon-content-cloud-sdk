@@ -280,6 +280,6 @@ export const INIT_EXAMPLES = [
   {
     description:
       "Create project and provide site ID to pre-populate .env file with",
-    command: "pcc init new_proj --site-id 8YUsfuf1EhjLGhswM49q",
+    command: "pcc init new_proj --site-id 123456789example1234",
   },
 ];

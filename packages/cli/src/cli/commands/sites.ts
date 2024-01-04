@@ -133,6 +133,6 @@ export const SITE_EXAMPLES = [
   },
   {
     description: "Get webhooks event delivery logs for a site",
-    command: "$0 site webhooks history 8YUsfuf1EhjLGhswM49q",
+    command: "$0 site webhooks history 123456789example1234",
   },
 ];
