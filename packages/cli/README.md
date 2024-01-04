@@ -42,7 +42,7 @@ $ pcc init new_proj --ts --eslint
 $ pcc init new_proj --noInstall
 
 # Create project and provide site ID to pre-populate .env file with
-$ pcc init new_proj --site-id 8YUsfuf1EhjLGhswM49q
+$ pcc init new_proj --site-id 123456789example1234
 
 # Create new token
 $ pcc token create
@@ -51,10 +51,10 @@ $ pcc token create
 $ pcc site create --url test-site.com
 
 # Get webhooks event delivery logs for a site ID
-$ pcc site webhooks history 8YUsfuf1EhjLGhswM49q
+$ pcc site webhooks history 123456789example1234
 
 # Generate preview link for given document ID
-$ pcc document preview 8MwijBYyp3B41slkdfjalkdfdziXkjyynTREdst8FauQ
+$ pcc document preview 1234567890example1234567890exam_ple123456789
 
 # Get details of logged-in user
 $ pcc whoami
