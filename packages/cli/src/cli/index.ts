@@ -389,12 +389,12 @@ yargs(hideBin(process.argv))
   )
   .example(
     formatExamples([
+      ...LOGIN_EXAMPLES,
       ...INIT_EXAMPLES,
       ...TOKEN_EXAMPLES,
       ...SITE_EXAMPLES,
       ...DOCUMENT_EXAMPLES,
       ...WHOAMI_EXAMPLES,
-      ...LOGIN_EXAMPLES,
       ...LOGOUT_EXAMPLES,
     ]),
   )
