@@ -49,14 +49,87 @@ class AddOnApiHelper {
     return authDetails.id_token as string;
   }
 
-  static async getDocument(documentId: string): Promise<Article> {
+  static async getDocument(
+    documentId: string,
+    insertIfMissing: boolean = false,
+  ): Promise<Article> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const resp = await axios.get(
+      `${DOCUMENT_ENDPOINT}/${documentId}?insertIfMissing=${insertIfMissing.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
+    );
+
+    return resp.data as Article;
+  }
+
+  static async addSiteMetadataField(
+    siteId: string,
+    contentType: string,
+    fieldTitle: string,
+    fieldType: string,
+  ): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    try {
+      await axios.post(
+        `${SITE_ENDPOINT}/${siteId}/metadata`,
+        {
+          contentType,
+          field: {
+            title: fieldTitle,
+            type: fieldType,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    } catch (e) {
+      console.log(`${SITE_ENDPOINT}/${siteId}`);
+      console.warn(e);
+      throw e;
+    }
+  }
+
+  static async updateDocument(
+    documentId: string,
+    siteId: string,
+    title: string,
+    tags: string[],
+    metadataFields: any,
+  ): Promise<Article> {
+    const idToken = await this.getIdToken();
+
+    console.log("update document", {
+      documentId,
+      siteId,
+      title,
+      tags,
+      metadataFields,
     });
+    const resp = await axios.patch(
+      `${DOCUMENT_ENDPOINT}/${documentId}`,
+      {
+        siteId,
+        tags,
+        title,
+        metadataFields,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
     return resp.data as Article;
   }

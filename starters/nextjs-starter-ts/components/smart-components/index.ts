@@ -10,6 +10,7 @@ export const serverSmartComponentMap = {
         displayName: "Title",
         required: true,
         type: "string",
+        defaultValue: "Some title",
       },
       body: {
         displayName: "Body",

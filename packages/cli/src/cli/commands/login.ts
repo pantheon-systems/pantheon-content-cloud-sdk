@@ -20,7 +20,7 @@ nunjucks.configure({ autoescape: true });
 
 const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
 
-function login(): Promise<void> {
+function login(extraScopes: string[] = []): Promise<void> {
   return new Promise(
     // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
     async (resolve, reject) => {
@@ -28,9 +28,18 @@ function login(): Promise<void> {
       try {
         const authData = await getLocalAuthDetails();
         if (authData) {
-          const jwtPayload = parseJwt(authData.id_token as string);
-          spinner.succeed(`You are already logged in as ${jwtPayload.email}.`);
-          return;
+          let scopes = authData.scope?.split(" ");
+
+          if (
+            !extraScopes?.length ||
+            extraScopes.find((x) => scopes?.includes(x))
+          ) {
+            const jwtPayload = parseJwt(authData.id_token as string);
+            spinner.succeed(
+              `You are already logged in as ${jwtPayload.email}.`,
+            );
+            return resolve();
+          }
         }
 
         const oAuth2Client = new OAuth2Client({
@@ -41,7 +50,7 @@ function login(): Promise<void> {
         // Generate the url that will be used for the consent dialog.
         const authorizeUrl = oAuth2Client.generateAuthUrl({
           access_type: "offline",
-          scope: OAUTH_SCOPES,
+          scope: [...OAUTH_SCOPES, ...extraScopes],
         });
 
         const server = http.createServer(async (req, res) => {
@@ -92,4 +101,4 @@ function login(): Promise<void> {
     },
   );
 }
-export default errorHandler<void>(login);
+export default errorHandler<string[]>(login);

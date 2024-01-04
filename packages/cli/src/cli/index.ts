@@ -3,6 +3,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
 import { generatePreviewLink } from "./commands/documents";
+import { importFromDrupal } from "./commands/import";
 import init from "./commands/init";
 import login from "./commands/login";
 import logout from "./commands/logout";
@@ -351,6 +352,41 @@ yargs(hideBin(process.argv))
               baseUrl: args.baseUrl as string,
             }),
         );
+    },
+  )
+  .command(
+    "import",
+    "Imports posts from a Drupal JSON API endpoint into PCC",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "drupal <baseUrl> <siteId>",
+          "Imports all articles from a Drupal JSON API endpoint into a new Google Drive folder and connects them to a target PCC site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("baseUrl", {
+                describe:
+                  'URL of drupal json API endpoint such as "https://example.com/jsonapi/node/blog".',
+                type: "string",
+              })
+              .positional("siteId", {
+                describe: "Id of site to import articles into.",
+                type: "string",
+              })
+              .demandOption(["baseUrl", "siteId"]);
+          },
+          async (args) =>
+            await importFromDrupal({
+              baseUrl: args.baseUrl as string,
+              siteId: args.siteId as string,
+            }),
+        );
+    },
+    async () => {
+      // noop
     },
   )
   .command(
