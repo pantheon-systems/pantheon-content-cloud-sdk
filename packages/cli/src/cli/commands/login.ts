@@ -93,3 +93,6 @@ function login(): Promise<void> {
   );
 }
 export default errorHandler<void>(login);
+export const LOGIN_EXAMPLES = [
+  { description: "Login the user", command: "$0 login" },
+];

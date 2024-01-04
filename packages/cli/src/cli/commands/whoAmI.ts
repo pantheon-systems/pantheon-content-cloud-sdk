@@ -19,3 +19,10 @@ const printWhoAmI = async () => {
 };
 
 export default errorHandler<void>(printWhoAmI);
+
+export const WHOAMI_EXAMPLES = [
+  {
+    description: "Get details of logged-in user",
+    command: "$0 whoami",
+  },
+];

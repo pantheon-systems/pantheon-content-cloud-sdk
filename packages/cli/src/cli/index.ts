@@ -2,20 +2,26 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
-import { generatePreviewLink } from "./commands/documents";
+import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
 import init, { INIT_EXAMPLES } from "./commands/init";
-import login from "./commands/login";
-import logout from "./commands/logout";
+import login, { LOGIN_EXAMPLES } from "./commands/login";
+import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
 import showLogs from "./commands/logs";
 import {
   configurableSiteProperties,
   createSite,
   getComponentSchema,
   listSites,
+  SITE_EXAMPLES,
   updateSiteConfig,
 } from "./commands/sites";
-import { createToken, listTokens, revokeToken } from "./commands/token";
-import printWhoAmI from "./commands/whoAmI";
+import {
+  createToken,
+  listTokens,
+  revokeToken,
+  TOKEN_EXAMPLES,
+} from "./commands/token";
+import printWhoAmI, { WHOAMI_EXAMPLES } from "./commands/whoAmI";
 import { formatExamples } from "./examples";
 
 const INSIDE_TEST = process.env.NODE_ENV === "test";
@@ -372,8 +378,12 @@ yargs(hideBin(process.argv))
   .example(
     formatExamples([
       ...INIT_EXAMPLES,
-      { description: "Login the user", command: "$0 login" },
-      { description: "Logout the user", command: "$0 logout" },
+      ...TOKEN_EXAMPLES,
+      ...SITE_EXAMPLES,
+      ...DOCUMENT_EXAMPLES,
+      ...WHOAMI_EXAMPLES,
+      ...LOGIN_EXAMPLES,
+      ...LOGOUT_EXAMPLES,
     ]),
   )
   .help(true)

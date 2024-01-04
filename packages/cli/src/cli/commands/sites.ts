@@ -125,3 +125,10 @@ export const configurableSiteProperties = [
     },
   },
 ] as const;
+
+export const SITE_EXAMPLES = [
+  {
+    description: "Create new site",
+    command: "$0 site create --url test-site.com",
+  },
+];

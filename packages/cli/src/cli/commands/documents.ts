@@ -114,3 +114,9 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     logger.log(chalk.green(buildLink));
   },
 );
+export const DOCUMENT_EXAMPLES = [
+  {
+    description: "Generate preview link for given document ID",
+    command: "$0 document preview 8MwijBYyp3B41slkdfjalkdfdziXkjyynTREdst8FauQ",
+  },
+];
