@@ -23,6 +23,9 @@ yarn add @pantheon-systems/pcc-cli --global
 ## Usage
 
 ```bash
+# Login the user
+$ pcc login
+
 # Create project with nextjs template
 $ pcc init new_proj
 
@@ -55,9 +58,6 @@ $ pcc document preview 8MwijBYyp3B41slkdfjalkdfdziXkjyynTREdst8FauQ
 
 # Get details of logged-in user
 $ pcc whoami
-
-# Login the user
-$ pcc login
 
 # Logout the user
 $ pcc logout
