@@ -1,21 +1,20 @@
-import {
-  Badge as BaseBadge,
-  BadgeProps,
-} from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
+import { Badge as BaseBadge } from "@pantheon-systems/pds-toolkit-react";
+import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
+/**
+ * A visual label to convey a status
+ */
 export const reactComponent = ({
-  successType,
+  statusType,
   label,
-  hasStatusType,
-}: BadgeProps) => {
+  className,
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseBadge
-      successType={successType}
       label={label}
-      hasStatusType={hasStatusType}
+      statusType={statusType}
+      hasStatusType={statusType != null}
+      className={className}
     />
   );
 };
@@ -24,10 +23,21 @@ export const smartComponentDefinition = {
   title: "Badge",
   iconUrl: null,
   fields: {
-    successType: {
-      displayName: "Success Type",
-      type: "enum",
+    /**
+     * Text to display in the badge
+     */
+    label: {
+      displayName: "Label",
+      type: "string",
       required: true,
+    },
+    /**
+     * Status type for badge. Only renders if `hasStatusType` is true.
+     */
+    statusType: {
+      displayName: "Status Type",
+      type: "enum",
+      required: false,
       options: [
         {
           label: "Status",
@@ -59,15 +69,10 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    label: {
-      displayName: "Label",
+    className: {
+      displayName: "Additional CSS classes",
       type: "string",
       required: false,
     },
-    hasStatusType: {
-      displayName: "Has status type",
-      type: "boolean",
-      required: false,
-    },
   },
-} satisfies SmartComponentMap[string];
+} as const;

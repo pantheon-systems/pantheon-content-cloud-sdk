@@ -1,11 +1,9 @@
-import {
-  SectionBannerNotification as BaseSectionBannerNotification,
-  SectionBannerNotificationProps,
-} from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
+import { SectionMessage as BaseSectionBannerNotification } from "@pantheon-systems/pds-toolkit-react";
+import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
+/**
+ * In-page messaging
+ */
 export const reactComponent = ({
   message,
   type,
@@ -13,7 +11,7 @@ export const reactComponent = ({
   id,
   title,
   className,
-}: SectionBannerNotificationProps) => {
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseSectionBannerNotification
       message={message}
@@ -30,6 +28,25 @@ export const smartComponentDefinition = {
   title: "Section Banner Notification",
   iconUrl: null,
   fields: {
+    /**
+     * Message text.
+     */
+    message: {
+      displayName: "Message",
+      type: "string",
+      required: true,
+    },
+    /**
+     * Message id.
+     */
+    id: {
+      displayName: "Message ID",
+      type: "number",
+      required: true,
+    },
+    /**
+     * Message type.
+     */
     type: {
       displayName: "Type",
       type: "enum",
@@ -57,30 +74,23 @@ export const smartComponentDefinition = {
         },
       ],
     },
-    message: {
-      displayName: "Message",
-      type: "string",
-      required: true,
-    },
-    isDismissible: {
-      displayName: "Is dismissible",
-      type: "boolean",
-      required: false,
-    },
-    id: {
-      displayName: "Id",
-      type: "number",
-      required: true,
-    },
     title: {
       displayName: "Title",
       type: "string",
       required: false,
     },
+    /**
+     * Includes dismiss functionality.
+     */
+    isDismissible: {
+      displayName: "Is dismissible",
+      type: "boolean",
+      required: false,
+    },
     className: {
-      displayName: "Class name",
+      displayName: "Additional CSS classes",
       type: "string",
       required: false,
     },
   },
-} satisfies SmartComponentMap[string];
+} as const;

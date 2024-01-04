@@ -24,7 +24,7 @@ const getSeoMetadata = (article) => {
 };
 
 export default function PageTemplate({ pageContext: { article } }) {
-  const seoMetadata = getSeoMetadata(article)
+  const seoMetadata = getSeoMetadata(article);
   return (
     <Layout>
       <Seo
@@ -39,7 +39,9 @@ export default function PageTemplate({ pageContext: { article } }) {
           article={article}
           renderTitle={(titleElement) => (
             <div>
-              <h1 className="text-3xl font-bold md:text-4xl">{titleElement}</h1>
+              <div className="text-3xl font-bold md:text-4xl">
+                {titleElement}
+              </div>
 
               {article.updatedAt ? (
                 <p className="py-2">

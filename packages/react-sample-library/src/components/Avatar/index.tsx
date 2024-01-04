@@ -1,21 +1,15 @@
 import { Avatar as BaseAvatar } from "@pantheon-systems/pds-toolkit-react";
-import { type SmartComponentMap } from "@pantheon-systems/pcc-sdk-core";
+import { type InferSmartComponentProps } from "@pantheon-systems/pcc-sdk-core";
 
-// TODO: Infer the type of the props from the smart component definition
-// https://getpantheon.atlassian.net/browse/PCC-827
-type Props = {
-  image: string;
-  size?: "sm" | "md";
-  className?: string;
-  fallbackIcon?: "user" | "users";
-};
-
+/**
+ * A visual representation of a user or organization
+ */
 export const reactComponent = ({
   image,
   size,
   className,
   fallbackIcon,
-}: Props) => {
+}: InferSmartComponentProps<typeof smartComponentDefinition>) => {
   return (
     <BaseAvatar
       imageSrc={image}
@@ -30,11 +24,17 @@ export const smartComponentDefinition = {
   title: "Avatar",
   iconUrl: null,
   fields: {
+    /**
+     * Link to the image to display in the avatar
+     */
     image: {
       type: "file",
       required: false,
-      displayName: "Image",
+      displayName: "Image URL",
     },
+    /**
+     * Size of the avatar
+     */
     size: {
       displayName: "Size",
       type: "enum",
@@ -50,6 +50,9 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    /**
+     * Icon to use if image is not provided
+     */
     fallbackIcon: {
       displayName: "Fallback Icon",
       type: "enum",
@@ -65,5 +68,10 @@ export const smartComponentDefinition = {
         },
       ],
     },
+    className: {
+      displayName: "Additional CSS classes",
+      type: "string",
+      required: false,
+    },
   },
-} satisfies SmartComponentMap[string];
+} as const;
