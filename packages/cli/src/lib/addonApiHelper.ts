@@ -75,28 +75,22 @@ class AddOnApiHelper {
   ): Promise<void> {
     const idToken = await this.getIdToken();
 
-    try {
-      await axios.post(
-        `${SITE_ENDPOINT}/${siteId}/metadata`,
-        {
-          contentType,
-          field: {
-            title: fieldTitle,
-            type: fieldType,
-          },
+    await axios.post(
+      `${SITE_ENDPOINT}/${siteId}/metadata`,
+      {
+        contentType,
+        field: {
+          title: fieldTitle,
+          type: fieldType,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-            "Content-Type": "application/json",
-          },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
         },
-      );
-    } catch (e) {
-      console.log(`${SITE_ENDPOINT}/${siteId}`);
-      console.warn(e);
-      throw e;
-    }
+      },
+    );
   }
 
   static async updateDocument(
