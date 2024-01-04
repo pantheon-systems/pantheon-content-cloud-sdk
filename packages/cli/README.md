@@ -100,3 +100,17 @@ Token: TOKEN-SECRET-GUID-DONT-SHARE-THIS
 
 # You can use THE_NEW_SITE_ID as the value of PCC_SITE_ID and TOKEN-SECRET-GUID-DONT-SHARE-THIS for PCC_API_KEY
 ```
+
+## Import existing content from a Drupal site
+
+You must ensure that the JSON API for your Drupal site is enabled (which it should be by default). https://www.drupal.org/docs/core-modules-and-themes/core-modules/jsonapi-module/api-overview
+
+Once you've ensured that it's working, you will need to determine the URL which PCC can use to get the initial results page of posts (e.g. https://example.com/jsonapi/node/article). But please note that the exact URL will depend on which resource type(s) you want to import.
+
+The second and last piece of information you will need before proceeding to import, is the id of the PCC site which the posts should be imported into. Posts are NOT going to be published automatically after importing, but they will be automatically connected to the site id provided.
+
+With this information, you can now run the import command.
+
+```bash
+$ pcc import drupal https://example.com/jsonapi/node/article siteid12345
+```
