@@ -36,12 +36,12 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
 yargs(hideBin(process.argv))
   .scriptName("pcc")
-  .usage("$0 [commands]")
+  .usage("$0 <cmd>")
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
   .command(
-    "init <project_directory>",
+    "init <project_directory> [options]",
     "Sets up project with required files.",
     (yargs) => {
       yargs
@@ -160,7 +160,7 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
-    "token",
+    "token <cmd> [options]",
     "Manage tokens for a PCC project.",
     (yargs) => {
       yargs
@@ -200,7 +200,7 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
-    "site",
+    "site <cmd> [options]",
     "Manage sites for a PCC project.",
     (yargs) => {
       yargs
@@ -289,68 +289,77 @@ yargs(hideBin(process.argv))
               >),
             }),
         )
-        .command("webhooks", "Manage webhooks for a given site.", (yargs) => {
-          yargs
-            .strictCommands()
-            .demandCommand()
-            .command(
-              "history <id>",
-              "View webhook event delivery logs for a given site.",
-              (yargs) => {
-                yargs
-                  .strictCommands()
-                  .positional("<id>", {
-                    describe: "ID of the site for which you want to see logs.",
-                    demandOption: true,
-                    type: "string",
-                  })
-                  .option("limit", {
-                    describe: "Number of logs to fetch at a time.",
-                    type: "number",
-                    default: 100,
-                    demandOption: false,
-                  });
-              },
-              async (args) =>
-                await showLogs({
-                  id: args.id as string,
-                  limit: args.limit as number,
-                }),
-            );
-        });
+        .command(
+          "webhooks <cmd> [options]",
+          "Manage webhooks for a given site.",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "history <id>",
+                "View webhook event delivery logs for a given site.",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .positional("<id>", {
+                      describe:
+                        "ID of the site for which you want to see logs.",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("limit", {
+                      describe: "Number of logs to fetch at a time.",
+                      type: "number",
+                      default: 100,
+                      demandOption: false,
+                    });
+                },
+                async (args) =>
+                  await showLogs({
+                    id: args.id as string,
+                    limit: args.limit as number,
+                  }),
+              );
+          },
+        );
     },
     async () => {
       // noop
     },
   )
-  .command("document", "Manage documents for a PCC Project.", (yargs) => {
-    yargs
-      .strictCommands()
-      .demandCommand()
-      .command(
-        "preview <id>",
-        "Generates preview link for a given document ID.",
-        (yargs) => {
-          yargs
-            .strictCommands()
-            .positional("<id>", {
-              describe: "ID of the document.",
-              demandOption: true,
-              type: "string",
-            })
-            .option("baseUrl", {
-              describe: "Base URL for the generated preview link.",
-              type: "string",
-              demandOption: false,
-            });
-        },
-        async (args) =>
-          await generatePreviewLink({
-            documentId: args.id as string,
-            baseUrl: args.baseUrl as string,
-          }),
-      );
-  })
+  .command(
+    "document <cmd> [options]",
+    "Manage documents for a PCC Project.",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "preview <id>",
+          "Generates preview link for a given document ID.",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("<id>", {
+                describe: "ID of the document.",
+                demandOption: true,
+                type: "string",
+              })
+              .option("baseUrl", {
+                describe: "Base URL for the generated preview link.",
+                type: "string",
+                demandOption: false,
+              });
+          },
+          async (args) =>
+            await generatePreviewLink({
+              documentId: args.id as string,
+              baseUrl: args.baseUrl as string,
+            }),
+        );
+    },
+  )
   .command(
     "whoami",
     "Print information about yourself.",
