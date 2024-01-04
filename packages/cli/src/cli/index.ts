@@ -193,7 +193,8 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await revokeToken(args.id as string),
-        );
+        )
+        .example(formatExamples(TOKEN_EXAMPLES));
     },
     async () => {
       // noop
@@ -322,7 +323,8 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
-        );
+        )
+        .example(formatExamples(SITE_EXAMPLES));
     },
     async () => {
       // noop
@@ -357,7 +359,8 @@ yargs(hideBin(process.argv))
               documentId: args.id as string,
               baseUrl: args.baseUrl as string,
             }),
-        );
+        )
+        .example(formatExamples(DOCUMENT_EXAMPLES));
     },
   )
   .command(
