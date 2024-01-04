@@ -23,80 +23,43 @@ yarn add @pantheon-systems/pcc-cli --global
 ## Usage
 
 ```bash
-$ # Show Help
-$ pcc init --help
-pcc init <project_directory> [options]
-
-Sets up project with required files.
-
-Positionals:
-  <project_directory>  The project directory in which setup should be done.
-                                                                        [string]
-
-Options:
-  --version   Show version number                                      [boolean]
-  --help      Show help                                                [boolean]
-  --template  Template from which files should be copied.
-                               [string] [required] [choices: "nextjs", "gatsby", "vue"]
-
-$ # Create project with nextjs template (this is  default)
+# Create project with nextjs template
 $ pcc init new_proj
-✔ Fetched starter kit!
-✔ Completed setting up project!
 
-To get started please run:
-   cd new_proj
-
-   # Set your site id and API key
-   vim .env.local
-
-   # Run the site
-   yarn dev
-
-$ # Create project with gatsby template
+# Create project with gatsby template
 $ pcc init new_proj --template=gatsby
-✔ Fetched starter kit!
-✔ Completed setting up project!
 
-To get started please run:
-   cd new_proj
+# Create project using pnpm package manager
+$ pcc init new_proj --use-pnpm
 
-   # Set your site id and API key
-   vim .env.development
+# Create Typescript project and setup ESLint in it
+$ pcc init new_proj --ts --eslint
 
-   # Run the site
-   yarn start
+# Create project without installing dependencies
+$ pcc init new_proj --noInstall
 
-$ # Retrieve component schema from your playground site
-$ pcc site components --url https://live-collabcms-fe-demo.appa.pantheon.site --apiPath /api/YOUR_SITE_ID/pantheoncloud/component_schema
+# Create project and provide site ID to pre-populate .env file with
+$ pcc init new_proj --site-id 8YUsfuf1EhjLGhswM49q
 
-$ # Retrieve component schema from your site (replace www.example.com)
-$ pcc site components --url https://www.example.com
-
-```
-
-## Create site from Vue template
-
-```bash
-$ pcc init my-vue-site --template=vue
-```
-
-## Create site from Gatsby template
-
-```bash
-$ pcc init my-gatsby-site --template=gatsby
-```
-
-## Example of creating a site and API key for it
-
-```bash
-$ pcc site create --url https://www.example.com
-✔ Successfully created the site with given details. Id: THE_NEW_SITE_ID
-
+# Create new token
 $ pcc token create
-✔ Successfully created token for your user.
 
-Token: TOKEN-SECRET-GUID-DONT-SHARE-THIS
+# Create new site
+$ pcc site create --url test-site.com
 
-# You can use THE_NEW_SITE_ID as the value of PCC_SITE_ID and TOKEN-SECRET-GUID-DONT-SHARE-THIS for PCC_API_KEY
+# Get webhooks event delivery logs for a site ID
+$ pcc site webhooks history 8YUsfuf1EhjLGhswM49q
+
+# Generate preview link for given document ID
+$ pcc document preview 8MwijBYyp3B41slkdfjalkdfdziXkjyynTREdst8FauQ
+
+# Get details of logged-in user
+$ pcc whoami
+
+# Login the user
+$ pcc login
+
+# Logout the user
+$ pcc logout
+
 ```
