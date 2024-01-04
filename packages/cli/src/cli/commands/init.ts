@@ -255,3 +255,31 @@ export default errorHandler<{
     rmdirSync(dirName, { recursive: true });
   }
 });
+
+export const INIT_EXAMPLES = [
+  {
+    description: "Create project with nextjs template",
+    command: "pcc init new_proj",
+  },
+  {
+    description: "Create project with gatsby template",
+    command: "pcc init new_proj --template=gatsby",
+  },
+  {
+    description: "Create project using pnpm package manager",
+    command: "pcc init new_proj --use-pnpm",
+  },
+  {
+    description: "Create Typescript project and setup ESLint in it",
+    command: "pcc init new_proj --ts --eslint",
+  },
+  {
+    description: "Create project without installing dependencies",
+    command: "pcc init new_proj --noInstall",
+  },
+  {
+    description:
+      "Create project and provide site ID to pre-populate .env file with",
+    command: "pcc init new_proj --site-id 8YUsfuf1EhjLGhswM49q",
+  },
+];

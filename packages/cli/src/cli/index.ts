@@ -3,7 +3,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
 import { generatePreviewLink } from "./commands/documents";
-import init from "./commands/init";
+import init, { INIT_EXAMPLES } from "./commands/init";
 import login from "./commands/login";
 import logout from "./commands/logout";
 import showLogs from "./commands/logs";
@@ -16,6 +16,7 @@ import {
 } from "./commands/sites";
 import { createToken, listTokens, revokeToken } from "./commands/token";
 import printWhoAmI from "./commands/whoAmI";
+import { formatExamples } from "./examples";
 
 const INSIDE_TEST = process.env.NODE_ENV === "test";
 
@@ -47,7 +48,7 @@ yargs(hideBin(process.argv))
           describe: "Template from which files should be copied.",
           type: "string",
           choices: ["nextjs", "gatsby", "vue"],
-          // Not setting default since user should explicitly set it.
+          default: "nextjs",
           demandOption: true,
         })
         .option("appName", {
@@ -115,18 +116,19 @@ yargs(hideBin(process.argv))
           type: "boolean",
           default: true,
           demandOption: false,
-        });
+        })
+        .example(formatExamples(INIT_EXAMPLES));
     },
     async (args) => {
       const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
       const noInstall = args.noInstall as boolean;
-      const useYarn = args["use-yarn"] as boolean;
-      const usePnpm = args["use-pnpm"] as boolean;
+      const useYarn = args.useYarn as boolean;
+      const usePnpm = args.usePnpm as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
       const nonInteractive = args.nonInteractive as boolean;
-      const siteId = args.site_id as string;
+      const siteId = args.siteId as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
@@ -367,7 +369,15 @@ yargs(hideBin(process.argv))
     },
     async () => await logout(),
   )
+  .example(
+    formatExamples([
+      ...INIT_EXAMPLES,
+      { description: "Login the user", command: "$0 login" },
+      { description: "Logout the user", command: "$0 logout" },
+    ]),
+  )
   .help(true)
+  .wrap(null)
   .parseAsync()
   .then((res) => {
     const command = res._.join(" ");
