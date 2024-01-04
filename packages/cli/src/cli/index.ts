@@ -207,7 +207,7 @@ yargs(hideBin(process.argv))
         .strictCommands()
         .demandCommand()
         .command(
-          "create",
+          "create [options]",
           "Creates new site.",
           (yargs) => {
             yargs.option("url", {
@@ -219,7 +219,7 @@ yargs(hideBin(process.argv))
           async (args) => await createSite(args.url as string),
         )
         .command(
-          "components",
+          "components [options]",
           "Shows component schema of the site.",
           (yargs) => {
             yargs.option("url", {
@@ -249,7 +249,7 @@ yargs(hideBin(process.argv))
           async () => await listSites(),
         )
         .command(
-          "configure <id>",
+          "configure <id> [options]",
           "Configure properties for a given site.",
           (yargs) => {
             yargs
