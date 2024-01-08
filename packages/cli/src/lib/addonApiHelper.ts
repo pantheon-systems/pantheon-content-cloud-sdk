@@ -41,7 +41,7 @@ class AddOnApiHelper {
     // If auth details not found, try user logging in
     if (!authDetails) {
       ora().clear();
-      await login();
+      await login([]);
       authDetails = await getLocalAuthDetails();
       if (!authDetails) throw new UserNotLoggedIn();
     }
@@ -49,14 +49,88 @@ class AddOnApiHelper {
     return authDetails.id_token as string;
   }
 
-  static async getDocument(documentId: string): Promise<Article> {
+  static async getDocument(
+    documentId: string,
+    insertIfMissing = false,
+  ): Promise<Article> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const resp = await axios.get(
+      `${DOCUMENT_ENDPOINT}/${documentId}?insertIfMissing=${insertIfMissing.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-    });
+    );
+
+    return resp.data as Article;
+  }
+
+  static async addSiteMetadataField(
+    siteId: string,
+    contentType: string,
+    fieldTitle: string,
+    fieldType: string,
+  ): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${SITE_ENDPOINT}/${siteId}/metadata`,
+      {
+        contentType,
+        field: {
+          title: fieldTitle,
+          type: fieldType,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+
+  static async updateDocument(
+    documentId: string,
+    siteId: string,
+    title: string,
+    tags: string[],
+    metadataFields: {
+      [key: string]: string | number | boolean | undefined | null;
+    },
+
+    verbose?: boolean,
+  ): Promise<Article> {
+    const idToken = await this.getIdToken();
+
+    if (verbose) {
+      console.log("update document", {
+        documentId,
+        siteId,
+        title,
+        tags,
+        metadataFields,
+      });
+    }
+
+    const resp = await axios.patch(
+      `${DOCUMENT_ENDPOINT}/${documentId}`,
+      {
+        siteId,
+        tags,
+        title,
+        metadataFields,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
 
     return resp.data as Article;
   }
