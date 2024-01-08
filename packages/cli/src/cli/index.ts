@@ -386,12 +386,19 @@ yargs(hideBin(process.argv))
                 describe: "Id of site to import articles into.",
                 type: "string",
               })
+              .option("verbose", {
+                describe: "Print verbose logs.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
               .demandOption(["baseUrl", "siteId"]);
           },
           async (args) =>
             await importFromDrupal({
               baseUrl: args.baseUrl as string,
               siteId: args.siteId as string,
+              verbose: args.verbose as boolean,
             }),
         );
     },
@@ -413,7 +420,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login(),
+    async () => await login([]),
   )
   .command(
     "logout",

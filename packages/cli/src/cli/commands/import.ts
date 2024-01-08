@@ -16,6 +16,7 @@ import login from "./login";
 type ImportParams = {
   baseUrl: string;
   siteId: string;
+  verbose: boolean;
 };
 
 async function getDrupalPosts(url: string) {
@@ -35,7 +36,7 @@ async function getDrupalPosts(url: string) {
 }
 
 export const importFromDrupal = errorHandler<ImportParams>(
-  async ({ baseUrl, siteId }: ImportParams) => {
+  async ({ baseUrl, siteId, verbose }: ImportParams) => {
     const logger = new Logger();
 
     if (baseUrl) {
@@ -133,7 +134,6 @@ export const importFromDrupal = errorHandler<ImportParams>(
         })) as GaxiosResponse<drive_v3.Schema$File>;
 
         // Add it to the PCC site.
-        console.log("Get document", res.data.id);
         await AddOnApiHelper.getDocument(res.data.id!, true);
 
         try {
@@ -152,6 +152,7 @@ export const importFromDrupal = errorHandler<ImportParams>(
               author: authorName,
               drupalId: post.id,
             },
+            verbose,
           );
         } catch (e: any) {
           console.error(e.response?.data);

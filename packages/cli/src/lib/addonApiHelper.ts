@@ -41,7 +41,7 @@ class AddOnApiHelper {
     // If auth details not found, try user logging in
     if (!authDetails) {
       ora().clear();
-      await login();
+      await login([]);
       authDetails = await getLocalAuthDetails();
       if (!authDetails) throw new UserNotLoggedIn();
     }
@@ -99,16 +99,20 @@ class AddOnApiHelper {
     title: string,
     tags: string[],
     metadataFields: any,
+    verbose?: boolean,
   ): Promise<Article> {
     const idToken = await this.getIdToken();
 
-    console.log("update document", {
-      documentId,
-      siteId,
-      title,
-      tags,
-      metadataFields,
-    });
+    if (verbose) {
+      console.log("update document", {
+        documentId,
+        siteId,
+        title,
+        tags,
+        metadataFields,
+      });
+    }
+
     const resp = await axios.patch(
       `${DOCUMENT_ENDPOINT}/${documentId}`,
       {

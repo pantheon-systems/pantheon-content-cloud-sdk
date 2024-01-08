@@ -20,7 +20,7 @@ nunjucks.configure({ autoescape: true });
 
 const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
 
-function login(extraScopes: string[] = []): Promise<void> {
+function login(extraScopes: string[]): Promise<void> {
   return new Promise(
     // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
     async (resolve, reject) => {
