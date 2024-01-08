@@ -22,7 +22,7 @@ export default function ArticleView({ article }: { article: Article }) {
       article={hydratedArticle}
       renderTitle={(titleElement) => (
         <div>
-          <h1 className="text-3xl font-bold md:text-4xl">{titleElement}</h1>
+          <div className="text-3xl font-bold md:text-4xl">{titleElement}</div>
 
           {article.updatedAt ? (
             <p className="py-2">

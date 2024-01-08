@@ -23,6 +23,14 @@ export const smartComponentDefinition = {
   iconUrl: null,
   fields: {
     /**
+     * The message to display
+     */
+    message: {
+      displayName: "Message",
+      type: "string",
+      required: true,
+    },
+    /**
      * Banner style and Icon types
      */
     type: {
@@ -43,14 +51,6 @@ export const smartComponentDefinition = {
           value: "info",
         },
       ],
-    },
-    /**
-     * The message to display
-     */
-    message: {
-      displayName: "Message",
-      type: "string",
-      required: true,
     },
     className: {
       displayName: "Additional CSS classes",

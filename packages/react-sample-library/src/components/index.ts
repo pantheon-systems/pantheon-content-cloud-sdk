@@ -8,7 +8,10 @@ import * as IndicatorBadge from "./IndicatorBadge";
 import * as BannerNotification from "./BannerNotification";
 import * as Blockquote from "./Blockquote";
 import * as CTALink from "./CTALink";
-import * as Card from "./Card";
+import * as Card from "./cards/Card";
+import * as SelectionCard from "./cards/SelectionCard";
+import * as SiteCard from "./cards/SiteCard";
+import * as LinksCard from "./cards/LinksCard";
 import * as InlineBannerNotification from "./InlineBannerNotification";
 import * as SectionBannerNotification from "./SectionBannerNotification";
 import * as Tooltip from "./Tooltip";
@@ -27,6 +30,18 @@ export const ClientSmartComponentMap: SmartComponentMap = {
   PANTHEON_CARD: {
     ...Card.smartComponentDefinition,
     reactComponent: Card.reactComponent,
+  },
+  PANTHEON_SELECTION_CARD: {
+    ...SelectionCard.smartComponentDefinition,
+    reactComponent: SelectionCard.reactComponent,
+  },
+  PANTHEON_SITE_CARD: {
+    ...SiteCard.smartComponentDefinition,
+    reactComponent: SiteCard.reactComponent,
+  },
+  PANTHEON_LINKS_CARD: {
+    ...LinksCard.smartComponentDefinition,
+    reactComponent: LinksCard.reactComponent,
   },
   PANTHEON_INDICATOR_BADGE: {
     ...IndicatorBadge.smartComponentDefinition,

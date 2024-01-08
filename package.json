@@ -18,6 +18,16 @@
     "eslint": "^8.46.0",
     "turbo": "^1.10.12"
   },
+  "pnpm": {
+    "overrides": {
+      "@pantheon-systems/pcc-react-sdk>glob-parent": ">=5.1.2",
+      "@pantheon-systems/pcc-react-sdk>parse-url": ">=8.1.0",
+      "@pantheon-systems/pcc-react-sdk>trim": ">=0.0.3",
+      "@pantheon-systems/pcc-react-sdk>trim-newlines": ">=3.0.1",
+      "@pantheon-systems/pcc-react-sdk>yaml": ">=2.2.2",
+      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0"
+    }
+  },
   "devDependencies": {
     "eslint-config-pcc-custom": "workspace:*"
   }

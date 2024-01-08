@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "2.0.18",
+  "version": "3.0.0",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -71,7 +71,7 @@
     "eslint": "8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
     "jest": "29.5.0",
-    "octokit": "^2.1.0",
+    "octokit": "^3.1.2",
     "ora": "^6.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -91,14 +91,6 @@
     "@types/react": {
       "optional": true
     }
-  },
-  "resolutions": {
-    "glob-parent": ">=5.1.2",
-    "parse-url": ">=8.1.0",
-    "trim": ">=0.0.3",
-    "trim-newlines": ">=3.0.1",
-    "yaml": ">=2.2.2",
-    "prettier": "^3.0.0"
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",

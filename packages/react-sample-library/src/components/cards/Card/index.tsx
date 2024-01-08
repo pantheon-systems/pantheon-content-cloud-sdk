@@ -77,7 +77,7 @@ export const smartComponentDefinition = {
      * Url for primary link
      */
     primaryLinkUrl: {
-      displayName: "Primary Link Url",
+      displayName: "Primary Link URL",
       type: "string",
       required: true,
     },
@@ -152,7 +152,7 @@ export const smartComponentDefinition = {
      * Url for secondary link
      */
     secondaryLinkUrl: {
-      displayName: "Secondary Link Url",
+      displayName: "Secondary Link URL",
       type: "string",
       required: false,
     },

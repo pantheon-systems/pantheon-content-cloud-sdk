@@ -1,42 +1,56 @@
-import { CTALink as BaseCTALink } from "@pantheon-systems/pds-toolkit-react";
+import { LinksCard as BaseCard } from "@pantheon-systems/pds-toolkit-react";
 import {
+  InferSmartComponentProps,
   SmartComponentMap,
-  type InferSmartComponentProps,
 } from "@pantheon-systems/pcc-sdk-core";
 
 /**
- * CTA Links are stylized anchor elements that allow the user to navigate to another location.
+ * Links Card UI component
  */
 export const reactComponent = ({
-  size,
+  headingText,
+  links,
+  headingLevel = "h2",
   className,
-  link,
 }: InferSmartComponentProps<typeof smartComponentDefinition>) => {
+  const linkItems = links.map((link) => (
+    <a href={link.href}>{link.linkText}</a>
+  ));
   return (
-    <BaseCTALink
-      size={size}
+    <BaseCard
+      headingText={headingText}
+      linkItems={linkItems}
+      headingLevel={headingLevel}
       className={className}
-      linkContent={<a href={link.href}>{link.text}</a>}
     />
   );
 };
 
 export const smartComponentDefinition = {
-  title: "CTA Link",
+  title: "Links Card",
   iconUrl: null,
   fields: {
     /**
-     * Link
+     * Link Card heading.
      */
-    link: {
-      displayName: "Link",
+    headingText: {
+      displayName: "Heading text",
+      type: "string",
+      required: true,
+    },
+    /**
+     * Link items
+     */
+    links: {
+      displayName: "Links",
       type: "object",
+      multiple: true,
       required: true,
       fields: {
         /**
          * Link text
          */
-        text: {
+        linkText: {
           displayName: "Link text",
           type: "string",
           required: true,
@@ -52,23 +66,13 @@ export const smartComponentDefinition = {
       },
     },
     /**
-     * Size of the CTA Link
-     * @default md
+     *  Heading level
      */
-    size: {
-      displayName: "Size",
+    headingLevel: {
+      displayName: "Heading level",
       type: "enum",
       required: false,
-      options: [
-        {
-          label: "Small",
-          value: "sm",
-        },
-        {
-          label: "Medium",
-          value: "md",
-        },
-      ],
+      options: ["h2", "h3", "h4"],
     },
     className: {
       displayName: "Additional CSS classes",

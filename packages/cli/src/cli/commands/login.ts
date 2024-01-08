@@ -102,3 +102,6 @@ function login(extraScopes: string[] = []): Promise<void> {
   );
 }
 export default errorHandler<string[]>(login);
+export const LOGIN_EXAMPLES = [
+  { description: "Login the user", command: "$0 login" },
+];
