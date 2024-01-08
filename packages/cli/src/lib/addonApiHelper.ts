@@ -51,7 +51,7 @@ class AddOnApiHelper {
 
   static async getDocument(
     documentId: string,
-    insertIfMissing: boolean = false,
+    insertIfMissing = false,
   ): Promise<Article> {
     const idToken = await this.getIdToken();
 
@@ -98,7 +98,10 @@ class AddOnApiHelper {
     siteId: string,
     title: string,
     tags: string[],
-    metadataFields: any,
+    metadataFields: {
+      [key: string]: string | number | boolean | undefined | null;
+    },
+
     verbose?: boolean,
   ): Promise<Article> {
     const idToken = await this.getIdToken();

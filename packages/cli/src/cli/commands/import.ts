@@ -19,6 +19,45 @@ type ImportParams = {
   verbose: boolean;
 };
 
+interface DrupalPost {
+  id: string;
+  attributes?: {
+    body?: {
+      processed: string;
+    };
+    title: string;
+  };
+  relationships: {
+    field_author: {
+      data: {
+        id: string;
+      };
+    };
+    field_topics?: {
+      data: [
+        {
+          id: string;
+        },
+      ];
+    };
+  };
+}
+
+interface DrupalTopic {
+  id: string;
+  attributes?: {
+    name: string;
+  };
+}
+
+interface DrupalIncludedData {
+  id: string;
+  attributes?: {
+    name: string;
+    title: string;
+  };
+}
+
 async function getDrupalPosts(url: string) {
   try {
     console.log(`Importing from ${url}`);
@@ -29,8 +68,8 @@ async function getDrupalPosts(url: string) {
       posts: result.data,
       includedData: result.included,
     };
-  } catch (e: any) {
-    console.log(e, e.message);
+  } catch (e) {
+    console.error(e);
     throw e;
   }
 }
@@ -53,9 +92,15 @@ export const importFromDrupal = errorHandler<ImportParams>(
     }
 
     await login(["https://www.googleapis.com/auth/drive.file"]);
-    let authDetails = await getLocalAuthDetails();
+    const authDetails = await getLocalAuthDetails();
+
+    if (!authDetails) {
+      logger.error(chalk.red(`ERROR: Failed to retrieve login details. `));
+      exit(1);
+    }
+
     const oauth2Client = new OAuth2Client();
-    oauth2Client.setCredentials(authDetails!);
+    oauth2Client.setCredentials(authDetails);
     const drive = google.drive({
       version: "v3",
       auth: oauth2Client,
@@ -71,12 +116,23 @@ export const importFromDrupal = errorHandler<ImportParams>(
       })
       .catch(console.error)) as GaxiosResponse<drive_v3.Schema$File>;
 
+    const folderId = folderRes.data.id;
+
+    if (folderId == null) {
+      logger.error(
+        chalk.red(
+          `Failed to create parent folder which we would have imported posts into`,
+        ),
+      );
+      exit(1);
+    }
+
     // Get results.
     let page = 0;
-    let { url, query } = queryString.parseUrl(baseUrl);
+    const { url, query } = queryString.parseUrl(baseUrl);
     query.include = "field_author,field_topics";
-    let allPosts: any[] = [];
-    let allIncludedData: any[] = [];
+    const allPosts: DrupalPost[] = [];
+    const allIncludedData: DrupalIncludedData[] = [];
     let nextURL = queryString.stringifyUrl({ url, query });
 
     do {
@@ -92,7 +148,9 @@ export const importFromDrupal = errorHandler<ImportParams>(
       }
     } while (nextURL != null && ++page < 1000);
 
-    logger.log(chalk.green(`Retrieved ${allPosts.length} posts after ${page} pages`));
+    logger.log(
+      chalk.green(`Retrieved ${allPosts.length} posts after ${page} pages`),
+    );
 
     // Ensure that these metadata fields exist.
     await AddOnApiHelper.addSiteMetadataField(
@@ -117,45 +175,51 @@ export const importFromDrupal = errorHandler<ImportParams>(
         }
 
         // Create the google doc.
-        const authorName = allIncludedData.find(
+        const authorName: string | undefined = allIncludedData.find(
           (x) => x.id === post.relationships.field_author.data.id,
         )?.attributes?.title;
+
         const res = (await drive.files.create({
           requestBody: {
             // Name from the article.
             name: post.attributes.title,
             mimeType: "application/vnd.google-apps.document",
-            parents: [folderRes.data.id!],
+            parents: [folderId],
           },
           media: {
             mimeType: "text/html",
             body: post.attributes.body.processed,
           },
         })) as GaxiosResponse<drive_v3.Schema$File>;
+        const fileId = res.data.id;
+
+        if (!fileId) {
+          throw new Error(`Failed to create file for ${post.attributes.title}`);
+        }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(res.data.id!, true);
+        await AddOnApiHelper.getDocument(fileId, true);
 
         try {
           await AddOnApiHelper.updateDocument(
-            res.data.id!,
+            fileId,
             siteId,
             post.attributes.title,
             post.relationships.field_topics?.data
               ?.map(
-                (topic: any) =>
-                  allIncludedData.find((x: any) => x.id === topic.id)
-                    ?.attributes?.name,
+                (topic: DrupalTopic) =>
+                  allIncludedData.find((x) => x.id === topic.id)?.attributes
+                    ?.name,
               )
-              .filter((x: string | undefined) => x != null) || [],
+              .filter((x: string | undefined): x is string => x != null) || [],
             {
               author: authorName,
               drupalId: post.id,
             },
             verbose,
           );
-        } catch (e: any) {
-          console.error(e.response?.data);
+        } catch (e) {
+          console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;
         }
       },

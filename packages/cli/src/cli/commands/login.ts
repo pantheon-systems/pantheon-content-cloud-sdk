@@ -28,7 +28,7 @@ function login(extraScopes: string[]): Promise<void> {
       try {
         const authData = await getLocalAuthDetails();
         if (authData) {
-          let scopes = authData.scope?.split(" ");
+          const scopes = authData.scope?.split(" ");
 
           if (
             !extraScopes?.length ||
