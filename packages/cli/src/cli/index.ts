@@ -2,20 +2,27 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
-import { generatePreviewLink } from "./commands/documents";
-import init from "./commands/init";
-import login from "./commands/login";
-import logout from "./commands/logout";
+import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
+import init, { INIT_EXAMPLES } from "./commands/init";
+import login, { LOGIN_EXAMPLES } from "./commands/login";
+import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
 import showLogs from "./commands/logs";
 import {
   configurableSiteProperties,
   createSite,
   getComponentSchema,
   listSites,
+  SITE_EXAMPLES,
   updateSiteConfig,
 } from "./commands/sites";
-import { createToken, listTokens, revokeToken } from "./commands/token";
-import printWhoAmI from "./commands/whoAmI";
+import {
+  createToken,
+  listTokens,
+  revokeToken,
+  TOKEN_EXAMPLES,
+} from "./commands/token";
+import printWhoAmI, { WHOAMI_EXAMPLES } from "./commands/whoAmI";
+import { formatExamples } from "./examples";
 
 const INSIDE_TEST = process.env.NODE_ENV === "test";
 
@@ -115,18 +122,19 @@ yargs(hideBin(process.argv))
           type: "boolean",
           default: true,
           demandOption: false,
-        });
+        })
+        .example(formatExamples(INIT_EXAMPLES));
     },
     async (args) => {
       const dirName = args.project_directory as string;
       const template = args.template as CliTemplateOptions;
       const noInstall = args.noInstall as boolean;
-      const useYarn = args["use-yarn"] as boolean;
-      const usePnpm = args["use-pnpm"] as boolean;
+      const useYarn = args.useYarn as boolean;
+      const usePnpm = args.usePnpm as boolean;
       const appName = args.appName as string | undefined;
       const silent = args.silent as boolean;
       const nonInteractive = args.nonInteractive as boolean;
-      const siteId = args.site_id as string;
+      const siteId = args.siteId as string;
       const eslint = args.eslint as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
@@ -136,7 +144,6 @@ yargs(hideBin(process.argv))
       if (useYarn) packageManager = "yarn";
       else if (usePnpm) packageManager = "pnpm";
       else packageManager = "npm";
-
       await init({
         dirName,
         template,
@@ -154,7 +161,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "token <cmd> [options]",
-    "Enables you to manage tokens for a PCC project.",
+    "Manage tokens for a PCC project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -186,7 +193,8 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await revokeToken(args.id as string),
-        );
+        )
+        .example(formatExamples(TOKEN_EXAMPLES));
     },
     async () => {
       // noop
@@ -194,7 +202,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "site <cmd> [options]",
-    "Enables you to manage sites for a PCC project.",
+    "Manage sites for a PCC project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -315,7 +323,8 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
-        );
+        )
+        .example(formatExamples(SITE_EXAMPLES));
     },
     async () => {
       // noop
@@ -323,7 +332,7 @@ yargs(hideBin(process.argv))
   )
   .command(
     "document <cmd> [options]",
-    "Enables you to manage documents for a PCC Project.",
+    "Manage documents for a PCC Project.",
     (yargs) => {
       yargs
         .strictCommands()
@@ -350,7 +359,8 @@ yargs(hideBin(process.argv))
               documentId: args.id as string,
               baseUrl: args.baseUrl as string,
             }),
-        );
+        )
+        .example(formatExamples(DOCUMENT_EXAMPLES));
     },
   )
   .command(
@@ -377,7 +387,19 @@ yargs(hideBin(process.argv))
     },
     async () => await logout(),
   )
+  .example(
+    formatExamples([
+      ...LOGIN_EXAMPLES,
+      ...INIT_EXAMPLES,
+      ...TOKEN_EXAMPLES,
+      ...SITE_EXAMPLES,
+      ...DOCUMENT_EXAMPLES,
+      ...WHOAMI_EXAMPLES,
+      ...LOGOUT_EXAMPLES,
+    ]),
+  )
   .help(true)
+  .wrap(null)
   .parseAsync()
   .then((res) => {
     const command = res._.join(" ");

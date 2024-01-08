@@ -15,3 +15,7 @@ const logout = async () => {
 };
 
 export default errorHandler<void>(logout);
+
+export const LOGOUT_EXAMPLES = [
+  { description: "Logout the user", command: "$0 logout" },
+];

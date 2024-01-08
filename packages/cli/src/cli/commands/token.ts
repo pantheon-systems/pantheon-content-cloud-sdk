@@ -65,3 +65,7 @@ export const revokeToken = errorHandler<string>(async (id: string) => {
     throw err;
   }
 });
+
+export const TOKEN_EXAMPLES = [
+  { description: "Create new token", command: "$0 token create" },
+];

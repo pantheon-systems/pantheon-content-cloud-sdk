@@ -125,3 +125,14 @@ export const configurableSiteProperties = [
     },
   },
 ] as const;
+
+export const SITE_EXAMPLES = [
+  {
+    description: "Create new site",
+    command: "$0 site create --url test-site.com",
+  },
+  {
+    description: "Get webhooks event delivery logs for a site",
+    command: "$0 site webhooks history 123456789example1234",
+  },
+];
