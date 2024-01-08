@@ -62,9 +62,9 @@
     "typescript": "^5.3.3",
     "unplugin-vue": "^4.5.2",
     "vite": "^4.5.1",
-    "vue": "npm:vue@^3.3.4",
+    "vue": "npm:vue@3.0.0 - 3.3.4",
     "vue-2": "npm:vue@^2.7.16",
-    "vue-3": "npm:vue@^3.4.5"
+    "vue-3": "npm:vue@3.0.0 - 3.3.4"
   },
   "peerDependencies": {
     "@vue/composition-api": ">=1.0.0-rc.1",
