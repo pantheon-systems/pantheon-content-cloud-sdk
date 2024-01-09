@@ -81,3 +81,29 @@ export const LIST_ARTICLES_QUERY = gql`
     }
   }
 `;
+
+export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
+  query ListArticles(
+    $contentType: ContentType
+    $publishingLevel: PublishingLevel
+    $filter: ArticleFilterInput
+  ) {
+    articles(
+      contentType: $contentType
+      publishingLevel: $publishingLevel
+      filter: $filter
+    ) {
+      id
+      title
+      siteId
+      tags
+      metadata
+      publishedDate
+      publishingLevel
+      contentType
+      content
+      updatedAt
+      previewActiveUntil
+    }
+  }
+`;
