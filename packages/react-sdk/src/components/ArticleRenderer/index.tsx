@@ -48,6 +48,7 @@ interface Props {
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
+  renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
 }
 
 const ArticleRenderer = ({
@@ -59,6 +60,7 @@ const ArticleRenderer = ({
   smartComponentMap,
   previewBarProps,
   componentMap,
+  renderBody,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -124,6 +126,19 @@ const ArticleRenderer = ({
     componentMap,
     smartComponentMap,
   });
+  const bodyElement = (
+    <div className={bodyClassName}>
+      {parsedContent?.map((element, idx) =>
+        // @ts-expect-error Dynamic component props
+        React.createElement(renderer, {
+          key: idx,
+          element,
+          smartComponentMap,
+          componentMap,
+        }),
+      )}
+    </div>
+  );
 
   return (
     <div className={containerClassName}>
@@ -137,17 +152,7 @@ const ArticleRenderer = ({
       <div className={headerClassName}>
         {renderTitle ? renderTitle(titleElement) : titleElement}
       </div>
-      <div className={bodyClassName}>
-        {parsedContent?.map((element, idx) =>
-          // @ts-expect-error Dynamic component props
-          React.createElement(renderer, {
-            key: idx,
-            element,
-            smartComponentMap,
-            componentMap,
-          }),
-        )}
-      </div>
+      {renderBody ? renderBody(bodyElement) : bodyElement}
     </div>
   );
 };
