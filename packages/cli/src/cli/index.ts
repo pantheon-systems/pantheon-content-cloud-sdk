@@ -3,6 +3,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
+import { importFromDrupal } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
 import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
@@ -364,6 +365,48 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
+    "import",
+    "Imports posts from a Drupal JSON API endpoint into PCC",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "drupal <baseUrl> <siteId>",
+          "Imports all articles from a Drupal JSON API endpoint into a new Google Drive folder and connects them to a target PCC site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("baseUrl", {
+                describe:
+                  'URL of drupal json API endpoint such as "https://example.com/jsonapi/node/blog".',
+                type: "string",
+              })
+              .positional("siteId", {
+                describe: "Id of site to import articles into.",
+                type: "string",
+              })
+              .option("verbose", {
+                describe: "Print verbose logs.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .demandOption(["baseUrl", "siteId"]);
+          },
+          async (args) =>
+            await importFromDrupal({
+              baseUrl: args.baseUrl as string,
+              siteId: args.siteId as string,
+              verbose: args.verbose as boolean,
+            }),
+        );
+    },
+    async () => {
+      // noop
+    },
+  )
+  .command(
     "whoami",
     "Print information about yourself.",
     () => {
@@ -377,7 +420,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login(),
+    async () => await login([]),
   )
   .command(
     "logout",
