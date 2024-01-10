@@ -65,8 +65,8 @@
     "@types/node": "18.16.9",
     "@types/react-test-renderer": "18.0.0",
     "babel-loader": "9.1.2",
-    "chalk": "^5.2.0",
-    "cli-spinners": "^2.9.0",
+    "chalk": "^5.3.0",
+    "cli-spinners": "^2.9.2",
     "concurrently": "8.0.1",
     "eslint": "8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
@@ -93,9 +93,9 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.7.17",
+    "@apollo/client": "^3.8.8",
     "@pantheon-systems/pcc-sdk-core": "latest",
-    "framer-motion": "^10.16.4",
+    "framer-motion": "^10.17.9",
     "goober": "^2.1.13",
     "graphql": "^16.8.1",
     "query-string": "^8.1.0",

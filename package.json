@@ -14,9 +14,9 @@
     "publish:packages": "pnpm build && pnpm ci:publish"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.2",
-    "eslint": "^8.46.0",
-    "turbo": "^1.10.12"
+    "@changesets/cli": "^2.27.1",
+    "eslint": "^8.56.0",
+    "turbo": "^1.11.3"
   },
   "pnpm": {
     "overrides": {
