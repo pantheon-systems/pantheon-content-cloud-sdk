@@ -4,7 +4,11 @@
 
 import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
-import { GET_ARTICLE_QUERY, LIST_ARTICLES_QUERY } from "../lib/gql";
+import {
+  GET_ARTICLE_QUERY,
+  LIST_ARTICLES_QUERY,
+  LIST_ARTICLES_QUERY_W_CONTENT,
+} from "../lib/gql";
 import {
   Article,
   ArticleWithoutContent,
@@ -67,12 +71,13 @@ export async function getArticles(
   client: PantheonClient,
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
+  includeContent?: boolean,
 ) {
   const { contentType: requestedContentType, ...rest } = args || {};
   const contentType = buildContentType(requestedContentType);
 
   const articles = await client.apolloClient.query({
-    query: LIST_ARTICLES_QUERY,
+    query: includeContent ? LIST_ARTICLES_QUERY_W_CONTENT : LIST_ARTICLES_QUERY,
     variables: {
       ...rest,
       ...convertSearchParamsToGQL(searchParams),
