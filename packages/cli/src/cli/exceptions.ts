@@ -35,7 +35,11 @@ export function errorHandler<T>(
         console.log(chalk.red("Error: User is not logged in."));
         console.log(chalk.yellow('Please run "pcc login" to login.'));
       } else {
-        if (axios.isAxiosError(e) && e.response?.data?.message) {
+        if (
+          axios.isAxiosError(e) &&
+          (e.response?.status ?? 500) < 500 && // Treat internal server errors as unhandled errors
+          e.response?.data?.message
+        ) {
           // Operational error
           console.log(chalk.red(`Error: ${e.response.data.message}`));
         } else {
