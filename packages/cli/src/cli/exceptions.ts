@@ -1,4 +1,5 @@
 import { exit } from "process";
+import axios from "axios";
 import chalk from "chalk";
 
 export class UnhandledError extends Error {
@@ -34,14 +35,21 @@ export function errorHandler<T>(
         console.log(chalk.red("Error: User is not logged in."));
         console.log(chalk.yellow('Please run "pcc login" to login.'));
       } else {
-        console.log(
-          chalk.yellow("\nStack trace:", (e as { stack: string }).stack),
-        );
-        console.log(
-          chalk.red(
-            "Error: Something went wrong. Please contact Pantheon support team.",
-          ),
-        );
+        if (axios.isAxiosError(e) && e.response?.data?.message) {
+          // Operational error
+          console.log(chalk.red(`Error: ${e.response.data.message}`));
+        } else {
+          // Unhandled error
+          console.log(
+            chalk.yellow("\nStack trace:", (e as { stack: string }).stack),
+          );
+          console.log(
+            chalk.red(
+              "Error: Something went wrong. Please contact Pantheon support team.",
+            ),
+          );
+        }
+
         exit(1);
       }
     }
