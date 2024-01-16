@@ -6,10 +6,12 @@ import AddOnApiHelper from "../../lib/addonApiHelper";
 import { printTable } from "../../lib/cliDisplay";
 import { errorHandler, HTTPNotFound } from "../exceptions";
 
-export const createToken = errorHandler<void>(async () => {
+export const createToken = errorHandler<{
+  siteId?: string;
+}>(async (args) => {
   const spinner = ora("Creating token...").start();
   try {
-    const apiKey = await AddOnApiHelper.createApiKey();
+    const apiKey = await AddOnApiHelper.createApiKey(args);
     spinner.succeed(`Successfully created token for your user. `);
     console.log("\nToken:", chalk.bold(chalk.green(apiKey)), "\n");
     console.log(
