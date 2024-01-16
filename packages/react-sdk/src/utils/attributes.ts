@@ -16,6 +16,7 @@ const htmlAttributeToReactProp: Record<string, string> = {
   maxlength: "maxLength",
   minlength: "minLength",
   readonly: "readOnly",
+  referrerpolicy: "referrerPolicy",
   rowspan: "rowSpan",
   srcdoc: "srcDoc",
   srclang: "srcLang",
