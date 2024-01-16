@@ -162,10 +162,14 @@ yargs(hideBin(process.argv))
         .command(
           "create",
           "Creates new token.",
-          () => {
-            // noop
+          (yargs) => {
+            yargs.option("siteId", {
+              describe:
+                "Site for which you want to create token. The token will only be able to access documents in this site",
+              type: "string",
+            });
           },
-          async () => await createToken(),
+          async (args) => await createToken(args as { siteId?: string }),
         )
         .command(
           "list",
