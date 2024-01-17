@@ -40,7 +40,7 @@ async function generateDocumentPath(
   const augmentedQueryParams = { ...queryParams };
 
   if (isPreview) {
-    augmentedQueryParams.pccGrant = await AddOnApiHelper.getPreviewJwt(site.id);
+    augmentedQueryParams.pccGrant = await AddOnApiHelper.getPreviewJwt(docId);
   }
 
   const params =
