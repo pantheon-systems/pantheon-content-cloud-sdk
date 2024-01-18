@@ -64,7 +64,6 @@ class AddOnApiHelper {
         },
       },
     );
-
     return resp.data as Article;
   }
 
@@ -136,14 +135,18 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async getPreviewJwt(siteId: string): Promise<string> {
+  static async getPreviewJwt(docId: string): Promise<string> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.post(`${SITE_ENDPOINT}/${siteId}/preview`, null, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const resp = await axios.post(
+      `${DOCUMENT_ENDPOINT}/${docId}/preview`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-    });
+    );
 
     return resp.data.grantToken as string;
   }
