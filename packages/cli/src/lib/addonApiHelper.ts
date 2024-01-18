@@ -40,8 +40,9 @@ class AddOnApiHelper {
 
     // If auth details not found, try user logging in
     if (!authDetails) {
-      ora().clear();
+      const prevOra = ora().stopAndPersist();
       await login([]);
+      prevOra.start();
       authDetails = await getLocalAuthDetails();
       if (!authDetails) throw new UserNotLoggedIn();
     }
@@ -220,6 +221,7 @@ class AddOnApiHelper {
 
     return resp.data as Site[];
   }
+
   static async getSite(siteId: string): Promise<Site> {
     const idToken = await this.getIdToken();
 
