@@ -11,6 +11,7 @@ interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
+  disableAllStyles?: boolean;
 }
 
 interface ComponentProperties {
@@ -23,6 +24,7 @@ const MarkdownRenderer = ({
   children,
   smartComponentMap,
   componentMap,
+  disableAllStyles,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown

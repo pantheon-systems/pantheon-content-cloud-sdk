@@ -344,10 +344,10 @@ importers:
     dependencies:
       '@apollo/client':
         specifier: ^3.8.8
-        version: 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 3.8.8(graphql-ws@5.14.3)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
         specifier: latest
-        version: link:../core
+        version: 3.0.3(react-dom@18.2.0)(react@18.2.0)
       '@types/react':
         specifier: '>=17'
         version: 18.2.47
@@ -910,6 +910,42 @@ packages:
       hoist-non-react-statics: 3.3.2
       optimism: 0.18.0
       prop-types: 15.8.1
+      response-iterator: 0.2.6
+      symbol-observable: 4.0.0
+      ts-invariant: 0.10.3
+      tslib: 2.6.2
+      zen-observable-ts: 1.2.5
+    dev: false
+
+  /@apollo/client@3.8.8(graphql-ws@5.14.3)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-omjd9ryGDkadZrKW6l5ktUAdS4SNaFOccYQ4ZST0HLW83y8kQaSZOCTNlpkoBUK8cv6qP8+AxOKwLm2ho8qQ+Q==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+      graphql-ws: ^5.5.5
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      subscriptions-transport-ws: ^0.9.0 || ^0.11.0
+    peerDependenciesMeta:
+      graphql-ws:
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+      subscriptions-transport-ws:
+        optional: true
+    dependencies:
+      '@graphql-typed-document-node/core': 3.2.0(graphql@16.8.1)
+      '@wry/equality': 0.5.7
+      '@wry/trie': 0.5.0
+      graphql: 16.8.1
+      graphql-tag: 2.12.6(graphql@16.8.1)
+      graphql-ws: 5.14.3(graphql@16.8.1)
+      hoist-non-react-statics: 3.3.2
+      optimism: 0.18.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
       response-iterator: 0.2.6
       symbol-observable: 4.0.0
       ts-invariant: 0.10.3
@@ -5937,6 +5973,23 @@ packages:
       tailwindcss: 3.4.1
     dev: false
 
+  /@pantheon-systems/pcc-sdk-core@3.0.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-y4fgeRqbkzbca5LcHR0xM0US0jVnBhy2Qy/hfH3D0PYU/Klwa5u1XzlDzK+zxzF4cKXlBDu8UlYXWIutu4zCjQ==}
+    dependencies:
+      '@apollo/client': 3.8.8(graphql-ws@5.14.3)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      graphql: 16.8.1
+      graphql-tag: 2.12.6(graphql@16.8.1)
+      graphql-ws: 5.14.3(graphql@16.8.1)
+      query-string: 8.1.0
+      typescript: 5.3.3
+      zod: 3.22.4
+      zod-validation-error: 1.5.0(zod@3.22.4)
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - subscriptions-transport-ws
+    dev: false
+
   /@pantheon-systems/pds-toolkit-react@1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-xjXj7asV6oeTKiYQGkl0APX5fovjF1DDbSmD79p52S8jb+Mto1k9w//+aDg0yBjTKPwUi+NrHZ7FQ34uQlXmbQ==}
     peerDependencies:
@@ -8954,7 +9007,6 @@ packages:
 
   /@types/node@18.16.9:
     resolution: {integrity: sha512-IeB32oIV4oGArLrd7znD2rkHQ6EDCM+2Sr76dJnrHwv9OHBTTM6nuDLK9bmikXzPa0ZlWMWtRGo/Uw4mrzQedA==}
-    dev: true
 
   /@types/node@20.10.7:
     resolution: {integrity: sha512-fRbIKb8C/Y2lXxB5eVMj4IU7xpdox0Lh8bUPEdtLysaylsml1hOOx1+STloRs/B9nf7C6kPRmmg/V7aQW7usNg==}
@@ -17882,7 +17934,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 20.10.7
+      '@types/node': 18.16.9
       merge-stream: 2.0.0
       supports-color: 8.1.1
 

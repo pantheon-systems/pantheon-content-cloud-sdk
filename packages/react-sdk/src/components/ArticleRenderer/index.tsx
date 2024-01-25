@@ -5,7 +5,7 @@ import {
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
-import React, { useEffect } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
@@ -19,7 +19,7 @@ export type ServersideSmartComponentMap = {
 export type SmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K] & {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    reactComponent: (props: any) => React.JSX.Element;
+    reactComponent: (props: any) => React.JSX.Element | ReactNode;
   };
 };
 
@@ -49,6 +49,9 @@ interface Props {
   previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
+  __experimentalFlags?: {
+    disableAllStyles?: boolean;
+  };
 }
 
 const ArticleRenderer = ({
@@ -61,6 +64,7 @@ const ArticleRenderer = ({
   previewBarProps,
   componentMap,
   renderBody,
+  __experimentalFlags,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -88,6 +92,7 @@ const ArticleRenderer = ({
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
             componentMap={componentMap}
+            disableAllStyles={!!__experimentalFlags?.disableAllStyles}
           >
             {article.content}
           </MarkdownRenderer>
@@ -125,7 +130,9 @@ const ArticleRenderer = ({
     element: titleContent,
     componentMap,
     smartComponentMap,
+    disableAllStyles: !!__experimentalFlags?.disableAllStyles,
   });
+
   const bodyElement = (
     <div className={bodyClassName}>
       {parsedContent?.map((element, idx) =>
@@ -135,6 +142,7 @@ const ArticleRenderer = ({
           element,
           smartComponentMap,
           componentMap,
+          disableAllStyles: !!__experimentalFlags?.disableAllStyles,
         }),
       )}
     </div>
