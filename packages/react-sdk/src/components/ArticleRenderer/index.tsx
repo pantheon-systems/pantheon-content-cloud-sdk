@@ -5,7 +5,7 @@ import {
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
-import React, { ReactNode, useEffect } from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
