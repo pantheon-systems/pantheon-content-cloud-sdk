@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "allowJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "removeComments": false,
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
