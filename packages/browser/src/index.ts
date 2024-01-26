@@ -1,5 +1,5 @@
 import { PantheonClient } from "./lib/pantheon";
-import PCCDocument from "./elements/pcc-document";
+import PCCArticle from "./elements/pcc-article";
 
 type Args = {
   siteId?: string;
@@ -32,4 +32,4 @@ const pantheonClient = new PantheonClient({
 if (!window?.__PANTHEON_CLIENT) window.__PANTHEON_CLIENT = pantheonClient;
 
 // Register the custom element
-customElements.define("pcc-document", PCCDocument);
+customElements.define("pcc-article", PCCArticle);

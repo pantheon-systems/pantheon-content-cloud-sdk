@@ -24,24 +24,24 @@
 ></script>
 ```
 
-2. Add the `pcc-document` custom element to your HTML file. Place it where you want
+2. Add the `pcc-article` custom element to your HTML file. Place it where you want
    the article to be rendered.
 
 ```html
-<pcc-document id="<id of your document>">
+<pcc-article id="<id of your article>">
   <!-- Add a fallback message here for when the article is loading... -->
   Loading...
-</pcc-document>
+</pcc-article>
 ```
 
 That's it! You should now see yur article rendered in your browser.
 
 ## Options
 
-The `pcc-document` custom element accepts the following attributes:
+The `pcc-article` custom element accepts the following attributes:
 
 | Attribute      | Type    | Required                  | Description                                      |
 | -------------- | ------- | ------------------------- | ------------------------------------------------ |
-| id             | String  | Yes                       | The ID of the document you want to render        |
-| slug           | String  | Yes if id is not provided | The slug of the document you want to render      |
+| id             | String  | Yes                       | The ID of the article you want to render         |
+| slug           | String  | Yes if id is not provided | The slug of the article you want to render       |
 | disable-styles | Boolean | No                        | Disable rendering default styles for the article |

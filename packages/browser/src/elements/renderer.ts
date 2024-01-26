@@ -23,7 +23,7 @@ export function renderArticleToElement(
     article.contentType !== "TREE_PANTHEON_V2"
   ) {
     throw new Error(
-      `Unsupported content type: ${article.contentType}. PCC Document only supports TREE_PANTHEON and TREE_PANTHEON_V2`,
+      `Unsupported content type: ${article.contentType}. PCC Article only supports TREE_PANTHEON and TREE_PANTHEON_V2`,
     );
   }
 

@@ -2,7 +2,7 @@ import { type Article } from "@pantheon-systems/pcc-sdk-core";
 import { GET_ARTICLE_QUERY } from "../lib/queries";
 import { RendererConfig, renderArticleToElement } from "./renderer";
 
-class PCCDocument extends HTMLElement {
+class PCCArticle extends HTMLElement {
   constructor() {
     super();
   }
@@ -17,13 +17,13 @@ class PCCDocument extends HTMLElement {
     };
 
     if (!id && !slug) {
-      throw new Error("PCC Document requires an id or slug attribute");
+      throw new Error("PCC Article requires an id or slug attribute");
     }
 
-    await this.fetchAndRenderDocument({ id, slug }, config);
+    await this.fetchAndRenderArticle({ id, slug }, config);
   }
 
-  private async fetchAndRenderDocument(
+  private async fetchAndRenderArticle(
     {
       id,
       slug,
@@ -49,4 +49,4 @@ class PCCDocument extends HTMLElement {
   }
 }
 
-export default PCCDocument;
+export default PCCArticle;
