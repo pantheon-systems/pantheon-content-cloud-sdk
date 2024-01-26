@@ -14,9 +14,10 @@
     "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
   },
   "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-pcc-custom": "workspace:*",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3",
-    "eslint": "^8.56.0",
-    "eslint-config-pcc-custom": "workspace:*"
+    "@pantheon-systems/pcc-sdk-core": "latest"
   }
 }

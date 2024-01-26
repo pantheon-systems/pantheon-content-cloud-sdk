@@ -4,11 +4,12 @@
     "sourceMap": true,
     "module": "esnext",
     "moduleResolution": "Bundler",
+    "lib": ["ES6", "DOM"],
     "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,
     "removeComments": false,
-    "lib": ["esnext", "dom"],
+    "target": "ES6",
     "skipLibCheck": true
   },
   "include": ["src"]

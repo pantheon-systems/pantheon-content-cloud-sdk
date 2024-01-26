@@ -3,7 +3,7 @@ import { defineConfig } from "tsup";
 export default defineConfig({
   entry: ["src/index.ts"],
   format: ["iife"],
-  target: "es5",
+  target: "es6",
   platform: "browser",
   minify: true,
   clean: true,
