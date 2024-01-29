@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES6", "DOM"],
+    "allowJs": false,
+    "strict": true,
+    "noUnusedLocals": true,
+    "removeComments": false,
+    "target": "ES6",
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
