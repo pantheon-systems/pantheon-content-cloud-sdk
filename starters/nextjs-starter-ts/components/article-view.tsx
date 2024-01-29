@@ -3,7 +3,13 @@ import type { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import { clientSmartComponentMap } from "./smart-components";
 
-export default function ArticleView({ article }: { article: Article }) {
+export default function ArticleView({
+  article,
+  onlyContent,
+}: {
+  article: Article;
+  onlyContent?: boolean;
+}) {
   const { data } = useArticle(
     article.id,
     {
@@ -39,6 +45,7 @@ export default function ArticleView({ article }: { article: Article }) {
         </div>
       )}
       smartComponentMap={clientSmartComponentMap}
+      __experimentalFlags={{ disableAllStyles: !!onlyContent }}
     />
   );
 }

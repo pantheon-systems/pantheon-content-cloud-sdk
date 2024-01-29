@@ -49,6 +49,9 @@ interface Props {
   previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
+  __experimentalFlags?: {
+    disableAllStyles?: boolean;
+  };
 }
 
 const ArticleRenderer = ({
@@ -61,6 +64,7 @@ const ArticleRenderer = ({
   previewBarProps,
   componentMap,
   renderBody,
+  __experimentalFlags,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
@@ -125,7 +129,9 @@ const ArticleRenderer = ({
     element: titleContent,
     componentMap,
     smartComponentMap,
+    disableAllStyles: !!__experimentalFlags?.disableAllStyles,
   });
+
   const bodyElement = (
     <div className={bodyClassName}>
       {parsedContent?.map((element, idx) =>
@@ -135,6 +141,7 @@ const ArticleRenderer = ({
           element,
           smartComponentMap,
           componentMap,
+          disableAllStyles: !!__experimentalFlags?.disableAllStyles,
         }),
       )}
     </div>

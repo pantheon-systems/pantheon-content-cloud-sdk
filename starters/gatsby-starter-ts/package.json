@@ -17,7 +17,7 @@
     "@mdx-js/react": "^2.3.0",
     "@pantheon-systems/pcc-react-sdk": "latest",
     "autoprefixer": "^10.4.16",
-    "gatsby": "^5.13.1",
+    "gatsby": "^5.13.3",
     "gatsby-plugin-mdx": "^5.13.0",
     "gatsby-plugin-postcss": "^6.13.0",
     "gatsby-source-filesystem": "^5.13.0",
