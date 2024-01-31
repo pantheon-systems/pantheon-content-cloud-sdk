@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Octokit } from "octokit";
 
 const octokit = new Octokit();
@@ -63,17 +63,32 @@ async function fetchFiles(directory: string, printVerbose?: boolean) {
       console.log(`Downloading ${path}`);
     }
 
-    const { data } = await axios.get(
-      `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`,
-      {
-        responseType: "arraybuffer",
-      },
-    );
+    const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
 
-    return {
-      path: path.replace(directory, ""),
-      contents: data,
-    };
+    async function attemptDownload(url: string, retryAllowed: boolean) {
+      try {
+        const { data } = await axios.get(url, {
+          responseType: "arraybuffer",
+        });
+
+        return {
+          path: path.replace(directory, ""),
+          contents: data,
+        };
+      } catch (e) {
+        if (e instanceof AxiosError && e.code === "ENOTFOUND" && retryAllowed) {
+          console.error(
+            `Failed to download ${url}, but reattempting one time.`,
+          );
+          return attemptDownload(url, false);
+        }
+
+        console.error(`Failed to download ${url}`);
+        throw e;
+      }
+    }
+
+    return attemptDownload(url, true);
   });
 
   return Promise.all(downloadPromises);
