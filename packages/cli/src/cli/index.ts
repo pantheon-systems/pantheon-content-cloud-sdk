@@ -247,12 +247,20 @@ yargs(hideBin(process.argv))
             }),
         )
         .command(
-          "list",
+          "list [options]",
           "Lists existing sites.",
-          () => {
-            // noop
+          (yargs) => {
+            yargs.option("withStatus", {
+              describe: "Include connection statuses of the sites.",
+              type: "boolean",
+              default: false,
+              demandOption: false,
+            });
           },
-          async () => await listSites(),
+          async (args) =>
+            await listSites({
+              withStatus: args.withStatus as boolean,
+            }),
         )
         .command(
           "configure <id> [options]",

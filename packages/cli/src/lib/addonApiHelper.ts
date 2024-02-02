@@ -213,12 +213,19 @@ class AddOnApiHelper {
     return resp.data.id as string;
   }
 
-  static async listSites(): Promise<Site[]> {
+  static async listSites({
+    withConnectionStatus,
+  }: {
+    withConnectionStatus?: boolean;
+  }): Promise<Site[]> {
     const idToken = await this.getIdToken();
 
     const resp = await axios.get(SITE_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${idToken}`,
+      },
+      params: {
+        withConnectionStatus,
       },
     });
 

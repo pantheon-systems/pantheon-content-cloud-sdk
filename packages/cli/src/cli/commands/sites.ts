@@ -50,15 +50,32 @@ export const getComponentSchema = errorHandler<getComponentSchemaParams>(
   },
 );
 
-export const listSites = errorHandler<void>(async () => {
+export const listSites = errorHandler<{
+  withStatus?: boolean;
+}>(async ({ withStatus }) => {
   const spinner = ora("Fetching list of existing sites...").start();
   try {
-    const sites = await AddOnApiHelper.listSites();
+    const sites = await AddOnApiHelper.listSites({
+      withConnectionStatus: withStatus,
+    });
 
     spinner.succeed("Successfully fetched list of sites.");
     if (sites.length === 0) {
       console.log(chalk.yellow("No sites found."));
       return;
+    }
+
+    if (withStatus) {
+      console.info(
+        "\n",
+        [
+          chalk.underline("Legend"),
+          '\n\u2022 "Frontend Connected" - Whether the site has been configured with a Pantheon SDK and can be reached at the given URL',
+          '\u2022 "Smart Components" - Whether the site has been configured with Smart Component support',
+          '\u2022 "Smart Component Preview" - Whether the site been configured with Smart Component preview support',
+          "\n",
+        ].join("\n"),
+      );
     }
 
     printTable(
@@ -69,6 +86,15 @@ export const listSites = errorHandler<void>(async () => {
           "Created At": item.created
             ? dayjs(item.created).format("DD MMM YYYY, hh:mm A")
             : "NA",
+          ...(withStatus && {
+            "Frontend Connected": Boolean(item?.connectionStatus?.connected),
+            "Smart Components": Boolean(
+              item?.connectionStatus?.capabilities?.smartComponents,
+            ),
+            "Smart Component Preview": Boolean(
+              item?.connectionStatus?.capabilities?.smartComponentPreview,
+            ),
+          }),
         };
       }),
     );
