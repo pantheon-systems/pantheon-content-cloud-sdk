@@ -29,8 +29,8 @@ export function printTable(
           const formattedValue =
             typeof row[curr] === "boolean"
               ? row[curr]
-                ? "True"
-                : "False"
+                ? "✅"
+                : "❌"
               : row[curr].toString();
 
           prev[curr] = formattedValue.padEnd(columnPaddings[curr]);
