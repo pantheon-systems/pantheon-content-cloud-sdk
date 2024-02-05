@@ -151,7 +151,9 @@ class AddOnApiHelper {
     return resp.data.grantToken as string;
   }
 
-  static async createApiKey({ siteId }: { siteId?: string }): Promise<string> {
+  static async createApiKey({
+    siteId,
+  }: { siteId?: string } = {}): Promise<string> {
     const idToken = await this.getIdToken();
 
     const resp = await axios.post(
