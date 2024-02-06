@@ -171,7 +171,9 @@ const init = async ({
           .replace(")", "");
       }
     }
+  }
 
+  if (siteId) {
     const { createNewApiKey } = await inquirer.prompt([
       {
         type: "confirm",
@@ -181,7 +183,7 @@ const init = async ({
     ]);
 
     if (createNewApiKey) {
-      apiKey = await AddOnApiHelper.createApiKey();
+      apiKey = await AddOnApiHelper.createApiKey({ siteId });
     }
   }
 
