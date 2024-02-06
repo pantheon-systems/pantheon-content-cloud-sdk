@@ -16,7 +16,7 @@ export const createToken = errorHandler<{
     console.log("\nToken:", chalk.bold(chalk.green(apiKey)), "\n");
     console.log(
       chalk.bold(
-        chalk.yellow("Please note it down. It wont be accessible hereafter."),
+        chalk.yellow("Please note it down. It won't be accessible hereafter."),
       ),
     );
   } catch (e) {
