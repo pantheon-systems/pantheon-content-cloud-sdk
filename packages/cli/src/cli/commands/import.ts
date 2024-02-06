@@ -4,6 +4,7 @@ import { exit } from "process";
 import axios, { AxiosError } from "axios";
 import Promise from "bluebird";
 import chalk from "chalk";
+import { parseFromString } from "dom-parser";
 import type { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
@@ -14,6 +15,8 @@ import AddOnApiHelper from "../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../lib/localStorage";
 import { Logger } from "../../lib/logger";
 import { errorHandler } from "../exceptions";
+
+const HEADING_TAGS = ["h1", "h2", "h3", "title"];
 
 type DrupalImportParams = {
   baseUrl: string;
@@ -263,7 +266,6 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
 
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
-    const title = "newxxx new test article asdlkfjaklsd123123123";
 
     // Check usr has required permission to create drive file
     await AddOnApiHelper.getIdToken([
@@ -276,7 +278,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create Google Doc
-    const spinner = ora("Creating Document on the Google Drive...").start();
+    const spinner = ora("Creating document on the Google Drive...").start();
     const oauth2Client = new OAuth2Client();
     oauth2Client.setCredentials(authDetails);
     const drive = google.drive({
@@ -285,6 +287,18 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     });
     const converter = new showdown.Converter();
     const html = converter.makeHtml(content);
+    const dom = parseFromString(html);
+
+    // Derive document's title
+    let title: string | undefined = undefined;
+    for (const item of HEADING_TAGS) {
+      const element = dom.getElementsByTagName(item)[0];
+      if (element) {
+        title = element.textContent;
+        break;
+      }
+    }
+    title = title || "Untitled Document";
 
     const res = (await drive.files.create({
       requestBody: {
