@@ -5,6 +5,7 @@ import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import config from "./config";
 import { getLocalAuthDetails } from "./localStorage";
+import { toKebabCase } from "./utils";
 
 const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
 const SITE_ENDPOINT = `${config.addOnApiEndpoint}/sites`;
@@ -53,17 +54,21 @@ class AddOnApiHelper {
   static async getDocument(
     documentId: string,
     insertIfMissing = false,
+    title?: string,
   ): Promise<Article> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(
-      `${DOCUMENT_ENDPOINT}/${documentId}?insertIfMissing=${insertIfMissing.toString()}`,
-      {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
+    const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
+      params: {
+        insertIfMissing,
+        ...(title && {
+          withMetadata: { title, slug: toKebabCase(title) },
+        }),
       },
-    );
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
     return resp.data as Article;
   }
 
@@ -100,7 +105,7 @@ class AddOnApiHelper {
     tags: string[],
     metadataFields: {
       [key: string]: string | number | boolean | undefined | null;
-    },
+    } | null,
 
     verbose?: boolean,
   ): Promise<Article> {
@@ -122,7 +127,9 @@ class AddOnApiHelper {
         siteId,
         tags,
         title,
-        metadataFields,
+        ...(metadataFields && {
+          metadataFields,
+        }),
       },
       {
         headers: {

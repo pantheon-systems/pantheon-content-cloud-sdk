@@ -263,7 +263,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
 
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
-    const title = "new test article 123123123";
+    const title = "newxxx new test article asdlkfjaklsd123123123";
 
     // Check usr has required permission to create drive file
     await AddOnApiHelper.getIdToken([
@@ -284,6 +284,8 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
       auth: oauth2Client,
     });
     const converter = new showdown.Converter();
+    const html = converter.makeHtml(content);
+
     const res = (await drive.files.create({
       requestBody: {
         name: title,
@@ -291,7 +293,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
       },
       media: {
         mimeType: "text/html",
-        body: converter.makeHtml(content),
+        body: html,
       },
     })) as GaxiosResponse<drive_v3.Schema$File>;
     const fileId = res.data.id;
@@ -303,8 +305,17 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create PCC document
-    await AddOnApiHelper.getDocument(fileId, true);
-    await AddOnApiHelper.updateDocument(fileId, siteId, title, [], {}, verbose);
+    await AddOnApiHelper.getDocument(fileId, true, title);
+    // Cannot update metadataField since we reset it when changing the siteId
+    await AddOnApiHelper.updateDocument(
+      fileId,
+      siteId,
+      title,
+      [],
+      null,
+      verbose,
+    );
+    await AddOnApiHelper.getDocument(fileId, false, title);
 
     // Publish PCC document
     if (publish) {
