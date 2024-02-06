@@ -1,4 +1,5 @@
 import { randomUUID } from "crypto";
+import * as fs from "fs";
 import { exit } from "process";
 import axios, { AxiosError } from "axios";
 import Promise from "bluebird";
@@ -6,14 +7,15 @@ import chalk from "chalk";
 import type { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
+import ora from "ora";
 import queryString from "query-string";
+import showdown from "showdown";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../lib/localStorage";
 import { Logger } from "../../lib/logger";
 import { errorHandler } from "../exceptions";
-import login from "./login";
 
-type ImportParams = {
+type DrupalImportParams = {
   baseUrl: string;
   siteId: string;
   verbose: boolean;
@@ -74,8 +76,8 @@ async function getDrupalPosts(url: string) {
   }
 }
 
-export const importFromDrupal = errorHandler<ImportParams>(
-  async ({ baseUrl, siteId, verbose }: ImportParams) => {
+export const importFromDrupal = errorHandler<DrupalImportParams>(
+  async ({ baseUrl, siteId, verbose }: DrupalImportParams) => {
     const logger = new Logger();
 
     if (baseUrl) {
@@ -91,7 +93,10 @@ export const importFromDrupal = errorHandler<ImportParams>(
       }
     }
 
-    await login(["https://www.googleapis.com/auth/drive.file"]);
+    await AddOnApiHelper.getIdToken([
+      "https://www.googleapis.com/auth/drive.file",
+    ]);
+
     const authDetails = await getLocalAuthDetails();
 
     if (!authDetails) {
@@ -233,5 +238,84 @@ export const importFromDrupal = errorHandler<ImportParams>(
         `Successfully imported ${allPosts.length} documents into ${folderRes.data.name}`,
       ),
     );
+  },
+);
+
+type MarkdownImportParams = {
+  filePath: string;
+  siteId: string;
+  verbose: boolean;
+  publish: boolean;
+};
+
+export const importFromMarkdown = errorHandler<MarkdownImportParams>(
+  async ({ filePath, siteId, verbose, publish }: MarkdownImportParams) => {
+    const logger = new Logger();
+
+    if (!fs.existsSync(filePath)) {
+      logger.error(
+        chalk.red(
+          `ERROR: Could not find markdown file at given path (${filePath})`,
+        ),
+      );
+      exit(1);
+    }
+
+    // Prepare article content and title
+    const content = fs.readFileSync(filePath).toString();
+    const title = "new test article 123123123";
+
+    // Check usr has required permission to create drive file
+    await AddOnApiHelper.getIdToken([
+      "https://www.googleapis.com/auth/drive.file",
+    ]);
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) {
+      logger.error(chalk.red(`ERROR: Failed to retrieve login details. `));
+      exit(1);
+    }
+
+    // Create Google Doc
+    const spinner = ora("Creating Document on the Google Drive...").start();
+    const oauth2Client = new OAuth2Client();
+    oauth2Client.setCredentials(authDetails);
+    const drive = google.drive({
+      version: "v3",
+      auth: oauth2Client,
+    });
+    const converter = new showdown.Converter();
+    const res = (await drive.files.create({
+      requestBody: {
+        name: title,
+        mimeType: "application/vnd.google-apps.document",
+      },
+      media: {
+        mimeType: "text/html",
+        body: converter.makeHtml(content),
+      },
+    })) as GaxiosResponse<drive_v3.Schema$File>;
+    const fileId = res.data.id;
+    const fileUrl = `https://docs.google.com/document/d/${fileId}`;
+
+    if (!fileId) {
+      spinner.fail("Failed to create document on the Google Drive.");
+      exit(1);
+    }
+
+    // Create PCC document
+    await AddOnApiHelper.getDocument(fileId, true);
+    await AddOnApiHelper.updateDocument(fileId, siteId, title, [], {}, verbose);
+
+    // Publish PCC document
+    if (publish) {
+      const { token } = await oauth2Client.getAccessToken();
+      await AddOnApiHelper.publishDocument(fileId, token as string);
+    }
+    spinner.succeed(
+      `Successfully created document at below path${
+        publish ? " and published it on the PCC." : ":"
+      }`,
+    );
+    logger.log(chalk.green(fileUrl, "\n"));
   },
 );

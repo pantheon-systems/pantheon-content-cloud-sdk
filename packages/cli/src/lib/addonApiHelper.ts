@@ -35,15 +35,15 @@ class AddOnApiHelper {
     }
   }
 
-  static async getIdToken(): Promise<string> {
-    let authDetails = await getLocalAuthDetails();
+  static async getIdToken(requiredScopes?: string[]): Promise<string> {
+    let authDetails = await getLocalAuthDetails(requiredScopes);
 
     // If auth details not found, try user logging in
     if (!authDetails) {
       const prevOra = ora().stopAndPersist();
-      await login([]);
+      await login(requiredScopes || []);
       prevOra.start();
-      authDetails = await getLocalAuthDetails();
+      authDetails = await getLocalAuthDetails(requiredScopes);
       if (!authDetails) throw new UserNotLoggedIn();
     }
 
@@ -309,6 +309,17 @@ class AddOnApiHelper {
     });
 
     return resp.data as WebhookDeliveryLog[];
+  }
+
+  static async publishDocument(docId: string, token: string) {
+    const publishUrl = `${config.publishEndpoint}/?docId=${docId}&publishLevel=prod`;
+
+    const response = await axios.get(publishUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   }
 }
 
