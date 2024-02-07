@@ -267,13 +267,13 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
 
-    // Check usr has required permission to create drive file
+    // Check user has required permission to create drive file
     await AddOnApiHelper.getIdToken([
       "https://www.googleapis.com/auth/drive.file",
     ]);
     const authDetails = await getLocalAuthDetails();
     if (!authDetails) {
-      logger.error(chalk.red(`ERROR: Failed to retrieve login details. `));
+      logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
       exit(1);
     }
 
@@ -320,7 +320,8 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
 
     // Create PCC document
     await AddOnApiHelper.getDocument(fileId, true, title);
-    // Cannot update metadataField since we reset it when changing the siteId
+    // Cannot set metadataFields(title,slug) in the same request since we reset metadataFields
+    //  when changing the siteId.
     await AddOnApiHelper.updateDocument(
       fileId,
       siteId,
