@@ -2,6 +2,7 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
+import { isProgramInstalled } from "../lib/utils";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
 import { importFromDrupal, importFromMarkdown } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
@@ -142,9 +143,26 @@ yargs(hideBin(process.argv))
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
-      if (useYarn) packageManager = "yarn";
-      else if (usePnpm) packageManager = "pnpm";
-      else packageManager = "npm";
+      if (useYarn) {
+        if (!(await isProgramInstalled("yarn"))) {
+          throw new Error(
+            "You have run the init command with --use-yarn but we could not find yarn installed on this system. Please either install yarn (https://classic.yarnpkg.com/lang/en/docs/install) or run init again without the --use-yarn flag.",
+          );
+        }
+
+        packageManager = "yarn";
+      } else if (usePnpm) {
+        if (!(await isProgramInstalled("pnpm"))) {
+          throw new Error(
+            "You have run the init command with --use-pnpm but we could not find pnpm installed on this system. Please either install pnpm (https://pnpm.io/installation) or run init again without the --use-pnpm flag.",
+          );
+        }
+
+        packageManager = "pnpm";
+      } else {
+        packageManager = "npm";
+      }
+
       await init({
         dirName,
         template,
