@@ -52,6 +52,16 @@ export function sh(
   });
 }
 
+export function toKebabCase(s: string) {
+  return s
+    .trim()
+    .replace(/[^\w\s]/gi, "-")
+    .replace(/[\s_]+|[^\w\s]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .replace(/-{2,}/g, "-") // Replace repeating hyphens with a single hyphen
+    .toLowerCase();
+}
+
 export async function isProgramInstalled(programNamed: string) {
   try {
     await sh(`${programNamed} -v`, []);

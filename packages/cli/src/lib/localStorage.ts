@@ -6,13 +6,25 @@ import { PCC_ROOT_DIR } from "../constants";
 import AddOnApiHelper from "./addonApiHelper";
 
 export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
-export const getLocalAuthDetails = async (): Promise<Credentials | null> => {
+export const getLocalAuthDetails = async (
+  requiredScopes?: string[],
+): Promise<Credentials | null> => {
   let credentials: Credentials;
   try {
     credentials = JSON.parse(
       readFileSync(AUTH_FILE_PATH).toString(),
     ) as Credentials;
   } catch (_err) {
+    return null;
+  }
+
+  // Return null if required scope is not present
+  const grantedScopes = new Set(credentials.scope?.split(" ") || []);
+  if (
+    requiredScopes &&
+    requiredScopes.length > 0 &&
+    !requiredScopes.every((i) => grantedScopes.has(i))
+  ) {
     return null;
   }
 

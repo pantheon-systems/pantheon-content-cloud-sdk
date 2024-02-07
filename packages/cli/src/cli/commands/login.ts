@@ -26,7 +26,7 @@ function login(extraScopes: string[]): Promise<void> {
     async (resolve, reject) => {
       const spinner = ora("Logging you in...").start();
       try {
-        const authData = await getLocalAuthDetails();
+        const authData = await getLocalAuthDetails(extraScopes);
         if (authData) {
           const scopes = authData.scope?.split(" ");
 

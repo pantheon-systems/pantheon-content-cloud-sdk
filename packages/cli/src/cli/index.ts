@@ -4,7 +4,7 @@ import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
-import { importFromDrupal } from "./commands/import";
+import { importFromDrupal, importFromMarkdown } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
 import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
@@ -421,6 +421,43 @@ yargs(hideBin(process.argv))
               baseUrl: args.baseUrl as string,
               siteId: args.siteId as string,
               verbose: args.verbose as boolean,
+            }),
+        )
+        .command(
+          "markdown <filePath> <siteId>",
+          "Import given markdown file into a new Google Drive folder and connects them to a target PCC site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("filePath", {
+                describe:
+                  "Absolute or relative path of the local markdown file.",
+                type: "string",
+              })
+              .positional("siteId", {
+                describe: "Id of site to import articles into.",
+                type: "string",
+              })
+              .option("publish", {
+                describe: "Whether newly created article should be published",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .option("verbose", {
+                describe: "Print verbose logs.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .demandOption(["filePath", "siteId"]);
+          },
+          async (args) =>
+            await importFromMarkdown({
+              filePath: args.filePath as string,
+              siteId: args.siteId as string,
+              verbose: args.verbose as boolean,
+              publish: args.publish as boolean,
             }),
         );
     },
