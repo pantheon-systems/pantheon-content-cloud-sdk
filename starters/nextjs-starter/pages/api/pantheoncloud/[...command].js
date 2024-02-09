@@ -6,7 +6,7 @@ export const pantheonAPIOptions = {
     new PantheonClient({
       pccHost: process.env.PCC_HOST,
       siteId: process.env.PCC_SITE_ID,
-      apiKey: process.env.PCC_API_KEY,
+      apiKey: process.env.PCC_TOKEN,
       ...props,
     }),
   resolvePath: (article) => `/articles/${article.slug || article.id}`,

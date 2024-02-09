@@ -24,17 +24,21 @@ export type PantheonClientConfig = {
    */
   siteId: string;
   /**
-   * API Key for your PCC Workspace
+   * Token for your PCC Workspace
    * @example
-   * // If your API Key is ABC-DEF
+   * // If your Token is ABC-DEF
    * const pantheonClient = new PantheonClient({
    *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
+   *   token: 'ABC-DEF',
    * });
    */
+  token?: string;
+
+  // Deprecated in favor of token.
   apiKey?: string;
+
   /**
-   * Optional parameter to provide a PCC Grant in place of an API Key.
+   * Optional parameter to provide a PCC Grant in place of a Token.
    * Useful for preventing preview content from being viewed publicly.
    * Any preview links generated from the add-on will include a PCC Grant.
    * Provide it here to ensure that only users with the preview link can view the content.
@@ -46,7 +50,7 @@ export type PantheonClientConfig = {
    * });
    */
   pccGrant?: string;
-} & ({ apiKey: string } | { pccGrant: string });
+} & ({ token: string } | { apiKey: string } | { pccGrant: string });
 
 export class PantheonClient {
   public host: string;
@@ -80,6 +84,8 @@ export class PantheonClient {
       } else {
         this.apiKey = `pcc_grant ${config.pccGrant}`;
       }
+    } else if (config.token) {
+      this.apiKey = config.token;
     } else if (config.apiKey) {
       this.apiKey = config.apiKey;
     }
@@ -93,7 +99,7 @@ export class PantheonClient {
     }
 
     if (!this.apiKey) {
-      throw new Error("Missing Pantheon Content Cloud API Key");
+      throw new Error("Missing Pantheon Content Cloud Token");
     }
 
     const wsLink =
@@ -102,7 +108,7 @@ export class PantheonClient {
             createClient({
               url: `${this.wsHost}/sites/${this.siteId}/query`,
               connectionParams: {
-                "PCC-API-KEY": this.apiKey,
+                "PCC-TOKEN": this.apiKey,
               },
             }),
           )
@@ -111,7 +117,7 @@ export class PantheonClient {
     const httpLink = new HttpLink({
       uri: `${this.host}/sites/${this.siteId}/query`,
       headers: {
-        "PCC-API-KEY": this.apiKey,
+        "PCC-TOKEN": this.apiKey,
       },
     });
 

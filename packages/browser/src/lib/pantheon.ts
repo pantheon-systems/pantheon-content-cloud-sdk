@@ -11,14 +11,17 @@ export type PantheonClientConfig = {
    */
   siteId: string;
   /**
-   * API Key for your PCC Workspace
+   * Token for your PCC Workspace
    * @example
-   * // If your API Key is ABC-DEF
+   * // If your Token is ABC-DEF
    * const pantheonClient = new PantheonClient({
    *   siteId: '12345',
-   *   apiKey: 'ABC-DEF',
+   *   token: 'ABC-DEF',
    * });
    */
+  token: string;
+
+  // This has been deprecated in favor of token.
   apiKey: string;
 };
 
@@ -38,7 +41,7 @@ export class PantheonClient {
 
     this.host = pccHost;
     this.siteId = config.siteId;
-    this.apiKey = config.apiKey;
+    this.apiKey = config.token || config.apiKey;
 
     if (!this.host) {
       throw new Error("Missing Pantheon Content Cloud host");
@@ -49,7 +52,7 @@ export class PantheonClient {
     }
 
     if (!this.apiKey) {
-      throw new Error("Missing Pantheon Content Cloud API Key");
+      throw new Error("Missing Pantheon Content Cloud Token");
     }
   }
 
@@ -61,7 +64,7 @@ export class PantheonClient {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "PCC-API-KEY": this.apiKey,
+        "PCC-TOKEN": this.apiKey,
       },
       body: JSON.stringify({
         query,
