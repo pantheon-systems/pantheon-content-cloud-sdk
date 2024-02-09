@@ -13,4 +13,10 @@ export default defineNuxtConfig({
       siteId: process.env.PCC_SITE_ID,
     },
   },
+  // https://nuxt.com/modules/gtag
+  /* Google Analytics: Replace XXXXXXXXXX with your google analytics id and uncomment the following code. */
+  // modules: ["nuxt-gtag"],
+  // gtag: {
+  //   id: "G-XXXXXXXXXX",
+  // },
 });

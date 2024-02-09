@@ -841,6 +841,9 @@ importers:
       nuxt:
         specifier: 3.7.4
         version: 3.7.4(eslint@8.56.0)
+      nuxt-gtag:
+        specifier: ^1.1.2
+        version: 1.1.2
       postcss:
         specifier: ^8.4.33
         version: 8.4.33
@@ -872,6 +875,9 @@ importers:
       nuxt:
         specifier: 3.7.4
         version: 3.7.4(eslint@8.56.0)
+      nuxt-gtag:
+        specifier: ^1.1.2
+        version: 1.1.2
       postcss:
         specifier: ^8.4.33
         version: 8.4.33
@@ -20948,6 +20954,17 @@ packages:
     hasBin: true
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /nuxt-gtag@1.1.2:
+    resolution: {integrity: sha512-+gStu6D7RuKnYtmaeYlV+AYmqpNEk8sfv6XRL4hVMK0DSe1GnpPi3rVyx/R5WF8xe2xJl8/CTtgrE25CIOQsHQ==}
+    dependencies:
+      '@nuxt/kit': 3.9.1
+      defu: 6.1.4
+      pathe: 1.1.1
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
     dev: true
 
   /nuxt@3.7.4(eslint@8.56.0):
