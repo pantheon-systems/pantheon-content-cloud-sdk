@@ -68,6 +68,18 @@ class PCCArticle extends HTMLElement {
     }
 
     if (config?.publishingLevel === PublishingLevel.REALTIME) {
+      if (
+        article.previewActiveUntil &&
+        article.previewActiveUntil < Date.now()
+      ) {
+        console.warn(
+          `This preview page is no longer connected to the document (updates to the document will not be displayed until this is reconnected).
+To reconnect, navigate to the document and click the 'PREVIEW' button in the Content Cloud add-on.
+
+If you did not mean to preview this document, set the 'publishing-level' attribute on 'pcc-article' to 'PRODUCTION' to view the latest published version.`,
+        );
+      }
+
       // Subscribe to updates
       const observable = window.__PANTHEON_CLIENT.apolloClient.subscribe<{
         article: Article;
