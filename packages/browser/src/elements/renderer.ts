@@ -82,7 +82,7 @@ export const renderContentNode = (
   }
 
   if (element.data) {
-    node.innerHTML = element.data;
+    node.innerText = element.data;
   }
 
   // Render child nodes recursively

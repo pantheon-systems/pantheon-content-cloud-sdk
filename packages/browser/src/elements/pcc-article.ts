@@ -10,10 +10,10 @@ class PCCArticle extends HTMLElement {
   async connectedCallback() {
     const id = this.getAttribute("id") || undefined;
     const slug = this.getAttribute("slug") || undefined;
-    const disableStyles = this.getAttribute("disable-styles") || undefined;
+    const disableStyles = this.getAttribute("disable-styles") != null;
 
     const config = {
-      disableStyles: Boolean(disableStyles),
+      disableStyles,
     };
 
     if (!id && !slug) {
