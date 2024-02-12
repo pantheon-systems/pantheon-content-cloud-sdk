@@ -1,5 +1,9 @@
-import { type Article } from "@pantheon-systems/pcc-sdk-core";
-import { GET_ARTICLE_QUERY } from "../lib/queries";
+import {
+  Article,
+  ARTICLE_UPDATE_SUBSCRIPTION,
+  getArticleBySlugOrId,
+  PublishingLevel,
+} from "@pantheon-systems/pcc-sdk-core";
 import { RendererConfig, renderArticleToElement } from "./renderer";
 
 class PCCArticle extends HTMLElement {
@@ -11,14 +15,23 @@ class PCCArticle extends HTMLElement {
     const id = this.getAttribute("id") || undefined;
     const slug = this.getAttribute("slug") || undefined;
     const disableStyles = this.getAttribute("disable-styles") != null;
-
-    const config = {
-      disableStyles,
-    };
+    const passedInPublishingLevel =
+      this.getAttribute("publishing-level") || undefined;
 
     if (!id && !slug) {
       throw new Error("PCC Article requires an id or slug attribute");
     }
+
+    const publishingLevel =
+      PublishingLevel[passedInPublishingLevel as keyof typeof PublishingLevel];
+
+    const config = {
+      disableStyles,
+      publishingLevel: publishingLevel
+        ? publishingLevel
+        : // Default to REALTIME
+          PublishingLevel.REALTIME,
+    };
 
     await this.fetchAndRenderArticle({ id, slug }, config);
   }
@@ -31,21 +44,53 @@ class PCCArticle extends HTMLElement {
       id?: string;
       slug?: string;
     },
-    rendererConfig?: RendererConfig,
+    config?: RendererConfig & { publishingLevel?: PublishingLevel },
   ) {
     if (!window?.__PANTHEON_CLIENT) {
       throw new Error("Missing Pantheon Client");
     }
 
-    const { article } = await window.__PANTHEON_CLIENT.query<{
-      article: Article;
-    }>(GET_ARTICLE_QUERY, {
-      id,
-      slug,
-      contentType: "TREE_PANTHEON_V2",
-    });
+    if (!id && !slug) {
+      throw new Error("PCC Article requires an id or slug attribute");
+    }
 
-    return renderArticleToElement(article, this, rendererConfig);
+    const article = await getArticleBySlugOrId(
+      window.__PANTHEON_CLIENT,
+      id || slug || "",
+      {
+        contentType: "TREE_PANTHEON_V2",
+        publishingLevel: config?.publishingLevel,
+      },
+    );
+
+    if (!article) {
+      throw new Error("Article not found");
+    }
+
+    if (config?.publishingLevel === PublishingLevel.REALTIME) {
+      // Subscribe to updates
+      const observable = window.__PANTHEON_CLIENT.apolloClient.subscribe<{
+        article: Article;
+      }>({
+        query: ARTICLE_UPDATE_SUBSCRIPTION,
+        variables: {
+          id: article.id,
+          contentType: "TREE_PANTHEON_V2",
+          publishingLevel: config?.publishingLevel,
+        },
+      });
+
+      observable.subscribe({
+        next: (update) => {
+          if (!update.data) return;
+
+          const article = update.data.article;
+          renderArticleToElement(article, this, config);
+        },
+      });
+    }
+
+    return renderArticleToElement(article, this, config);
   }
 }
 

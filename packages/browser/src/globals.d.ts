@@ -1,4 +1,4 @@
-import { PantheonClient } from "./lib/pantheon";
+import { type PantheonClient } from "@pantheon-systems/pcc-sdk-core";
 
 declare global {
   interface Window {
