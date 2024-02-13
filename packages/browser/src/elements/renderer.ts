@@ -15,7 +15,9 @@ export function renderArticleToElement(
   config?: RendererConfig,
 ) {
   if (!article.content) {
-    throw new Error("Article has no content. Publish the article to view it.");
+    throw new Error(
+      "Article has no content. Preview or publish the article to view it here.",
+    );
   }
 
   if (

@@ -58,8 +58,8 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
                 </span>
                 <br />
                 <span style={{ fontWeight: 500 }}>
-                  To reconnect, navigate to the document and select the
-                  &apos;Preview&apos; button in the Content Cloud add-on.
+                  To reconnect, navigate to the document and click the
+                  &apos;PREVIEW&apos; button in the Content Cloud add-on.
                 </span>
               </div>
               <Arrow
