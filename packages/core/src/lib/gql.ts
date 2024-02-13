@@ -58,11 +58,19 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
 
 export const LIST_ARTICLES_QUERY = gql`
   query ListArticles(
+    $pageSize: Int
+    $sortBy: ArticleSortField
+    $sortOrder: SortOrder = DESC
+    $cursor: Float
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
     articles(
+      pageSize: $pageSize
+      sortBy: $sortBy
+      sortOrder: $sortOrder
+      cursor: $cursor
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
@@ -84,11 +92,19 @@ export const LIST_ARTICLES_QUERY = gql`
 
 export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
   query ListArticles(
+    $pageSize: Int
+    $sortBy: ArticleSortField
+    $sortOrder: SortOrder = DESC
+    $cursor: Float
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
     articles(
+      pageSize: $pageSize
+      sortBy: $sortBy
+      sortOrder: $sortOrder
+      cursor: $cursor
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
