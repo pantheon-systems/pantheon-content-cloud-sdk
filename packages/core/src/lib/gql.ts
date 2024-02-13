@@ -60,7 +60,7 @@ export const LIST_ARTICLES_QUERY = gql`
   query ListArticles(
     $pageSize: Int
     $sortBy: ArticleSortField
-    $sortOrder: SortOrder = DESC
+    $sortOrder: SortOrder
     $cursor: Float
     $contentType: ContentType
     $publishingLevel: PublishingLevel
@@ -94,7 +94,7 @@ export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
   query ListArticles(
     $pageSize: Int
     $sortBy: ArticleSortField
-    $sortOrder: SortOrder = DESC
+    $sortOrder: SortOrder
     $cursor: Float
     $contentType: ContentType
     $publishingLevel: PublishingLevel

@@ -111,15 +111,16 @@ export async function getPaginatedArticles(
   return {
     data: articles,
     totalCount: total,
-    fetchNextPage: cursor
-      ? () =>
-          getPaginatedArticles(
-            client,
-            { ...args, cursor },
-            searchParams,
-            includeContent,
-          )
-      : fetchEmptyPage(total),
+    fetchNextPage:
+      cursor && articles.length > 0
+        ? () =>
+            getPaginatedArticles(
+              client,
+              { ...args, cursor },
+              searchParams,
+              includeContent,
+            )
+        : fetchEmptyPage(total),
   };
 }
 
