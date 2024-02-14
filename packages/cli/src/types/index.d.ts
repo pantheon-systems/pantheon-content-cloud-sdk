@@ -17,6 +17,10 @@ declare type Site = {
   url: string;
   created?: number;
   __isPlayground: boolean;
+  connectionStatus?: {
+    connected: boolean;
+    capabilities: Record<string, boolean>;
+  } | null;
 };
 
 declare type AuthDetails = {

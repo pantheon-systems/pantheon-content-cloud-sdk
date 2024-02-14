@@ -113,10 +113,11 @@ importers:
         version: 5.3.3
 
   packages/browser:
-    devDependencies:
+    dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: latest
+        specifier: ^3.0.4
         version: link:../core
+    devDependencies:
       eslint:
         specifier: ^8.56.0
         version: 8.56.0
@@ -688,9 +689,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      sharp:
-        specifier: ^0.32.6
-        version: 0.32.6
     devDependencies:
       '@testing-library/react':
         specifier: 13.4.0
@@ -773,9 +771,6 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
-      sharp:
-        specifier: ^0.32.6
-        version: 0.32.6
     devDependencies:
       '@testing-library/react':
         specifier: 13.4.0
