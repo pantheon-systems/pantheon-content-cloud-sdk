@@ -18,6 +18,7 @@ export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];
   totalCount: number;
+  cursor: number;
   fetchNextPage: () => Promise<PaginatedArticle>;
 };
 

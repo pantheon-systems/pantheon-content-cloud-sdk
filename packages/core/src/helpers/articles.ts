@@ -81,11 +81,15 @@ export function convertSearchParamsToGQL(
     : null;
 }
 
-function fetchEmptyPage(total: number): () => Promise<PaginatedArticle> {
+function fetchEmptyPage(
+  total: number,
+  cursor: number,
+): () => Promise<PaginatedArticle> {
   return async () => ({
     data: [],
     totalCount: total,
-    fetchNextPage: fetchEmptyPage(total),
+    cursor,
+    fetchNextPage: fetchEmptyPage(total, cursor),
   });
 }
 export async function getPaginatedArticles(
@@ -111,6 +115,7 @@ export async function getPaginatedArticles(
   return {
     data: articles,
     totalCount: total,
+    cursor,
     fetchNextPage:
       cursor && articles.length > 0
         ? () =>
@@ -120,7 +125,7 @@ export async function getPaginatedArticles(
               searchParams,
               includeContent,
             )
-        : fetchEmptyPage(total),
+        : fetchEmptyPage(total, cursor),
   };
 }
 
