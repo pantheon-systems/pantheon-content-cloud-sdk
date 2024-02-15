@@ -156,8 +156,7 @@ class AddOnApiHelper {
 
       return resp.data;
     } catch (e) {
-      if (e instanceof AxiosError)
-        console.error(e, e.code, e.message);
+      if (e instanceof AxiosError) console.error(e, e.code, e.message);
       throw e;
     }
   }
