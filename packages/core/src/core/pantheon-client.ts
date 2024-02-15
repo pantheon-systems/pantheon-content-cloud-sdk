@@ -2,6 +2,7 @@ import type { NormalizedCacheObject } from "@apollo/client";
 import { createClient } from "graphql-ws";
 import {
   ApolloClient,
+  ApolloLink,
   getMainDefinition,
   GraphQLWsLink,
   HttpLink,
@@ -114,12 +115,21 @@ export class PantheonClient {
           )
         : undefined;
 
-    const httpLink = new HttpLink({
-      uri: `${this.host}/sites/${this.siteId}/query`,
-      headers: {
-        "PCC-TOKEN": this.apiKey,
-      },
-    });
+    const httpLink = new ApolloLink((operation, forward) =>
+      forward(operation).map((response) => {
+        if (response.data) {
+          response.data.extensions = response.extensions;
+        }
+        return response;
+      }),
+    ).concat(
+      new HttpLink({
+        uri: `${this.host}/sites/${this.siteId}/query`,
+        headers: {
+          "PCC-TOKEN": this.apiKey,
+        },
+      }),
+    );
 
     const splitLink =
       typeof window !== "undefined" && wsLink

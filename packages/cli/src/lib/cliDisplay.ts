@@ -1,7 +1,9 @@
 import { Console } from "console";
 import { Transform } from "stream";
 
-export function printTable(input: { [key: string]: string | number }[]) {
+export function printTable(
+  input: { [key: string]: string | number | boolean }[],
+) {
   if (input.length === 0) return;
 
   // Adding space padding at the end. console.table doesn't handle it out of the box.
@@ -24,7 +26,14 @@ export function printTable(input: { [key: string]: string | number }[]) {
     inputWithPaddings.push(
       Object.keys(columnPaddings).reduce(
         (prev: { [key: string]: string }, curr) => {
-          prev[curr] = row[curr].toString().padEnd(columnPaddings[curr]);
+          const formattedValue =
+            typeof row[curr] === "boolean"
+              ? row[curr]
+                ? "✅"
+                : "❌"
+              : row[curr].toString();
+
+          prev[curr] = formattedValue.padEnd(columnPaddings[curr]);
           return prev;
         },
         {},

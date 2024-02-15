@@ -2,8 +2,9 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
+import { isProgramInstalled } from "../lib/utils";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
-import { importFromDrupal } from "./commands/import";
+import { importFromDrupal, importFromMarkdown } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
 import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
@@ -142,9 +143,26 @@ yargs(hideBin(process.argv))
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
-      if (useYarn) packageManager = "yarn";
-      else if (usePnpm) packageManager = "pnpm";
-      else packageManager = "npm";
+      if (useYarn) {
+        if (!(await isProgramInstalled("yarn"))) {
+          throw new Error(
+            "You have run the init command with --use-yarn but we could not find yarn installed on this system. Please either install yarn (https://classic.yarnpkg.com/lang/en/docs/install) or run init again without the --use-yarn flag.",
+          );
+        }
+
+        packageManager = "yarn";
+      } else if (usePnpm) {
+        if (!(await isProgramInstalled("pnpm"))) {
+          throw new Error(
+            "You have run the init command with --use-pnpm but we could not find pnpm installed on this system. Please either install pnpm (https://pnpm.io/installation) or run init again without the --use-pnpm flag.",
+          );
+        }
+
+        packageManager = "pnpm";
+      } else {
+        packageManager = "npm";
+      }
+
       await init({
         dirName,
         template,
@@ -247,12 +265,20 @@ yargs(hideBin(process.argv))
             }),
         )
         .command(
-          "list",
+          "list [options]",
           "Lists existing sites.",
-          () => {
-            // noop
+          (yargs) => {
+            yargs.option("withStatus", {
+              describe: "Include connection statuses of the sites.",
+              type: "boolean",
+              default: false,
+              demandOption: false,
+            });
           },
-          async () => await listSites(),
+          async (args) =>
+            await listSites({
+              withStatus: args.withStatus as boolean,
+            }),
         )
         .command(
           "configure <id> [options]",
@@ -403,6 +429,43 @@ yargs(hideBin(process.argv))
               baseUrl: args.baseUrl as string,
               siteId: args.siteId as string,
               verbose: args.verbose as boolean,
+            }),
+        )
+        .command(
+          "markdown <filePath> <siteId>",
+          "Import given markdown file into a new Google Drive folder and connects them to a target PCC site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("filePath", {
+                describe:
+                  "Absolute or relative path of the local markdown file.",
+                type: "string",
+              })
+              .positional("siteId", {
+                describe: "Id of site to import articles into.",
+                type: "string",
+              })
+              .option("publish", {
+                describe: "Whether newly created article should be published",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .option("verbose", {
+                describe: "Print verbose logs.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .demandOption(["filePath", "siteId"]);
+          },
+          async (args) =>
+            await importFromMarkdown({
+              filePath: args.filePath as string,
+              siteId: args.siteId as string,
+              verbose: args.verbose as boolean,
+              publish: args.publish as boolean,
             }),
         );
     },

@@ -15,6 +15,12 @@ export interface Article {
 }
 
 export type ArticleWithoutContent = Omit<Article, "content">;
+export type PaginatedArticle = {
+  data: ArticleWithoutContent[];
+  totalCount: number;
+  cursor: number;
+  fetchNextPage: () => Promise<PaginatedArticle>;
+};
 
 export enum PublishingLevel {
   PRODUCTION = "PRODUCTION",
@@ -25,6 +31,16 @@ export enum ContentType {
   TEXT_MARKDOWN = "TEXT_MARKDOWN",
   TREE_PANTHEON = "TREE_PANTHEON",
   TREE_PANTHEON_V2 = "TREE_PANTHEON_V2",
+}
+
+export enum ArticleSortField {
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+}
+
+export enum SortOrder {
+  ASC = "ASC",
+  DESC = "DESC",
 }
 
 export interface TreePantheonContent {

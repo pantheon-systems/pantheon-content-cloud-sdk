@@ -58,6 +58,23 @@ export default function Seo({
         </>
       )}
       <meta name="theme-color" content="#ffffff" />
+
+      {/* Google Analytics: Replace XXXXXXXXXX with your google analytics id and uncomment the following code. */}
+      {/* {process.env.NODE_ENV !== "development" && (
+        <>
+          <script
+            src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+          />
+          <script id="google-analytics">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `}
+          </script>
+        </>
+      )} */}
     </head>
   );
 }
