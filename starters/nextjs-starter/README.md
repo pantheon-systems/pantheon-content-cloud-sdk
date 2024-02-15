@@ -14,15 +14,15 @@ For a quick start, follow the instructions below:
 1. In your terminal, run the following commands:
 
 ```bash
-npm install @pantheon-systems/pcc –global
+npm install @pantheon-systems/pcc-cli --global
 pcc init ./my-new-site --template=nextjs
 ```
 
 2. Follow the prompts in your terminal to complete the setup.
 
-## Pantheon @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react
+## Pantheon @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react-sdk
 
-Pantheon's @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react are
+Pantheon's @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react-sdk are
 included as dependencies in this project. This allows developers to make use of
 utility functions to simplify the process of building and maintaining a
 Front-End site on Pantheon.
