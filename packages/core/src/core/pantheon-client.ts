@@ -35,7 +35,9 @@ export type PantheonClientConfig = {
    */
   token?: string;
 
-  // Deprecated in favor of token.
+  /**
+   * @deprecated Use `token` instead
+   */
   apiKey?: string;
 
   /**
