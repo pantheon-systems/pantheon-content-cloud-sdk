@@ -4,6 +4,7 @@ enum Env {
   test = "test",
 }
 type Config = {
+  publishApiEndpoint: string;
   addOnApiEndpoint: string;
   publishEndpoint: string;
   googleClientId: string;
@@ -14,6 +15,8 @@ const ENV: Env = (process.env.NODE_ENV as Env) || "production";
 
 const config: { [key in Env]: Config } = {
   [Env.production]: {
+    publishApiEndpoint:
+      "https://us-central1-pantheon-content-cloud.cloudfunctions.net/publishFile",
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
     publishEndpoint:
@@ -24,6 +27,8 @@ const config: { [key in Env]: Config } = {
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [Env.staging]: {
+    publishApiEndpoint:
+      "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/publishFile",
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
     publishEndpoint:
@@ -34,6 +39,7 @@ const config: { [key in Env]: Config } = {
     playgroundUrl: "https://multi-staging-collabcms-fe-demo.appa.pantheon.site",
   },
   [Env.test]: {
+    publishApiEndpoint: "https://test-jest.comxyz/publishFile",
     addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
     publishEndpoint: "https://test-jest.comxyz/publishFile",
     googleClientId: "test-google-com",
