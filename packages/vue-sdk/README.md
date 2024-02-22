@@ -24,7 +24,7 @@ createApp(App)
   // Install the plugin
   .use(pccPlugin, {
     siteId: import.meta.env.VITE_PCC_SITE_ID, // PCC Site Id; required
-    apiKey: import.meta.env.VITE_PCC_API_KEY, // PCC API Key; required
+    token: import.meta.env.VITE_PCC_TOKEN, // PCC Token; required
   })
   .mount("#app");
 ```

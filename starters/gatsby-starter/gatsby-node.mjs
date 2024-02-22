@@ -7,7 +7,7 @@ import {
 
 const pccHost = process.env.PCC_HOST;
 const pccSiteId = process.env.PCC_SITE_ID;
-const pccApiKey = process.env.PCC_API_KEY;
+const pccApiKey = process.env.PCC_TOKEN;
 
 if (process.env.IS_CICD !== "true") {
   if (!pccSiteId) {
@@ -15,7 +15,7 @@ if (process.env.IS_CICD !== "true") {
   }
 
   if (!pccApiKey) {
-    throw new Error("PCC_API_KEY environment variable is required");
+    throw new Error("PCC_TOKEN environment variable is required");
   }
 }
 

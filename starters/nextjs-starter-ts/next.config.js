@@ -22,7 +22,7 @@ function ensureEnvVariable(name) {
 
 if (process.env.IS_CICD !== "true") {
   ensureEnvVariable("PCC_SITE_ID");
-  ensureEnvVariable("PCC_API_KEY");
+  ensureEnvVariable("PCC_TOKEN");
 }
 
 /** @type {import('next').NextConfig} */
@@ -30,7 +30,7 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     PCC_SITE_ID: process.env.PCC_SITE_ID,
-    PCC_API_KEY: process.env.PCC_API_KEY,
+    PCC_TOKEN: process.env.PCC_TOKEN,
     ...(process.env.PCC_HOST && { PCC_HOST: process.env.PCC_HOST }),
   },
   output: "standalone",
