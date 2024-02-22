@@ -54,11 +54,11 @@ npm init pantheon-decoupled-kit -- gatsby-pcc
 
 This starter uses Gatsby's [createPages API](https://www.gatsbyjs.com/docs/creating-and-modifying-pages/) to pre-render the pages on the server. See `gatsby-node.mjs` file for the implementation details.
 
-You could also use the provided client-side hooks in @pantheon-systems/pcc-react (`useArticles` and `useArticle`) to render the pages on the client.
+You could also use the provided client-side hooks in @pantheon-systems/pcc-react-sdk (`useArticles` and `useArticle`) to render the pages on the client.
 
-## Pantheon @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react
+## Pantheon @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react-sdk
 
-Pantheon's @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react are included as dependencies in this project. This allows developers to make use of utility functions to simplify the
+Pantheon's @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react-sdk are included as dependencies in this project. This allows developers to make use of utility functions to simplify the
 process of building and maintaining a Front-End site on Pantheon.
 
 Full documentation can be found at:
