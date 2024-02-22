@@ -165,14 +165,9 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       siteId,
       "blog",
       "drupalId",
-      "string",
+      "text",
     );
-    await AddOnApiHelper.addSiteMetadataField(
-      siteId,
-      "blog",
-      "author",
-      "string",
-    );
+    await AddOnApiHelper.addSiteMetadataField(siteId, "blog", "author", "text");
 
     await Promise.map(
       allPosts,
@@ -186,6 +181,24 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
         const authorName: string | undefined = allIncludedData.find(
           (x) => x.id === post.relationships.field_author.data.id,
         )?.attributes?.title;
+
+        console.log(
+          // fileId,
+          siteId,
+          post.attributes.title,
+          post.relationships.field_topics?.data
+            ?.map(
+              (topic: DrupalTopic) =>
+                allIncludedData.find((x) => x.id === topic.id)?.attributes
+                  ?.name,
+            )
+            .filter((x: string | undefined): x is string => x != null) || [],
+          {
+            author: authorName,
+            drupalId: post.id,
+          },
+          verbose,
+        );
 
         const res = (await drive.files.create({
           requestBody: {
@@ -209,23 +222,28 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
         await AddOnApiHelper.getDocument(fileId, true);
 
         try {
-          await AddOnApiHelper.updateDocument(
-            fileId,
-            siteId,
-            post.attributes.title,
-            post.relationships.field_topics?.data
-              ?.map(
-                (topic: DrupalTopic) =>
-                  allIncludedData.find((x) => x.id === topic.id)?.attributes
-                    ?.name,
-              )
-              .filter((x: string | undefined): x is string => x != null) || [],
-            {
-              author: authorName,
-              drupalId: post.id,
-            },
-            verbose,
-          );
+          for (let i = 0; i < 2; i++) {
+            await AddOnApiHelper.updateDocument(
+              fileId,
+              siteId,
+              post.attributes.title,
+              post.relationships.field_topics?.data
+                ?.map(
+                  (topic: DrupalTopic) =>
+                    allIncludedData.find((x) => x.id === topic.id)?.attributes
+                      ?.name,
+                )
+                .filter((x: string | undefined): x is string => x != null) ||
+                [],
+              {
+                author: authorName,
+                drupalId: post.id,
+              },
+              verbose,
+            );
+          }
+
+          await AddOnApiHelper.publishFile(fileId);
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;
