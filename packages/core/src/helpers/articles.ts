@@ -6,6 +6,7 @@ import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
 import {
   GET_ARTICLE_QUERY,
+  GET_RECOMMENDED_ARTICLES_QUERY,
   LIST_ARTICLES_QUERY,
   LIST_ARTICLES_QUERY_W_CONTENT,
 } from "../lib/gql";
@@ -235,4 +236,16 @@ export function buildContentType(contentType?: keyof typeof ContentType) {
   }
 
   return contentType;
+}
+
+export async function getRecommendedArticles(
+  client: PantheonClient,
+  id: number | string,
+) {
+  const article = await client.apolloClient.query({
+    query: GET_RECOMMENDED_ARTICLES_QUERY,
+    variables: { id: id.toString() },
+  });
+
+  return article.data.similarArticles as Article[];
 }

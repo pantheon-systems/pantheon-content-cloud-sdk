@@ -7,16 +7,24 @@ import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
-import { getArticleBySlugOrId } from "../../lib/Articles";
+import {
+  getArticleBySlugOrId,
+  getRecommendedArticles,
+} from "../../lib/Articles";
 import { buildPantheonClientWithGrant } from "../../lib/PantheonClient";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
   grant: string;
+  recommendedArticles: Article[];
 }
 
-export default function ArticlePage({ article, grant }: ArticlePageProps) {
+export default function ArticlePage({
+  article,
+  grant,
+  recommendedArticles,
+}: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -41,8 +49,11 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
 
         <div className="max-w-screen-lg mx-auto mt-16 prose">
           <ArticleView article={article} />
-
           <Tags tags={article?.tags} />
+          Recommended Articles
+          <div>
+            {recommendedArticles?.map((x) => <div key={x.id}>{x.title}</div>)}
+          </div>
         </div>
       </Layout>
     </PantheonProvider>
@@ -88,6 +99,7 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      recommendedArticles: await getRecommendedArticles(slugOrId),
     },
   };
 }

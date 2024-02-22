@@ -7,6 +7,7 @@ export { PantheonClient } from "@pantheon-systems/pcc-sdk-core";
 export {
   getArticles,
   getPaginatedArticles,
+  getRecommendedArticles,
   getArticle,
   getAllTags,
   getArticleBySlugOrId,
