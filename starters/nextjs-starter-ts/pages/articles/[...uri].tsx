@@ -29,6 +29,7 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
             type: "website",
             title: seoMetadata.title,
             description: seoMetadata.description,
+            images: seoMetadata.images,
             article: {
               authors: seoMetadata.authors,
               tags: seoMetadata.tags,
@@ -112,11 +113,20 @@ const getSeoMetadata = (article) => {
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
 
+  const images = [
+    ...(typeof article.metadata["Hero Image"] === "string" && [
+      {
+        url: article.metadata["Hero Image"],
+      },
+    ]),
+  ];
+
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
     tags,
     authors,
     publishedTime,
+    images,
   };
 };

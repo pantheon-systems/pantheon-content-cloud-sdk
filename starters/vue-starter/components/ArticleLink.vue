@@ -1,31 +1,40 @@
 <script>
 export default {
   props: {
-    id: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    tags: {
-      type: Array,
+    article: {
+      type: Object,
       required: true,
     },
   },
+  computed: {
+    heroImage() {
+      const heroImage = this.article.metadata?.['Hero Image'];
+      
+      return typeof heroImage === 'string' ? heroImage : null;
+    },
+    identifier() {
+      return this.article.slug || this.article.id;
+    },
+    tags() {
+      return this.article.tags || [];
+    },
+    title() {
+      return this.article.title || "Untitled Article";
+    },
+  }
 }
 </script>
 
 <template>
   <div class="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
-    <a :href="/articles/ + id">
-      <div class="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
-        <div class="w-full h-full bg-gradient-to-b from-blue-100 to-green-500"></div>
+    <a :href="/articles/ + identifier">
+      <div class="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s not-prose">
+        <img v-if="heroImage != null" :src="heroImage" alt="Article Hero Image" class="object-cover w-full h-full" />
+        <div v-else class="w-full h-full bg-gradient-to-b from-blue-100 to-green-500"></div>
       </div>
     </a>
     <div class="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
-      <a :href="/articles/ + id">
+      <a :href="/articles/ + identifier">
         <div class="hover:scale-105">{{ title }}</div>
       </a>
       <div class="mt-2 text-sm leading-[1.25rem] text-theme-bg-black">

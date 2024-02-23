@@ -27,8 +27,7 @@ const { data, error } = await useFetch("/api/articles/")
         Loading...
       </h2>
       <div v-else class="grid gap-5 mx-auto mt-12 max-w-content lg:max-w-screen-lg lg:grid-cols-3">
-        <article-link v-for="article in data" :key="article.id" :id="article.id" :title="article.title || 'Untitled'"
-          :tags="article.tags || []" />
+        <article-link v-for="article in data" :key="article.id" :article="article"/>
       </div>
     </section>
   </div>
