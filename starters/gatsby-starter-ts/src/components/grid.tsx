@@ -17,8 +17,12 @@ const GridItem = ({ href, imgSrc, altText, title }: Props) => {
     <Link to={href}>
       <div className="flex flex-col h-full overflow-hidden border-2 rounded-lg shadow-lg cursor-pointer hover:border-indigo-500">
         <div className="relative flex-shrink-0 h-40">
-          {imgSrc !== null ? (
-            <img src={imgSrc} alt={altText} style={{ objectFit: "cover" }} />
+          {imgSrc != null ? (
+            <img
+              src={imgSrc}
+              alt={altText || title}
+              className="object-cover w-full h-full"
+            />
           ) : (
             <GradientPlaceholder />
           )}
@@ -32,11 +36,23 @@ const GridItem = ({ href, imgSrc, altText, title }: Props) => {
 };
 
 const PostGridItem = ({ content: article }) => {
-  return <GridItem href={`/articles/${article.id}`} title={article.title} />;
+  return (
+    <GridItem
+      href={`/articles/${article.slug || article.id}`}
+      imgSrc={article.metadata["Hero Image"]}
+      title={article.title}
+    />
+  );
 };
 
 const PageGridItem = ({ content: article }) => {
-  return <GridItem href={`/articles/${article.id}`} title={article.title} />;
+  return (
+    <GridItem
+      href={`/articles/${article.slug || article.id}`}
+      imgSrc={article.metadata["Hero Image"]}
+      title={article.title}
+    />
+  );
 };
 
 export const Grid = ({ children }) => {
@@ -51,7 +67,7 @@ export const Grid = ({ children }) => {
 
 interface GriddedComponentProps {
   data: any[];
-  FallbackComponent?: JSX.Element | undefined;
+  FallbackComponent?: React.ReactNode | undefined;
 }
 
 export const withGrid = (Component) => {
@@ -69,7 +85,7 @@ export const withGrid = (Component) => {
             })}
           </Grid>
         ) : FallbackComponent ? (
-          <FallbackComponent />
+          FallbackComponent
         ) : null}
       </>
     );

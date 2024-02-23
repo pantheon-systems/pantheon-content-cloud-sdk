@@ -26,9 +26,15 @@ const pantheonClient = new PantheonClient({
 });
 
 const createPages = async ({ actions: { createPage } }) => {
-  const articles = await getArticles(pantheonClient, {
-    publishingLevel: "PRODUCTION",
-  });
+  const articles = await getArticles(
+    pantheonClient,
+    {
+      publishingLevel: "PRODUCTION",
+    },
+    {
+      publishStatus: "published",
+    },
+  );
 
   createPage({
     path: `/`,
@@ -55,6 +61,15 @@ const createPages = async ({ actions: { createPage } }) => {
       component: path.resolve("./src/templates/articles/[slug].tsx"),
       context: { article },
     });
+
+    // Create slug-based pages
+    if (article.slug) {
+      createPage({
+        path: `/articles/${article.slug}`,
+        component: path.resolve("./src/templates/articles/[slug].tsx"),
+        context: { article },
+      });
+    }
   });
 };
 
