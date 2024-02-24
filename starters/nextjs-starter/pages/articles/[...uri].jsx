@@ -101,13 +101,12 @@ const getSeoMetadata = (article) => {
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
 
-  const images = [
-    ...(typeof article.metadata["Hero Image"] === "string" && [
-      {
-        url: article.metadata["Hero Image"],
-      },
-    ]),
-  ];
+  const imageProperties = [
+    article.metadata?.["Hero Image"],
+    // Extend as needed
+  ]
+    .filter((url) => typeof url === "string")
+    .map((url) => ({ url }));
 
   return {
     title: article.title,
@@ -115,6 +114,6 @@ const getSeoMetadata = (article) => {
     tags,
     authors,
     publishedTime,
-    images,
+    images: imageProperties,
   };
 };

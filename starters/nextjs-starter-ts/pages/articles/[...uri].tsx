@@ -1,4 +1,5 @@
 import {
+  ArticleWithoutContent,
   PantheonProvider,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
@@ -113,13 +114,12 @@ const getSeoMetadata = (article) => {
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
 
-  const images = [
-    ...(typeof article.metadata["Hero Image"] === "string" && [
-      {
-        url: article.metadata["Hero Image"],
-      },
-    ]),
-  ];
+  const imageProperties = [
+    article.metadata?.["Hero Image"],
+    // Extend as needed
+  ]
+    .filter((url): url is string => typeof url === "string")
+    .map((url) => ({ url }));
 
   return {
     title: article.title,
@@ -127,6 +127,6 @@ const getSeoMetadata = (article) => {
     tags,
     authors,
     publishedTime,
-    images,
+    images: imageProperties,
   };
 };
