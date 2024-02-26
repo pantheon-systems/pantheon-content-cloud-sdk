@@ -176,7 +176,7 @@ const init = async ({
       {
         type: "confirm",
         name: "createNewApiKey",
-        message: "Create a new API key?",
+        message: "Create a new Token?",
       },
     ]);
 
@@ -195,7 +195,7 @@ const init = async ({
     }
 
     if (apiKey != null) {
-      envFile = replaceEnvVariable(envFile, "PCC_API_KEY", apiKey);
+      envFile = replaceEnvVariable(envFile, "PCC_TOKEN", apiKey);
     }
 
     writeFileSync(path.join(absoluteProjectPath, localEnvFileName), envFile);
