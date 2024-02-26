@@ -3,6 +3,7 @@ import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
+import PageGrid from "../../components/grid";
 import { Tags } from "../../components/tags";
 import { getArticleBySlugOrId } from "../../lib/Articles";
 import { buildPantheonClientWithGrant } from "../../lib/PantheonClient";
@@ -36,6 +37,10 @@ export default function ArticlePage({ article, grant }) {
 
           <Tags tags={article?.tags} />
         </div>
+        <section>
+          <h3>Recommended Articles</h3>
+          <PageGrid data={recommendedArticles} />
+        </section>
       </Layout>
     </PantheonProvider>
   );
@@ -80,6 +85,7 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      recommendedArticles: await getRecommendedArticles(article.id),
     },
   };
 }

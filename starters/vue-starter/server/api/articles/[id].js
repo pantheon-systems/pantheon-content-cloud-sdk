@@ -1,4 +1,7 @@
-import { getArticleBySlugOrId } from "@pantheon-systems/pcc-vue-sdk";
+import {
+  getArticleBySlugOrId,
+  getRecommendedArticles,
+} from "@pantheon-systems/pcc-vue-sdk";
 import { getPantheonClient } from "../../lib/pantheon";
 
 export default defineEventHandler(async (event) => {
@@ -19,7 +22,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return await getArticleBySlugOrId(getPantheonClient(), id, {
-    publishingLevel: publishingLevel,
-  });
+  return {
+    articles: await getArticleBySlugOrId(getPantheonClient(), id, {
+      publishingLevel: publishingLevel,
+    }),
+    recommendedArticles: await getRecommendedArticles(getPantheonClient(), id),
+  };
 });

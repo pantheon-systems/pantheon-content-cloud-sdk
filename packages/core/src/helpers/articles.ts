@@ -247,5 +247,5 @@ export async function getRecommendedArticles(
     variables: { id: id.toString() },
   });
 
-  return article.data.similarArticles as Article[];
+  return article.data.recommendedArticles as Article[];
 }

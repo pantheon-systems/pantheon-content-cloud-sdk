@@ -18,7 +18,7 @@ const pantheonConfig = {
 
 const articleId = route.params.id
 
-const { data: article, error } = await useFetch<Article>(`/api/articles/${articleId}`, {
+const { data: {article, recommendedArticles}, error } = await useFetch<Article>(`/api/articles/${articleId}`, {
   query: {
     publishingLevel
   }
