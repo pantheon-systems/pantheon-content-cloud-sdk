@@ -18,22 +18,21 @@ interface Props {
 const GridItem = ({ href, imgSrc, altText, tags, title }: Props) => {
   return (
     <>
-      <div className="flex flex-col rounded-lg shadow-lg overflow-hidden h-full">
+      <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
         <Link passHref href={href}>
-          <div className="flex-shrink-0 relative h-40 hover:border-indigo-500 cursor-pointer border-2s">
-            {imgSrc !== null ? (
-              <Image
+          <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
+            {imgSrc != null ? (
+              <img
                 src={imgSrc}
-                fill
                 alt={altText || title}
-                style={{ objectFit: "cover" }}
+                className="object-cover w-full h-full"
               />
             ) : (
               <GradientPlaceholder />
             )}
           </div>
         </Link>
-        <div className="my-4 mx-6 text-xl leading-7 font-semibold text-gray-900">
+        <div className="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
           <Link passHref href={href}>
             <div className="hover:scale-105">{title} &rarr;</div>
           </Link>
@@ -47,8 +46,8 @@ const GridItem = ({ href, imgSrc, altText, tags, title }: Props) => {
 const PostGridItem = ({ content: article }) => {
   return (
     <GridItem
-      href={`/articles/${article.id}`}
-      imgSrc={null}
+      href={`/articles/${article.slug || article.id}`}
+      imgSrc={article.metadata["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />
@@ -58,8 +57,8 @@ const PostGridItem = ({ content: article }) => {
 const PageGridItem = ({ content: article }) => {
   return (
     <GridItem
-      href={`/articles/${article.id}`}
-      imgSrc={null}
+      href={`/articles/${article.slug || article.id}`}
+      imgSrc={article.metadata["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />

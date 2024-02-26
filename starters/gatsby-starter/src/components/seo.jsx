@@ -5,7 +5,14 @@ const defaultMeta = {
   robots: "follow, index",
 };
 
-export default function Seo({ title, description, tags, authors, date }) {
+export default function Seo({
+  title,
+  description,
+  tags,
+  authors,
+  date,
+  images,
+}) {
   const meta = {
     ...defaultMeta,
     title,
@@ -13,6 +20,7 @@ export default function Seo({ title, description, tags, authors, date }) {
     authors,
     tags,
     date,
+    images,
   };
 
   return (
@@ -24,6 +32,13 @@ export default function Seo({ title, description, tags, authors, date }) {
       <meta property="og:type" content={meta.type} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:title" content={meta.title} />
+      {meta.images && (
+        <>
+          {meta.images.map((url) => (
+            <meta property="og:image" content={url} />
+          ))}
+        </>
+      )}
       {/* Twitter */}
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />

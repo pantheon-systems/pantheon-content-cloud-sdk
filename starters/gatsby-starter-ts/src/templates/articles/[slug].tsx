@@ -16,12 +16,18 @@ const getSeoMetadata = (article: Article) => {
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
 
+  const images = [
+    article.metadata?.["Hero Image"],
+    // Extend as needed
+  ].filter((i): i is string => typeof i === "string");
+
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
     tags,
     authors,
     publishedTime,
+    images,
   };
 };
 
@@ -35,6 +41,7 @@ export default function PageTemplate({ pageContext: { article } }) {
         tags={seoMetadata.tags}
         authors={seoMetadata.authors}
         date={seoMetadata.publishedTime || undefined}
+        images={seoMetadata.images}
       />
       <div className="max-w-screen-lg mx-auto mt-16 prose">
         <ArticleRenderer

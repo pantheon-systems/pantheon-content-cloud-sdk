@@ -14,12 +14,19 @@ const getSeoMetadata = (article) => {
     else if (key.toLowerCase().trim() === "date" && val.msSinceEpoch)
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
+
+  const images = [
+    article.metadata?.["Hero Image"],
+    // Extend as needed
+  ].filter((url) => typeof url === "string");
+
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
     tags,
     authors,
     publishedTime,
+    images,
   };
 };
 
@@ -33,6 +40,7 @@ export default function PageTemplate({ pageContext: { article } }) {
         tags={seoMetadata.tags}
         authors={seoMetadata.authors}
         date={seoMetadata.publishedTime}
+        images={seoMetadata.images}
       />
       <div className="max-w-screen-lg mx-auto mt-16 prose">
         <ArticleRenderer

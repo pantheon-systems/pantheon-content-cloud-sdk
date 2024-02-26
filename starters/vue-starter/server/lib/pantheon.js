@@ -1,6 +1,6 @@
 import { PantheonClient } from "@pantheon-systems/pcc-vue-sdk";
 
-const { PCC_SITE_ID, PCC_TOKEN } = process.env;
+const { PCC_SITE_ID, PCC_TOKEN, PCC_HOST } = process.env;
 
 export const getPantheonClient = (options) => {
   if (!PCC_SITE_ID) {
@@ -13,7 +13,8 @@ export const getPantheonClient = (options) => {
 
   return new PantheonClient({
     siteId: PCC_SITE_ID,
-    apiKey: PCC_TOKEN,
+    token: PCC_TOKEN,
+    pccHost: PCC_HOST,
     ...options,
   });
 };
