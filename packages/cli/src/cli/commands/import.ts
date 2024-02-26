@@ -214,8 +214,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
                   allIncludedData.find((x) => x.id === topic.id)?.attributes
                     ?.name,
               )
-              .filter((x: string | undefined): x is string => x != null) ||
-              [],
+              .filter((x: string | undefined): x is string => x != null) || [],
             {
               author: authorName,
               drupalId: post.id,
