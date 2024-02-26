@@ -144,7 +144,7 @@ class AddOnApiHelper {
 
   static async publishFile(documentId: string) {
     const authDetails = await getLocalAuthDetails();
-    const publishUrl = `${config.publishApiEndpoint}/?docId=${documentId}&publishLevel=prod`;
+    const publishUrl = `${config.publishEndpoint}/?docId=${documentId}&publishLevel=prod`;
 
     try {
       const resp = await axios.get(publishUrl, {
