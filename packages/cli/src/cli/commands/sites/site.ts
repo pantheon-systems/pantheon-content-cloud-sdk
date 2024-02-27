@@ -3,9 +3,9 @@ import axios from "axios";
 import chalk from "chalk";
 import dayjs from "dayjs";
 import ora from "ora";
-import AddOnApiHelper from "../../lib/addonApiHelper";
-import { printTable } from "../../lib/cliDisplay";
-import { errorHandler } from "../exceptions";
+import AddOnApiHelper from "../../../lib/addonApiHelper";
+import { printTable } from "../../../lib/cliDisplay";
+import { errorHandler } from "../../exceptions";
 
 export const createSite = errorHandler<string>(async (url: string) => {
   const spinner = ora("Creating site...").start();

@@ -10,13 +10,23 @@ import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
 import showLogs from "./commands/logs";
 import {
+  addAdminSchema,
+  listAdminsSchema,
+  removeAdminSchema,
+} from "./commands/sites/admins";
+import {
+  printStoredComponentSchema,
+  pushComponentSchema,
+  removeStoredComponentSchema,
+} from "./commands/sites/componentschema";
+import {
   configurableSiteProperties,
   createSite,
   getComponentSchema,
   listSites,
   SITE_EXAMPLES,
   updateSiteConfig,
-} from "./commands/sites";
+} from "./commands/sites/site";
 import {
   createToken,
   listTokens,
@@ -231,6 +241,75 @@ yargs(hideBin(process.argv))
         .strictCommands()
         .demandCommand()
         .command(
+          "admins [options]",
+          "CRUD admins for a site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "list [options]",
+                "List admins for a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await listAdminsSchema({
+                    siteId: args.siteId as string,
+                  }),
+              )
+              .command(
+                "remove [options]",
+                "Remove admin for a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("email", {
+                    describe: "Email of admin to remove",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await removeAdminSchema({
+                    siteId: args.siteId as string,
+                    email: args.email as string,
+                  }),
+              )
+              .command(
+                "add [options]",
+                "Add admin to a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("email", {
+                    describe: "Email of admin to add",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await addAdminSchema({
+                    siteId: args.siteId as string,
+                    email: args.email as string,
+                  }),
+              );
+          },
+          async (args) => await createSite(args.url as string),
+        )
+        .command(
           "create [options]",
           "Creates new site.",
           (yargs) => {
@@ -241,6 +320,66 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await createSite(args.url as string),
+        )
+        .command(
+          "componentschema [command] [options]",
+          "Make changes & inspect the component schema for a site",
+          (yargs) => {
+            yargs
+              .command(
+                "push [options]",
+                "Retrieve the schema from the provided target URL and use that for the PCC site's component schema.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("target", {
+                    describe:
+                      "API path such as https://localhost:3000/api/pantheoncloud",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await pushComponentSchema({
+                    siteId: args.siteId as string,
+                    target: args.target as string,
+                  }),
+              )
+              .command(
+                "print [options]",
+                "Print the schema that PCC knows about.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await printStoredComponentSchema({
+                    siteId: args.siteId as string,
+                  }),
+              )
+              .command(
+                "remove [options]",
+                "Use this command to stop using the pushed schema and revert back to real-time schema requests from PCC.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await removeStoredComponentSchema({
+                    siteId: args.siteId as string,
+                  }),
+              );
+          },
         )
         .command(
           "components [options]",
