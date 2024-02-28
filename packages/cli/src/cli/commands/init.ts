@@ -22,8 +22,8 @@ const TEMPLATE_FOLDER_MAP = {
 };
 
 const ESLINT_DEPENDENCIES = {
-  eslint: "latest",
-  "eslint-config-next": "latest",
+  eslint: "*",
+  "eslint-config-next": "*",
 };
 
 const ESLINT_CONFIG = {
