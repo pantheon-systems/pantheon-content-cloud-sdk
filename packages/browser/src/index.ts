@@ -29,7 +29,11 @@ if (!token && !apiKey) {
 // Initialize the PantheonClient
 const pantheonClient = new PantheonClient({
   siteId,
-  token: token || apiKey!,
+  // Rabbit hole explanation: we cast apiKey to string because typescript thinks we haven't
+  // checked if it's undefined earlier and lint doesn't let us force with !
+  // Not casting or forcing it will cause typescript to choose
+  // the wrong type to enforce which breaks compilation.
+  token: token || (apiKey as string),
   pccHost,
 });
 
