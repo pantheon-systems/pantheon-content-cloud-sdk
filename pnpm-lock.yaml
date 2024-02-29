@@ -115,7 +115,7 @@ importers:
   packages/browser:
     dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ^3.1.0
+        specifier: ^3.1.1
         version: link:../core
     devDependencies:
       eslint:
