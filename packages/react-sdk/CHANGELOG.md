@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.1.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.1.1
+
 ## 3.1.0
 
 ### Minor Changes

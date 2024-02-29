@@ -5,9 +5,13 @@ type Args = {
   siteId?: string;
   token?: string;
   pccHost?: string;
+
+  // apiKey is deprecated.
+  apiKey?: string;
 };
 
-const { siteId, token, pccHost } = document.currentScript?.dataset as Args;
+const { siteId, token, apiKey, pccHost } = document.currentScript
+  ?.dataset as Args;
 
 // Validate required arguments
 if (!siteId) {
@@ -15,7 +19,8 @@ if (!siteId) {
     "Missing Pantheon Content Cloud site ID. Provide it as a data-site-id attribute on the script tag.",
   );
 }
-if (!token) {
+
+if (!token && !apiKey) {
   throw new Error(
     "Missing Pantheon Content Cloud Token. Provide it as a data-token attribute on the script tag.",
   );
@@ -24,7 +29,7 @@ if (!token) {
 // Initialize the PantheonClient
 const pantheonClient = new PantheonClient({
   siteId,
-  token,
+  token: token || apiKey!,
   pccHost,
 });
 
