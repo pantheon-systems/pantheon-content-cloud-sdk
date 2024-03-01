@@ -144,7 +144,6 @@ export async function getArticles(
       ...rest,
       ...convertSearchParamsToGQL(searchParams),
       contentType,
-      pageSize: 50,
     },
   });
 
