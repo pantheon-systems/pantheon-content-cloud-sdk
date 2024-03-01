@@ -8,6 +8,8 @@ import {
   GET_ARTICLE_QUERY,
   LIST_ARTICLES_QUERY,
   LIST_ARTICLES_QUERY_W_CONTENT,
+  LIST_PAGINATED_ARTICLES_QUERY,
+  LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT,
 } from "../lib/gql";
 import {
   Article,
@@ -102,7 +104,9 @@ export async function getPaginatedArticles(
   const contentType = buildContentType(requestedContentType);
 
   const response = await client.apolloClient.query({
-    query: includeContent ? LIST_ARTICLES_QUERY_W_CONTENT : LIST_ARTICLES_QUERY,
+    query: includeContent
+      ? LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT
+      : LIST_PAGINATED_ARTICLES_QUERY,
     variables: {
       ...rest,
       ...convertSearchParamsToGQL(searchParams),
