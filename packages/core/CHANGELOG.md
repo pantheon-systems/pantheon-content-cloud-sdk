@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.1.2
+
+### Patch Changes
+
+- Pagination query is no longer the default.
+
 ## 3.1.1
 
 ## 3.1.0
