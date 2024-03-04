@@ -49,6 +49,7 @@
     "google-auth-library": "^9.4.0",
     "googleapis": "^129.0.0",
     "inquirer": "^8.2.6",
+    "node-html-parser": "^6.1.12",
     "nunjucks": "^3.2.4",
     "octokit": "^3.1.2",
     "open": "^9.1.0",

@@ -1,3 +1,4 @@
+import { SmartComponentMap } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
@@ -223,6 +224,40 @@ class AddOnApiHelper {
         HttpStatusCode.NotFound
       )
         throw new HTTPNotFound();
+    }
+  }
+
+  static async createSmartComponent(
+    articleId: string,
+    attributes: { [key: string]: string | number | boolean | null | undefined },
+    componentType: string,
+  ): Promise<string> {
+    const idToken = await this.getIdToken();
+
+    try {
+      return (
+        await axios.post(
+          `${API_KEY_ENDPOINT}/components`,
+          {
+            articleId,
+            attributes,
+            componentType,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          },
+        )
+      ).data.id;
+    } catch (err) {
+      if (
+        (err as { response: { status: number } }).response.status ===
+        HttpStatusCode.NotFound
+      )
+        throw new HTTPNotFound();
+
+      throw err;
     }
   }
 
