@@ -1,4 +1,4 @@
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
 import login from "../cli/commands/login";
@@ -140,6 +140,25 @@ class AddOnApiHelper {
     );
 
     return resp.data as Article;
+  }
+
+  static async publishFile(documentId: string) {
+    const authDetails = await getLocalAuthDetails();
+    const publishUrl = `${config.publishEndpoint}/?docId=${documentId}&publishLevel=prod`;
+
+    try {
+      const resp = await axios.get(publishUrl, {
+        headers: {
+          Authorization: `Bearer ${authDetails?.access_token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      return resp.data;
+    } catch (e) {
+      if (e instanceof AxiosError) console.error(e, e.code, e.message);
+      throw e;
+    }
   }
 
   static async getPreviewJwt(docId: string): Promise<string> {
