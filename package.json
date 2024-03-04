@@ -10,6 +10,7 @@
     "lint": "turbo run lint --filter=./{packages,starters}/*",
     "build:starters": "turbo run build --filter=./starters/*",
     "lint:starters": "turbo run lint --filter=./starters/*",
+    "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "publish:packages": "pnpm build && pnpm ci:publish"
   },

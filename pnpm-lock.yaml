@@ -115,7 +115,7 @@ importers:
   packages/browser:
     dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ^3.0.4
+        specifier: ^3.1.1
         version: link:../core
     devDependencies:
       eslint:
@@ -134,7 +134,7 @@ importers:
   packages/cli:
     dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: latest
+        specifier: '*'
         version: link:../core
       axios:
         specifier: ^1.6.5
@@ -295,10 +295,10 @@ importers:
   packages/react-sample-library:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../react-sdk
       '@pantheon-systems/pcc-sdk-core':
-        specifier: latest
+        specifier: '*'
         version: link:../core
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
@@ -374,7 +374,7 @@ importers:
         specifier: ^3.8.8
         version: 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
-        specifier: latest
+        specifier: '*'
         version: link:../core
       '@types/react':
         specifier: '>=17'
@@ -486,7 +486,7 @@ importers:
         specifier: ^3.8.8
         version: 3.8.8(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
-        specifier: latest
+        specifier: '*'
         version: link:../core
       '@vue/apollo-composable':
         specifier: 4.0.0-beta.12
@@ -528,7 +528,7 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       vue-demi:
-        specifier: latest
+        specifier: '*'
         version: 0.14.6(@vue/composition-api@1.7.2)(vue@3.3.4)
     devDependencies:
       '@types/markdown-it':
@@ -580,7 +580,7 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/react-sdk
       autoprefixer:
         specifier: ^10.4.16
@@ -620,7 +620,7 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/react-sdk
       autoprefixer:
         specifier: ^10.4.16
@@ -660,7 +660,7 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
@@ -742,7 +742,7 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.6)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
@@ -821,7 +821,7 @@ importers:
   starters/vue-starter:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/vue-sdk
     devDependencies:
       '@nuxt/devtools':
@@ -855,7 +855,7 @@ importers:
   starters/vue-starter-ts:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
-        specifier: latest
+        specifier: '*'
         version: link:../../packages/vue-sdk
     devDependencies:
       '@nuxt/devtools':

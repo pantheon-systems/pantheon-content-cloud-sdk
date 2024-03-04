@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-cli",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud CLI",
-  "version": "3.0.5",
+  "version": "3.1.2",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -37,7 +37,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-sdk-core": "latest",
+    "@pantheon-systems/pcc-sdk-core": "*",
     "axios": "^1.6.5",
     "bluebird": "^3.7.2",
     "boxen": "^7.1.1",
