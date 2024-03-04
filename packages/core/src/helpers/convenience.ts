@@ -10,11 +10,14 @@ const buildPantheonClient = ({
   pccGrant?: string | undefined;
 }) => {
   return new PantheonClient({
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     pccHost: process.env.PCC_HOST as string,
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     siteId: process.env.PCC_SITE_ID as string,
     apiKey: isClientSide
       ? "not-needed-on-client"
-      : (process.env.PCC_TOKEN as string),
+      : // eslint-disable-next-line turbo/no-undeclared-env-vars
+        (process.env.PCC_TOKEN as string),
     pccGrant,
   });
 };
