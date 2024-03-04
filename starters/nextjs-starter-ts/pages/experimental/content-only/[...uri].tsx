@@ -2,13 +2,12 @@ import {
   PantheonProvider,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/*";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../../components/article-view";
 import Layout from "../../../components/layout";
 import { Tags } from "../../../components/tags";
-import { getArticleBySlugOrId } from "../../../lib/Articles";
-import { buildPantheonClientWithGrant } from "../../../lib/PantheonClient";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
@@ -20,7 +19,12 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
-    <PantheonProvider client={buildPantheonClientWithGrant(grant)}>
+    <PantheonProvider
+      client={PCCConvenienceFunctions.buildPantheonClient({
+        isClientSide: true,
+        pccGrant: grant,
+      })}
+    >
       <Layout>
         <NextSeo
           title={seoMetadata.title}
@@ -56,7 +60,7 @@ export async function getServerSideProps({
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
-  const article = await getArticleBySlugOrId(
+  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     slugOrId,
     publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
   );

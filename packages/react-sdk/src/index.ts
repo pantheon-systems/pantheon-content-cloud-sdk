@@ -10,6 +10,7 @@ export {
   getArticle,
   getAllTags,
   getArticleBySlugOrId,
+  PCCConvenienceFunctions,
 } from "@pantheon-systems/pcc-sdk-core";
 export * from "@pantheon-systems/pcc-sdk-core/types";
 

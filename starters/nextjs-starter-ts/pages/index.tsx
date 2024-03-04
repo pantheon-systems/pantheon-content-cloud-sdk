@@ -1,8 +1,8 @@
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
 import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
-import { getAllArticles } from "../lib/Articles";
 
 export default function Home({ articles }) {
   const HomepageHeader = () => (
@@ -48,7 +48,7 @@ export default function Home({ articles }) {
 }
 
 export async function getServerSideProps() {
-  const articles = await getAllArticles();
+  const articles = await PCCConvenienceFunctions.getAllArticles();
 
   return {
     props: {

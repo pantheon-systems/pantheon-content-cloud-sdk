@@ -1,3 +1,4 @@
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/*";
 import { useSetAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -6,7 +7,6 @@ import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { searchQueryAtom } from "../components/searchbar";
 import { Tags } from "../components/tags";
-import { getAllArticles, getTags } from "../lib/Articles";
 
 export default function TagSearch({ articles, tags, searchString }) {
   const setSearchQuery = useSetAtom(searchQueryAtom);
@@ -73,7 +73,7 @@ export default function TagSearch({ articles, tags, searchString }) {
 
 export async function getServerSideProps({ query }) {
   const [articles, tags] = await Promise.all([
-    getAllArticles(
+    PCCConvenienceFunctions.getAllArticles(
       {
         publishingLevel: "PRODUCTION",
       },
@@ -81,7 +81,7 @@ export async function getServerSideProps({ query }) {
         tagContains: query.q,
       },
     ),
-    getTags(),
+    PCCConvenienceFunctions.getTags(),
   ]);
 
   return {
