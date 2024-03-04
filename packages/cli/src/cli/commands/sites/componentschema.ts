@@ -4,7 +4,7 @@ import {
 } from "@pantheon-systems/pcc-sdk-core/*";
 import axios from "axios";
 import chalk from "chalk";
-import ora from "ora";
+import ora, { Ora } from "ora";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { errorHandler } from "../../exceptions";
 
@@ -52,32 +52,44 @@ export const removeStoredComponentSchema =
     },
   );
 
-type getComponentSchemaParams = { url: string; apiPath: string | null };
-export const getComponentSchema = errorHandler<getComponentSchemaParams>(
-  async ({ url, apiPath }: getComponentSchemaParams) => {
-    const spinner = ora("Retrieving component schema...").start();
-    const schemaEndpoint = `${url}${
-      apiPath || "/api/pantheoncloud/component_schema"
-    }`;
-    const result = (await axios.get(schemaEndpoint)).data;
+export const getComponentSchema = async (
+  url: string,
+  apiPath: string | null,
+  spinner: Ora,
+) => {
+  const schemaEndpoint = `${url}${
+    apiPath || "/api/pantheoncloud/component_schema"
+  }`;
+  const result = (await axios.get(schemaEndpoint)).data;
 
-    spinner.succeed(
-      `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
+  spinner.succeed(
+    `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
+  );
+
+  try {
+    validateComponentSchema(result);
+  } catch (e) {
+    spinner.fail(
+      chalk.red(
+        "Failed to validate this schema:",
+        JSON.stringify(result, null, 4),
+      ),
     );
+    process.exit(1);
+  }
 
-    try {
-      validateComponentSchema(result);
-    } catch (e) {
-      spinner.fail(
-        chalk.red(
-          "Failed to validate this schema:",
-          JSON.stringify(result, null, 4),
-        ),
-      );
-      process.exit(1);
-    }
+  spinner.succeed();
+  return result;
+};
 
-    // Print out the component schema.
-    console.log(JSON.stringify(result, null, 4));
-  },
-);
+type printLiveComponentSchemaParams = { url: string; apiPath: string | null };
+export const printLiveComponentSchema =
+  errorHandler<printLiveComponentSchemaParams>(
+    async ({ url, apiPath }: printLiveComponentSchemaParams) => {
+      const spinner = ora("Retrieving component schema...").start();
+      const result = await getComponentSchema(url, apiPath, spinner);
+
+      // Print out the component schema.
+      console.log(JSON.stringify(result, null, 4));
+    },
+  );

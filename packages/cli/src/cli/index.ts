@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import ora from "ora";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
@@ -15,6 +16,8 @@ import {
   removeAdminSchema,
 } from "./commands/sites/admins";
 import {
+  getComponentSchema,
+  printLiveComponentSchema,
   printStoredComponentSchema,
   pushComponentSchema,
   removeStoredComponentSchema,
@@ -22,7 +25,6 @@ import {
 import {
   configurableSiteProperties,
   createSite,
-  getComponentSchema,
   listSites,
   SITE_EXAMPLES,
   updateSiteConfig,
@@ -346,7 +348,11 @@ yargs(hideBin(process.argv))
                 async (args) =>
                   await pushComponentSchema({
                     siteId: args.siteId as string,
-                    target: args.target as string,
+                    componentSchema: await getComponentSchema(
+                      args.target as string,
+                      "",
+                      ora("Retrieving live schema").start(),
+                    ),
                   }),
               )
               .command(
@@ -398,7 +404,7 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) =>
-            await getComponentSchema({
+            await printLiveComponentSchema({
               url: args.url as string,
               apiPath: args.apiPath as string | null,
             }),
