@@ -34,6 +34,10 @@ export type PreviewBarProps = {
   collapsedPreviewBarProps?: Record<string, unknown>;
 };
 
+export type ExperimentalFlags = {
+  disableAllStyles?: boolean;
+};
+
 const ArticleRenderer = defineComponent({
   name: "ArticleRenderer",
   props: {
@@ -59,6 +63,10 @@ const ArticleRenderer = defineComponent({
     },
     previewBarProps: {
       type: Object as PropType<PreviewBarProps>,
+      required: false,
+    },
+    __experimentalFlags: {
+      type: Object as PropType<ExperimentalFlags>,
       required: false,
     },
   },
@@ -117,6 +125,7 @@ const ArticleRenderer = defineComponent({
         element: titleContent,
         smartComponentMap: props.smartComponentMap,
         componentMap: props.componentMap,
+        __experimentalFlags: props.__experimentalFlags,
       });
 
     return h("div", {}, [
@@ -137,6 +146,7 @@ const ArticleRenderer = defineComponent({
             element,
             smartComponentMap: props.smartComponentMap,
             componentMap: props.componentMap,
+            __experimentalFlags: props.__experimentalFlags,
           });
         }),
       ]),

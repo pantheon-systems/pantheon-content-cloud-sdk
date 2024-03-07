@@ -58,13 +58,16 @@ const PantheonTreeRenderer = ({
   }
 
   const nodeChildren = [element.data, ...children].filter(Boolean);
+
+  if (disableAllStyles === true) {
+    element.style = null;
+    delete element.attrs?.class;
+  }
+
   return React.createElement(
     componentMap?.[element.tag as "div"] || element.tag,
     {
-      style:
-        disableAllStyles === true
-          ? undefined
-          : getStyleObjectFromString(element?.style),
+      style: getStyleObjectFromString(element?.style),
       ...convertAttributes(element.attrs),
     },
     nodeChildren.length ? nodeChildren : undefined,
