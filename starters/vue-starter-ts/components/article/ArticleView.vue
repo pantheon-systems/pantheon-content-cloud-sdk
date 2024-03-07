@@ -24,7 +24,7 @@ const smartComponentMap = {
 </script>
 
 <template>
-  <div class="max-w-screen-lg mx-auto mt-16 prose">
+  <div class="max-w-screen-lg mx-auto mt-16 prose text-black">
     <h2 v-if="error" class="text-red-500">
       Failed to load article, please try again.
     </h2>

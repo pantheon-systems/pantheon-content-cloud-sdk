@@ -32,7 +32,7 @@ export default function ArticlePage({ article, grant }) {
           }}
         />
 
-        <div className="max-w-screen-lg mx-auto mt-16 prose">
+        <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} />
 
           <Tags tags={article?.tags} />

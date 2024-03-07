@@ -42,7 +42,7 @@ export default function PageTemplate({ pageContext: { article } }) {
         date={seoMetadata.publishedTime}
         images={seoMetadata.images}
       />
-      <div className="max-w-screen-lg mx-auto mt-16 prose">
+      <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
         <ArticleRenderer
           article={article}
           renderTitle={(titleElement) => (
