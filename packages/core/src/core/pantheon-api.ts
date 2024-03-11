@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import { getArticleBySlugOrId } from "../helpers";
+import { getArticleBySlugOrId, PCCConvenienceFunctions } from "../helpers";
 import { parseJwt } from "../lib/jwt";
 import { Article, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
@@ -78,9 +78,19 @@ function defaultResolvePath(article: Pick<Article, "id">) {
   return `/articles/${article.id}`;
 }
 
-export const PantheonAPI =
-  (options?: PantheonAPIOptions) =>
-  async (req: ApiRequest, res: ApiResponse) => {
+export const PantheonAPI = (options?: PantheonAPIOptions) => {
+  const getPantheonClient =
+    options?.getPantheonClient ||
+    ((props?: Partial<PantheonClientConfig>) =>
+      PCCConvenienceFunctions.buildPantheonClient({
+        isClientSide: false,
+        ...props,
+      }));
+
+  // TODO: Support app router.
+  // Type "ApiRequest" is not a valid type for the function's first argument.
+  // Expected "Request | NextRequest", got "ApiRequest".
+  return async (req: ApiRequest, res: ApiResponse) => {
     // Allow the external Pantheon system to access these API routes.
     await res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -137,21 +147,19 @@ export const PantheonAPI =
       const parsedArticleId = command[1];
 
       const article: (Partial<Article> & Pick<Article, "id">) | null =
-        options?.getPantheonClient
-          ? await getArticleBySlugOrId(
-              options?.getPantheonClient({
-                pccGrant: pccGrant ? pccGrant.toString() : undefined,
-              }),
-              parsedArticleId,
-              // We will let downstream validate the publishingLevel param.
-              {
-                publishingLevel: publishingLevel
-                  ?.toString()
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  .toUpperCase() as any,
-              },
-            )
-          : null;
+        await getArticleBySlugOrId(
+          getPantheonClient({
+            pccGrant: pccGrant ? pccGrant.toString() : undefined,
+          }),
+          parsedArticleId,
+          // We will let downstream validate the publishingLevel param.
+          {
+            publishingLevel: publishingLevel
+              ?.toString()
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              .toUpperCase() as any,
+          },
+        );
 
       if (article == null) {
         return res.redirect(302, options?.notFoundPath || "/404");
@@ -199,3 +207,4 @@ export const PantheonAPI =
       return await res.redirect(302, options?.notFoundPath || "/404");
     }
   };
+};

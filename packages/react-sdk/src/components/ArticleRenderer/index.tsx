@@ -7,6 +7,7 @@ import {
 import { Element } from "hast";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { getTextContent } from "../../utils/react-element";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
@@ -44,7 +45,10 @@ interface Props {
   bodyClassName?: string;
   containerClassName?: string;
   headerClassName?: string;
-  renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
+  renderTitle?: (
+    titleElement: React.ReactElement,
+    content: string,
+  ) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
@@ -125,7 +129,7 @@ const ArticleRenderer = ({
   const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
 
   // @ts-expect-error Dynamic component props
-  const titleElement = React.createElement(renderer, {
+  const titleElement = React.createElement<HTMLElement>(renderer, {
     element: titleContent,
     componentMap,
     smartComponentMap,
@@ -157,7 +161,9 @@ const ArticleRenderer = ({
         : null}
 
       <div className={headerClassName}>
-        {renderTitle ? renderTitle(titleElement) : titleElement}
+        {renderTitle
+          ? renderTitle(titleElement, getTextContent(titleElement))
+          : titleElement}
       </div>
       {renderBody ? renderBody(bodyElement) : bodyElement}
     </div>

@@ -1,13 +1,18 @@
-import { PantheonClient } from "..";
-import { getArticle, getArticles } from "./articles";
+import { PantheonClient, PantheonClientConfig } from "..";
+import {
+  getArticleBySlugOrId as _getArticleBySlugOrId,
+  getArticles,
+} from "./articles";
 import { getAllTags } from "./metadata";
 
 const buildPantheonClient = ({
   isClientSide,
   pccGrant,
+  ...props
 }: {
   isClientSide: boolean;
   pccGrant?: string | undefined;
+  props?: Partial<PantheonClientConfig>;
 }) => {
   return new PantheonClient({
     // eslint-disable-next-line turbo/no-undeclared-env-vars
@@ -17,8 +22,10 @@ const buildPantheonClient = ({
     apiKey: isClientSide
       ? "not-needed-on-client"
       : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_TOKEN as string),
+        (process.env.PCC_TOKEN as string) ||
+        (process.env.PCC_API_KEY as string),
     pccGrant,
+    ...props,
   });
 };
 
@@ -31,7 +38,7 @@ async function getAllArticles(
   options?: Parameters<typeof getArticles>[2],
 ) {
   const posts = await getArticles(
-    buildPantheonClient({ isClientSide: false }),
+    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
     {
       publishingLevel: "PRODUCTION",
       ...args,
@@ -49,8 +56,8 @@ async function getArticleBySlugOrId(
   id: number | string,
   publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
 ) {
-  const post = await getArticle(
-    buildPantheonClient({ isClientSide: false }),
+  const post = await _getArticleBySlugOrId(
+    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
     id,
     {
       publishingLevel,
@@ -62,7 +69,9 @@ async function getArticleBySlugOrId(
 }
 
 async function getTags() {
-  const tags = await getAllTags(buildPantheonClient({ isClientSide: false }));
+  const tags = await getAllTags(
+    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
+  );
   return tags;
 }
 
