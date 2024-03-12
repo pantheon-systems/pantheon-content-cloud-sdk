@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Revert custom font's bullet rendering styles */
+li::before {
+  font-family: auto;
+}
