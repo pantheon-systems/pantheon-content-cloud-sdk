@@ -231,7 +231,7 @@ const init = async ({
   }
 
   if (template === "nextjs" || template === "vue")
-    logger.log(chalk.green(`  ${packageManager} run dev`));
+    logger.log(chalk.green(`   ${packageManager} run dev`));
   else logger.log(chalk.green(`   ${packageManager} run start`));
 };
 

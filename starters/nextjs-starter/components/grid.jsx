@@ -14,7 +14,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
         <Link passHref href={href}>
           <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
             {imgSrc != null ? (
-              <img
+              <Image
                 src={imgSrc}
                 alt={altText || title}
                 className="object-cover w-full h-full"
