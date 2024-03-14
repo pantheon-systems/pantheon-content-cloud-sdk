@@ -7,8 +7,8 @@ jest.setTimeout(180000);
 
 const PCC = "./dist/index.js";
 
-const TEST_SIDE_ID = "sy7VaTjjYj77PfTzG6K9";
-const TEST_TOKEN = "799f4272-8d47-4218-80c1-77407f8891b7";
+const TEST_SIDE_ID = process.env.PCC_SITE_ID;
+const TEST_TOKEN = process.env.PCC_TOKEN;
 const ENV_CONTENT = `
 PCC_SITE_ID=${TEST_SIDE_ID}
 PCC_TOKEN=${TEST_TOKEN}
