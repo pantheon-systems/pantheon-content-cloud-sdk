@@ -1,4 +1,4 @@
-import fs, { readFileSync } from "fs";
+import fs, { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import tmp from "tmp";
 import { sh } from "../../lib/utils";
@@ -7,6 +7,13 @@ jest.setTimeout(180000);
 
 const PCC = "./dist/index.js";
 
+const TEST_SIDE_ID = "sy7VaTjjYj77PfTzG6K9";
+const TEST_TOKEN = "799f4272-8d47-4218-80c1-77407f8891b7";
+const ENV_CONTENT = `
+PCC_SITE_ID=${TEST_SIDE_ID}
+PCC_TOKEN=${TEST_TOKEN}
+
+`;
 const defaultArgs = ["--non-interactive", "--noInstall", "--verbose"];
 
 const executePCC = async (command: string, args: string[]) => {
@@ -95,6 +102,10 @@ test("should be able to init starter kit for nextjs template with typescript", a
   );
   expect(packageJson.name).toBe(path.parse(appFolder).base);
 
+  executePCC("cd", [appFolder]);
+  writeFileSync(".env.local", ENV_CONTENT);
+  executePCC("pnpm", ["build"]);
+  executePCC("cd", [".."]);
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
