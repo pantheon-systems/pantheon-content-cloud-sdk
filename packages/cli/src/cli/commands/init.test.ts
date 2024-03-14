@@ -102,10 +102,10 @@ test("should be able to init starter kit for nextjs template with typescript", a
   );
   expect(packageJson.name).toBe(path.parse(appFolder).base);
 
-  sh("cd", [appFolder]);
+  await sh("cd", [appFolder]);
   writeFileSync(".env.local", ENV_CONTENT);
-  sh("pnpm", ["build"]);
-  sh("cd", [".."]);
+  await sh("pnpm", ["build"]);
+  await sh("cd", [".."]);
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
