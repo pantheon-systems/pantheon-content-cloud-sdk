@@ -105,7 +105,7 @@ test("should be able to init starter kit for nextjs template with typescript", a
   writeFileSync(`${appFolder}/.env.local`, ENV_CONTENT);
   await sh(
     "cd",
-    [appFolder, "&&", "pnpm", "install", "&&", "pnpm", "build"],
+    [appFolder, "&&", "pnpm", "install", "&&", "pwd", "pnpm", "build"],
     true,
   );
   // Remove app folder
