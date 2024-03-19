@@ -47,6 +47,10 @@ const SuspenseErrorBoundary = ({ children }: Props) => {
 
 export const withSmartComponentErrorBoundary =
   (Component: React.ComponentType<any>) => (props: Record<string, unknown>) => (
+    // This effectively opts your smart components out of server-side rendering.
+    // This is a trade-off you should consider. If you want to opt-in to
+    // server-side rendering of the component, disable this error boundary but be
+    // aware errors in the component will crash the entire page.
     <SuspenseErrorBoundary>
       <Component {...props} />
     </SuspenseErrorBoundary>
