@@ -12,6 +12,7 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error) {
+    // Replace this with your own error logging solution
     console.error(error);
   }
 
