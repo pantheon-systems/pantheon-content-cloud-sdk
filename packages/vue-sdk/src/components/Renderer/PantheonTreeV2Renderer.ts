@@ -2,6 +2,7 @@ import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
 import { getStyleObjectFromString } from "../../utils/renderer";
 import { ComponentMap, SmartComponentMap, ExperimentalFlags } from "./index";
+import withSmartComponentErrorBoundary from "../Common/ErrorBoundaries/SmartComponents";
 
 const PantheonTreeRenderer = defineComponent({
   name: "PantheonTreeRenderer",
@@ -51,7 +52,9 @@ const PantheonTreeRenderer = defineComponent({
       const component = smartComponentMap?.[componentType];
 
       if (component) {
-        return h(component, element.attrs);
+        return __experimentalFlags?.disableDefaultErrorBoundaries === true
+          ? h(component, element.attrs)
+          : h(withSmartComponentErrorBoundary(component), element.attrs);
       }
     }
 
