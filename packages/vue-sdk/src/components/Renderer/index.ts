@@ -36,6 +36,7 @@ export type PreviewBarProps = {
 
 export type ExperimentalFlags = {
   disableAllStyles?: boolean;
+  disableDefaultErrorBoundaries: boolean;
 };
 
 const ArticleRenderer = defineComponent({
@@ -93,6 +94,7 @@ const ArticleRenderer = defineComponent({
           options: {
             html: true,
           },
+          __experimentalFlags: props.__experimentalFlags,
         }),
       ]);
     }

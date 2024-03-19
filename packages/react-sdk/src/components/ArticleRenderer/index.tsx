@@ -51,6 +51,7 @@ interface Props {
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
   __experimentalFlags?: {
     disableAllStyles?: boolean;
+    disableDefaultErrorBoundaries?: boolean;
   };
 }
 
@@ -92,6 +93,9 @@ const ArticleRenderer = ({
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
             componentMap={componentMap}
+            disableDefaultErrorBoundaries={
+              !!__experimentalFlags?.disableDefaultErrorBoundaries
+            }
           >
             {article.content}
           </MarkdownRenderer>
@@ -130,6 +134,8 @@ const ArticleRenderer = ({
     componentMap,
     smartComponentMap,
     disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+    disableDefaultErrorBoundaries:
+      !!__experimentalFlags?.disableDefaultErrorBoundaries,
   });
 
   const bodyElement = (
@@ -142,6 +148,8 @@ const ArticleRenderer = ({
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+          disableDefaultErrorBoundaries:
+            !!__experimentalFlags?.disableDefaultErrorBoundaries,
         }),
       )}
     </div>

@@ -3,12 +3,14 @@ import React from "react";
 import { ComponentMap, SmartComponentMap } from ".";
 import { convertAttributes } from "../../utils/attributes";
 import { getStyleObjectFromString } from "../../utils/styles";
+import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
 interface Props {
   element: PantheonTreeNode;
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableAllStyles?: boolean;
+  disableDefaultErrorBoundaries?: boolean;
 }
 
 const PantheonTreeRenderer = ({
@@ -16,6 +18,7 @@ const PantheonTreeRenderer = ({
   smartComponentMap,
   componentMap,
   disableAllStyles,
+  disableDefaultErrorBoundaries,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
@@ -25,6 +28,7 @@ const PantheonTreeRenderer = ({
         smartComponentMap,
         componentMap,
         disableAllStyles,
+        disableDefaultErrorBoundaries,
       }),
     ) ?? [];
 
@@ -38,10 +42,14 @@ const PantheonTreeRenderer = ({
     const component = smartComponentMap?.[componentType];
 
     if (component) {
-      return React.createElement(
-        component.reactComponent,
-        element.attrs as Record<string, unknown>,
-      );
+      return disableDefaultErrorBoundaries
+        ? React.createElement(
+            component.reactComponent,
+            element.attrs as Record<string, unknown>,
+          )
+        : withSmartComponentErrorBoundary(component.reactComponent)(
+            element.attrs as Record<string, unknown>,
+          );
     }
   }
 

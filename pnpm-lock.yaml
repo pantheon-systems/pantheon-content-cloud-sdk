@@ -377,11 +377,11 @@ importers:
         specifier: '*'
         version: link:../core
       '@types/react':
-        specifier: '>=17'
+        specifier: '>=18'
         version: 18.2.60
       '@types/react-dom':
-        specifier: '>=17'
-        version: 18.2.18
+        specifier: '>=18'
+        version: 18.2.19
       framer-motion:
         specifier: ^10.18.0
         version: 10.18.0(react-dom@18.2.0)(react@18.2.0)
@@ -9363,7 +9363,6 @@ packages:
     resolution: {integrity: sha512-aZvQL6uUbIJpjZk4U8JZGbau9KDeAwMfmhyWorxgBkqDIEf6ROjRozcmPIicqsUwPUjbkDfHKgGee1Lq65APcA==}
     dependencies:
       '@types/react': 18.2.60
-    dev: true
 
   /@types/react-test-renderer@18.0.0:
     resolution: {integrity: sha512-C7/5FBJ3g3sqUahguGi03O79b8afNeSD6T8/GU50oQrJCU0bVCCGQHaGKUbg2Ce8VQEEqTw8/HiS6lXHHdgkdQ==}

@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
 import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
+import type { Article } from '@pantheon-systems/pcc-vue-sdk'
 import '@pantheon-systems/pcc-vue-sdk/components/style.css'
 
-import LeadCapture from '../smart-components/LeadCapture.vue'
-import type { Article } from '@pantheon-systems/pcc-vue-sdk'
-import type { PropType } from 'vue';
+import { smartComponentMap } from '../smart-components';
 
 defineProps({
   article: {
@@ -16,11 +16,6 @@ defineProps({
     default: false,
   },
 })
-
-// Smart components for article rendering
-const smartComponentMap = {
-  LEAD_CAPTURE: LeadCapture,
-}
 </script>
 
 <template>
@@ -35,9 +30,9 @@ const smartComponentMap = {
       <ArticleRenderer :article="article" :smart-component-map="smartComponentMap">
         <template #titleRenderer="title">
           <div>
-            <h1 class="text-3xl font-bold md:text-4xl">
+            <div class="text-3xl font-bold md:text-4xl">
               <component :is="title"/>
-            </h1>
+            </div>
             <p class="py-2" v-if="article.updatedAt">
               Last Updated:
               {{
