@@ -49,7 +49,8 @@ export function renderArticleToElement(
 
   // Add PCC content to the document node
   contentNodes.forEach((node) => {
-    documentNode.appendChild(renderContentNode(node, config));
+    const contentNode = renderContentNode(node, config);
+    contentNode && documentNode.appendChild(contentNode);
   });
 
   // Clear fallback content
@@ -64,7 +65,12 @@ export function renderArticleToElement(
 export const renderContentNode = (
   element: PantheonTreeNode | TreePantheonContent,
   config?: RendererConfig,
-): HTMLElement => {
+): HTMLElement | null => {
+  if (config?.disableStyles && element.tag === "style") {
+    // Skip rendering style nodes if disableStyles is true
+    return null;
+  }
+
   const node = document.createElement(element.tag);
 
   // Remove styles and classes if disableStyles is true
@@ -79,7 +85,7 @@ export const renderContentNode = (
     });
   }
 
-  if (element.style) {
+  if (element.style && element.style.length > 0) {
     node.setAttribute("style", element.style.join(";"));
   }
 
@@ -90,7 +96,8 @@ export const renderContentNode = (
   // Render child nodes recursively
   if (element.children) {
     element.children.forEach((child) => {
-      node.appendChild(renderContentNode(child, config));
+      const contentNode = renderContentNode(child, config);
+      contentNode && node.appendChild(contentNode);
     });
   }
 

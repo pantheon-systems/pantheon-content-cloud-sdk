@@ -1,3 +1,4 @@
+import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
@@ -284,6 +285,84 @@ class AddOnApiHelper {
         },
       },
     );
+  }
+
+  static async getServersideComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.get(`${SITE_ENDPOINT}/${id}/components`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async pushComponentSchema(
+    id: string,
+    componentSchema: typeof SmartComponentMapZod,
+  ): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${SITE_ENDPOINT}/${id}/components`,
+      {
+        componentSchema,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(`${SITE_ENDPOINT}/${id}/components`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async listAdmins(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.get(`${SITE_ENDPOINT}/${id}/admins`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async addAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${SITE_ENDPOINT}/${id}/admins`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(`${SITE_ENDPOINT}/${id}/admins`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      data: {
+        email,
+      },
+    });
   }
 
   static async updateSiteConfig(

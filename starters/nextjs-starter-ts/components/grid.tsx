@@ -1,5 +1,4 @@
 import { withGrid } from "@pantheon-systems/nextjs-kit";
-import Image from "next/image";
 import Link from "next/link";
 import { Tags } from "./tags";
 
