@@ -48,7 +48,7 @@ export default function ArticlePage({
           }}
         />
 
-        <div className="max-w-screen-lg mx-auto mt-16 prose">
+        <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} onlyContent={true} />
 
           <Tags tags={article?.tags} />

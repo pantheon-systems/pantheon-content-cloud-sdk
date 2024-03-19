@@ -10,7 +10,7 @@ export interface Article {
   publishingLevel: keyof typeof PublishingLevel;
   title: string | null;
   updatedAt: number | null;
-  metadata: unknown | null;
+  metadata: Record<string, unknown> | null;
   previewActiveUntil: number | null;
 }
 

@@ -1,7 +1,7 @@
 import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import { defineComponent, h, PropType, resolveComponent } from "vue-demi";
 import { getStyleObjectFromString } from "../../utils/renderer";
-import { ComponentMap, SmartComponentMap } from "./index";
+import { ComponentMap, SmartComponentMap, ExperimentalFlags } from "./index";
 
 const PantheonTreeRenderer = defineComponent({
   name: "PantheonTreeRenderer",
@@ -19,9 +19,14 @@ const PantheonTreeRenderer = defineComponent({
       default: () => ({}),
       required: false,
     },
+    __experimentalFlags: {
+      type: Object as PropType<ExperimentalFlags>,
+      required: false,
+    },
   },
   render() {
-    const { element, smartComponentMap, componentMap } = this.$props;
+    const { element, smartComponentMap, componentMap, __experimentalFlags } =
+      this.$props;
 
     const children =
       element.children?.map((el) =>
@@ -29,6 +34,7 @@ const PantheonTreeRenderer = defineComponent({
           element: el,
           smartComponentMap,
           componentMap,
+          __experimentalFlags,
         }),
       ) ?? [];
 
@@ -50,12 +56,19 @@ const PantheonTreeRenderer = defineComponent({
     }
 
     if (element.tag === "style") {
+      if (__experimentalFlags?.disableAllStyles === true) return null;
+
       return h("style", {
         innerHTML: element.data,
       });
     }
 
     const nodeChildren = [element.data, ...children].filter(Boolean);
+
+    if (__experimentalFlags?.disableAllStyles === true) {
+      element.style = null;
+      delete element.attrs?.class;
+    }
 
     return h(
       componentMap?.[element.tag as "div"] || element.tag,

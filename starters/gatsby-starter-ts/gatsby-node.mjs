@@ -8,7 +8,7 @@ import {
 
 const pccHost = process.env.PCC_HOST;
 const pccSiteId = process.env.PCC_SITE_ID;
-const pccApiKey = process.env.PCC_API_KEY;
+const pccApiKey = process.env.PCC_TOKEN;
 
 if (process.env.IS_CICD !== "true") {
   if (!pccSiteId) {
@@ -16,7 +16,7 @@ if (process.env.IS_CICD !== "true") {
   }
 
   if (!pccApiKey) {
-    throw new Error("PCC_API_KEY environment variable is required");
+    throw new Error("PCC_TOKEN environment variable is required");
   }
 }
 
@@ -27,9 +27,15 @@ const pantheonClient = new PantheonClient({
 });
 
 const createPages = async ({ actions: { createPage } }) => {
-  const articles = await getArticles(pantheonClient, {
-    publishingLevel: "PRODUCTION",
-  });
+  const articles = await getArticles(
+    pantheonClient,
+    {
+      publishingLevel: "PRODUCTION",
+    },
+    {
+      publishStatus: "published",
+    },
+  );
 
   createPage({
     path: `/`,
@@ -56,6 +62,15 @@ const createPages = async ({ actions: { createPage } }) => {
       component: path.resolve("./src/templates/articles/[slug].tsx"),
       context: { article, recommendedArticles },
     });
+
+    // Create slug-based pages
+    if (article.slug) {
+      createPage({
+        path: `/articles/${article.slug}`,
+        component: path.resolve("./src/templates/articles/[slug].tsx"),
+        context: { article },
+      });
+    }
   });
 };
 

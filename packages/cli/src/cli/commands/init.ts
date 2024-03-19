@@ -22,8 +22,8 @@ const TEMPLATE_FOLDER_MAP = {
 };
 
 const ESLINT_DEPENDENCIES = {
-  eslint: "latest",
-  "eslint-config-next": "latest",
+  eslint: "*",
+  "eslint-config-next": "*",
 };
 
 const ESLINT_CONFIG = {
@@ -176,7 +176,7 @@ const init = async ({
       {
         type: "confirm",
         name: "createNewApiKey",
-        message: "Create a new API key?",
+        message: "Create a new Token?",
       },
     ]);
 
@@ -195,7 +195,7 @@ const init = async ({
     }
 
     if (apiKey != null) {
-      envFile = replaceEnvVariable(envFile, "PCC_API_KEY", apiKey);
+      envFile = replaceEnvVariable(envFile, "PCC_TOKEN", apiKey);
     }
 
     writeFileSync(path.join(absoluteProjectPath, localEnvFileName), envFile);
@@ -231,7 +231,7 @@ const init = async ({
   }
 
   if (template === "nextjs" || template === "vue")
-    logger.log(chalk.green(`  ${packageManager} run dev`));
+    logger.log(chalk.green(`   ${packageManager} run dev`));
   else logger.log(chalk.green(`   ${packageManager} run start`));
 };
 

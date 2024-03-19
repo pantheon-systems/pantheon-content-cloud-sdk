@@ -58,6 +58,58 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
 
 export const LIST_ARTICLES_QUERY = gql`
   query ListArticles(
+    $contentType: ContentType
+    $publishingLevel: PublishingLevel
+    $filter: ArticleFilterInput
+  ) {
+    articles(
+      contentType: $contentType
+      publishingLevel: $publishingLevel
+      filter: $filter
+    ) {
+      id
+      title
+      siteId
+      slug
+      tags
+      metadata
+      publishedDate
+      publishingLevel
+      contentType
+      updatedAt
+      previewActiveUntil
+    }
+  }
+`;
+
+export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
+  query ListArticles(
+    $contentType: ContentType
+    $publishingLevel: PublishingLevel
+    $filter: ArticleFilterInput
+  ) {
+    articles(
+      contentType: $contentType
+      publishingLevel: $publishingLevel
+      filter: $filter
+    ) {
+      id
+      title
+      siteId
+      tags
+      metadata
+      publishedDate
+      publishingLevel
+      contentType
+      content
+      updatedAt
+      previewActiveUntil
+    }
+  }
+`;
+
+export const LIST_PAGINATED_ARTICLES_QUERY = gql`
+  query ListArticles(
     $pageSize: Int
     $sortBy: ArticleSortField
     $sortOrder: SortOrder
@@ -90,7 +142,7 @@ export const LIST_ARTICLES_QUERY = gql`
   }
 `;
 
-export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
+export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
   query ListArticles(
     $pageSize: Int
     $sortBy: ArticleSortField

@@ -11,6 +11,7 @@ interface Props {
   tags?: string[];
   authors?: string[];
   date?: string | undefined;
+  images?: string[];
 }
 
 export default function Seo({
@@ -19,6 +20,7 @@ export default function Seo({
   tags,
   authors,
   date,
+  images,
 }: Props) {
   const meta = {
     ...defaultMeta,
@@ -27,6 +29,7 @@ export default function Seo({
     authors,
     tags,
     date,
+    images,
   };
   return (
     <head>
@@ -37,6 +40,13 @@ export default function Seo({
       <meta property="og:type" content={meta.type} />
       <meta property="og:description" content={meta.description} />
       <meta property="og:title" content={meta.title} />
+      {meta.images && (
+        <>
+          {meta.images.map((url) => (
+            <meta property="og:image" content={url} />
+          ))}
+        </>
+      )}
       {/* Twitter */}
       <meta name="twitter:title" content={meta.title} />
       <meta name="twitter:description" content={meta.description} />

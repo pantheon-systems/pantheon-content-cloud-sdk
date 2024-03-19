@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "outputs": ["public/**", ".cache/**"],
-      "env": ["NODE_ENV", "PCC_SITE_ID", "PCC_API_KEY"]
+      "env": ["NODE_ENV", "PCC_SITE_ID", "PCC_TOKEN"]
     }
   }
 }

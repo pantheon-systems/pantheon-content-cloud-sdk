@@ -1,5 +1,28 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.1.2
+  - @pantheon-systems/pcc-react-sdk@3.1.2
+
+## 3.1.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.1.1
+- @pantheon-systems/pcc-react-sdk@3.1.1
+
+## 3.1.0
+
+### Patch Changes
+
+- Updated dependencies [282e854]
+  - @pantheon-systems/pcc-react-sdk@3.1.0
+  - @pantheon-systems/pcc-sdk-core@3.1.0
+
 ## 0.1.0
 
 ### Minor Changes

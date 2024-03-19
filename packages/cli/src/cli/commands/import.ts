@@ -165,14 +165,9 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       siteId,
       "blog",
       "drupalId",
-      "string",
+      "text",
     );
-    await AddOnApiHelper.addSiteMetadataField(
-      siteId,
-      "blog",
-      "author",
-      "string",
-    );
+    await AddOnApiHelper.addSiteMetadataField(siteId, "blog", "author", "text");
 
     await Promise.map(
       allPosts,
@@ -226,6 +221,8 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
             },
             verbose,
           );
+
+          await AddOnApiHelper.publishFile(fileId);
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;
