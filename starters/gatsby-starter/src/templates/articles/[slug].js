@@ -69,11 +69,11 @@ export default function PageTemplate({
             </div>
           )}
         />
+        <section>
+          <h3>Recommended Articles</h3>
+          <PostGrid contentType="posts" data={recommendedArticles} />
+        </section>
       </div>
-      <section>
-        <h3>Recommended Articles</h3>
-        <PostGrid contentType="posts" data={recommendedArticles} />
-      </section>
     </Layout>
   );
 }

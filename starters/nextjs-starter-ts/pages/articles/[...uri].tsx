@@ -1,5 +1,4 @@
 import {
-  ArticleWithoutContent,
   PantheonProvider,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
@@ -53,15 +52,11 @@ export default function ArticlePage({
         <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} />
           <Tags tags={article?.tags} />
-          Recommended Articles
-          <div>
-            {recommendedArticles?.map((x) => <div key={x.id}>{x.title}</div>)}
-          </div>
+          <section>
+            <h3>Recommended Articles</h3>
+            <PageGrid data={recommendedArticles} />
+          </section>
         </div>
-        <section>
-          <h3>Recommended Articles</h3>
-          <PageGrid data={recommendedArticles} />
-        </section>
       </Layout>
     </PantheonProvider>
   );

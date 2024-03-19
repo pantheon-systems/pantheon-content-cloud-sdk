@@ -74,11 +74,11 @@ export default function PageTemplate({
           headerClassName={undefined}
           smartComponentMap={undefined}
         />
+        <section>
+          <h3>Recommended Articles</h3>
+          <PostGrid data={recommendedArticles} />
+        </section>
       </div>
-      <section>
-        <h3>Recommended Articles</h3>
-        <PostGrid data={recommendedArticles} />
-      </section>
     </Layout>
   );
 }

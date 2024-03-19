@@ -50,10 +50,14 @@ const createPages = async ({ actions: { createPage } }) => {
   });
 
   const articlesWithContent = await Promise.all(
-    articles.map(async ({ id }) => ({
-      article: await getArticle(pantheonClient, id),
-      recommendedArticles: await getRecommendedArticles(pantheonClient, id),
-    })),
+    articles.map(async ({ id }) => {
+      const [article, recommendedArticles] = await Promise.all([
+        await getArticle(pantheonClient, id),
+        await getRecommendedArticles(pantheonClient, id),
+      ]);
+
+      return { article, recommendedArticles };
+    }),
   );
 
   articlesWithContent.forEach(async ({ article, recommendedArticles }) => {

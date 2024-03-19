@@ -2,14 +2,17 @@ import { PantheonProvider } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
+import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
-import PageGrid from "../../components/grid";
 import { Tags } from "../../components/tags";
-import { getArticleBySlugOrId } from "../../lib/Articles";
+import {
+  getArticleBySlugOrId,
+  getRecommendedArticles,
+} from "../../lib/Articles";
 import { buildPantheonClientWithGrant } from "../../lib/PantheonClient";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
-export default function ArticlePage({ article, grant }) {
+export default function ArticlePage({ article, grant, recommendedArticles }) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -35,13 +38,12 @@ export default function ArticlePage({ article, grant }) {
 
         <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} />
-
           <Tags tags={article?.tags} />
+          <section>
+            <h3>Recommended Articles</h3>
+            <PageGrid data={recommendedArticles} />
+          </section>
         </div>
-        <section>
-          <h3>Recommended Articles</h3>
-          <PageGrid data={recommendedArticles} />
-        </section>
       </Layout>
     </PantheonProvider>
   );

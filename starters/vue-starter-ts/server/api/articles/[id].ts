@@ -22,10 +22,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return {
-    article: await getArticleBySlugOrId(getPantheonClient(), id, {
+  const [article, recommendedArticles] = await Promise.all([
+    await getArticleBySlugOrId(getPantheonClient(), id, {
       publishingLevel: publishingLevel,
     }),
-    recommendedArticles: await getRecommendedArticles(getPantheonClient(), id),
+    await getRecommendedArticles(getPantheonClient(), id),
+  ]);
+
+  return {
+    article,
+    recommendedArticles,
   };
 });

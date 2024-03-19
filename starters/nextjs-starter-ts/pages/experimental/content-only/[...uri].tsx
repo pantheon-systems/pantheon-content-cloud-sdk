@@ -52,12 +52,12 @@ export default function ArticlePage({
           <ArticleView article={article} onlyContent={true} />
 
           <Tags tags={article?.tags} />
+          <section>
+            <h3>Recommended Articles</h3>
+            <PostGrid data={recommendedArticles} />
+          </section>
         </div>
       </Layout>
-      <section>
-        <h3>Recommended Articles</h3>
-        <PostGrid data={recommendedArticles} />
-      </section>
     </PantheonProvider>
   );
 }
