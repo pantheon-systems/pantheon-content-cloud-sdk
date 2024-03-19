@@ -5,18 +5,27 @@ import {
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../../components/article-view";
+import { PostGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import { Tags } from "../../../components/tags";
-import { getArticleBySlugOrId } from "../../../lib/Articles";
+import {
+  getArticleBySlugOrId,
+  getRecommendedArticles,
+} from "../../../lib/Articles";
 import { buildPantheonClientWithGrant } from "../../../lib/PantheonClient";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
+  recommendedArticles: Article[];
   grant: string;
 }
 
-export default function ArticlePage({ article, grant }: ArticlePageProps) {
+export default function ArticlePage({
+  article,
+  recommendedArticles,
+  grant,
+}: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -43,6 +52,10 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
           <ArticleView article={article} onlyContent={true} />
 
           <Tags tags={article?.tags} />
+          <section>
+            <h3>Recommended Articles</h3>
+            <PostGrid data={recommendedArticles} />
+          </section>
         </div>
       </Layout>
     </PantheonProvider>
@@ -88,6 +101,7 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      recommendedArticles: await getRecommendedArticles(article.id),
     },
   };
 }

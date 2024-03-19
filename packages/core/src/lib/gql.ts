@@ -175,3 +175,22 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
     }
   }
 `;
+
+export const GET_RECOMMENDED_ARTICLES_QUERY = gql`
+  query GetRecommendedArticle($id: String!) {
+    recommendedArticles(id: $id) {
+      id
+      title
+      content
+      slug
+      tags
+      siteId
+      metadata
+      publishedDate
+      publishingLevel
+      contentType
+      updatedAt
+      previewActiveUntil
+    }
+  }
+`;

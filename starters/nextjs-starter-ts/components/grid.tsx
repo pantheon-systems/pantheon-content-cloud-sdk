@@ -19,7 +19,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }: Props) => {
     <>
       <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
         <Link passHref href={href}>
-          <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
+          <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s not-prose">
             {imgSrc != null ? (
               <img
                 src={imgSrc}

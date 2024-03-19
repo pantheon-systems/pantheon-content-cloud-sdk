@@ -2,6 +2,7 @@ export type { PantheonClientConfig } from "@pantheon-systems/pcc-sdk-core";
 
 export {
   getArticles,
+  getRecommendedArticles,
   getArticle,
   getAllTags,
 } from "@pantheon-systems/pcc-sdk-core";

@@ -1,4 +1,5 @@
 import {
+  getRecommendedArticles as _getRecommendedArticles,
   getAllTags,
   getArticleBySlugOrId as getArticle,
   getArticles,
@@ -44,4 +45,8 @@ export async function getTags() {
   const tags = await getAllTags(pantheonClient);
 
   return tags;
+}
+
+export async function getRecommendedArticles(id) {
+  return await _getRecommendedArticles(pantheonClient, id);
 }

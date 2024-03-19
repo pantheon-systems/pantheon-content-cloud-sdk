@@ -1,6 +1,7 @@
 import { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import React from "react";
+import { PostGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import Seo from "../../components/seo";
 
@@ -31,7 +32,9 @@ const getSeoMetadata = (article: Article) => {
   };
 };
 
-export default function PageTemplate({ pageContext: { article } }) {
+export default function PageTemplate({
+  pageContext: { article, recommendedArticles },
+}) {
   const seoMetadata = getSeoMetadata(article);
   return (
     <Layout>
@@ -71,6 +74,10 @@ export default function PageTemplate({ pageContext: { article } }) {
           headerClassName={undefined}
           smartComponentMap={undefined}
         />
+        <section>
+          <h3>Recommended Articles</h3>
+          <PostGrid data={recommendedArticles} />
+        </section>
       </div>
     </Layout>
   );
