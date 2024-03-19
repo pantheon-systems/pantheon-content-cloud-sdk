@@ -1,4 +1,3 @@
-import { withSmartComponentErrorBoundary } from "./error-boundary";
 import LeadCapture from "./lead-capture";
 
 export const serverSmartComponentMap = {
@@ -23,6 +22,6 @@ export const serverSmartComponentMap = {
 export const clientSmartComponentMap = {
   LEAD_CAPTURE: {
     ...serverSmartComponentMap.LEAD_CAPTURE,
-    reactComponent: withSmartComponentErrorBoundary(LeadCapture),
+    reactComponent: LeadCapture,
   },
 };
