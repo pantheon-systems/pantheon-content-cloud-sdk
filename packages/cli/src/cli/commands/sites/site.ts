@@ -1,11 +1,9 @@
-import { validateComponentSchema } from "@pantheon-systems/pcc-sdk-core";
-import axios from "axios";
 import chalk from "chalk";
 import dayjs from "dayjs";
 import ora from "ora";
-import AddOnApiHelper from "../../lib/addonApiHelper";
-import { printTable } from "../../lib/cliDisplay";
-import { errorHandler } from "../exceptions";
+import AddOnApiHelper from "../../../lib/addonApiHelper";
+import { printTable } from "../../../lib/cliDisplay";
+import { errorHandler } from "../../exceptions";
 
 export const createSite = errorHandler<string>(async (url: string) => {
   const spinner = ora("Creating site...").start();
@@ -19,36 +17,6 @@ export const createSite = errorHandler<string>(async (url: string) => {
     throw e;
   }
 });
-
-type getComponentSchemaParams = { url: string; apiPath: string | null };
-export const getComponentSchema = errorHandler<getComponentSchemaParams>(
-  async ({ url, apiPath }: getComponentSchemaParams) => {
-    const spinner = ora("Retrieving component schema...").start();
-    const schemaEndpoint = `${url}${
-      apiPath || "/api/pantheoncloud/component_schema"
-    }`;
-    const result = (await axios.get(schemaEndpoint)).data;
-
-    spinner.succeed(
-      `Retrieved component schema from ${schemaEndpoint}. Now checking its validity`,
-    );
-
-    try {
-      validateComponentSchema(result);
-    } catch (e) {
-      spinner.fail(
-        chalk.red(
-          "Failed to validate this schema:",
-          JSON.stringify(result, null, 4),
-        ),
-      );
-      process.exit(1);
-    }
-
-    // Print out the component schema.
-    console.log(JSON.stringify(result, null, 4));
-  },
-);
 
 export const listSites = errorHandler<{
   withStatus?: boolean;
