@@ -26,6 +26,6 @@ export const serverSmartComponentMap = {
 export const clientSmartComponentMap: SmartComponentMap = {
   LEAD_CAPTURE: {
     ...serverSmartComponentMap.LEAD_CAPTURE,
-    reactComponent: LeadCapture as any,
+    reactComponent: LeadCapture,
   },
 };

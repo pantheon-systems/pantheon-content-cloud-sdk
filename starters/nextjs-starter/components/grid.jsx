@@ -1,5 +1,4 @@
 import { withGrid } from "@pantheon-systems/nextjs-kit";
-import Image from "next/image";
 import Link from "next/link";
 import { Tags } from "./tags";
 
@@ -14,7 +13,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
         <Link passHref href={href}>
           <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
             {imgSrc != null ? (
-              <Image
+              <img
                 src={imgSrc}
                 alt={altText || title}
                 className="object-cover w-full h-full"
