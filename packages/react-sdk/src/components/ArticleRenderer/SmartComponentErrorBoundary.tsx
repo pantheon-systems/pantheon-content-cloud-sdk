@@ -45,9 +45,22 @@ const SuspenseErrorBoundary = ({ children }: Props) => {
   );
 };
 
-export const withSmartComponentErrorBoundary =
-  (Component: React.ComponentType<any>) => (props: Record<string, unknown>) => (
+export const withSmartComponentErrorBoundary = (
+  Component: React.ComponentType<unknown>,
+) => {
+  const WithSmartComponentErrorBoundary = (props: Record<string, unknown>) => (
     <SuspenseErrorBoundary>
       <Component {...props} />
     </SuspenseErrorBoundary>
   );
+
+  WithSmartComponentErrorBoundary.displayName = `WithSmartComponentErrorBoundary(${getDisplayName(
+    Component,
+  )})`;
+
+  return WithSmartComponentErrorBoundary;
+};
+
+function getDisplayName(Component: React.ComponentType<unknown>) {
+  return Component.displayName || Component.name || "Component";
+}
