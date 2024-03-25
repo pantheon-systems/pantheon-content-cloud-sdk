@@ -21,6 +21,7 @@ import {
   PublishingLevel,
   SortOrder,
 } from "../types";
+import { handleApolloError } from "./errors";
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;
@@ -101,37 +102,41 @@ export async function getPaginatedArticles(
   searchParams?: ArticleSearchArgs,
   includeContent?: boolean,
 ): Promise<PaginatedArticle> {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  try {
+    const { contentType: requestedContentType, ...rest } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  const response = await client.apolloClient.query({
-    query: includeContent
-      ? LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT
-      : LIST_PAGINATED_ARTICLES_QUERY,
-    variables: {
-      ...rest,
-      ...convertSearchParamsToGQL(searchParams),
-      contentType,
-    },
-  });
-  const articles = response.data.articles as ArticleWithoutContent[];
-  const { total, cursor } = response.data.extensions?.pagination || {};
+    const response = await client.apolloClient.query({
+      query: includeContent
+        ? LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT
+        : LIST_PAGINATED_ARTICLES_QUERY,
+      variables: {
+        ...rest,
+        ...convertSearchParamsToGQL(searchParams),
+        contentType,
+      },
+    });
+    const articles = response.data.articles as ArticleWithoutContent[];
+    const { total, cursor } = response.data.extensions?.pagination || {};
 
-  return {
-    data: articles,
-    totalCount: total,
-    cursor,
-    fetchNextPage:
-      cursor && articles.length > 0
-        ? () =>
-            getPaginatedArticles(
-              client,
-              { ...args, cursor },
-              searchParams,
-              includeContent,
-            )
-        : fetchEmptyPage(total, cursor),
-  };
+    return {
+      data: articles,
+      totalCount: total,
+      cursor,
+      fetchNextPage:
+        cursor && articles.length > 0
+          ? () =>
+              getPaginatedArticles(
+                client,
+                { ...args, cursor },
+                searchParams,
+                includeContent,
+              )
+          : fetchEmptyPage(total, cursor),
+    };
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticles(
@@ -140,19 +145,25 @@ export async function getArticles(
   searchParams?: ArticleSearchArgs,
   includeContent?: boolean,
 ) {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  try {
+    const { contentType: requestedContentType, ...rest } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  const response = await client.apolloClient.query({
-    query: includeContent ? LIST_ARTICLES_QUERY_W_CONTENT : LIST_ARTICLES_QUERY,
-    variables: {
-      ...rest,
-      ...convertSearchParamsToGQL(searchParams),
-      contentType,
-    },
-  });
+    const response = await client.apolloClient.query({
+      query: includeContent
+        ? LIST_ARTICLES_QUERY_W_CONTENT
+        : LIST_ARTICLES_QUERY,
+      variables: {
+        ...rest,
+        ...convertSearchParamsToGQL(searchParams),
+        contentType,
+      },
+    });
 
-  return response.data.articles as ArticleWithoutContent[];
+    return response.data.articles as ArticleWithoutContent[];
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticle(
@@ -160,15 +171,19 @@ export async function getArticle(
   id: number | string,
   args?: ArticleQueryArgs,
 ) {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  try {
+    const { contentType: requestedContentType, ...rest } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  const article = await client.apolloClient.query({
-    query: GET_ARTICLE_QUERY,
-    variables: { id: id.toString(), contentType, ...rest },
-  });
+    const article = await client.apolloClient.query({
+      query: GET_ARTICLE_QUERY,
+      variables: { id: id.toString(), contentType, ...rest },
+    });
 
-  return article.data.article as Article;
+    return article.data.article as Article;
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticleBySlug(
@@ -176,15 +191,19 @@ export async function getArticleBySlug(
   slug: string,
   args?: ArticleQueryArgs,
 ) {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  try {
+    const { contentType: requestedContentType, ...rest } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  const article = await client.apolloClient.query({
-    query: GET_ARTICLE_QUERY,
-    variables: { slug, contentType, ...rest },
-  });
+    const article = await client.apolloClient.query({
+      query: GET_ARTICLE_QUERY,
+      variables: { slug, contentType, ...rest },
+    });
 
-  return article.data.article as Article;
+    return article.data.article as Article;
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticleBySlugOrId(
@@ -208,7 +227,7 @@ export async function getArticleBySlugOrId(
         e.graphQLErrors[0]?.message !==
           "No document matching this slug was found.")
     ) {
-      console.error(e);
+      handleApolloError(e);
     }
   }
 
@@ -221,7 +240,7 @@ export async function getArticleBySlugOrId(
         e.graphQLErrors[0]?.message !==
           "No document matching this ID was found.")
     ) {
-      console.error(e);
+      handleApolloError(e);
     }
 
     return null;
@@ -245,10 +264,14 @@ export async function getRecommendedArticles(
   client: PantheonClient,
   id: number | string,
 ) {
-  const article = await client.apolloClient.query({
-    query: GET_RECOMMENDED_ARTICLES_QUERY,
-    variables: { id: id.toString() },
-  });
+  try {
+    const article = await client.apolloClient.query({
+      query: GET_RECOMMENDED_ARTICLES_QUERY,
+      variables: { id: id.toString() },
+    });
 
-  return article.data.recommendedArticles as Article[];
+    return article.data.recommendedArticles as Article[];
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
