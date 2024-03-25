@@ -1,14 +1,20 @@
-import { Article, GET_RECOMMENDED_ARTICLES_QUERY, PantheonClient } from "..";
+import {
+  Article,
+  GET_RECOMMENDED_ARTICLES_QUERY,
+  PantheonClient,
+  PantheonClientConfig,
+} from "..";
 import { getArticle, getArticles } from "./articles";
 import { getAllTags } from "./metadata";
 
 const buildPantheonClient = ({
   isClientSide,
   pccGrant,
+  ...props
 }: {
   isClientSide: boolean;
   pccGrant?: string | undefined;
-}) => {
+} & Partial<PantheonClientConfig>) => {
   return new PantheonClient({
     // eslint-disable-next-line turbo/no-undeclared-env-vars
     pccHost: process.env.PCC_HOST as string,
@@ -19,6 +25,7 @@ const buildPantheonClient = ({
       : // eslint-disable-next-line turbo/no-undeclared-env-vars
         (process.env.PCC_TOKEN as string),
     pccGrant,
+    ...props,
   });
 };
 
