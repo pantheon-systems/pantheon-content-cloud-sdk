@@ -2,7 +2,7 @@
 import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
 import '@pantheon-systems/pcc-vue-sdk/components/style.css'
 
-import LeadCapture from '~/components/smart-components/LeadCapture.vue'
+import { smartComponentMap } from '../smart-components';
 
 defineProps({
   article: {
@@ -14,11 +14,6 @@ defineProps({
     default: false,
   },
 })
-
-// Smart components for article rendering
-const smartComponentMap = {
-  LEAD_CAPTURE: LeadCapture,
-}
 </script>
 
 <template>

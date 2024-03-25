@@ -6,11 +6,13 @@ import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
 import type { ComponentMap, SmartComponentMap } from ".";
+import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
 interface MarkdownRendererProps {
   children: string;
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
+  disableDefaultErrorBoundaries: boolean;
 }
 
 interface ComponentProperties {
@@ -23,6 +25,7 @@ const MarkdownRenderer = ({
   children,
   smartComponentMap,
   componentMap,
+  disableDefaultErrorBoundaries,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
@@ -40,7 +43,11 @@ const MarkdownRenderer = ({
 
             return (
               <div>
-                <Component key={id} {...decodedAttrs} />
+                {disableDefaultErrorBoundaries ? (
+                  <Component {...decodedAttrs} />
+                ) : (
+                  withSmartComponentErrorBoundary(Component)(decodedAttrs)
+                )}
               </div>
             );
           }
