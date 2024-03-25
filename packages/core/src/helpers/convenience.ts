@@ -1,4 +1,4 @@
-import { PantheonClient } from "..";
+import { Article, GET_RECOMMENDED_ARTICLES_QUERY, PantheonClient } from "..";
 import { getArticle, getArticles } from "./articles";
 import { getAllTags } from "./metadata";
 
@@ -66,9 +66,21 @@ async function getTags() {
   return tags;
 }
 
+async function getRecommendedArticles(id: number | string) {
+  const article = await buildPantheonClient({
+    isClientSide: false,
+  }).apolloClient.query({
+    query: GET_RECOMMENDED_ARTICLES_QUERY,
+    variables: { id: id.toString() },
+  });
+
+  return article.data.recommendedArticles as Article[];
+}
+
 export const PCCConvenienceFunctions = {
   buildPantheonClient,
   getAllArticles,
   getArticleBySlugOrId,
+  getRecommendedArticles,
   getTags,
 };

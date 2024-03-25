@@ -8,7 +8,6 @@ import ArticleView from "../../components/article-view";
 import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
-import { getRecommendedArticles } from "../../lib/Articles";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 export default function ArticlePage({ article, grant, recommendedArticles }) {
@@ -92,7 +91,7 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
-      recommendedArticles: await getRecommendedArticles(article.id),
+      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(article.id),
     },
   };
 }
