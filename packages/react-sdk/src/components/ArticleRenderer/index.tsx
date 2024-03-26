@@ -1,11 +1,13 @@
 import {
   Article,
   PantheonTree,
+  PantheonTreeNode,
   TreePantheonContent,
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
-import React, { useEffect } from "react";
+import _ from "lodash";
+import React, { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
@@ -55,9 +57,49 @@ interface Props {
   };
 }
 
+function useArticleTitle(
+  article: Article | undefined,
+  { enabled = true }: { enabled: boolean },
+) {
+  return useMemo(() => {
+    if (!article?.content) {
+      return null;
+    }
+
+    const contentType = article?.contentType;
+
+    if (contentType === "TEXT_MARKDOWN") {
+      return null;
+    }
+
+    let jsonContent = JSON.parse(article.content) as
+      | PantheonTree
+      | TreePantheonContent[];
+    const content = Array.isArray(jsonContent)
+      ? jsonContent
+      : jsonContent.children;
+
+    const titleContent = content.find((x) => x.tag === "title")!;
+
+    if (titleContent != null) {
+      const flatMap = titleContent.children
+        ? _.flatMapDeep(
+            titleContent.children,
+            (x: PantheonTreeNode | TreePantheonContent) => x.data,
+          )
+        : [];
+
+      return titleContent.data + flatMap.join("");
+    } else if (article?.metadata?.title != null) {
+      return article.metadata.title;
+    } else {
+      return article.title || "";
+    }
+  }, [article]);
+}
+
 const ArticleRenderer = ({
   article,
-  headerClassName,
   bodyClassName,
   containerClassName,
   renderTitle,
@@ -68,6 +110,13 @@ const ArticleRenderer = ({
   __experimentalFlags,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
+  // const articleTitle = useArticleTitle(article, {
+  //   enabled: renderTitle != null,
+  // });
+
+  if (renderTitle != null) {
+    console.warn("renderTitle is no longer supported");
+  }
 
   useEffect(() => {
     setRenderCSR(true);
@@ -118,26 +167,6 @@ const ArticleRenderer = ({
     ? content
     : content.children || [];
 
-  const indexOfFirstHeader = parsedContent.findIndex((x) =>
-    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-  );
-
-  const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-  const resolvedTitleIndex =
-    indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
-
-  const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
-
-  // @ts-expect-error Dynamic component props
-  const titleElement = React.createElement(renderer, {
-    element: titleContent,
-    componentMap,
-    smartComponentMap,
-    disableAllStyles: !!__experimentalFlags?.disableAllStyles,
-    disableDefaultErrorBoundaries:
-      !!__experimentalFlags?.disableDefaultErrorBoundaries,
-  });
-
   const bodyElement = (
     <div className={bodyClassName}>
       {parsedContent?.map((element, idx) =>
@@ -164,9 +193,6 @@ const ArticleRenderer = ({
           )
         : null}
 
-      <div className={headerClassName}>
-        {renderTitle ? renderTitle(titleElement) : titleElement}
-      </div>
       {renderBody ? renderBody(bodyElement) : bodyElement}
     </div>
   );

@@ -72,8 +72,10 @@ const PantheonTreeRenderer = ({
     delete element.attrs?.class;
   }
 
+  const convertedTagName = element.tag === "title" ? "h1" : element.tag;
+
   return React.createElement(
-    componentMap?.[element.tag as "div"] || element.tag,
+    componentMap?.[element.tag as "div"] || convertedTagName,
     {
       style: getStyleObjectFromString(element?.style),
       ...convertAttributes(element.attrs),
