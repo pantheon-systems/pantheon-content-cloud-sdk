@@ -62,15 +62,15 @@ export const LIST_ARTICLES_QUERY = gql`
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
-    artqwerticles(
-      cotqwertntentType: $coqewrtqwtntentType
-      publishqwertqwetingfgadsgadfgLevel: $publishingLevel
+    articles(
+      contentType: $contentType
+      publishingLevel: $publishingLevel
       filter: $filter
     ) {
       id
       title
       siteId
-      slugtqwetqw
+      slug
       tags
       metadata
       publishedDate
@@ -89,13 +89,13 @@ export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
     $filter: ArticleFilterInput
   ) {
     articles(
-      contenqewrttType: $contentType
+      contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
     ) {
       id
-      ttqwetqwetitle
-      siteIfsadfaed
+      title
+      siteId
       tags
       metadata
       publishedDate
