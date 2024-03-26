@@ -2,19 +2,6 @@ import { ApolloError } from "@apollo/client";
 
 export function handleApolloError(e: Error | unknown): never {
   if (e instanceof ApolloError) {
-    console.error(
-      e,
-      e.name,
-      e.graphQLErrors,
-      e.protocolErrors,
-      e.clientErrors,
-      e.networkError,
-      "message",
-      e.message,
-      "endmessage",
-      Object.keys(e.extraInfo || {}),
-    );
-
     const compactErrorInfo = {
       graphQLErrors: e.graphQLErrors,
       protocolErrors: e.protocolErrors,
@@ -22,6 +9,11 @@ export function handleApolloError(e: Error | unknown): never {
       networkError: e.networkError,
       message: e.message,
     };
+
+    console.error(
+      "Apollo error occurred",
+      JSON.stringify(compactErrorInfo, null, 4),
+    );
 
     throw new Error(
       "Failed to retrieve PCC content due to " +
