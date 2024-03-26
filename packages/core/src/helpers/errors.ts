@@ -1,4 +1,4 @@
-import { ApolloError } from "@apollo/client";
+import { ApolloError } from "..";
 
 export function handleApolloError(e: Error | unknown): never {
   if (e instanceof ApolloError) {
