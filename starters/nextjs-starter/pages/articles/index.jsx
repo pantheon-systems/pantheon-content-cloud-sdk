@@ -1,10 +1,9 @@
 import { Paginator } from "@pantheon-systems/nextjs-kit";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
-
 import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
-import { getAllArticles } from "../../lib/Articles";
 
 export default function ArticlesListTemplate({ articles }) {
   const RenderCurrentItems = ({ currentItems }) => {
@@ -32,7 +31,7 @@ export default function ArticlesListTemplate({ articles }) {
 }
 
 export async function getServerSideProps() {
-  const articles = await getAllArticles();
+  const articles = await PCCConvenienceFunctions.getAllArticles();
 
   return {
     props: {

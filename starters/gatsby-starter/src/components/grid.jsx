@@ -39,7 +39,7 @@ const PostGridItem = ({ content: article }) => {
   return (
     <GridItem
       href={`/articles/${article.slug || article.id}`}
-      imgSrc={article.metadata["Hero Image"]}
+      imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />
@@ -50,7 +50,7 @@ const PageGridItem = ({ content: article }) => {
   return (
     <GridItem
       href={`/articles/${article.slug || article.id}`}
-      imgSrc={article.metadata["Hero Image"]}
+      imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />

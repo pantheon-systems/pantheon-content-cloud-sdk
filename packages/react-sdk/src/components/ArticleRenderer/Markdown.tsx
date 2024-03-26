@@ -34,8 +34,8 @@ const MarkdownRenderer = ({
       components={{
         ...(componentMap as Components),
         ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
-          const { attrs, id, type } =
-            node.properties as typeof node.properties & ComponentProperties;
+          const { attrs, type } = node.properties as typeof node.properties &
+            ComponentProperties;
 
           if (smartComponentMap && smartComponentMap[type]) {
             const { reactComponent: Component } = smartComponentMap[type];

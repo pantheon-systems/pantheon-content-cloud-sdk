@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import { getArticleBySlugOrId } from "../helpers";
+import { getArticleBySlugOrId, PCCConvenienceFunctions } from "../helpers";
 import { parseJwt } from "../lib/jwt";
 import { Article, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
@@ -74,13 +74,26 @@ export interface PantheonAPIOptions {
   smartComponentMap?: SmartComponentMap;
 }
 
-function defaultResolvePath(article: Pick<Article, "id">) {
-  return `/articles/${article.id}`;
-}
+const defaultOptions = {
+  getPantheonClient: (props?: Partial<PantheonClientConfig>) =>
+    PCCConvenienceFunctions.buildPantheonClient({
+      isClientSide: false,
+      ...props,
+    }),
+  resolvePath: (article: Partial<Article> & Pick<Article, "id">) =>
+    `/articles/${article.id}`,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  getSiteId: () => process.env.PCC_SITE_ID as string,
+} satisfies PantheonAPIOptions;
 
 export const PantheonAPI =
-  (options?: PantheonAPIOptions) =>
+  (givenOptions?: PantheonAPIOptions) =>
   async (req: ApiRequest, res: ApiResponse) => {
+    const options: PantheonAPIOptions = {
+      ...defaultOptions,
+      ...givenOptions,
+    };
+
     // Allow the external Pantheon system to access these API routes.
     await res.setHeader("Access-Control-Allow-Origin", "*");
 
@@ -159,7 +172,7 @@ export const PantheonAPI =
 
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
-        : defaultResolvePath(article);
+        : defaultOptions.resolvePath(article);
 
       return await res.redirect(
         302,
