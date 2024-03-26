@@ -7,7 +7,7 @@ export const Tags = ({ tags }) => {
         <>
           Tags:&nbsp;
           {tags.map((x, i) => (
-            <div key={x}>
+            <div key={x} className="inline">
               {x.toString()}
               {i < tags.length - 1 ? ", " : undefined}
             </div>
