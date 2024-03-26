@@ -68,8 +68,8 @@
     }
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "*",
-    "@pantheon-systems/pcc-sdk-core": "*",
+    "@pantheon-systems/pcc-react-sdk": "~3.2.0",
+    "@pantheon-systems/pcc-sdk-core": "~3.2.0",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55"
   },
   "sideEffects": false
