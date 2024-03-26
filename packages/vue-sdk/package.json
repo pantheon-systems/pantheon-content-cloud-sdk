@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.5",
-    "@pantheon-systems/pcc-sdk-core": "*",
+    "@pantheon-systems/pcc-sdk-core": "~3.2.0",
     "@vue/apollo-composable": "4.0.0-beta.12",
     "floating-vue": "2.0.0-beta.24",
     "graphql": "^16.8.1",
