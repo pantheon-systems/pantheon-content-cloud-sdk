@@ -4,6 +4,7 @@ import React from "react";
 import { PostGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import Seo from "../../components/seo";
+import { Tags } from "../../components/tags";
 
 const getSeoMetadata = (article: Article) => {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
@@ -74,9 +75,10 @@ export default function PageTemplate({
           headerClassName={undefined}
           smartComponentMap={undefined}
         />
+        <Tags tags={article?.tags} />
         <section>
           <h3>Recommended Articles</h3>
-          <PostGrid data={recommendedArticles} />
+          <PostGrid data={recommendedArticles} FallbackComponent={null} />
         </section>
       </div>
     </Layout>
