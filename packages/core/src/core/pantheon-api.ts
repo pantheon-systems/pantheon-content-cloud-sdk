@@ -82,6 +82,7 @@ const defaultOptions = {
     }),
   resolvePath: (article: Partial<Article> & Pick<Article, "id">) =>
     `/articles/${article.id}`,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
   getSiteId: () => process.env.PCC_SITE_ID as string,
 } satisfies PantheonAPIOptions;
 
