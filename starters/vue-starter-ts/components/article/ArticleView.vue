@@ -27,25 +27,23 @@ defineProps({
       Loading...
     </h2>
     <div v-else>
+      <div>
+        <div class="text-3xl font-bold md:text-4xl">
+          {{ getArticleTitle(article) }}
+        </div>
+        <p class="py-2" v-if="article.updatedAt">
+          Last Updated:
+          {{
+            new Date(article.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          }}
+        </p>
+        <hr class="mt-6 mb-8">
+      </div>
       <ArticleRenderer :article="article" :smart-component-map="smartComponentMap">
-        <template #titleRenderer="title">
-          <div>
-            <div class="text-3xl font-bold md:text-4xl">
-              <component :is="title"/>
-            </div>
-            <p class="py-2" v-if="article.updatedAt">
-              Last Updated:
-              {{
-                new Date(article.updatedAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })
-              }}
-            </p>
-            <hr class="mt-6 mb-8">
-          </div>
-        </template>
       </ArticleRenderer>
 
       <div v-if="article.tags" className="mt-2 text-sm leading-[1.25rem] text-theme-bg-black">
