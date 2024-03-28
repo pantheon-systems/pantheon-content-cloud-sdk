@@ -107,6 +107,12 @@ export const LIST_ARTICLES_QUERY_WITH_SUMMARY = generateListArticlesGQL({
   withSummary: true,
 });
 
+export const LIST_ARTICLES_QUERY_WITH_CONTENT_AND_SUMMARY =
+  generateListArticlesGQL({
+    withContent: true,
+    withSummary: true,
+  });
+
 export const LIST_PAGINATED_ARTICLES_QUERY = gql`
   query ListArticles(
     $pageSize: Int
