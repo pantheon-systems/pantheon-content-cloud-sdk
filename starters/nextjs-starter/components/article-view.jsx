@@ -1,5 +1,5 @@
-import { useArticle, useArticleTitle } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
+import { useArticle } from "@pantheon-systems/pcc-react-sdk";
+import { ArticleRenderer, useArticleTitle } from "@pantheon-systems/pcc-react-sdk/components";
 import { clientSmartComponentMap } from "./smart-components";
 
 export default function ArticleView({ article }) {

@@ -7,7 +7,7 @@ import {
 import _ from "lodash";
 import { useMemo } from "react";
 
-export function getArticleTitle(article: Article | undefined) {
+export function getArticleTitle(article: Article | undefined): string | null {
   if (!article?.content) {
     return null;
   }
@@ -39,13 +39,16 @@ export function getArticleTitle(article: Article | undefined) {
       : [];
 
     return titleContent.data + flatMap.join("");
-  } else if (article?.metadata?.title != null) {
+  } else if (
+    article?.metadata?.title != null &&
+    typeof article?.metadata?.title === "string"
+  ) {
     return article.metadata.title;
   } else {
     return article.title || "";
   }
 }
 
-export function useArticleTitle(article: Article | undefined) {
-  return useMemo(() => getArticleTitle(article), [article]);
+export function useArticleTitle(article: Article | undefined): string | null {
+  return useMemo(() => getArticleTitle(article) || "", [article]);
 }

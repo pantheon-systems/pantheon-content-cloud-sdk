@@ -1,6 +1,6 @@
-import { useArticle, useArticleTitle } from "@pantheon-systems/pcc-react-sdk";
+import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
+import { ArticleRenderer, useArticleTitle } from "@pantheon-systems/pcc-react-sdk/components";
 import { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
 
@@ -49,7 +49,10 @@ export default function ArticleView({
       <ArticleRenderer
         article={hydratedArticle}
         smartComponentMap={clientSmartComponentMap}
-        __experimentalFlags={{ disableAllStyles: !!onlyContent, useUnintrusiveTitleRendering: true }}
+        __experimentalFlags={{
+          disableAllStyles: !!onlyContent,
+          useUnintrusiveTitleRendering: true,
+        }}
       />
     </>
   );
