@@ -28,7 +28,7 @@ export function getArticleTitle(article: Article | undefined) {
     ? jsonContent
     : jsonContent.children;
 
-  const titleContent = content.find((x) => x.tag === "title")!;
+  const titleContent = content.find((x) => x.tag === "title");
 
   if (titleContent != null) {
     const flatMap = titleContent.children

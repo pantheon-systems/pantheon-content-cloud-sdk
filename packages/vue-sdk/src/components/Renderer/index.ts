@@ -112,28 +112,29 @@ const ArticleRenderer = defineComponent({
       ? content
       : content.children || [];
 
+    let titleElement = null;
 
-  let titleElement = null;
+    if (props.__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+      const indexOfFirstHeader = parsedContent.findIndex((x) =>
+        ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+      );
 
-  if (props.__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
-    const indexOfFirstHeader = parsedContent.findIndex((x) =>
-      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-    );
+      const indexOfFirstParagraph = parsedContent.findIndex(
+        (x) => x.tag === "p",
+      );
+      const resolvedTitleIndex =
+        indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-    const resolvedTitleIndex =
-      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+      const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
 
-    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
-
-     titleElement =
-      // @ts-expect-error Dynamic component props
-      h(renderer, {
-        element: titleContent,
-        smartComponentMap: props.smartComponentMap,
-        componentMap: props.componentMap,
-        __experimentalFlags: props.__experimentalFlags,
-      });
+      titleElement =
+        // @ts-expect-error Dynamic component props
+        h(renderer, {
+          element: titleContent,
+          smartComponentMap: props.smartComponentMap,
+          componentMap: props.componentMap,
+          __experimentalFlags: props.__experimentalFlags,
+        });
     }
 
     return h("div", {}, [
@@ -142,11 +143,13 @@ const ArticleRenderer = defineComponent({
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      titleElement != null ? h(
-        "div",
-        { class: ["title", props.headerClass] },
-        slots.titleRenderer?.(titleElement) ?? titleElement,
-      ) : null,
+      titleElement != null
+        ? h(
+            "div",
+            { class: ["title", props.headerClass] },
+            slots.titleRenderer?.(titleElement) ?? titleElement,
+          )
+        : null,
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props
