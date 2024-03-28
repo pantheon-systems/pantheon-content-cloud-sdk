@@ -1,4 +1,4 @@
-import { useArticle } from "@pantheon-systems/pcc-react-sdk";
+import { useArticle, useArticleTitle } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import { clientSmartComponentMap } from "./smart-components";
 
@@ -14,30 +14,35 @@ export default function ArticleView({ article }) {
     },
   );
 
-  const hydratedArticle = data?.article ?? article;
+  const hydratedArticle = useMemo(
+    () => data?.article ?? article,
+    [data, article],
+  );
+  const articleTitle = useArticleTitle(article);
 
   return (
-    <ArticleRenderer
-      article={hydratedArticle}
-      renderTitle={(titleElement) => (
-        <div>
-          <div className="text-3xl font-bold md:text-4xl">{titleElement}</div>
+    <>
+      <div>
+        <div className="text-3xl font-bold md:text-4xl">{articleTitle}</div>
 
-          {article.updatedAt ? (
-            <p className="py-2">
-              Last Updated:{" "}
-              {new Date(article.updatedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          ) : null}
+        {article.updatedAt ? (
+          <p className="py-2">
+            Last Updated:{" "}
+            {new Date(article.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        ) : null}
 
-          <hr className="mt-6 mb-8" />
-        </div>
-      )}
-      smartComponentMap={clientSmartComponentMap}
-    />
+        <hr className="mt-6 mb-8" />
+      </div>
+      <ArticleRenderer
+        article={hydratedArticle}
+        smartComponentMap={clientSmartComponentMap}
+        __experimentalFlags={{ useUnintrusiveTitleRendering: true }}
+      />
+    </>
   );
 }

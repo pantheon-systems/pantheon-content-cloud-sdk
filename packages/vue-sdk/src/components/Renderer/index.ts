@@ -37,6 +37,7 @@ export type PreviewBarProps = {
 export type ExperimentalFlags = {
   disableAllStyles?: boolean;
   disableDefaultErrorBoundaries: boolean;
+  useUnintrusiveTitleRendering?: boolean;
 };
 
 const ArticleRenderer = defineComponent({
@@ -111,6 +112,10 @@ const ArticleRenderer = defineComponent({
       ? content
       : content.children || [];
 
+
+  let titleElement = null;
+
+  if (props.__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
     const indexOfFirstHeader = parsedContent.findIndex((x) =>
       ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
     );
@@ -121,7 +126,7 @@ const ArticleRenderer = defineComponent({
 
     const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
 
-    const titleElement =
+     titleElement =
       // @ts-expect-error Dynamic component props
       h(renderer, {
         element: titleContent,
@@ -129,6 +134,7 @@ const ArticleRenderer = defineComponent({
         componentMap: props.componentMap,
         __experimentalFlags: props.__experimentalFlags,
       });
+    }
 
     return h("div", {}, [
       props.article.publishingLevel === "REALTIME"
@@ -136,11 +142,11 @@ const ArticleRenderer = defineComponent({
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      h(
+      titleElement != null ? h(
         "div",
         { class: ["title", props.headerClass] },
         slots.titleRenderer?.(titleElement) ?? titleElement,
-      ),
+      ) : null,
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props

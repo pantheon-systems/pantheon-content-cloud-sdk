@@ -1,18 +1,18 @@
 import {
   Article,
   PantheonTree,
-  PantheonTreeNode,
   TreePantheonContent,
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
-import _ from "lodash";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
+
+export { getArticleTitle, useArticleTitle } from "./useArticleTitle";
 
 export type ServersideSmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K];
@@ -54,54 +54,15 @@ interface Props {
   __experimentalFlags?: {
     disableAllStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
+    useUnintrusiveTitleRendering?: boolean;
   };
-}
-
-function useArticleTitle(
-  article: Article | undefined,
-  { enabled = true }: { enabled: boolean },
-) {
-  return useMemo(() => {
-    if (!article?.content) {
-      return null;
-    }
-
-    const contentType = article?.contentType;
-
-    if (contentType === "TEXT_MARKDOWN") {
-      return null;
-    }
-
-    let jsonContent = JSON.parse(article.content) as
-      | PantheonTree
-      | TreePantheonContent[];
-    const content = Array.isArray(jsonContent)
-      ? jsonContent
-      : jsonContent.children;
-
-    const titleContent = content.find((x) => x.tag === "title")!;
-
-    if (titleContent != null) {
-      const flatMap = titleContent.children
-        ? _.flatMapDeep(
-            titleContent.children,
-            (x: PantheonTreeNode | TreePantheonContent) => x.data,
-          )
-        : [];
-
-      return titleContent.data + flatMap.join("");
-    } else if (article?.metadata?.title != null) {
-      return article.metadata.title;
-    } else {
-      return article.title || "";
-    }
-  }, [article]);
 }
 
 const ArticleRenderer = ({
   article,
   bodyClassName,
   containerClassName,
+  headerClassName,
   renderTitle,
   smartComponentMap,
   previewBarProps,
@@ -110,12 +71,11 @@ const ArticleRenderer = ({
   __experimentalFlags,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
-  // const articleTitle = useArticleTitle(article, {
-  //   enabled: renderTitle != null,
-  // });
 
-  if (renderTitle != null) {
-    console.warn("renderTitle is no longer supported");
+  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+    console.warn(
+      "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
+    );
   }
 
   useEffect(() => {
@@ -167,6 +127,30 @@ const ArticleRenderer = ({
     ? content
     : content.children || [];
 
+  let titleElement = null;
+
+  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+    const indexOfFirstHeader = parsedContent.findIndex((x) =>
+      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+    );
+
+    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
+    const resolvedTitleIndex =
+      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+
+    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+
+    // @ts-expect-error Dynamic component props
+    titleElement = React.createElement(renderer, {
+      element: titleContent,
+      componentMap,
+      smartComponentMap,
+      disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+      disableDefaultErrorBoundaries:
+        !!__experimentalFlags?.disableDefaultErrorBoundaries,
+    });
+  }
+
   const bodyElement = (
     <div className={bodyClassName}>
       {parsedContent?.map((element, idx) =>
@@ -193,6 +177,11 @@ const ArticleRenderer = ({
           )
         : null}
 
+      {titleElement != null ? (
+        <div className={headerClassName}>
+          {renderTitle ? renderTitle(titleElement) : titleElement}
+        </div>
+      ) : null}
       {renderBody ? renderBody(bodyElement) : bodyElement}
     </div>
   );
