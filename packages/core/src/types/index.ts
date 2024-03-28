@@ -14,6 +14,10 @@ export interface Article {
   previewActiveUntil: number | null;
 }
 
+export type ArticleV2Response = {
+  articles: Omit<Article, "content">[];
+  summary: string;
+};
 export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];

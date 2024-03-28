@@ -56,57 +56,56 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
   }
 `;
 
-export const LIST_ARTICLES_QUERY = gql`
+export function generateListArticlesGQL({
+  withContent = false,
+  withSummary = false,
+}: {
+  withContent?: boolean;
+  withSummary?: boolean;
+}) {
+  return gql`
   query ListArticles(
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
-    articles(
+    articlesv2(
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
     ) {
-      id
-      title
-      siteId
-      slug
-      tags
-      metadata
-      publishedDate
-      publishingLevel
-      contentType
-      updatedAt
-      previewActiveUntil
+      articles {
+        id
+        title
+        siteId
+        tags
+        metadata
+        publishedDate
+        publishingLevel
+        contentType
+        ${withContent ? "content" : ""}
+        updatedAt
+        previewActiveUntil
+      }
+      ${withSummary ? "summary" : ""}
     }
   }
 `;
+}
 
-export const LIST_ARTICLES_QUERY_W_CONTENT = gql`
-  query ListArticles(
-    $contentType: ContentType
-    $publishingLevel: PublishingLevel
-    $filter: ArticleFilterInput
-  ) {
-    articles(
-      contentType: $contentType
-      publishingLevel: $publishingLevel
-      filter: $filter
-    ) {
-      id
-      title
-      siteId
-      tags
-      metadata
-      publishedDate
-      publishingLevel
-      contentType
-      content
-      updatedAt
-      previewActiveUntil
-    }
-  }
-`;
+export const LIST_ARTICLES_QUERY_W_CONTENT = generateListArticlesGQL({
+  withContent: true,
+});
+
+export const LIST_ARTICLES_QUERY = generateListArticlesGQL({
+  withContent: false,
+  withSummary: false,
+});
+
+export const LIST_ARTICLES_QUERY_WITH_SUMMARY = generateListArticlesGQL({
+  withContent: false,
+  withSummary: true,
+});
 
 export const LIST_PAGINATED_ARTICLES_QUERY = gql`
   query ListArticles(
