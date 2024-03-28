@@ -5,6 +5,7 @@ export {
   getRecommendedArticles,
   getArticle,
   getAllTags,
+  PCCConvenienceFunctions,
 } from "@pantheon-systems/pcc-sdk-core";
 export * from "@pantheon-systems/pcc-sdk-core";
 

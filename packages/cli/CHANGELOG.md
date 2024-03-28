@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-cli
 
+## 3.2.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.2.0
+
 ## 3.1.2
 
 ### Patch Changes

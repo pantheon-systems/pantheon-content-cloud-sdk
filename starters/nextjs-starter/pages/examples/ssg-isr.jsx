@@ -1,10 +1,9 @@
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 
 import PageHeader from "../../components/page-header";
 import Layout from "../../components/layout";
 import { PostGrid } from "../../components/grid";
-
-import { getAllArticles } from "../../lib/Articles";
 
 export default function SSGISRExampleTemplate({ articles }) {
   return (
@@ -32,7 +31,7 @@ export default function SSGISRExampleTemplate({ articles }) {
 }
 
 export async function getStaticProps() {
-  const articles = await getAllArticles();
+  const articles = await PCCConvenienceFunctions.getAllArticles();
 
   return {
     props: {

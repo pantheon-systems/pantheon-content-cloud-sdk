@@ -1,3 +1,4 @@
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { useAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -5,7 +6,6 @@ import { useEffect } from "react";
 import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { searchQueryAtom } from "../components/searchbar";
-import { getAllArticles } from "../lib/Articles";
 
 export default function Search({ articles, searchString }) {
   const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
@@ -62,7 +62,7 @@ export default function Search({ articles, searchString }) {
 }
 
 export async function getServerSideProps({ query }) {
-  const articles = await getAllArticles(
+  const articles = await PCCConvenienceFunctions.getAllArticles(
     {
       publishingLevel: "PRODUCTION",
     },
