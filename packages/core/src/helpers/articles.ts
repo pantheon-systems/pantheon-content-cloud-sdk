@@ -9,12 +9,15 @@ import {
   GET_RECOMMENDED_ARTICLES_QUERY,
   LIST_ARTICLES_QUERY,
   LIST_ARTICLES_QUERY_W_CONTENT,
+  LIST_ARTICLES_QUERY_WITH_CONTENT_AND_SUMMARY,
+  LIST_ARTICLES_QUERY_WITH_SUMMARY,
   LIST_PAGINATED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT,
 } from "../lib/gql";
 import {
   Article,
   ArticleSortField,
+  ArticleV2Response,
   ArticleWithoutContent,
   ContentType,
   PaginatedArticle,
@@ -143,16 +146,38 @@ export async function getArticles(
   client: PantheonClient,
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
-  includeContent?: boolean,
-) {
+  withContent?: boolean,
+): Promise<ArticleWithoutContent[]> {
+  return (
+    await getArticlesWithSummary(client, args, searchParams, withContent, false)
+  ).articles;
+}
+
+export async function getArticlesWithSummary(
+  client: PantheonClient,
+  args?: ArticleQueryArgs,
+  searchParams?: ArticleSearchArgs,
+  withContent?: boolean,
+  withSummary?: boolean,
+): Promise<ArticleV2Response> {
   try {
     const { contentType: requestedContentType, ...rest } = args || {};
     const contentType = buildContentType(requestedContentType);
 
+    let query;
+
+    if (withContent && withSummary) {
+      query = LIST_ARTICLES_QUERY_WITH_CONTENT_AND_SUMMARY;
+    } else if (withContent) {
+      query = LIST_ARTICLES_QUERY_W_CONTENT;
+    } else if (withSummary) {
+      query = LIST_ARTICLES_QUERY_WITH_SUMMARY;
+    } else {
+      query = LIST_ARTICLES_QUERY;
+    }
+
     const response = await client.apolloClient.query({
-      query: includeContent
-        ? LIST_ARTICLES_QUERY_W_CONTENT
-        : LIST_ARTICLES_QUERY,
+      query,
       variables: {
         ...rest,
         ...convertSearchParamsToGQL(searchParams),
@@ -160,7 +185,7 @@ export async function getArticles(
       },
     });
 
-    return response.data.articles as ArticleWithoutContent[];
+    return response.data.articlesv2;
   } catch (e) {
     handleApolloError(e);
   }
