@@ -1,5 +1,7 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk/*";
+import {
+  ArticleWithoutContent,
+  PCCConvenienceFunctions,
+} from "@pantheon-systems/pcc-react-sdk";
 import { useAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -93,8 +95,6 @@ export async function getServerSideProps({ query }) {
       },
       true,
     );
-
-  console.log({ articles, summary });
 
   return {
     props: {

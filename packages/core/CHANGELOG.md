@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.2.1
+
+### Patch Changes
+
+- 8e880f2: Ability to retrieve gen AI summary results for a search query.
+
 ## 3.2.0
 
 ### Minor Changes
