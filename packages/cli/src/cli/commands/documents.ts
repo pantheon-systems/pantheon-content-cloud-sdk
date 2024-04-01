@@ -43,7 +43,7 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     });
 
     generateLinkLogger.succeed(
-      "Successfully generated preview link. Please copy it from below:",
+      "Successfully generated preview link. Please copy it below:",
     );
 
     logger.log(chalk.green(previewLink));
