@@ -151,7 +151,7 @@ class AddOnApiHelper {
 
   static async publishFile(documentId: string) {
     const { idToken, oauthToken } = await this.getIdToken(
-      ["https://www.googleapis.com/auth/drive.file"],
+      ["https://www.googleapis.com/auth/drive"],
       true,
     );
 
@@ -193,7 +193,7 @@ class AddOnApiHelper {
     },
   ): Promise<string> {
     const { idToken, oauthToken } = await this.getIdToken(
-      ["https://www.googleapis.com/auth/drive.file"],
+      ["https://www.googleapis.com/auth/drive"],
       true,
     );
 
