@@ -86,6 +86,14 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
     if (baseUrl) {
       try {
         new URL(baseUrl);
+
+        // If protocol is not provided, add it for convenience
+        if (baseUrl.startsWith("localhost:")) {
+          baseUrl = `http://${baseUrl}`;
+
+          // Validate again
+          new URL(baseUrl);
+        }
       } catch (_err) {
         logger.error(
           chalk.red(
@@ -222,7 +230,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
             verbose,
           );
 
-          await AddOnApiHelper.publishFile(fileId);
+          await AddOnApiHelper.publishDocument(fileId);
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;
@@ -331,8 +339,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
 
     // Publish PCC document
     if (publish) {
-      const { token } = await oauth2Client.getAccessToken();
-      await AddOnApiHelper.publishDocument(fileId, token as string);
+      await AddOnApiHelper.publishDocument(fileId);
     }
     spinner.succeed(
       `Successfully created document at below path${
