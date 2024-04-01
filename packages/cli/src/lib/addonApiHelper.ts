@@ -149,7 +149,7 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async publishFile(documentId: string) {
+  static async publishDocument(documentId: string) {
     const { idToken, oauthToken } = await this.getIdToken(
       ["https://www.googleapis.com/auth/drive"],
       true,
@@ -465,17 +465,6 @@ class AddOnApiHelper {
     });
 
     return resp.data as WebhookDeliveryLog[];
-  }
-
-  static async publishDocument(docId: string, token: string) {
-    const publishUrl = `${config.publishEndpoint}/?docId=${docId}&publishLevel=prod`;
-
-    const response = await axios.get(publishUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
   }
 }
 

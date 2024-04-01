@@ -16,6 +16,14 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     if (baseUrl) {
       try {
         new URL(baseUrl);
+
+        // If protocol is not provided, add it for convenience
+        if (baseUrl.startsWith("localhost:")) {
+          baseUrl = `http://${baseUrl}`;
+
+          // Validate again
+          new URL(baseUrl);
+        }
       } catch (_err) {
         logger.error(
           chalk.red(
