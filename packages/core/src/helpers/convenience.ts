@@ -4,7 +4,11 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import { getArticle, getArticles, getArticlesWithSummary } from "./articles";
+import {
+  getArticleBySlugOrId as _getArticleBySlugOrId,
+  getArticles,
+  getArticlesWithSummary,
+} from "./articles";
 import { getAllTags } from "./metadata";
 
 const buildPantheonClient = ({
@@ -66,7 +70,7 @@ async function getArticleBySlugOrId(
   id: number | string,
   publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
 ) {
-  const post = await getArticle(
+  const post = await _getArticleBySlugOrId(
     buildPantheonClient({ isClientSide: false }),
     id,
     {

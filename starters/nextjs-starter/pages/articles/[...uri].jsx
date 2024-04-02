@@ -64,6 +64,7 @@ export async function getServerSideProps({
     publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
   );
 
+  console.log({ slugOrId, publishingLevel, article, grant });
   if (!article) {
     return {
       notFound: true,
@@ -91,7 +92,9 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
-      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(article.id),
+      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
+        article.id,
+      ),
     },
   };
 }
