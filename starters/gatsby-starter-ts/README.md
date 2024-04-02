@@ -16,7 +16,11 @@ be found
 [here](https://decoupledkit.pantheon.io/docs/frontend-starters/using-the-cli) on
 our docs site.
 
-For a quick start, follow the instructions below:
+## Deploy your own
+
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/gatsby-starter-ts)
+
+For a quick start on your local machine, follow the instructions below:
 
 1. In your terminal, run the following command:
 
