@@ -64,7 +64,6 @@ export async function getServerSideProps({
     publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
   );
 
-  console.log({ slugOrId, publishingLevel, article, grant });
   if (!article) {
     return {
       notFound: true,
