@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "cb4e889c-aead-4f29-8c21-b607e0abdae9",
+		"name": "Pantheon Content Cloud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9278019"
+	},
+	"item": [
+		{
+			"name": "Get all articles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\n  articles {\\n    id\\n    title\\n  }\\n}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single article",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\n  article (id: \\\"{{PCC_ARTICLE_ID}}\\\") {\\n    id\\n    title\\n  }\\n}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single site",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\":\"query {\\n  site (id: \\\"{{PCC_SITE_ID}}\\\") {\\n    id\\n    url\\n  }\\n}\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PCC_SITE_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PCC_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PCC_ARTICLE_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
