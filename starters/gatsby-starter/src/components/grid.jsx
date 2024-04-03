@@ -21,9 +21,6 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
             <GradientPlaceholder />
           )}
         </div>
-        <h2 className="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
-          {title} &rarr;
-        </h2>
         <div className="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
           <Link to={href}>
             <div className="hover:scale-105">{title} &rarr;</div>
