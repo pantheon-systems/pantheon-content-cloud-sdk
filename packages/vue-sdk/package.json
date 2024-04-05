@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-vue-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Vue SDK",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.5",
-    "@pantheon-systems/pcc-sdk-core": "~3.2.1",
+    "@pantheon-systems/pcc-sdk-core": "~3.3.0",
     "@vue/apollo-composable": "4.0.0-beta.12",
     "floating-vue": "2.0.0-beta.24",
     "graphql": "^16.8.1",

@@ -28,7 +28,7 @@ test("should be able to init starter kit for nextjs template", async () => {
 
   await executePCC("init", [appFolder, "--template", "nextjs", "--use-pnpm"]);
 
-  // Eslint should be initialized
+  // Eslint should not be initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Nextjs starter kit are created.
