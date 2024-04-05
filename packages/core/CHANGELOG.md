@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.3.0
+
+### Patch Changes
+
+- Fixed implementation of PCCConvenienceFunctions.getArticleBySlugOrId
+
 ## 3.2.1
 
 ### Patch Changes

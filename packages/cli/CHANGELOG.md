@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-cli
 
+## 3.3.0
+
+### Patch Changes
+
+- Improved preview & publish from the CLI.
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.3.0
+
 ## 3.2.1
 
 ### Patch Changes

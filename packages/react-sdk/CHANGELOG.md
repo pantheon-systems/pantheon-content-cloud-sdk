@@ -1,5 +1,19 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.3.0
+
+### Minor Changes
+
+- 24be191: Add experimental flag "useUnintrusiveTitleRendering" which will use
+  the new way of rendering titles, where the document's content will not be
+  affected. The old (and still default) way will forcibly move the detected
+  title element to the top of the document when rendering.
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.3.0
+
 ## 3.2.1
 
 ### Patch Changes
