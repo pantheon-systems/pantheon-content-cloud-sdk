@@ -29,7 +29,11 @@ test("should be able to init starter kit for nextjs template", async () => {
   await executePCC("init", [appFolder, "--template", "nextjs", "--use-pnpm"]);
 
   // Eslint should be initialized
+<<<<<<< Updated upstream
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(true);
+=======
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+>>>>>>> Stashed changes
 
   // Checking if primary required files for Nextjs starter kit are created.
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
@@ -52,7 +56,11 @@ test("should be able to init starter kit for gatsby template", async () => {
   await executePCC("init", [appFolder, "--template", "gatsby", "--use-pnpm"]);
 
   // Eslint should be initialized
+<<<<<<< Updated upstream
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(true);
+=======
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+>>>>>>> Stashed changes
 
   // Checking if primary required files for Gatsby starter kit are created.
   expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
@@ -82,7 +90,11 @@ test("should be able to init starter kit for nextjs template with typescript", a
   ]);
 
   // Eslint should be initialized
+<<<<<<< Updated upstream
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(true);
+=======
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+>>>>>>> Stashed changes
 
   // Checking if primary required files for Nextjs starter kit are created.
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
@@ -108,7 +120,11 @@ test("should be able to init starter kit for gatsby template with typescript", a
   expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
 
   // Eslint should be initialized
+<<<<<<< Updated upstream
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(true);
+=======
+  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
+>>>>>>> Stashed changes
 
   // Checking if primary required files for Gatsby starter kit are created
   expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
