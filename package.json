@@ -5,6 +5,7 @@
   "packageManager": "pnpm@8.6.11",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
     "dev": "turbo run dev --concurrency=20",
     "build": "turbo run build --filter=./packages/*",
     "lint": "turbo run lint --filter=./{packages,starters}/*",
@@ -12,7 +13,8 @@
     "lint:starters": "turbo run lint --filter=./starters/*",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
-    "publish:packages": "pnpm build && pnpm ci:publish"
+    "publish:packages": "pnpm build && pnpm ci:publish",
+    "prepare": "husky"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.1",
@@ -30,6 +32,7 @@
     }
   },
   "devDependencies": {
-    "eslint-config-pcc-custom": "workspace:*"
+    "eslint-config-pcc-custom": "workspace:*",
+    "husky": "^9.0.11"
   }
 }

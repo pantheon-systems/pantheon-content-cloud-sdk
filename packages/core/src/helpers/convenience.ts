@@ -4,7 +4,11 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import { getArticle, getArticles } from "./articles";
+import {
+  getArticleBySlugOrId as _getArticleBySlugOrId,
+  getArticles,
+  getArticlesWithSummary,
+} from "./articles";
 import { getAllTags } from "./metadata";
 
 const buildPantheonClient = ({
@@ -37,7 +41,15 @@ async function getAllArticles(
   args?: Parameters<typeof getArticles>[1],
   options?: Parameters<typeof getArticles>[2],
 ) {
-  const posts = await getArticles(
+  return (await getAllArticlesWithSummary(args, options, false)).articles;
+}
+
+async function getAllArticlesWithSummary(
+  args?: Parameters<typeof getArticles>[1],
+  options?: Parameters<typeof getArticles>[2],
+  withSummary?: boolean,
+) {
+  const posts = await getArticlesWithSummary(
     buildPantheonClient({ isClientSide: false }),
     {
       publishingLevel: "PRODUCTION",
@@ -47,6 +59,8 @@ async function getAllArticles(
       publishStatus: "published",
       ...options,
     },
+    false,
+    withSummary,
   );
 
   return posts;
@@ -56,7 +70,7 @@ async function getArticleBySlugOrId(
   id: number | string,
   publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
 ) {
-  const post = await getArticle(
+  const post = await _getArticleBySlugOrId(
     buildPantheonClient({ isClientSide: false }),
     id,
     {
@@ -87,6 +101,7 @@ async function getRecommendedArticles(id: number | string) {
 export const PCCConvenienceFunctions = {
   buildPantheonClient,
   getAllArticles,
+  getAllArticlesWithSummary,
   getArticleBySlugOrId,
   getRecommendedArticles,
   getTags,
