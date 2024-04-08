@@ -2,6 +2,7 @@ import path from "path";
 import {
   getArticle,
   getArticles,
+  getRecommendedArticles,
   PantheonClient,
 } from "@pantheon-systems/pcc-react-sdk";
 
@@ -50,16 +51,20 @@ const createPages = async ({ actions: { createPage } }) => {
 
   const articlesWithContent = await Promise.all(
     articles.map(async ({ id }) => {
-      const article = await getArticle(pantheonClient, id);
-      return article;
+      const [article, recommendedArticles] = await Promise.all([
+        await getArticle(pantheonClient, id),
+        await getRecommendedArticles(pantheonClient, id),
+      ]);
+
+      return { article, recommendedArticles };
     }),
   );
 
-  articlesWithContent.forEach(async (article) => {
+  articlesWithContent.forEach(async ({ article, recommendedArticles }) => {
     createPage({
       path: `/articles/${article.id}`,
       component: path.resolve("./src/templates/articles/[slug].js"),
-      context: { article },
+      context: { article, recommendedArticles },
     });
 
     // Create slug-based pages

@@ -1,5 +1,4 @@
 import { withGrid } from "@pantheon-systems/nextjs-kit";
-import Image from "next/image";
 import Link from "next/link";
 import { Tags } from "./tags";
 
@@ -20,7 +19,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }: Props) => {
     <>
       <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
         <Link passHref href={href}>
-          <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s">
+          <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s not-prose">
             {imgSrc != null ? (
               <img
                 src={imgSrc}
@@ -47,7 +46,7 @@ const PostGridItem = ({ content: article }) => {
   return (
     <GridItem
       href={`/articles/${article.slug || article.id}`}
-      imgSrc={article.metadata["Hero Image"]}
+      imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />
@@ -58,7 +57,7 @@ const PageGridItem = ({ content: article }) => {
   return (
     <GridItem
       href={`/articles/${article.slug || article.id}`}
-      imgSrc={article.metadata["Hero Image"]}
+      imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
     />

@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "3.1.2",
+  "version": "3.3.0",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -82,10 +82,10 @@
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
-    "@types/react": ">=17",
-    "@types/react-dom": ">=17",
-    "react": ">=17",
-    "react-dom": ">=17"
+    "@types/react": ">=18",
+    "@types/react-dom": ">=18",
+    "react": ">=18",
+    "react-dom": ">=18"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -93,12 +93,12 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.8.8",
-    "@pantheon-systems/pcc-sdk-core": "*",
-    "framer-motion": "^10.17.9",
-    "goober": "^2.1.13",
+    "@apollo/client": "^3.9.5",
+    "@pantheon-systems/pcc-sdk-core": "~3.3.0",
+    "framer-motion": "^10.18.0",
+    "goober": "^2.1.14",
     "graphql": "^16.8.1",
-    "query-string": "^8.1.0",
+    "query-string": "^8.2.0",
     "react-laag": "^2.0.5",
     "react-markdown": "^8.0.7",
     "rehype-raw": "^6.1.1",

@@ -3,6 +3,7 @@ import {
   existsSync,
   readFileSync,
   rmdirSync,
+  rmSync,
   writeFileSync,
 } from "fs";
 import path from "path";
@@ -100,16 +101,18 @@ const init = async ({
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
+  const eslintFilePath = path.join(absoluteProjectPath, ".eslintrc.json");
   if (eslint && template === "nextjs") {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
       ...ESLINT_DEPENDENCIES,
     };
 
-    writeFileSync(
-      path.join(absoluteProjectPath, ".eslintrc.json"),
-      JSON.stringify(ESLINT_CONFIG, null, 2),
-    );
+    if (!existsSync(eslintFilePath)) {
+      writeFileSync(eslintFilePath, JSON.stringify(ESLINT_CONFIG, null, 2));
+    }
+  } else if (!eslint && existsSync(eslintFilePath)) {
+    rmSync(eslintFilePath);
   }
 
   writeFileSync(
@@ -231,7 +234,7 @@ const init = async ({
   }
 
   if (template === "nextjs" || template === "vue")
-    logger.log(chalk.green(`  ${packageManager} run dev`));
+    logger.log(chalk.green(`   ${packageManager} run dev`));
   else logger.log(chalk.green(`   ${packageManager} run start`));
 };
 

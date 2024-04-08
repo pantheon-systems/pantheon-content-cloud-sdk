@@ -28,7 +28,7 @@ test("should be able to init starter kit for nextjs template", async () => {
 
   await executePCC("init", [appFolder, "--template", "nextjs", "--use-pnpm"]);
 
-  // Eslint not initialized
+  // Eslint should not be initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Nextjs starter kit are created.
@@ -51,7 +51,7 @@ test("should be able to init starter kit for gatsby template", async () => {
 
   await executePCC("init", [appFolder, "--template", "gatsby", "--use-pnpm"]);
 
-  // Eslint not initialized
+  // Eslint should not be initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Gatsby starter kit are created.
@@ -81,7 +81,7 @@ test("should be able to init starter kit for nextjs template with typescript", a
     "--ts",
   ]);
 
-  // Eslint not initialized
+  // Eslint should not be initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Nextjs starter kit are created.
@@ -107,7 +107,7 @@ test("should be able to init starter kit for gatsby template with typescript", a
   // Check that TypesScript source files exist.
   expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
 
-  // Eslint not initialized
+  // Eslint should not be initialized
   expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
 
   // Checking if primary required files for Gatsby starter kit are created

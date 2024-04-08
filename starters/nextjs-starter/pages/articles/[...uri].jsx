@@ -5,11 +5,12 @@ import {
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
+import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
-export default function ArticlePage({ article, grant }) {
+export default function ArticlePage({ article, grant, recommendedArticles }) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -38,10 +39,13 @@ export default function ArticlePage({ article, grant }) {
           }}
         />
 
-        <div className="max-w-screen-lg mx-auto mt-16 prose">
+        <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} />
-
           <Tags tags={article?.tags} />
+          <section>
+            <h3>Recommended Articles</h3>
+            <PageGrid data={recommendedArticles} />
+          </section>
         </div>
       </Layout>
     </PantheonProvider>
@@ -87,6 +91,9 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
+        article.id,
+      ),
     },
   };
 }

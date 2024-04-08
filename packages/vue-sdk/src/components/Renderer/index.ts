@@ -34,6 +34,12 @@ export type PreviewBarProps = {
   collapsedPreviewBarProps?: Record<string, unknown>;
 };
 
+export type ExperimentalFlags = {
+  disableAllStyles?: boolean;
+  disableDefaultErrorBoundaries: boolean;
+  useUnintrusiveTitleRendering?: boolean;
+};
+
 const ArticleRenderer = defineComponent({
   name: "ArticleRenderer",
   props: {
@@ -61,6 +67,10 @@ const ArticleRenderer = defineComponent({
       type: Object as PropType<PreviewBarProps>,
       required: false,
     },
+    __experimentalFlags: {
+      type: Object as PropType<ExperimentalFlags>,
+      required: false,
+    },
   },
   slots: Object as SlotsType<{
     titleRenderer: VNode | undefined;
@@ -85,6 +95,7 @@ const ArticleRenderer = defineComponent({
           options: {
             html: true,
           },
+          __experimentalFlags: props.__experimentalFlags,
         }),
       ]);
     }
@@ -101,23 +112,30 @@ const ArticleRenderer = defineComponent({
       ? content
       : content.children || [];
 
-    const indexOfFirstHeader = parsedContent.findIndex((x) =>
-      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-    );
+    let titleElement = null;
 
-    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-    const resolvedTitleIndex =
-      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+    if (props.__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+      const indexOfFirstHeader = parsedContent.findIndex((x) =>
+        ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+      );
 
-    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+      const indexOfFirstParagraph = parsedContent.findIndex(
+        (x) => x.tag === "p",
+      );
+      const resolvedTitleIndex =
+        indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-    const titleElement =
-      // @ts-expect-error Dynamic component props
-      h(renderer, {
-        element: titleContent,
-        smartComponentMap: props.smartComponentMap,
-        componentMap: props.componentMap,
-      });
+      const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+
+      titleElement =
+        // @ts-expect-error Dynamic component props
+        h(renderer, {
+          element: titleContent,
+          smartComponentMap: props.smartComponentMap,
+          componentMap: props.componentMap,
+          __experimentalFlags: props.__experimentalFlags,
+        });
+    }
 
     return h("div", {}, [
       props.article.publishingLevel === "REALTIME"
@@ -125,11 +143,13 @@ const ArticleRenderer = defineComponent({
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      h(
-        "div",
-        { class: ["title", props.headerClass] },
-        slots.titleRenderer?.(titleElement) ?? titleElement,
-      ),
+      titleElement != null
+        ? h(
+            "div",
+            { class: ["title", props.headerClass] },
+            slots.titleRenderer?.(titleElement) ?? titleElement,
+          )
+        : null,
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props
@@ -137,6 +157,7 @@ const ArticleRenderer = defineComponent({
             element,
             smartComponentMap: props.smartComponentMap,
             componentMap: props.componentMap,
+            __experimentalFlags: props.__experimentalFlags,
           });
         }),
       ]),

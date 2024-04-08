@@ -13,6 +13,8 @@ import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
+export { getArticleTitle, useArticleTitle } from "./useArticleTitle";
+
 export type ServersideSmartComponentMap = {
   [K in keyof CoreSmartComponentMap]: CoreSmartComponentMap[K];
 };
@@ -55,14 +57,16 @@ interface Props {
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
   __experimentalFlags?: {
     disableAllStyles?: boolean;
+    disableDefaultErrorBoundaries?: boolean;
+    useUnintrusiveTitleRendering?: boolean;
   };
 }
 
 const ArticleRenderer = ({
   article,
-  headerClassName,
   bodyClassName,
   containerClassName,
+  headerClassName,
   renderTitle,
   smartComponentMap,
   previewBarProps,
@@ -71,6 +75,12 @@ const ArticleRenderer = ({
   __experimentalFlags,
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
+
+  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+    console.warn(
+      "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
+    );
+  }
 
   useEffect(() => {
     setRenderCSR(true);
@@ -96,6 +106,9 @@ const ArticleRenderer = ({
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
             componentMap={componentMap}
+            disableDefaultErrorBoundaries={
+              !!__experimentalFlags?.disableDefaultErrorBoundaries
+            }
           >
             {article.content}
           </MarkdownRenderer>
@@ -118,23 +131,29 @@ const ArticleRenderer = ({
     ? content
     : content.children || [];
 
-  const indexOfFirstHeader = parsedContent.findIndex((x) =>
-    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-  );
+  let titleElement = null;
 
-  const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-  const resolvedTitleIndex =
-    indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+    const indexOfFirstHeader = parsedContent.findIndex((x) =>
+      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+    );
 
-  const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
+    const resolvedTitleIndex =
+      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-  // @ts-expect-error Dynamic component props
-  const titleElement = React.createElement<HTMLElement>(renderer, {
-    element: titleContent,
-    componentMap,
-    smartComponentMap,
-    disableAllStyles: !!__experimentalFlags?.disableAllStyles,
-  });
+    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+
+    // @ts-expect-error Dynamic component props
+    titleElement = React.createElement(renderer, {
+      element: titleContent,
+      componentMap,
+      smartComponentMap,
+      disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+      disableDefaultErrorBoundaries:
+        !!__experimentalFlags?.disableDefaultErrorBoundaries,
+    });
+  }
 
   const bodyElement = (
     <div className={bodyClassName}>
@@ -146,6 +165,8 @@ const ArticleRenderer = ({
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+          disableDefaultErrorBoundaries:
+            !!__experimentalFlags?.disableDefaultErrorBoundaries,
         }),
       )}
     </div>
@@ -160,11 +181,13 @@ const ArticleRenderer = ({
           )
         : null}
 
-      <div className={headerClassName}>
-        {renderTitle
-          ? renderTitle(titleElement, getTextContent(titleElement))
-          : titleElement}
-      </div>
+      {titleElement != null ? (
+        <div className={headerClassName}>
+          {renderTitle
+            ? renderTitle(titleElement, getTextContent(titleElement))
+            : titleElement}
+        </div>
+      ) : null}
       {renderBody ? renderBody(bodyElement) : bodyElement}
     </div>
   );

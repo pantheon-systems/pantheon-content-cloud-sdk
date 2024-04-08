@@ -1,5 +1,45 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.3.0
+
+### Minor Changes
+
+- 24be191: Add experimental flag "useUnintrusiveTitleRendering" which will use
+  the new way of rendering titles, where the document's content will not be
+  affected. The old (and still default) way will forcibly move the detected
+  title element to the top of the document when rendering.
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.3.0
+
+## 3.2.1
+
+### Patch Changes
+
+- 8e880f2: Ability to retrieve gen AI summary results for a search query.
+- Updated dependencies [8e880f2]
+  - @pantheon-systems/pcc-sdk-core@3.2.1
+
+## 3.2.0
+
+### Minor Changes
+
+- - More detailed Apollo errors will be surfaced from the SDK.
+  - Bump minimum React version to 18.
+  - Gracefully handle rendering errors that occur inside smart components.
+  - Added disableAllStyles to the Vue SDK (React SDK already had this).
+  - Simplified SDK integration. Less boilerplate needed to turn on by using
+    commonsense defaults under the hood. New PCCConvenienceFunctions utilities
+    object which provides what used to be in the boilerplate (such as
+    getAllArticles, getArticleBySlugOrId, getRecommendedArticles, and getTags).
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.2.0
+
 ## 3.1.2
 
 ### Patch Changes

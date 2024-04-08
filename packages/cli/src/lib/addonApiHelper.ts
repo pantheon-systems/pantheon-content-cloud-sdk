@@ -1,3 +1,4 @@
+import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
@@ -36,7 +37,11 @@ class AddOnApiHelper {
     }
   }
 
-  static async getIdToken(requiredScopes?: string[]): Promise<string> {
+  static async getIdToken(
+    requiredScopes?: string[],
+    withAuthToken?: true,
+  ): Promise<{ idToken: string; oauthToken: string }>;
+  static async getIdToken(requiredScopes?: string[], withAuthToken?: boolean) {
     let authDetails = await getLocalAuthDetails(requiredScopes);
 
     // If auth details not found, try user logging in
@@ -48,7 +53,9 @@ class AddOnApiHelper {
       if (!authDetails) throw new UserNotLoggedIn();
     }
 
-    return authDetails.id_token as string;
+    return withAuthToken
+      ? { idToken: authDetails.id_token, oauthToken: authDetails.access_token }
+      : authDetails.id_token;
   }
 
   static async getDocument(
@@ -142,39 +149,75 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async publishFile(documentId: string) {
-    const authDetails = await getLocalAuthDetails();
-    const publishUrl = `${config.publishEndpoint}/?docId=${documentId}&publishLevel=prod`;
+  static async publishDocument(documentId: string) {
+    const { idToken, oauthToken } = await this.getIdToken(
+      ["https://www.googleapis.com/auth/drive"],
+      true,
+    );
+
+    if (!idToken || !oauthToken) {
+      throw new UserNotLoggedIn();
+    }
+
+    const resp = await axios.post<{ url: string }>(
+      `${DOCUMENT_ENDPOINT}/${documentId}/publish`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+          "oauth-token": oauthToken,
+        },
+      },
+    );
+
+    const publishUrl = resp.data.url;
 
     try {
-      const resp = await axios.get(publishUrl, {
-        headers: {
-          Authorization: `Bearer ${authDetails?.access_token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const resp = await axios.get(publishUrl);
 
-      return resp.data;
+      // Get the published URL
+      console.log("Published to ", resp.request.res.responseUrl);
     } catch (e) {
       if (e instanceof AxiosError) console.error(e, e.code, e.message);
       throw e;
     }
   }
 
-  static async getPreviewJwt(docId: string): Promise<string> {
-    const idToken = await this.getIdToken();
+  static async previewFile(
+    docId: string,
+    {
+      baseUrl,
+    }: {
+      baseUrl?: string;
+    },
+  ): Promise<string> {
+    const { idToken, oauthToken } = await this.getIdToken(
+      ["https://www.googleapis.com/auth/drive"],
+      true,
+    );
 
-    const resp = await axios.post(
+    if (!idToken || !oauthToken) {
+      throw new UserNotLoggedIn();
+    }
+
+    const resp = await axios.post<{ url: string }>(
       `${DOCUMENT_ENDPOINT}/${docId}/preview`,
-      null,
+      {
+        baseUrl,
+      },
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+          "oauth-token": oauthToken,
         },
       },
     );
 
-    return resp.data.grantToken as string;
+    const previewURL = resp.data.url;
+
+    return previewURL;
   }
 
   static async createApiKey({
@@ -286,6 +329,84 @@ class AddOnApiHelper {
     );
   }
 
+  static async getServersideComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.get(`${SITE_ENDPOINT}/${id}/components`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async pushComponentSchema(
+    id: string,
+    componentSchema: typeof SmartComponentMapZod,
+  ): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${SITE_ENDPOINT}/${id}/components`,
+      {
+        componentSchema,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(`${SITE_ENDPOINT}/${id}/components`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async listAdmins(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.get(`${SITE_ENDPOINT}/${id}/admins`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+  }
+
+  static async addAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${SITE_ENDPOINT}/${id}/admins`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(`${SITE_ENDPOINT}/${id}/admins`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      data: {
+        email,
+      },
+    });
+  }
+
   static async updateSiteConfig(
     id: string,
     {
@@ -344,17 +465,6 @@ class AddOnApiHelper {
     });
 
     return resp.data as WebhookDeliveryLog[];
-  }
-
-  static async publishDocument(docId: string, token: string) {
-    const publishUrl = `${config.publishEndpoint}/?docId=${docId}&publishLevel=prod`;
-
-    const response = await axios.get(publishUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
   }
 }
 

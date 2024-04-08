@@ -74,18 +74,23 @@ export interface PantheonAPIOptions {
   smartComponentMap?: SmartComponentMap;
 }
 
-function defaultResolvePath(article: Pick<Article, "id">) {
-  return `/articles/${article.id}`;
-}
+const defaultOptions = {
+  getPantheonClient: (props?: Partial<PantheonClientConfig>) =>
+    PCCConvenienceFunctions.buildPantheonClient({
+      isClientSide: false,
+      ...props,
+    }),
+  resolvePath: (article: Partial<Article> & Pick<Article, "id">) =>
+    `/articles/${article.id}`,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  getSiteId: () => process.env.PCC_SITE_ID as string,
+} satisfies PantheonAPIOptions;
 
-export const PantheonAPI = (options?: PantheonAPIOptions) => {
-  const getPantheonClient =
-    options?.getPantheonClient ||
-    ((props?: Partial<PantheonClientConfig>) =>
-      PCCConvenienceFunctions.buildPantheonClient({
-        isClientSide: false,
-        ...props,
-      }));
+export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
+  const options: PantheonAPIOptions = {
+    ...defaultOptions,
+    ...givenOptions,
+  };
 
   // TODO: Support app router.
   // Type "ApiRequest" is not a valid type for the function's first argument.
@@ -148,7 +153,7 @@ export const PantheonAPI = (options?: PantheonAPIOptions) => {
 
       const article: (Partial<Article> & Pick<Article, "id">) | null =
         await getArticleBySlugOrId(
-          getPantheonClient({
+          options.getPantheonClient!({
             pccGrant: pccGrant ? pccGrant.toString() : undefined,
           }),
           parsedArticleId,
@@ -167,7 +172,7 @@ export const PantheonAPI = (options?: PantheonAPIOptions) => {
 
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
-        : defaultResolvePath(article);
+        : defaultOptions.resolvePath(article);
 
       return await res.redirect(
         302,

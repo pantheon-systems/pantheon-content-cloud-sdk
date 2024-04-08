@@ -1,4 +1,4 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/*";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { useSetAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";

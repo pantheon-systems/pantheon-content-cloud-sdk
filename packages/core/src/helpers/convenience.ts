@@ -1,7 +1,13 @@
-import { PantheonClient, PantheonClientConfig } from "..";
+import {
+  Article,
+  GET_RECOMMENDED_ARTICLES_QUERY,
+  PantheonClient,
+  PantheonClientConfig,
+} from "..";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
   getArticles,
+  getArticlesWithSummary,
 } from "./articles";
 import { getAllTags } from "./metadata";
 
@@ -37,8 +43,16 @@ async function getAllArticles(
   args?: Parameters<typeof getArticles>[1],
   options?: Parameters<typeof getArticles>[2],
 ) {
-  const posts = await getArticles(
-    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
+  return (await getAllArticlesWithSummary(args, options, false)).articles;
+}
+
+async function getAllArticlesWithSummary(
+  args?: Parameters<typeof getArticles>[1],
+  options?: Parameters<typeof getArticles>[2],
+  withSummary?: boolean,
+) {
+  const posts = await getArticlesWithSummary(
+    buildPantheonClient({ isClientSide: false }),
     {
       publishingLevel: "PRODUCTION",
       ...args,
@@ -47,6 +61,8 @@ async function getAllArticles(
       publishStatus: "published",
       ...options,
     },
+    false,
+    withSummary,
   );
 
   return posts;
@@ -57,7 +73,7 @@ async function getArticleBySlugOrId(
   publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
 ) {
   const post = await _getArticleBySlugOrId(
-    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
+    buildPantheonClient({ isClientSide: false }),
     id,
     {
       publishingLevel,
@@ -70,14 +86,27 @@ async function getArticleBySlugOrId(
 
 async function getTags() {
   const tags = await getAllTags(
-    PCCConvenienceFunctions.buildPantheonClient({ isClientSide: false }),
+    buildPantheonClient({ isClientSide: false }),
   );
   return tags;
+}
+
+async function getRecommendedArticles(id: number | string) {
+  const article = await buildPantheonClient({
+    isClientSide: false,
+  }).apolloClient.query({
+    query: GET_RECOMMENDED_ARTICLES_QUERY,
+    variables: { id: id.toString() },
+  });
+
+  return article.data.recommendedArticles as Article[];
 }
 
 export const PCCConvenienceFunctions = {
   buildPantheonClient,
   getAllArticles,
+  getAllArticlesWithSummary,
   getArticleBySlugOrId,
+  getRecommendedArticles,
   getTags,
 };

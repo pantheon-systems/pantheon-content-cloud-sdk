@@ -72,7 +72,7 @@ export class PantheonClient {
     // be a more human-friendly URL.
     const pccHost =
       config.pccHost?.replace(/\/(?<=\/)\/*$/, "") ||
-      "https://pcc-gfttxsojwq-uc.a.run.app";
+      "https://gql.prod.pcc.pantheon.io";
 
     this.host = pccHost;
     this.wsHost = pccHost.replace(/^http/, "ws").replace(/^https/, "wss");
@@ -154,6 +154,13 @@ export class PantheonClient {
       defaultOptions: {
         query: {
           fetchPolicy: "no-cache",
+          errorPolicy: "all",
+        },
+        watchQuery: {
+          errorPolicy: "all",
+        },
+        mutate: {
+          errorPolicy: "all",
         },
       },
     });

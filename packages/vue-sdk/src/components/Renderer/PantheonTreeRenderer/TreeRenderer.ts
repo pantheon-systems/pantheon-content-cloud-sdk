@@ -34,8 +34,8 @@ export default defineComponent({
 
     const textContent = typeof x === "string" ? x : x.data;
     const styles = getStyleObjectFromString(x?.style);
-    const isSuperscript = Boolean(styles["vertical-align"] === "super");
-    const isSubscript = Boolean(styles["vertical-align"] === "sub");
+    const isSuperscript = Boolean(styles?.["vertical-align"] === "super");
+    const isSubscript = Boolean(styles?.["vertical-align"] === "sub");
 
     const articleComponents = ["li", "tr", "td"];
 
