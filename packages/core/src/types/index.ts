@@ -12,7 +12,7 @@ export interface Article {
   updatedAt: number | null;
   metadata: Record<string, unknown> | null;
   previewActiveUntil: number | null;
-  snippet: string | null;
+  snippet?: string | null;
 }
 
 export type ArticleV2Response = {
