@@ -8,18 +8,25 @@ export interface ApiRequest {
   /**
    * The query string parameters.
    */
-  query: Record<string, string | string[]> & {
-    command: string | string[];
-  };
+  query: Record<string, string | string[] | undefined>;
 
-  cookies?: Record<string, string | string[]>;
+  cookies?: Record<string, string | string[] | undefined>;
 }
+
+type HeaderValue = string | string[] | number | undefined;
 
 export interface ApiResponse {
   /**
    * Function to set a header on the api response.
    */
-  setHeader: (key: string, value: string) => Promise<unknown> | unknown;
+  setHeader: (
+    key: string,
+    value: string | string[],
+  ) => Promise<unknown> | unknown;
+  /**
+   * Function to get a header set on the api response.
+   */
+  getHeader: (key: string) => HeaderValue | Promise<HeaderValue>;
   /**
    * Function to return a redirect response.
    */
@@ -99,6 +106,12 @@ export const PantheonAPI =
 
     const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
     const { publishingLevel } = restOfQuery;
+
+    if (!commandInput) {
+      res.redirect(302, options?.notFoundPath || "/404");
+      return;
+    }
+
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
@@ -106,10 +119,7 @@ export const PantheonAPI =
       : [commandInput];
 
     if (pccGrant) {
-      await res.setHeader(
-        "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`,
-      );
+      await setCookie(res, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
     } else if (
       options?.getSiteId != null &&
       req.cookies?.["PCC-GRANT"] != null
@@ -127,8 +137,8 @@ export const PantheonAPI =
           pccGrantFromCookie.siteId != null &&
           pccGrantFromCookie.siteId !== resolvedSiteId
         ) {
-          await res.setHeader(
-            "Set-Cookie",
+          await setCookie(
+            res,
             `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
           );
         }
@@ -212,3 +222,16 @@ export const PantheonAPI =
       return await res.redirect(302, options?.notFoundPath || "/404");
     }
   };
+
+async function setCookie(res: ApiResponse, value: string) {
+  const previous = res.getHeader("Set-Cookie");
+
+  await res.setHeader(`Set-Cookie`, [
+    ...(typeof previous === "string"
+      ? [previous]
+      : Array.isArray(previous)
+      ? previous
+      : []),
+    value,
+  ]);
+}
