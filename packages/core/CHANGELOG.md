@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.3.1
+
+### Patch Changes
+
+- 63537f7: Consume article search results snippets from the backend (GQL).
+
 ## 3.3.0
 
 ### Patch Changes

@@ -86,6 +86,7 @@ export function generateListArticlesGQL({
         ${withContent ? "content" : ""}
         updatedAt
         previewActiveUntil
+        snippet
       }
       ${withSummary ? "summary" : ""}
     }
