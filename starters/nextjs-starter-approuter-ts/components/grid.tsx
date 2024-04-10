@@ -65,5 +65,7 @@ const PageGridItem = ({ content: article }) => {
   );
 };
 
+// export const PostGrid = ({data}) => { return <div>Hey</div>}
+// export const PageGrid = ({data}) => { return <div>Hey</div>}
 export const PostGrid = withGrid(PostGridItem);
 export const PageGrid = withGrid(PageGridItem);

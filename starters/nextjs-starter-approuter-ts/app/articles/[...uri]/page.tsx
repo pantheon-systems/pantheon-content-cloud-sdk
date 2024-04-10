@@ -24,7 +24,7 @@ export default async function ArticlePage({ params, searchParams }) {
   );
 }
 
-export async function getServersideArticle(params, searchParams) {
+async function getServersideArticle(params, searchParams) {
   const { uri } = params;
   const { publishingLevel, pccGrant, ...query } = searchParams;
 

@@ -27,7 +27,7 @@ export default function TagResults({ articles, searchString }: Props) {
         Article with tag &quot;{searchString}&quot;
       </h3>
       <section>
-        <PostGrid contentType="posts" data={articles} />
+        <PostGrid data={articles} />
       </section>
     </>
   ) : null;

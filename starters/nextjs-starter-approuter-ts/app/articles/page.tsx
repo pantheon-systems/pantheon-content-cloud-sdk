@@ -1,25 +1,17 @@
-import { Paginator } from "@pantheon-systems/nextjs-kit";
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
-import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
+import { Client } from "./client";
 
 export default async function ArticlesListTemplate() {
   const articles = await PCCConvenienceFunctions.getAllArticles();
-  const RenderCurrentItems = ({ currentItems }) => {
-    return <PageGrid contentType="pages" data={currentItems} />;
-  };
 
   return (
     <Layout>
       <div className="max-w-screen-lg mx-auto">
         <section>
           <PageHeader title="Articles" />
-          <Paginator
-            data={articles}
-            itemsPerPage={12}
-            Component={RenderCurrentItems}
-          />
+          <Client articles={articles} />
         </section>
       </div>
     </Layout>

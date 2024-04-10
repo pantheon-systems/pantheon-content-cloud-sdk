@@ -24,10 +24,6 @@ export default function Layout({ children, footerMenu, preview }: Props) {
       linkText: "📑 Articles",
       href: "/articles",
     },
-    {
-      linkText: "⚛️ Examples",
-      href: "/examples",
-    },
   ];
 
   const footerMenuItems = footerMenu?.map(({ path, label }) => ({
@@ -58,9 +54,7 @@ export default function Layout({ children, footerMenu, preview }: Props) {
               );
             })}
             <div>
-              <Suspense fallback={null}>
-                <Searchbar />
-              </Suspense>
+              <Searchbar />
             </div>
           </ul>
         </nav>

@@ -12,7 +12,7 @@ export interface ApiRequest {
     command: string | string[];
   };
 
-  cookies?: Record<string, string | string[]>;
+  url: string;
 }
 
 export interface ApiResponse {
@@ -92,14 +92,18 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     ...givenOptions,
   };
 
-  // TODO: Support app router.
-  // Type "ApiRequest" is not a valid type for the function's first argument.
-  // Expected "Request | NextRequest", got "ApiRequest".
-  return async (req: ApiRequest, res: ApiResponse) => {
+  return async (req: Request, { params }: any) => {
+    const headers: any = {};
     // Allow the external Pantheon system to access these API routes.
-    await res.setHeader("Access-Control-Allow-Origin", "*");
+    headers["Access-Control-Allow-Origin"] = "*";
 
-    const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
+    console.log({ headers, req, params });
+    const {
+      command: commandInput,
+      pccGrant,
+      ...restOfQuery
+    } = req.query || params;
+
     const { publishingLevel } = restOfQuery;
     const command = Array.isArray(commandInput)
       ? commandInput
@@ -108,10 +112,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       : [commandInput];
 
     if (pccGrant) {
-      await res.setHeader(
-        "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`,
-      );
+      headers["Set-Cookie"] = `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`;
     } else if (
       options?.getSiteId != null &&
       req.cookies?.["PCC-GRANT"] != null
@@ -129,10 +130,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           pccGrantFromCookie.siteId != null &&
           pccGrantFromCookie.siteId !== resolvedSiteId
         ) {
-          await res.setHeader(
-            "Set-Cookie",
-            `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-          );
+          headers[
+            "Set-Cookie"
+          ] = `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
         }
       } catch (e) {
         // eslint-disable-next-line no-empty
@@ -140,12 +140,12 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     }
 
     if (command[0] === "status") {
-      const status = {
+      const smartComponentStatus = {
         smartComponents: Boolean(options?.smartComponentMap),
         smartComponentPreview: Boolean(options?.componentPreviewPath),
       };
 
-      return await res.json(status);
+      return Response.json(smartComponentStatus, { headers });
     }
 
     if (command[0] === "document") {
@@ -167,33 +167,43 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         );
 
       if (article == null) {
-        return res.redirect(302, options?.notFoundPath || "/404");
+        return Response.redirect(
+          new URL(options?.notFoundPath || "/404", req.url),
+          302,
+        );
       }
 
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
         : defaultOptions.resolvePath(article);
 
-      return await res.redirect(
+      return Response.redirect(
+        new URL(
+          resolvedPath +
+            (publishingLevel && typeof publishingLevel === "string"
+              ? `?publishingLevel=${encodeURIComponent(
+                  publishingLevel,
+                ).toUpperCase()}`
+              : ""),
+          req.url,
+        ),
         302,
-        resolvedPath +
-          (publishingLevel && typeof publishingLevel === "string"
-            ? `?publishingLevel=${encodeURIComponent(
-                publishingLevel,
-              ).toUpperCase()}`
-            : ""),
       );
     } else if (command[0] === "component_schema") {
       const componentFilter = command[1];
 
       if (options?.smartComponentMap == null) {
-        return await res.redirect(302, options?.notFoundPath || "/404");
+        return Response.redirect(
+          new URL(options?.notFoundPath || "/404", req.url),
+          302,
+        );
       } else if (componentFilter == null) {
         // Return entire schema if no filter was given.
-        return await res.json(options?.smartComponentMap);
+        return Response.json(options?.smartComponentMap, { headers });
       } else {
-        return await res.json(
+        return Response.json(
           options?.smartComponentMap[componentFilter.toUpperCase()],
+          { headers },
         );
       }
     } else if (command[0] === "component" && options?.componentPreviewPath) {
@@ -201,15 +211,21 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       const pathParts = previewPath.split("?");
       const query = queryString.parse(pathParts[1] || "");
 
-      return await res.redirect(
+      return Response.redirect(
+        new URL(
+          `${pathParts[0]}?${queryString.stringify({
+            ...restOfQuery,
+            ...query,
+          })}`,
+          req.url,
+        ),
         302,
-        `${pathParts[0]}?${queryString.stringify({
-          ...restOfQuery,
-          ...query,
-        })}`,
       );
     } else {
-      return await res.redirect(302, options?.notFoundPath || "/404");
+      return Response.redirect(
+        new URL(options?.notFoundPath || "/404", req.url),
+        302,
+      );
     }
   };
 };

@@ -3,14 +3,10 @@ interface Props {
   body: string;
 }
 
-const LeadCapture = function (
-  { title, body }: Props,
-) {
+const LeadCapture = function ({ title, body }: Props) {
   return (
     <div className="w-full p-1">
-      <div
-        className="max-w-[300px] w-full outline outline-black/10 p-4 rounded-md"
-      >
+      <div className="max-w-[300px] w-full outline outline-black/10 p-4 rounded-md">
         <h1 className="font-medium">{title ?? "Title"}</h1>
         <p className="my-4 text-sm">{body ?? "Body"}</p>
         <div className="pt-2">
@@ -22,7 +18,7 @@ const LeadCapture = function (
       </div>
     </div>
   );
-});
+};
 
 LeadCapture.displayName = "LeadCapture";
 export default LeadCapture;

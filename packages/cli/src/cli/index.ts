@@ -150,6 +150,7 @@ yargs(hideBin(process.argv))
       const nonInteractive = args.nonInteractive as boolean;
       const siteId = args.siteId as string;
       const eslint = args.eslint as boolean;
+      const useAppRouter = args.appRouter as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
 
@@ -185,6 +186,7 @@ yargs(hideBin(process.argv))
         siteId,
         silentLogs: silent,
         eslint,
+        useAppRouter,
         useTypescript,
         printVerbose,
       });

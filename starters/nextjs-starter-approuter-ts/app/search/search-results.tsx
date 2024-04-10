@@ -27,7 +27,7 @@ export default function SearchResults({ articles, searchString }: Props) {
         Search results for &quot;{searchString}&quot;
       </h3>
       <section>
-        <PostGrid contentType="posts" data={articles} />
+        <PostGrid data={articles} />
       </section>
     </>
   ) : null;

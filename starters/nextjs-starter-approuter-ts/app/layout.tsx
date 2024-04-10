@@ -4,9 +4,10 @@ import "@pantheon-systems/nextjs-kit/style.css";
 
 function MyApp({ children }) {
   return (
-    <>
-      {/* Google Analytics: Replace XXXXXXXXXX with your google analytics id and uncomment the following code. */}
-      {/* {process.env.NODE_ENV !== "development" && (
+    <html>
+      <head>
+        {/* Google Analytics: Replace XXXXXXXXXX with your google analytics id and uncomment the following code. */}
+        {/* {process.env.NODE_ENV !== "development" && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
@@ -22,8 +23,9 @@ function MyApp({ children }) {
           </Script>
         </>
       )} */}
-      {children}
-    </>
+      </head>
+      <body>{children}</body>
+    </html>
   );
 }
 

@@ -2,7 +2,7 @@
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
-import { clientSmartComponentMap } from "./smart-components/server-components";
+import { clientSmartComponentMap } from "./smart-components/client-components";
 
 export default function ArticleView({
   article,
