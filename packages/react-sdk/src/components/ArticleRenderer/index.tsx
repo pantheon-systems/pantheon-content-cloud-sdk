@@ -173,7 +173,7 @@ const ArticleRenderer = ({
       {renderCSR && article != null && article.publishingLevel === "REALTIME"
         ? createPortal(
             <PreviewBar {...previewBarProps} article={article} />,
-            document.body,
+            previewBarProps?.portalTarget || document.body,
           )
         : null}
 

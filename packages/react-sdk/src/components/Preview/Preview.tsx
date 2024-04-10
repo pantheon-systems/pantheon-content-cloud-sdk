@@ -16,6 +16,8 @@ setup(React.createElement);
 export interface PreviewBarExternalProps {
   previewBarOverride?: React.ReactElement | undefined | null;
   collapsedPreviewBarProps?: React.HTMLAttributes<HTMLDivElement>;
+  openedPreviewBarProps?: React.HTMLAttributes<HTMLDivElement>;
+  portalTarget?: globalThis.Element | null | undefined;
 }
 
 interface PreviewBarInternalProps {
@@ -28,6 +30,7 @@ export const PreviewBar = ({
   article,
   previewBarOverride,
   collapsedPreviewBarProps,
+  openedPreviewBarProps,
 }: PreviewBarInternalProps & PreviewBarExternalProps) => {
   const [isHidden, setIsHidden] = React.useState(false);
   const [isLive, setIsLive] = React.useState(false);
@@ -69,7 +72,7 @@ export const PreviewBar = ({
   return (
     <Wrapper
       isHidden={isHidden}
-      {...(isHidden ? collapsedPreviewBarProps : {})}
+      {...(isHidden ? collapsedPreviewBarProps : openedPreviewBarProps)}
     >
       <AnimatePresence>
         {!isHidden && (
