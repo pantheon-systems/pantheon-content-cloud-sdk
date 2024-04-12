@@ -1,5 +1,14 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.3.1
+
+### Patch Changes
+
+- 28e312e: New previewbar props added for finer control over where and how it
+  renders.
+- Updated dependencies [63537f7]
+  - @pantheon-systems/pcc-sdk-core@3.3.1
+
 ## 3.3.0
 
 ### Minor Changes

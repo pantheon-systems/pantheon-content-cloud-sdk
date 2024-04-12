@@ -8,18 +8,27 @@ export interface ApiRequest {
   /**
    * The query string parameters.
    */
-  query: Record<string, string | string[]> & {
-    command: string | string[];
-  };
+  query: Record<string, string | string[] | undefined>;
 
   url: string;
+
+  cookies?: Record<string, string | string[] | undefined>;
 }
+
+type HeaderValue = string | string[] | number | undefined;
 
 export interface ApiResponse {
   /**
    * Function to set a header on the api response.
    */
-  setHeader: (key: string, value: string) => Promise<unknown> | unknown;
+  setHeader: (
+    key: string,
+    value: string | string[],
+  ) => Promise<unknown> | unknown;
+  /**
+   * Function to get a header set on the api response.
+   */
+  getHeader: (key: string) => HeaderValue | Promise<HeaderValue>;
   /**
    * Function to return a redirect response.
    */
@@ -105,6 +114,12 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     } = req.query || params;
 
     const { publishingLevel } = restOfQuery;
+
+    if (!commandInput) {
+      res.redirect(302, options?.notFoundPath || "/404");
+      return;
+    }
+
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
@@ -228,4 +243,16 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       );
     }
   };
-};
+
+async function setCookie(res: ApiResponse, value: string) {
+  const previous = res.getHeader("Set-Cookie");
+
+  await res.setHeader(`Set-Cookie`, [
+    ...(typeof previous === "string"
+      ? [previous]
+      : Array.isArray(previous)
+      ? previous
+      : []),
+    value,
+  ]);
+}

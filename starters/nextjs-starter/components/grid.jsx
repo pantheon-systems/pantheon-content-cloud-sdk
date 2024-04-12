@@ -6,7 +6,7 @@ const GradientPlaceholder = () => (
   <div className="w-full h-full bg-gradient-to-b from-blue-100 to-blue-500" />
 );
 
-const GridItem = ({ href, imgSrc, altText, tags, title }) => {
+const GridItem = ({ href, imgSrc, altText, tags, title, snippet }) => {
   return (
     <>
       <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
@@ -22,6 +22,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
               <GradientPlaceholder />
             )}
           </div>
+          {snippet != null ? <div>{snippet.substring(0, 120)}</div> : null}
         </Link>
         <div className="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
           <Link passHref href={href}>
@@ -34,27 +35,17 @@ const GridItem = ({ href, imgSrc, altText, tags, title }) => {
   );
 };
 
-const PostGridItem = ({ content: article }) => {
+const ArticleGridItem = ({ content: article }) => {
   return (
     <GridItem
       href={`/articles/${article.slug || article.id}`}
       imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
+      snippet={article.snippet}
     />
   );
 };
 
-const PageGridItem = ({ content: article }) => {
-  return (
-    <GridItem
-      href={`/articles/${article.slug || article.id}`}
-      imgSrc={article.metadata?.["Hero Image"]}
-      title={article.title}
-      tags={article.tags}
-    />
-  );
-};
-
-export const PostGrid = withGrid(PostGridItem);
-export const PageGrid = withGrid(PageGridItem);
+export const PostGrid = withGrid(ArticleGridItem);
+export const PageGrid = PostGrid;
