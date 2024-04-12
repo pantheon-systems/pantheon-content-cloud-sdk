@@ -1,5 +1,9 @@
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleRenderer, useArticleTitle } from "@pantheon-systems/pcc-react-sdk/components";
+import {
+  ArticleRenderer,
+  useArticleTitle,
+} from "@pantheon-systems/pcc-react-sdk/components";
+import { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
 
 export default function ArticleView({ article }) {
@@ -18,6 +22,11 @@ export default function ArticleView({ article }) {
     () => data?.article ?? article,
     [data, article],
   );
+
+  return <StaticArticleView article={hydratedArticle} />;
+}
+
+export function StaticArticleView({ article }) {
   const articleTitle = useArticleTitle(article);
 
   return (
@@ -39,7 +48,7 @@ export default function ArticleView({ article }) {
         <hr className="mt-6 mb-8" />
       </div>
       <ArticleRenderer
-        article={hydratedArticle}
+        article={article}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{ useUnintrusiveTitleRendering: true }}
       />
