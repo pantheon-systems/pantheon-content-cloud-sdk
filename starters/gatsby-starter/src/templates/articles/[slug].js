@@ -1,5 +1,7 @@
-import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk";
-import { getArticleTitle } from "@pantheon-systems/pcc-react-sdk/components";
+import {
+  ArticleRenderer,
+  getArticleTitle,
+} from "@pantheon-systems/pcc-react-sdk";
 import React from "react";
 import { PostGrid } from "../../components/grid";
 import Layout from "../../components/layout";
