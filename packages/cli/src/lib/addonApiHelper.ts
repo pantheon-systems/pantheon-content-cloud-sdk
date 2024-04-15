@@ -430,7 +430,7 @@ class AddOnApiHelper {
         ...(configuredWebhook && {
           webhookConfig: {
             ...(webhookUrl && { webhookUrl: webhookUrl }),
-            ...(webhookSecret && { webhookSecret: webhookUrl }),
+            ...(webhookSecret && { webhookSecret: webhookSecret }),
           },
         }),
       },
