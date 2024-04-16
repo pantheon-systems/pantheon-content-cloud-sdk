@@ -1,16 +1,21 @@
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleRenderer, useArticleTitle } from "@pantheon-systems/pcc-react-sdk/components";
+import {
+  ArticleRenderer,
+  useArticleTitle,
+} from "@pantheon-systems/pcc-react-sdk/components";
 import { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
+
+type ArticleViewProps = {
+  article: Article;
+  onlyContent?: boolean;
+};
 
 export default function ArticleView({
   article,
   onlyContent,
-}: {
-  article: Article;
-  onlyContent?: boolean;
-}) {
+}: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
@@ -26,7 +31,14 @@ export default function ArticleView({
     () => data?.article ?? article,
     [data, article],
   );
-  const articleTitle = useArticleTitle(hydratedArticle);
+
+  return (
+    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+  );
+}
+
+export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+  const articleTitle = useArticleTitle(article);
 
   return (
     <>
@@ -47,7 +59,7 @@ export default function ArticleView({
         <hr className="mt-6 mb-8" />
       </div>
       <ArticleRenderer
-        article={hydratedArticle}
+        article={article}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           disableAllStyles: !!onlyContent,

@@ -21,6 +21,7 @@ const GridItem = ({ href, imgSrc, altText, tags, title, snippet }: Props) => {
       <Link passHref href={href}>
         <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s not-prose">
           {imgSrc != null ? (
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={imgSrc}
               alt={altText || title}
@@ -42,10 +43,10 @@ const GridItem = ({ href, imgSrc, altText, tags, title, snippet }: Props) => {
   );
 };
 
-const ArticleGridItem = ({ content: article }) => {
+const ArticleGridItem = ({ content: article, basePath = "/articles" }) => {
   return (
     <GridItem
-      href={`/articles/${article.slug || article.id}`}
+      href={`${basePath}/${article.slug || article.id}`}
       imgSrc={article.metadata?.["Hero Image"]}
       title={article.title}
       tags={article.tags}
