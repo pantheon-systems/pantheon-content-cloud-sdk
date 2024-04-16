@@ -9,7 +9,7 @@ import open from "open";
 import ora from "ora";
 import destroyer from "server-destroy";
 import AddOnApiHelper from "../../lib/addonApiHelper";
-import config from "../../lib/config";
+import { getApiConfig } from "../../lib/apiConfig";
 import {
   getLocalAuthDetails,
   persistAuthDetails,
@@ -42,9 +42,10 @@ function login(extraScopes: string[]): Promise<void> {
           }
         }
 
+        const apiConfig = await getApiConfig();
         const oAuth2Client = new OAuth2Client({
-          clientId: config.googleClientId,
-          redirectUri: config.googleRedirectUri,
+          clientId: apiConfig.googleClientId,
+          redirectUri: apiConfig.googleRedirectUri,
         });
 
         // Generate the url that will be used for the consent dialog.
