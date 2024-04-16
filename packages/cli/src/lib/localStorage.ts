@@ -1,11 +1,14 @@
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
-import { ensureFile } from "fs-extra";
+import { ensureFile, remove } from "fs-extra";
 import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
+import { Config } from "../types/config";
 import AddOnApiHelper from "./addonApiHelper";
 
 export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
+export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
+
 export const getLocalAuthDetails = async (
   requiredScopes?: string[],
 ): Promise<Credentials | null> => {
@@ -48,11 +51,29 @@ export const getLocalAuthDetails = async (
   }
 };
 
+export const getLocalConfigDetails = async (): Promise<Config | null> => {
+  try {
+    return JSON.parse(readFileSync(CONFIG_FILE_PATH).toString());
+  } catch (_err) {
+    return null;
+  }
+};
+
 export const persistAuthDetails = async (
   payload: Credentials,
 ): Promise<void> => {
+  await persistDetailsToFile(payload, AUTH_FILE_PATH);
+};
+
+export const persistConfigDetails = async (payload: Config): Promise<void> => {
+  await persistDetailsToFile(payload, CONFIG_FILE_PATH);
+};
+
+export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
+
+const persistDetailsToFile = async (payload: unknown, filePath: string) => {
   await new Promise<void>((resolve, reject) =>
-    ensureFile(AUTH_FILE_PATH, (err: unknown) => {
+    ensureFile(filePath, (err: unknown) => {
       if (err) {
         reject(err);
       } else {
@@ -61,5 +82,5 @@ export const persistAuthDetails = async (
     }),
   );
 
-  writeFileSync(AUTH_FILE_PATH, JSON.stringify(payload, null, 2));
+  writeFileSync(filePath, JSON.stringify(payload, null, 2));
 };

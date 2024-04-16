@@ -1,18 +1,20 @@
-enum Env {
+import { getLocalConfigDetails } from "./localStorage";
+
+enum TargetEnvironment {
   production = "production",
   staging = "staging",
   test = "test",
 }
-type Config = {
+
+type ApiConfig = {
   addOnApiEndpoint: string;
   googleClientId: string;
   googleRedirectUri: string;
   playgroundUrl: string;
 };
-const ENV: Env = (process.env.NODE_ENV as Env) || "production";
 
-const config: { [key in Env]: Config } = {
-  [Env.production]: {
+const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
+  [TargetEnvironment.production]: {
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
     googleClientId:
@@ -20,7 +22,7 @@ const config: { [key in Env]: Config } = {
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
-  [Env.staging]: {
+  [TargetEnvironment.staging]: {
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
     googleClientId:
@@ -28,7 +30,7 @@ const config: { [key in Env]: Config } = {
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://multi-staging-collabcms-fe-demo.appa.pantheon.site",
   },
-  [Env.test]: {
+  [TargetEnvironment.test]: {
     addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
     googleClientId: "test-google-com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -36,4 +38,21 @@ const config: { [key in Env]: Config } = {
   },
 };
 
-export default config[ENV];
+export const getApiConfig = async () => {
+  const config = await getLocalConfigDetails();
+  const apiConfig =
+    apiConfigMap[
+      config?.targetEnvironment ||
+        (process.env.NODE_ENV as TargetEnvironment) ||
+        "production"
+    ];
+
+  return {
+    ...apiConfig,
+
+    API_KEY_ENDPOINT: `${apiConfig.addOnApiEndpoint}/api-key`,
+    SITE_ENDPOINT: `${apiConfig.addOnApiEndpoint}/sites`,
+    DOCUMENT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/articles`,
+    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth`,
+  };
+};
