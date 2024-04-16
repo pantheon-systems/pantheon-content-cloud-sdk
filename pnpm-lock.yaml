@@ -118,7 +118,7 @@ importers:
   packages/browser:
     dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ^3.3.1
+        specifier: ^3.3.2
         version: link:../core
     devDependencies:
       eslint:
@@ -137,7 +137,7 @@ importers:
   packages/cli:
     dependencies:
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../core
       axios:
         specifier: ^1.6.7
@@ -298,10 +298,10 @@ importers:
   packages/react-sample-library:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../react-sdk
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../core
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
@@ -377,7 +377,7 @@ importers:
         specifier: ^3.9.5
         version: 3.9.5(@types/react@18.2.60)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../core
       '@types/react':
         specifier: '>=18'
@@ -489,7 +489,7 @@ importers:
         specifier: ^3.9.5
         version: 3.9.5(graphql-ws@5.15.0)(graphql@16.8.1)
       '@pantheon-systems/pcc-sdk-core':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../core
       '@vue/apollo-composable':
         specifier: 4.0.0-beta.12
@@ -583,7 +583,7 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../../packages/react-sdk
       autoprefixer:
         specifier: ^10.4.17
@@ -623,7 +623,7 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../../packages/react-sdk
       autoprefixer:
         specifier: ^10.4.17
@@ -663,7 +663,7 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
@@ -742,7 +742,7 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: ~3.3.1
+        specifier: ~3.3.2
         version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
