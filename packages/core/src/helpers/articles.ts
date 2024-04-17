@@ -31,6 +31,7 @@ export interface ArticleQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  metadataFilters?: { [key: string]: any | any[] };
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -38,6 +39,7 @@ export interface ArticlePaginatedQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  metadataFilters?: { [key: string]: any | any[] };
   pageSize?: number;
   cursor?: number;
 }
