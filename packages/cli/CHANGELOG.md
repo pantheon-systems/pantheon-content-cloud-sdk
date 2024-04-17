@@ -1,5 +1,15 @@
 # @pantheon-systems/pcc-cli
 
+## 3.3.2
+
+### Patch Changes
+
+- 9377576: Added commands for managing target environment (production or
+  staging - for our internal development team). Fixed issues with admin
+  management commands.
+  - @pantheon-systems/pcc-sdk-core@3.3.2
+- Fix webhook secret update command.
+
 ## 3.3.1
 
 ### Patch Changes

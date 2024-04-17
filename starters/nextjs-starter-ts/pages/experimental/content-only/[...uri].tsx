@@ -117,7 +117,7 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
   return (v as DateInputObject).msSinceEpoch != null;
 }
 
-const getSeoMetadata = (article) => {
+export const getSeoMetadata = (article) => {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   let authors = [];
   let publishedTime = null;

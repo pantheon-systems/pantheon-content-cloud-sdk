@@ -4,6 +4,11 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import checkUpdate from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
+import {
+  printConfigurationData,
+  resetTargetEnvironment,
+  setTargetEnvironment,
+} from "./commands/config";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
 import { importFromDrupal, importFromMarkdown } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
@@ -232,6 +237,47 @@ yargs(hideBin(process.argv))
           async (args) => await revokeToken(args.id as string),
         )
         .example(formatExamples(TOKEN_EXAMPLES));
+    },
+    async () => {
+      // noop
+    },
+  )
+  .command(
+    "config <cmd> [options]",
+    "Manage configuration for this CLI.",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "info",
+          "Print configuration info.",
+          () => {
+            // noop
+          },
+          async () => await printConfigurationData(),
+        )
+        .command(
+          "reset",
+          "Reset configuration to defaults.",
+          () => {
+            // noop
+          },
+          async () => await resetTargetEnvironment(),
+        )
+        .command(
+          "update <target>",
+          "Set the target environment.",
+          (yargs) => {
+            yargs.positional("<target>", {
+              describe: "Target environment: either 'production' or 'staging'.",
+              demandOption: true,
+              type: "string",
+            });
+          },
+          async (args) =>
+            await setTargetEnvironment(args.target as "production" | "staging"),
+        );
     },
     async () => {
       // noop
