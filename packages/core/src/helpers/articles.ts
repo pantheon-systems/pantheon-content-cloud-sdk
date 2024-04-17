@@ -31,6 +31,7 @@ export interface ArticleQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadataFilters?: { [key: string]: any | any[] };
 }
 
@@ -39,6 +40,7 @@ export interface ArticlePaginatedQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadataFilters?: { [key: string]: any | any[] };
   pageSize?: number;
   cursor?: number;
@@ -108,7 +110,11 @@ export async function getPaginatedArticles(
   includeContent?: boolean,
 ): Promise<PaginatedArticle> {
   try {
-    const { contentType: requestedContentType, ...rest } = args || {};
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
     const contentType = buildContentType(requestedContentType);
 
     const response = await client.apolloClient.query({
@@ -117,6 +123,9 @@ export async function getPaginatedArticles(
         : LIST_PAGINATED_ARTICLES_QUERY,
       variables: {
         ...rest,
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
         ...convertSearchParamsToGQL(searchParams),
         contentType,
       },
@@ -163,7 +172,11 @@ export async function getArticlesWithSummary(
   withSummary?: boolean,
 ): Promise<ArticleV2Response> {
   try {
-    const { contentType: requestedContentType, ...rest } = args || {};
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
     const contentType = buildContentType(requestedContentType);
 
     let query;
@@ -183,6 +196,9 @@ export async function getArticlesWithSummary(
       variables: {
         ...rest,
         ...convertSearchParamsToGQL(searchParams),
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
         contentType,
       },
     });
@@ -199,12 +215,23 @@ export async function getArticle(
   args?: ArticleQueryArgs,
 ) {
   try {
-    const { contentType: requestedContentType, ...rest } = args || {};
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
     const contentType = buildContentType(requestedContentType);
 
     const article = await client.apolloClient.query({
       query: GET_ARTICLE_QUERY,
-      variables: { id: id.toString(), contentType, ...rest },
+      variables: {
+        id: id.toString(),
+        contentType,
+        ...rest,
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
+      },
     });
 
     return article.data.article as Article;
@@ -219,12 +246,23 @@ export async function getArticleBySlug(
   args?: ArticleQueryArgs,
 ) {
   try {
-    const { contentType: requestedContentType, ...rest } = args || {};
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
     const contentType = buildContentType(requestedContentType);
 
     const article = await client.apolloClient.query({
       query: GET_ARTICLE_QUERY,
-      variables: { slug, contentType, ...rest },
+      variables: {
+        slug,
+        contentType,
+        ...rest,
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
+      },
     });
 
     return article.data.article as Article;

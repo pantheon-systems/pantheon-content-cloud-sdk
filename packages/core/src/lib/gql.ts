@@ -123,6 +123,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY = gql`
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
+    $metadataFilters: String
   ) {
     articles(
       pageSize: $pageSize
@@ -132,6 +133,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY = gql`
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
+      metadataFilters: $metadataFilters
     ) {
       id
       title
@@ -157,6 +159,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
+    $metadataFilters: String
   ) {
     articles(
       pageSize: $pageSize
@@ -166,6 +169,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
+      metadataFilters: $metadataFilters
     ) {
       id
       title
