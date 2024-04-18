@@ -223,6 +223,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
 
       const article: (Partial<Article> & Pick<Article, "id">) | null =
         await getArticleBySlugOrId(
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           options.getPantheonClient!({
             pccGrant: pccGrant ? pccGrant.toString() : undefined,
           }),
@@ -331,8 +332,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     if (res?.params) {
       return response;
     } else {
-      if (response.status === 302 && response.headers.get("location") != null) {
-        res.redirect(response.headers.get("location")!, {
+      const location = response.headers.get("location");
+      if (response.status === 302 && location != null) {
+        res.redirect(location, {
           status: response.status,
           headers: response.headers,
         });
