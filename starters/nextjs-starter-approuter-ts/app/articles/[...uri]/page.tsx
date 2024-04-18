@@ -1,64 +1,18 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
-import { cookies } from "next/headers";
-import { notFound, redirect, RedirectType } from "next/navigation";
-import queryString from "query-string";
 import { Suspense } from "react";
 import Layout from "../../../components/layout";
-import { Tags } from "../../../components/tags";
-import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
-import ClientsideArticleView from "./clientside-articleview";
+import { SkeletonArticleView } from "../../../components/skeleton-article-view";
+import { ArticleView, getServersideArticle } from "./article-view";
 
 export default async function ArticlePage({ params, searchParams }) {
-  const { article, grant } = await getServersideArticle(params, searchParams);
-
   return (
     <Layout>
       <div className="max-w-screen-lg mx-auto mt-16 prose">
-        <Suspense>
-          <ClientsideArticleView article={article} grant={grant} />
+        <Suspense fallback={<SkeletonArticleView />}>
+          <ArticleView params={params} searchParams={searchParams} />
         </Suspense>
-
-        <Tags tags={article?.tags} />
       </div>
     </Layout>
   );
-}
-
-async function getServersideArticle(params, searchParams) {
-  const { uri } = params;
-  const { publishingLevel, pccGrant, ...query } = searchParams;
-
-  const slugOrId = uri[uri.length - 1];
-  const grant = pccGrant || cookies().get("PCC-GRANT")?.value || null;
-
-  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
-    slugOrId,
-    publishingLevel?.toString().toUpperCase() || "PRODUCTION",
-  );
-
-  if (!article) {
-    return notFound();
-  }
-
-  if (
-    article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
-  ) {
-    // If the article was accessed by the id rather than the slug - then redirect to the canonical
-    // link (mostly for SEO purposes than anything else).
-    redirect(
-      queryString.stringifyUrl({
-        url: pantheonAPIOptions.resolvePath(article),
-        query: { publishingLevel, ...query },
-      }),
-      RedirectType.replace,
-    );
-  }
-
-  return {
-    article,
-    grant,
-  };
 }
 
 interface DateInputObject {

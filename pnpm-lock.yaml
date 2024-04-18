@@ -771,6 +771,9 @@ importers:
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      react-loading-skeleton:
+        specifier: ^3.4.0
+        version: 3.4.0(react@18.2.0)
     devDependencies:
       '@testing-library/react':
         specifier: 13.4.0
@@ -23352,6 +23355,14 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       tiny-warning: 1.0.3
+    dev: false
+
+  /react-loading-skeleton@3.4.0(react@18.2.0):
+    resolution: {integrity: sha512-1oJEBc9+wn7BbkQQk7YodlYEIjgeR+GrRjD+QXkVjwZN7LGIcAFHrx4NhT7UHGBxNY1+zax3c+Fo6XQM4R7CgA==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-markdown@8.0.7(@types/react@18.2.60)(react@18.2.0):

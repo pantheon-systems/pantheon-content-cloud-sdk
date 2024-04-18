@@ -1,6 +1,7 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
 import Image from "next/image";
-import { PostGrid } from "../components/grid";
+import { Suspense } from "react";
+import { SkeletonPageGrid } from "../components/grid";
+import HomepageArticleGrid from "../components/homepage-article-grid";
 import Layout from "../components/layout";
 
 const HomepageHeader = () => (
@@ -32,15 +33,13 @@ const HomepageHeader = () => (
 );
 
 export default async function Home() {
-  const articles = await PCCConvenienceFunctions.getAllArticles({
-    publishingLevel: "PRODUCTION",
-  });
-
   return (
     <Layout>
       <HomepageHeader />
       <section>
-        <PostGrid data={articles} />
+        <Suspense fallback={<SkeletonPageGrid data={[0, 1, 2, 3, 4, 5]} />}>
+          <HomepageArticleGrid />
+        </Suspense>
       </section>
     </Layout>
   );
