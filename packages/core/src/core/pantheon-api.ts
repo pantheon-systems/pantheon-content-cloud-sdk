@@ -58,7 +58,7 @@ export interface ApiResponse {
 
 export interface AppRouterParams {
   params: Record<string, string>;
-  headers: null;
+  headers?: null;
 }
 
 export interface PantheonAPIOptions {
