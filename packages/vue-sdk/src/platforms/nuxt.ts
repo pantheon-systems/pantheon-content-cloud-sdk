@@ -18,18 +18,19 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
       {
         query: { ...getQuery(event), command: getRouterParams(event).command },
         cookies: parseCookies(event),
+        url: event.path,
       },
       {
-        setHeader: (key, value) => {
+        setHeader: (key: string, value: string) => {
           setResponseHeader(event, key, value);
         },
-        redirect: async (code, url) => {
+        redirect: async (code: number, url: string) => {
           await sendRedirect(event, url, code);
         },
-        json: (data) => {
+        json: (data: unknown) => {
           return data;
         },
-        getHeader: (key) => {
+        getHeader: (key: string) => {
           return getResponseHeader(event, key);
         },
       },

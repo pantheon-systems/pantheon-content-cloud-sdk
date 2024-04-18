@@ -29,6 +29,7 @@ const buildPantheonClient = ({
       ? "not-needed-on-client"
       : // eslint-disable-next-line turbo/no-undeclared-env-vars
         (process.env.PCC_TOKEN as string) ||
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
         (process.env.PCC_API_KEY as string),
     pccGrant,
     ...props,
@@ -85,9 +86,7 @@ async function getArticleBySlugOrId(
 }
 
 async function getTags() {
-  const tags = await getAllTags(
-    buildPantheonClient({ isClientSide: false }),
-  );
+  const tags = await getAllTags(buildPantheonClient({ isClientSide: false }));
   return tags;
 }
 

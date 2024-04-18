@@ -13,9 +13,20 @@ export interface ApiRequest {
   url: string;
 
   cookies?: Record<string, string | string[] | undefined>;
+
+  headers?: Record<string, string> | undefined;
+
+  connection?: {
+    encrypted?: boolean;
+  };
 }
 
 type HeaderValue = string | string[] | number | undefined;
+
+type Options = {
+  headers?: Headers;
+  status?: number;
+};
 
 export interface ApiResponse {
   /**
@@ -32,11 +43,22 @@ export interface ApiResponse {
   /**
    * Function to return a redirect response.
    */
-  redirect: (code: number, url: string) => Promise<unknown> | unknown;
+  redirect: (url: string, options: Options) => Promise<unknown> | unknown;
   /**
    * Function to return a JSON response.
    */
-  json: (data: string | object | unknown) => Promise<unknown> | unknown;
+  json: (
+    data: string | object | unknown,
+    options: Options,
+  ) => Promise<unknown> | unknown;
+
+  headers: Record<string, string>;
+  params?: undefined;
+}
+
+export interface AppRouterParams {
+  params: Record<string, string>;
+  headers: null;
 }
 
 export interface PantheonAPIOptions {
@@ -95,18 +117,42 @@ const defaultOptions = {
   getSiteId: () => process.env.PCC_SITE_ID as string,
 } satisfies PantheonAPIOptions;
 
+function generateBaseURL(req: ApiRequest) {
+  try {
+    // Return req.url if it can be parsed as a URL by itself.
+    new URL(req.url);
+    return req.url;
+  } catch (e) {
+    return req.headers?.host
+      ? `${
+          req.headers["x-forwarded-proto"] || req.connection?.encrypted
+            ? "https"
+            : "http"
+        }://${req.headers.host}`
+      : "";
+  }
+}
+
+type AllowablePublishingLevels = "PRODUCTION" | "REALTIME" | undefined;
+
 export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
   const options: PantheonAPIOptions = {
     ...defaultOptions,
     ...givenOptions,
   };
 
-  return async (req: Request, { params }: any) => {
-    const headers: any = {};
-    // Allow the external Pantheon system to access these API routes.
-    headers["Access-Control-Allow-Origin"] = "*";
+  const internalHandler = async (
+    req: ApiRequest,
+    { params, ...res }: ApiResponse | AppRouterParams,
+  ) => {
+    const headers = new Headers({
+      ...(res.headers || []),
+      // Allow the external Pantheon system to access these API routes.
+      "Access-Control-Allow-Origin": "*",
+    });
 
-    console.log({ headers, req, params });
+    const baseUrl = generateBaseURL(req);
+
     const {
       command: commandInput,
       pccGrant,
@@ -116,8 +162,16 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     const { publishingLevel } = restOfQuery;
 
     if (!commandInput) {
-      res.redirect(302, options?.notFoundPath || "/404");
-      return;
+      return new Response(null, {
+        status: 302,
+        headers: new Headers({
+          ...headers,
+          location: new URL(
+            options?.notFoundPath || "/404",
+            baseUrl,
+          ).toString(),
+        }),
+      });
     }
 
     const command = Array.isArray(commandInput)
@@ -127,7 +181,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       : [commandInput];
 
     if (pccGrant) {
-      headers["Set-Cookie"] = `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`;
+      setCookie(headers, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
     } else if (
       options?.getSiteId != null &&
       req.cookies?.["PCC-GRANT"] != null
@@ -145,9 +199,10 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           pccGrantFromCookie.siteId != null &&
           pccGrantFromCookie.siteId !== resolvedSiteId
         ) {
-          headers[
-            "Set-Cookie"
-          ] = `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+          setCookie(
+            headers,
+            `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+          );
         }
       } catch (e) {
         // eslint-disable-next-line no-empty
@@ -176,42 +231,56 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           {
             publishingLevel: publishingLevel
               ?.toString()
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              .toUpperCase() as any,
+              .toUpperCase() as AllowablePublishingLevels,
           },
         );
 
       if (article == null) {
-        return Response.redirect(
-          new URL(options?.notFoundPath || "/404", req.url),
-          302,
-        );
+        return new Response(null, {
+          status: 302,
+          headers: new Headers({
+            ...headers,
+            location: new URL(
+              options?.notFoundPath || "/404",
+              baseUrl,
+            ).toString(),
+          }),
+        });
       }
 
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
         : defaultOptions.resolvePath(article);
 
-      return Response.redirect(
-        new URL(
-          resolvedPath +
-            (publishingLevel && typeof publishingLevel === "string"
-              ? `?publishingLevel=${encodeURIComponent(
-                  publishingLevel,
-                ).toUpperCase()}`
-              : ""),
-          req.url,
-        ),
-        302,
-      );
+      return new Response(null, {
+        status: 302,
+        headers: new Headers({
+          ...headers,
+          location: new URL(
+            resolvedPath +
+              (publishingLevel && typeof publishingLevel === "string"
+                ? `?publishingLevel=${encodeURIComponent(
+                    publishingLevel,
+                  ).toUpperCase()}`
+                : ""),
+            baseUrl,
+          ).toString(),
+        }),
+      });
     } else if (command[0] === "component_schema") {
       const componentFilter = command[1];
 
       if (options?.smartComponentMap == null) {
-        return Response.redirect(
-          new URL(options?.notFoundPath || "/404", req.url),
-          302,
-        );
+        return new Response(null, {
+          status: 302,
+          headers: new Headers({
+            ...headers,
+            location: new URL(
+              options?.notFoundPath || "/404",
+              baseUrl,
+            ).toString(),
+          }),
+        });
       } else if (componentFilter == null) {
         // Return entire schema if no filter was given.
         return Response.json(options?.smartComponentMap, { headers });
@@ -226,33 +295,69 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       const pathParts = previewPath.split("?");
       const query = queryString.parse(pathParts[1] || "");
 
-      return Response.redirect(
-        new URL(
-          `${pathParts[0]}?${queryString.stringify({
-            ...restOfQuery,
-            ...query,
-          })}`,
-          req.url,
-        ),
-        302,
-      );
+      return new Response(null, {
+        status: 302,
+        headers: new Headers({
+          ...headers,
+          location: new URL(
+            `${pathParts[0]}?${queryString.stringify({
+              ...restOfQuery,
+              ...query,
+            })}`,
+            baseUrl,
+          ).toString(),
+        }),
+      });
     } else {
-      return Response.redirect(
-        new URL(options?.notFoundPath || "/404", req.url),
-        302,
-      );
+      return new Response(null, {
+        status: 302,
+        headers: new Headers({
+          ...headers,
+          location: new URL(
+            options?.notFoundPath || "/404",
+            baseUrl,
+          ).toString(),
+        }),
+      });
     }
   };
 
-async function setCookie(res: ApiResponse, value: string) {
-  const previous = res.getHeader("Set-Cookie");
+  return async (req: ApiRequest, res: ApiResponse | AppRouterParams) => {
+    const response = await internalHandler(req, res);
 
-  await res.setHeader(`Set-Cookie`, [
-    ...(typeof previous === "string"
-      ? [previous]
-      : Array.isArray(previous)
-      ? previous
-      : []),
-    value,
-  ]);
+    // We can differentiate between app router vs pages api
+    // by checking for params
+    // reference: (https://github.com/nextauthjs/next-auth/blob/v4/packages/next-auth/src/next/index.ts)
+    if (res?.params) {
+      return response;
+    } else {
+      if (response.status === 302 && response.headers.get("location") != null) {
+        res.redirect(response.headers.get("location")!, {
+          status: response.status,
+          headers: response.headers,
+        });
+      } else {
+        res.json(response.body, {
+          headers: response.headers,
+          status: response.status,
+        });
+      }
+    }
+  };
+};
+
+function setCookie(headers: Headers, value: string) {
+  const previous = headers.get("Set-Cookie");
+
+  headers.set(
+    `Set-Cookie`,
+    [
+      ...(typeof previous === "string"
+        ? [previous]
+        : Array.isArray(previous)
+        ? previous
+        : []),
+      value,
+    ].join("; "),
+  );
 }
