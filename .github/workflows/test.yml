@@ -45,9 +45,6 @@ jobs:
       - name: Build All Packages
         run: pnpm build
 
-      - name: Build All Starter kits
-        run: pnpm build:starters
-
       - name: Build CLI for testing
         run: pnpm --filter '*cli*' build:test
 
