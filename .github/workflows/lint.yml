@@ -12,6 +12,8 @@ jobs:
 
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      PCC_SITE_ID: ${{ secrets.PCC_SITE_ID }}
+      PCC_TOKEN: ${{ secrets.PCC_TOKEN }}
       IS_CICD: true
 
     steps:
@@ -28,8 +30,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
+      - name: Build Packages
         run: pnpm run build
+
+      - name: Build Starters
+        run: pnpm run build:starters
 
       - name: Lint
         run: pnpm run lint
