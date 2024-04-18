@@ -28,11 +28,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build Packages
+      - name: Build
         run: pnpm run build
-
-      - name: Build Starters
-        run: pnpm run build:starters
 
       - name: Lint
         run: pnpm run lint
