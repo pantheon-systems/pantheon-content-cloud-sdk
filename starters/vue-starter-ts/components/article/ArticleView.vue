@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
-import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
+import { ArticleRenderer, getArticleTitle } from '@pantheon-systems/pcc-vue-sdk/components'
 import type { Article } from '@pantheon-systems/pcc-vue-sdk'
 import '@pantheon-systems/pcc-vue-sdk/components/style.css'
 

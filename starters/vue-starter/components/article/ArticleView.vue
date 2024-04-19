@@ -1,14 +1,12 @@
-<script setup lang="ts">
-import type { PropType } from 'vue';
-import { ArticleRenderer } from '@pantheon-systems/pcc-vue-sdk/components'
-import type { Article } from '@pantheon-systems/pcc-vue-sdk'
+<script setup>
+import { ArticleRenderer, getArticleTitle } from '@pantheon-systems/pcc-vue-sdk/components'
 import '@pantheon-systems/pcc-vue-sdk/components/style.css'
 
 import { smartComponentMap } from '../smart-components';
 
 defineProps({
   article: {
-    type: Object as PropType<Article | null>,
+    type: Object,
   },
   error: {
     type: Boolean,

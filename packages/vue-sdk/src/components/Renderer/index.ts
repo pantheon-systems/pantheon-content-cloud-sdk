@@ -17,6 +17,8 @@ import MarkdownRenderer from "./MarkdownRenderer";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
+export { getArticleTitle } from "./getArticleTitle";
+
 export type SmartComponentMap = {
   // Can't know prop types of component, so we use any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
