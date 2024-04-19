@@ -31,8 +31,7 @@ export interface ArticleQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  metadataFilters?: { [key: string]: any | any[] };
+  metadataFilters?: { [key: string]: unknown };
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -40,8 +39,7 @@ export interface ArticlePaginatedQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  metadataFilters?: { [key: string]: any | any[] };
+  metadataFilters?: { [key: string]: unknown };
   pageSize?: number;
   cursor?: number;
 }
