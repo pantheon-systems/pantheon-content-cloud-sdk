@@ -11,4 +11,4 @@ our docs site.
 
 ## Deploy your own
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/vue-starter)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/vue-starter)
