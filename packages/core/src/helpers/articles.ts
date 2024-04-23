@@ -20,6 +20,7 @@ import {
   ArticleV2Response,
   ArticleWithoutContent,
   ContentType,
+  PageInfo,
   PaginatedArticle,
   PublishingLevel,
   SortOrder,
@@ -128,23 +129,26 @@ export async function getPaginatedArticles(
         contentType,
       },
     });
-    const articles = response.data.articles as ArticleWithoutContent[];
-    const { total, cursor } = response.data.extensions?.pagination || {};
+    const responseData = response.data.articlesv2;
+    const { articles, pageInfo } = responseData as {
+      articles: ArticleWithoutContent[];
+      pageInfo: PageInfo;
+    };
 
     return {
       data: articles,
-      totalCount: total,
-      cursor,
+      totalCount: pageInfo.totalCount,
+      cursor: pageInfo.nextCursor,
       fetchNextPage:
-        cursor && articles.length > 0
+        pageInfo.nextCursor && articles.length > 0
           ? () =>
               getPaginatedArticles(
                 client,
-                { ...args, cursor },
+                { ...args, cursor: pageInfo.nextCursor },
                 searchParams,
                 includeContent,
               )
-          : fetchEmptyPage(total, cursor),
+          : fetchEmptyPage(pageInfo.totalCount, pageInfo.nextCursor),
     };
   } catch (e) {
     handleApolloError(e);

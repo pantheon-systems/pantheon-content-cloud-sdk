@@ -19,6 +19,10 @@ export type ArticleV2Response = {
   articles: Omit<Article, "content">[];
   summary: string;
 };
+export type PageInfo = {
+  totalCount: number;
+  nextCursor: number;
+};
 export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];

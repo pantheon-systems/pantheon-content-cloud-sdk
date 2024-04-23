@@ -125,7 +125,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY = gql`
     $filter: ArticleFilterInput
     $metadataFilters: String
   ) {
-    articles(
+    articlesv2(
       pageSize: $pageSize
       sortBy: $sortBy
       sortOrder: $sortOrder
@@ -135,17 +135,23 @@ export const LIST_PAGINATED_ARTICLES_QUERY = gql`
       filter: $filter
       metadataFilters: $metadataFilters
     ) {
-      id
-      title
-      siteId
-      slug
-      tags
-      metadata
-      publishedDate
-      publishingLevel
-      contentType
-      updatedAt
-      previewActiveUntil
+      articles {
+        id
+        title
+        siteId
+        slug
+        tags
+        metadata
+        publishedDate
+        publishingLevel
+        contentType
+        updatedAt
+        previewActiveUntil
+      }
+      pageInfo {
+        totalCount
+        nextCursor
+      }
     }
   }
 `;
@@ -161,7 +167,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
     $filter: ArticleFilterInput
     $metadataFilters: String
   ) {
-    articles(
+    articlesv2(
       pageSize: $pageSize
       sortBy: $sortBy
       sortOrder: $sortOrder
@@ -171,17 +177,23 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
       filter: $filter
       metadataFilters: $metadataFilters
     ) {
-      id
-      title
-      siteId
-      tags
-      metadata
-      publishedDate
-      publishingLevel
-      contentType
-      content
-      updatedAt
-      previewActiveUntil
+      articles {
+        id
+        title
+        siteId
+        tags
+        metadata
+        publishedDate
+        publishingLevel
+        contentType
+        content
+        updatedAt
+        previewActiveUntil
+      }
+      pageInfo {
+        totalCount
+        nextCursor
+      }
     }
   }
 `;
