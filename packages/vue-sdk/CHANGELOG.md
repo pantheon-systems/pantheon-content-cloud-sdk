@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.3.3
+
+### Patch Changes
+
+- 65bc314: Adds `getArticleTitle` to /component exports for usage in decoupled
+  title rendering
+  - @pantheon-systems/pcc-sdk-core@3.3.3
+
 ## 3.3.2
 
 ### Patch Changes

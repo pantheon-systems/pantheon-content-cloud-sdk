@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "cb4e889c-aead-4f29-8c21-b607e0abdae9",
+		"_postman_id": "1d4bc459-8fee-4b36-8380-c3e5122596ec",
 		"name": "Pantheon Content Cloud",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "9278019"
+		"_exporter_id": "9461222"
 	},
 	"item": [
 		{
@@ -18,12 +18,10 @@
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\n  articles {\\n    id\\n    title\\n  }\\n}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n    articles {\n        id\n        title\n    }\n}",
+						"variables": ""
 					}
 				},
 				"url": {
@@ -57,12 +55,10 @@
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\n  article (id: \\\"{{PCC_ARTICLE_ID}}\\\") {\\n    id\\n    title\\n  }\\n}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetArticle($articleId: String !){\n    article(id: $articleId) {\n        id\n        title\n    }\n}",
+						"variables": "{\n    \"articleId\": \"{{PCC_ARTICLE_ID}}\"\n}"
 					}
 				},
 				"url": {
@@ -96,12 +92,47 @@
 					}
 				],
 				"body": {
-					"mode": "raw",
-					"raw": "{\"query\":\"query {\\n  site (id: \\\"{{PCC_SITE_ID}}\\\") {\\n    id\\n    url\\n  }\\n}\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetSite($siteId: String!) {\n    site(id: $siteId) {\n        id\n        url\n    }\n}",
+						"variables": "{\n    \"siteId\": \"{{PCC_SITE_ID}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get articles filtered on metadata",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetFilteredArticles($metadataFilters: String!) {\n    articles(metadataFilters: $metadataFilters ) {\n        id\n        metadata\n    }\n}",
+						"variables": "{\n    \"metadataFilters\": \"{\\\"Author\\\": \\\"Test User\\\", \\\"Category\\\": [\\\"Technical\\\", \\\"Sales\\\"]}\"\n}"
 					}
 				},
 				"url": {

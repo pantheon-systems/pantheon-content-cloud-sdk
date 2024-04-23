@@ -11,7 +11,7 @@ our docs site.
 
 ## Deploy your own
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/nextjs-starter)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/nextjs-starter)
 
 For a quick start on your local machine, follow the instructions below:
 
