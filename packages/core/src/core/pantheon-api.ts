@@ -323,8 +323,8 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     }
   };
 
-  return async (req: ApiRequest, res: ApiResponse | AppRouterParams) => {
-    const response = await internalHandler(req, res);
+  return async (req: unknown, res: ApiResponse | AppRouterParams) => {
+    const response = await internalHandler(req as ApiRequest, res);
 
     // We can differentiate between app router vs pages api
     // by checking for params
