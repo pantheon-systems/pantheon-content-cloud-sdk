@@ -4,8 +4,10 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "..";
+import { PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
+  getPaginatedArticles as _getPaginatedArticles,
   getArticles,
   getArticlesWithSummary,
 } from "./articles";
@@ -42,6 +44,24 @@ async function getAllArticles(
   options?: Parameters<typeof getArticles>[2],
 ) {
   return (await getAllArticlesWithSummary(args, options, false)).articles;
+}
+
+async function getPaginatedArticles(
+  args?: Parameters<typeof _getPaginatedArticles>[1],
+  searchParams?: Parameters<typeof _getPaginatedArticles>[2],
+): Promise<PaginatedArticle> {
+  return await _getPaginatedArticles(
+    buildPantheonClient({ isClientSide: false }),
+    {
+      publishingLevel: "PRODUCTION",
+      ...args,
+    },
+    {
+      publishStatus: "published",
+      ...searchParams,
+    },
+    false,
+  );
 }
 
 async function getAllArticlesWithSummary(
@@ -104,5 +124,6 @@ export const PCCConvenienceFunctions = {
   getAllArticlesWithSummary,
   getArticleBySlugOrId,
   getRecommendedArticles,
+  getPaginatedArticles,
   getTags,
 };

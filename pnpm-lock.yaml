@@ -744,6 +744,9 @@ importers:
       '@pantheon-systems/pcc-react-sdk':
         specifier: ~3.3.3
         version: link:../../packages/react-sdk
+      '@pantheon-systems/pcc-sdk-core':
+        specifier: ^3.3.3
+        version: link:../../packages/core
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
