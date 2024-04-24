@@ -8,9 +8,14 @@ import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
 import Pagination from "../components/pagination";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 20;
 export default function Home({ articles, totalCount, cursor }) {
-  const { data, onPageChange, fetching, currentPage } = usePagination({
+  const {
+    data: currentArticles,
+    onPageChange,
+    fetching,
+    currentPage,
+  } = usePagination({
     cursor,
     initialArticles: articles,
     pageSize: PAGE_SIZE,
@@ -60,7 +65,7 @@ export default function Home({ articles, totalCount, cursor }) {
             disabled={fetching}
           />
         </div>
-        <PostGrid contentType="posts" data={data} />
+        <PostGrid contentType="posts" data={currentArticles} />
       </section>
     </Layout>
   );
