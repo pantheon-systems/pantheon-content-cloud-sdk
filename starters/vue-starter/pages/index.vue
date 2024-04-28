@@ -1,7 +1,20 @@
 <script setup>
 import ArticleLink from "../components/ArticleLink.vue";
+import Pagination from "../components/Pagination.vue";
+import usePagination from "../hooks/usePagination";
 
-const { data, error } = await useFetch("/api/articles/")
+const PAGE_SIZE = 20
+
+const {
+  totalCount,
+  articlePages,
+  currentPage,
+  fetching,
+  error,
+  onPageChange
+} = usePagination({ pageSize: PAGE_SIZE })
+
+const data = computed(() => articlePages.value[currentPage.value])
 </script>
 
 <template>
@@ -23,11 +36,17 @@ const { data, error } = await useFetch("/api/articles/")
       <h2 v-if="error" class="text-red-500">
         Failed to load articles, please try again.
       </h2>
-      <h2 v-else-if="!data">
+      <h2 v-else-if="fetching">
         Loading...
       </h2>
-      <div v-else class="grid gap-5 mx-auto mt-12 max-w-content lg:max-w-screen-lg lg:grid-cols-3">
-        <article-link v-for="article in data" :key="article.id" :article="article"/>
+      <div v-else class="mx-auto mt-12 max-w-content lg:max-w-screen-lg ">
+        <div>
+          <pagination :total-count="totalCount" :page-size="PAGE_SIZE" :current-page="currentPage"
+            :on-change="onPageChange" :disabled="fetching" />
+        </div>
+        <div class="grid gap-5 lg:grid-cols-3">
+          <article-link v-for="article in data" :key="article.id" :article="article" />
+        </div>
       </div>
     </section>
   </div>

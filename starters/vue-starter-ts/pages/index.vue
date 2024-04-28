@@ -3,7 +3,7 @@ import ArticleLink from "../components/ArticleLink.vue";
 import Pagination from "../components/Pagination.vue";
 import usePagination from "../hooks/usePagination";
 
-const PAGE_SIZE = 2
+const PAGE_SIZE = 20
 
 const {
   totalCount,
