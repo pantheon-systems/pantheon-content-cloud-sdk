@@ -6,14 +6,16 @@ import {
 import { useEffect, useState } from "react";
 
 interface Props {
-  cursor: number;
+  cursor?: number;
   pageSize: number;
-  initialArticles: PaginatedArticle[] | ArticleWithoutContent[];
+  initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
 }
 
 export function usePagination({ cursor, initialArticles, pageSize }: Props) {
   const [currentCursor, setCurrentCursor] = useState(cursor);
-  const [articlePages, setArticlePages] = useState([initialArticles]);
+  const [articlePages, setArticlePages] = useState(
+    initialArticles ? [initialArticles] : [],
+  );
   const [fetching, setFetching] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -24,14 +26,18 @@ export function usePagination({ cursor, initialArticles, pageSize }: Props) {
       setFetching(true);
       const { data, cursor: newCursor } =
         await PCCConvenienceFunctions.getPaginatedArticles({
-          cursor: currentCursor,
           pageSize,
+          ...(currentCursor && { cursor: currentCursor }),
         });
       setFetching(false);
-      setArticlePages((prev) => [...prev, data]);
+      setArticlePages((prev) => {
+        const result = [...prev];
+        result[currentPage] = data;
+        return result;
+      });
       setCurrentCursor(newCursor);
     })();
-  }, [currentPage, articlePages, currentCursor]);
+  }, [currentPage]);
 
   return {
     // Return last page if current page doesn't exist
