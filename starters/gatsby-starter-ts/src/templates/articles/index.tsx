@@ -5,10 +5,8 @@ import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import Pagination from "../../components/pagination";
 
-const PAGE_SIZE = 20;
-
 export default function ArticlesListTemplate({
-  pageContext: { articles, totalCount, currentPage },
+  pageContext: { articles, totalCount, currentPage, pageSize },
 }) {
   const RenderCurrentItems = ({ currentItems }) => {
     return <PageGrid data={currentItems} />;
@@ -26,7 +24,7 @@ export default function ArticlesListTemplate({
           <div className="mt-4 flex flex-row justify-center items-center">
             <Pagination
               totalCount={totalCount}
-              pageSize={PAGE_SIZE}
+              pageSize={pageSize}
               currentPage={currentPage}
               onChange={onPageChange}
             />

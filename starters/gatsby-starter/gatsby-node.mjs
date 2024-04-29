@@ -50,6 +50,7 @@ const createPages = async ({ actions: { createPage } }) => {
         articles: currentArticles,
         totalCount: articles.length,
         currentPage: page,
+        pageSize: PAGE_SIZE,
       },
     });
     createPage({
@@ -59,6 +60,7 @@ const createPages = async ({ actions: { createPage } }) => {
         articles: currentArticles,
         totalCount: articles.length,
         currentPage: page,
+        pageSize: PAGE_SIZE,
       },
     });
   });

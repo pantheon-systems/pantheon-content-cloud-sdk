@@ -7,9 +7,8 @@ import Seo from "../components/seo";
 //@ts-ignore
 import PantheonLogo from "../images/pantheon.png";
 
-const PAGE_SIZE = 20;
 export default function Home({ ...props }) {
-  const { articles, totalCount, currentPage } = props.pageContext;
+  const { articles, totalCount, currentPage, pageSize } = props.pageContext;
 
   const onPageChange = (page: number) => {
     if (page === 0) navigate("/");
@@ -55,7 +54,7 @@ export default function Home({ ...props }) {
         <div className="mt-4 flex flex-row justify-center items-center">
           <Pagination
             totalCount={totalCount}
-            pageSize={PAGE_SIZE}
+            pageSize={pageSize}
             currentPage={currentPage}
             onChange={onPageChange}
           />
