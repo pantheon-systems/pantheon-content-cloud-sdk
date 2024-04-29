@@ -8,7 +8,7 @@ import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import Pagination from "../../components/pagination";
 
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 20;
 
 export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
   const {
