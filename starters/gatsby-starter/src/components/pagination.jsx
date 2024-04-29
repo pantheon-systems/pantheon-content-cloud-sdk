@@ -1,5 +1,5 @@
 import { Button } from "@pantheon-systems/pds-toolkit-react";
-import React, { useCallback } from "react";
+import React from "react";
 
 const Pagination = ({
   pageSize,
@@ -13,15 +13,15 @@ const Pagination = ({
   const showPrevButton = currentPage > 0;
   const showNextButton = currentPage + 1 < pageCount;
 
-  const goToNextPage = useCallback(async () => {
+  const goToNextPage = async () => {
     const newPage = Math.min(currentPage + 1, pageCount - 1);
     onChange(newPage);
-  }, [currentPage]);
+  };
 
-  const goToPreviousPage = useCallback(() => {
+  const goToPreviousPage = () => {
     const newPage = Math.max(currentPage - 1, 0);
     onChange(newPage);
-  }, [currentPage]);
+  };
 
   return (
     <div className="my-5 flex items-center">
