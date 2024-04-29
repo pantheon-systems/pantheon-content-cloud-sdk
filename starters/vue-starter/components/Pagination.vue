@@ -21,7 +21,7 @@ const goToPreviousPage = () => {
 </script>
 
 <template>
-  <div class="my-5 flex items-center">
+  <div class="my-5 flex justify-center items-center">
     <button v-if="showPrevButton" @click="goToPreviousPage"
       class="rounded flex px-3 py-2 text-base font-bold hover:bg-slate-100" :disabled="disabled">
       <ArrowLeft />
