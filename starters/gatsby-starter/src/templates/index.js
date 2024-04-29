@@ -1,10 +1,19 @@
+import { navigate } from "gatsby";
 import React from "react";
 import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
+import Pagination from "../components/pagination";
 import PantheonLogo from "../images/pantheon.png";
 
+const PAGE_SIZE = 20;
+
 export default function Home({ ...props }) {
-  const { articles } = props.pageContext;
+  const { articles, totalCount, currentPage } = props.pageContext;
+
+  const onPageChange = (page) => {
+    if (page === 0) navigate("/");
+    else navigate(`/${page + 1}`);
+  };
 
   const HomepageHeader = () => (
     <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
@@ -41,6 +50,14 @@ export default function Home({ ...props }) {
     >
       <HomepageHeader />
       <section>
+        <div className="mt-4 flex flex-row justify-center items-center">
+          <Pagination
+            totalCount={totalCount}
+            pageSize={PAGE_SIZE}
+            currentPage={currentPage}
+            onChange={onPageChange}
+          />
+        </div>
         <PostGrid contentType="posts" data={articles} />
       </section>
     </Layout>

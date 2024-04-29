@@ -9,7 +9,7 @@ import {
 const pccHost = process.env.PCC_HOST;
 const pccSiteId = process.env.PCC_SITE_ID;
 const pccApiKey = process.env.PCC_TOKEN;
-const PAGE_SIZE = 2;
+const PAGE_SIZE = 20;
 
 if (process.env.IS_CICD !== "true") {
   if (!pccSiteId) {

@@ -57,7 +57,7 @@ const PageGridItem = ({ content: article }) => {
 export const Grid = ({ children }) => {
   return (
     <div
-      className={`mt-12 grid gap-5 max-w-content mx-auto lg:max-w-screen-lg lg:grid-cols-3`}
+      className={`mt-6 grid gap-5 max-w-content mx-auto lg:max-w-screen-lg lg:grid-cols-3`}
     >
       {children}
     </div>

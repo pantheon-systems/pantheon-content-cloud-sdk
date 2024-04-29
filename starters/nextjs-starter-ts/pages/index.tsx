@@ -56,7 +56,7 @@ export default function Home({ articles, totalCount, cursor }) {
       />
       <HomepageHeader />
       <section>
-        <div className="flex flex-row justify-center items-center">
+        <div className="flex mt-4 flex-row justify-center items-center">
           <Pagination
             totalCount={totalCount}
             pageSize={PAGE_SIZE}
