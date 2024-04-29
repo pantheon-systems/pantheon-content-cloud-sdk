@@ -7,6 +7,7 @@ import {
 import { Element } from "hast";
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { getTextContent } from "../../utils/react-element";
 import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
@@ -46,7 +47,10 @@ interface Props {
   bodyClassName?: string;
   containerClassName?: string;
   headerClassName?: string;
-  renderTitle?: (titleElement: React.ReactElement) => React.ReactNode;
+  renderTitle?: (
+    titleElement: React.ReactElement,
+    content: string,
+  ) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
   previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
@@ -179,7 +183,9 @@ const ArticleRenderer = ({
 
       {titleElement != null ? (
         <div className={headerClassName}>
-          {renderTitle ? renderTitle(titleElement) : titleElement}
+          {renderTitle
+            ? renderTitle(titleElement, getTextContent(titleElement))
+            : titleElement}
         </div>
       ) : null}
       {renderBody ? renderBody(bodyElement) : bodyElement}
