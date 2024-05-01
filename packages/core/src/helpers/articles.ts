@@ -5,12 +5,9 @@
 import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
 import {
+  generateListArticlesGQL,
   GET_ARTICLE_QUERY,
   GET_RECOMMENDED_ARTICLES_QUERY,
-  LIST_ARTICLES_QUERY,
-  LIST_ARTICLES_QUERY_W_CONTENT,
-  LIST_ARTICLES_QUERY_WITH_CONTENT_AND_SUMMARY,
-  LIST_ARTICLES_QUERY_WITH_SUMMARY,
   LIST_PAGINATED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT,
 } from "../lib/gql";
@@ -181,17 +178,10 @@ export async function getArticlesWithSummary(
     } = args || {};
     const contentType = buildContentType(requestedContentType);
 
-    let query;
-
-    if (withContent && withSummary) {
-      query = LIST_ARTICLES_QUERY_WITH_CONTENT_AND_SUMMARY;
-    } else if (withContent) {
-      query = LIST_ARTICLES_QUERY_W_CONTENT;
-    } else if (withSummary) {
-      query = LIST_ARTICLES_QUERY_WITH_SUMMARY;
-    } else {
-      query = LIST_ARTICLES_QUERY;
-    }
+    const query = generateListArticlesGQL({
+      withContent,
+      withSummary,
+    });
 
     const response = await client.apolloClient.query({
       query,

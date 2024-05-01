@@ -44,6 +44,7 @@ const init = async ({
   silentLogs,
   eslint,
   appName,
+  useAppRouter,
   useTypescript,
   printVerbose,
 }: {
@@ -56,6 +57,7 @@ const init = async ({
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
 }) => {
@@ -78,9 +80,16 @@ const init = async ({
   const fetchStarter = new SpinnerLogger("Fetching starter kit...", silentLogs);
   fetchStarter.start();
 
+  if (template === "nextjs" && useAppRouter && !useTypescript) {
+    logger.error(
+      chalk.red("ERROR: Typescript is required when using nextjs app router"),
+    );
+    exit(1);
+  }
+
   const starterPath = `starters/${TEMPLATE_FOLDER_MAP[template]}${
-    useTypescript ? "-ts" : ""
-  }/`;
+    useAppRouter ? "-approuter" : ""
+  }${useTypescript ? "-ts" : ""}/`;
 
   const absoluteProjectPath = await downloadTemplateDirectory(
     starterPath,
@@ -248,6 +257,7 @@ export default errorHandler<{
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
 }>(init, (args) => {
