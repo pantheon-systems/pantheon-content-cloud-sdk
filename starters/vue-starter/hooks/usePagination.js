@@ -1,41 +1,54 @@
 import { ref, watch } from "vue";
 
-export default function usePagination({ initialArticles, pageSize, cursor }) {
+export default async function usePagination({
+  initialArticles,
+  pageSize,
+  cursor,
+}) {
   const currentCursor = ref(cursor);
   const articlePages = ref(initialArticles ? [initialArticles] : []);
-  const fetching = ref(false);
   const currentPage = ref(0);
   const totalCount = ref(0);
-  const error = ref();
+
+  const {
+    data,
+    error,
+    pending = false,
+  } = await useAsyncData(
+    "paginatedArticles",
+    () => {
+      // No need to fetch since, we already have cached data inside `articlePages`
+      if (articlePages.value[currentPage.value]) return {};
+
+      return $fetch(`/api/articles/`, {
+        params: {
+          pageSize,
+          cursor: currentCursor.value,
+        },
+      });
+    },
+    {
+      watch: [currentPage],
+    },
+  );
 
   function onPageChange(page) {
     currentPage.value = page;
   }
 
   watch(
-    [currentPage],
+    [data],
     async () => {
-      if (articlePages.value[currentPage.value]) return;
+      if (Object.keys(data.value).length === 0) return;
 
-      fetching.value = true;
-      try {
-        const {
-          totalCount: _totalCount,
-          data: newArticles,
-          cursor: newCursor,
-        } = await $fetch(`/api/articles/`, {
-          params: {
-            pageSize,
-            cursor: currentCursor.value,
-          },
-        });
-        totalCount.value = _totalCount;
-        articlePages.value = [...articlePages.value, newArticles];
-        currentCursor.value = newCursor;
-        fetching.value = false;
-      } catch (err) {
-        error.value = err;
-      }
+      const {
+        totalCount: _totalCount,
+        data: newArticles,
+        cursor: newCursor,
+      } = data.value;
+      totalCount.value = _totalCount;
+      articlePages.value = [...articlePages.value, newArticles];
+      currentCursor.value = newCursor;
     },
     { immediate: true },
   );
@@ -45,7 +58,7 @@ export default function usePagination({ initialArticles, pageSize, cursor }) {
     articlePages,
     currentCursor,
     currentPage,
-    fetching,
+    fetching: pending,
     onPageChange,
     error,
   };
