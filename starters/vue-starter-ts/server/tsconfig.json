@@ -1,3 +1,4 @@
 {
+  "exclude": ["../tailwind.config.js"],
   "extends": "../.nuxt/tsconfig.server.json"
 }

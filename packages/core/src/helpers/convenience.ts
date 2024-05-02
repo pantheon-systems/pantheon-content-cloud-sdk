@@ -20,7 +20,8 @@ const buildPantheonClient = ({
 }: {
   isClientSide: boolean;
   pccGrant?: string | undefined;
-} & Partial<PantheonClientConfig>) => {
+  props?: Partial<PantheonClientConfig>;
+}) => {
   return new PantheonClient({
     // eslint-disable-next-line turbo/no-undeclared-env-vars
     pccHost: process.env.PCC_HOST as string,
@@ -29,7 +30,9 @@ const buildPantheonClient = ({
     apiKey: isClientSide
       ? "not-needed-on-client"
       : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_TOKEN as string),
+        (process.env.PCC_TOKEN as string) ||
+        // eslint-disable-next-line turbo/no-undeclared-env-vars
+        (process.env.PCC_API_KEY as string),
     pccGrant,
     ...props,
   });

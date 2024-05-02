@@ -21,10 +21,7 @@ import {
 } from "@pantheon-systems/pcc-react-sdk";
 
 // Create a client
-const pantheonClient = new PantheonClient({
-  pccHost: "https://my-content-cloud-host.com", // URL to PCC instance
-  pccWsHost: "wss://my-content-cloud-host.com", // PCC Instance websocket URL, optional
-});
+const pantheonClient = new PantheonClient();
 
 // Wrap your app in the provider
 function App() {
