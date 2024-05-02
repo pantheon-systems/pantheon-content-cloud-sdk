@@ -40,12 +40,12 @@ const data = computed(() => articlePages.value[currentPage.value])
         Loading...
       </h2>
       <div v-else class="mx-auto mt-12 max-w-content lg:max-w-screen-lg ">
-        <div>
-          <pagination :total-count="totalCount" :page-size="PAGE_SIZE" :current-page="currentPage"
-            :on-change="onPageChange" :disabled="fetching" />
-        </div>
         <div class="grid gap-5 lg:grid-cols-3">
           <article-link v-for="article in data" :key="article.id" :article="article" />
+        </div>
+        <div class="flex mt-4 justify-center">
+          <pagination :total-count="totalCount" :page-size="PAGE_SIZE" :current-page="currentPage"
+            :on-change="onPageChange" :disabled="fetching" />
         </div>
       </div>
     </section>
