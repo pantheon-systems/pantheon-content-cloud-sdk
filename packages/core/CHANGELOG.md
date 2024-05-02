@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.4.0
+
+### Minor Changes
+
+- 37e1c39: PantheonAPI now supports app router.
+- 5124a8b: Added support for `metadataFilters` parameter sent to GraphQL API.
+
 ## 3.3.3
 
 ## 3.3.2
