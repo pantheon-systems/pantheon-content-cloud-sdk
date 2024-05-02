@@ -12,7 +12,7 @@ const {
   fetching,
   error,
   onPageChange
-} = usePagination({ pageSize: PAGE_SIZE })
+} = await usePagination({ pageSize: PAGE_SIZE })
 
 const data = computed(() => articlePages.value[currentPage.value])
 </script>

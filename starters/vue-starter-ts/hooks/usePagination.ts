@@ -7,56 +7,68 @@ interface Props {
   cursor?: number;
 }
 
-export default function usePagination({
+export default async function usePagination({
   initialArticles,
   pageSize,
   cursor,
 }: Props) {
   const currentCursor = ref(cursor);
   const articlePages = ref(initialArticles ? [initialArticles] : []);
-  const fetching = ref(false);
   const currentPage = ref(0);
   const totalCount = ref(0);
-  const error = ref();
+
+  const {
+    data,
+    error,
+    pending = false,
+  } = await useAsyncData(
+    "paginatedArticles",
+    async () => {
+      // No need to fetch since, we already have cached data inside `articlePages`
+      if (articlePages.value[currentPage.value]) return {};
+
+      return $fetch(`/api/articles/`, {
+        params: {
+          pageSize,
+          cursor: currentCursor.value,
+        },
+      });
+    },
+    {
+      watch: [currentPage],
+    },
+  );
 
   function onPageChange(page: number) {
     currentPage.value = page;
   }
 
   watch(
-    [currentPage],
+    [data],
     async () => {
-      if (articlePages.value[currentPage.value]) return;
+      if (!data.value || Object.keys(data.value).length === 0) return;
 
-      fetching.value = true;
-      try {
-        const {
-          totalCount: _totalCount,
-          data: newArticles,
-          cursor: newCursor,
-        } = await $fetch(`/api/articles/`, {
-          params: {
-            pageSize,
-            cursor: currentCursor.value,
-          },
-        });
-        totalCount.value = _totalCount;
-        articlePages.value = [...articlePages.value, newArticles];
-        currentCursor.value = newCursor;
-        fetching.value = false;
-      } catch (err) {
-        error.value = err;
-      }
+      const {
+        totalCount: _totalCount,
+        data: newArticles,
+        cursor: newCursor,
+      } = data.value as {
+        totalCount: number;
+        data: ArticleWithoutContent[];
+        cursor: number;
+      };
+      totalCount.value = _totalCount;
+      articlePages.value = [...articlePages.value, newArticles];
+      currentCursor.value = newCursor;
     },
     { immediate: true },
   );
-
   return {
     totalCount,
     articlePages,
     currentCursor,
     currentPage,
-    fetching,
+    fetching: pending,
     onPageChange,
     error,
   };

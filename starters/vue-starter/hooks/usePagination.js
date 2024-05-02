@@ -16,7 +16,7 @@ export default async function usePagination({
     pending = false,
   } = await useAsyncData(
     "paginatedArticles",
-    () => {
+    async () => {
       // No need to fetch since, we already have cached data inside `articlePages`
       if (articlePages.value[currentPage.value]) return {};
 
