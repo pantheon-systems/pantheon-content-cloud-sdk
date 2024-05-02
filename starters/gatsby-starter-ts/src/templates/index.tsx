@@ -51,6 +51,7 @@ export default function Home({ ...props }) {
       />
       <HomepageHeader />
       <section>
+        <PostGrid data={articles} />
         <div className="mt-4 flex flex-row justify-center items-center">
           <Pagination
             totalCount={totalCount}
@@ -59,7 +60,6 @@ export default function Home({ ...props }) {
             onChange={onPageChange}
           />
         </div>
-        <PostGrid data={articles} />
       </section>
     </Layout>
   );

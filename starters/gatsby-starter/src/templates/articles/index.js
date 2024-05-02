@@ -22,6 +22,7 @@ export default function ArticlesListTemplate({
       <div className="max-w-screen-lg mx-auto">
         <section>
           <PageHeader title="Articles" />
+          <RenderCurrentItems currentItems={articles} />
           <div className="mt-4 flex flex-row justify-center items-center">
             <Pagination
               totalCount={totalCount}
@@ -30,7 +31,6 @@ export default function ArticlesListTemplate({
               onChange={onPageChange}
             />
           </div>
-          <RenderCurrentItems currentItems={articles} />
         </section>
       </div>
     </Layout>
