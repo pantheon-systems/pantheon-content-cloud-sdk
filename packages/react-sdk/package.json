@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "3.3.3",
+  "version": "3.4.0",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -94,7 +94,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.5",
-    "@pantheon-systems/pcc-sdk-core": "~3.3.3",
+    "@pantheon-systems/pcc-sdk-core": "~3.4.0",
     "framer-motion": "^10.18.0",
     "goober": "^2.1.14",
     "graphql": "^16.8.1",
