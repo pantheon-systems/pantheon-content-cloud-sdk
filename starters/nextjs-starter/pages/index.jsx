@@ -56,6 +56,7 @@ export default function Home({ articles, totalCount, cursor }) {
       />
       <HomepageHeader />
       <section>
+        <PostGrid contentType="posts" data={currentArticles} />
         <div className="flex flex-row mt-4 justify-center items-center">
           <Pagination
             totalCount={totalCount}
@@ -65,7 +66,6 @@ export default function Home({ articles, totalCount, cursor }) {
             disabled={fetching}
           />
         </div>
-        <PostGrid contentType="posts" data={currentArticles} />
       </section>
     </Layout>
   );
