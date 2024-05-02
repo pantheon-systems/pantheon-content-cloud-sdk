@@ -39,7 +39,7 @@ export interface ArticlePaginatedQueryArgs {
   sortOrder?: keyof typeof SortOrder;
   metadataFilters?: { [key: string]: unknown };
   pageSize?: number;
-  cursor?: number;
+  cursor?: string;
 }
 
 type FilterableFields = "body" | "tag" | "title";
@@ -90,7 +90,7 @@ export function convertSearchParamsToGQL(
 
 function fetchEmptyPage(
   total: number,
-  cursor: number,
+  cursor: string,
 ): () => Promise<PaginatedArticle> {
   return async () => ({
     data: [],
@@ -126,7 +126,7 @@ export async function getPaginatedArticles(
         contentType,
       },
     });
-    const responseData = response.data.articlesv2;
+    const responseData = response.data.articlesv3;
     const { articles, pageInfo } = responseData as {
       articles: ArticleWithoutContent[];
       pageInfo: PageInfo;
@@ -195,7 +195,7 @@ export async function getArticlesWithSummary(
       },
     });
 
-    return response.data.articlesv2;
+    return response.data.articlesv3;
   } catch (e) {
     handleApolloError(e);
   }

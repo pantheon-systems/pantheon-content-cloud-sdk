@@ -21,13 +21,13 @@ export type ArticleV2Response = {
 };
 export type PageInfo = {
   totalCount: number;
-  nextCursor: number;
+  nextCursor: string;
 };
 export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];
   totalCount: number;
-  cursor: number;
+  cursor: string;
   fetchNextPage: () => Promise<PaginatedArticle>;
 };
 

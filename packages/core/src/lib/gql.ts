@@ -69,7 +69,7 @@ export function generateListArticlesGQL({
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
-    articlesv2(
+    articlesv3(
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
@@ -125,7 +125,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY = gql`
     $filter: ArticleFilterInput
     $metadataFilters: String
   ) {
-    articlesv2(
+    articlesv3(
       pageSize: $pageSize
       sortBy: $sortBy
       sortOrder: $sortOrder
@@ -167,7 +167,7 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
     $filter: ArticleFilterInput
     $metadataFilters: String
   ) {
-    articlesv2(
+    articlesv3(
       pageSize: $pageSize
       sortBy: $sortBy
       sortOrder: $sortOrder
