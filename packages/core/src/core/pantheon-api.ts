@@ -152,25 +152,27 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     });
 
     const baseUrl = generateBaseURL(req);
-
+    const query =
+      req.query != null
+        ? req.query
+        : queryString.parse(req.url.split("?")[1] || "");
     const {
       command: commandInput,
       pccGrant,
       ...restOfQuery
-    } = req.query || params;
+    }: any = { ...query, ...params };
 
     const { publishingLevel } = restOfQuery;
 
     if (!commandInput) {
+      headers.set(
+        "location",
+        new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+      );
+
       return new Response(null, {
         status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            options?.notFoundPath || "/404",
-            baseUrl,
-          ).toString(),
-        }),
+        headers,
       });
     }
 
@@ -222,65 +224,66 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       const parsedArticleId = command[1];
 
       const article: (Partial<Article> & Pick<Article, "id">) | null =
-        await getArticleBySlugOrId(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          options.getPantheonClient!({
-            pccGrant: pccGrant ? pccGrant.toString() : undefined,
-          }),
-          parsedArticleId,
-          // We will let downstream validate the publishingLevel param.
-          {
-            publishingLevel: publishingLevel
-              ?.toString()
-              .toUpperCase() as AllowablePublishingLevels,
-          },
-        );
+        parsedArticleId == null
+          ? null
+          : await getArticleBySlugOrId(
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              options.getPantheonClient!({
+                pccGrant: pccGrant ? pccGrant.toString() : undefined,
+              }),
+              parsedArticleId,
+              // We will let downstream validate the publishingLevel param.
+              {
+                publishingLevel: publishingLevel
+                  ?.toString()
+                  .toUpperCase() as AllowablePublishingLevels,
+              },
+            );
 
       if (article == null) {
+        headers.set(
+          "location",
+          new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+        );
+
         return new Response(null, {
           status: 302,
-          headers: new Headers({
-            ...headers,
-            location: new URL(
-              options?.notFoundPath || "/404",
-              baseUrl,
-            ).toString(),
-          }),
+          headers,
         });
       }
 
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
         : defaultOptions.resolvePath(article);
+      headers.set(
+        "location",
+        new URL(
+          resolvedPath +
+            (publishingLevel && typeof publishingLevel === "string"
+              ? `?publishingLevel=${encodeURIComponent(
+                  publishingLevel,
+                ).toUpperCase()}`
+              : ""),
+          baseUrl,
+        ).toString(),
+      );
 
       return new Response(null, {
         status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            resolvedPath +
-              (publishingLevel && typeof publishingLevel === "string"
-                ? `?publishingLevel=${encodeURIComponent(
-                    publishingLevel,
-                  ).toUpperCase()}`
-                : ""),
-            baseUrl,
-          ).toString(),
-        }),
+        headers,
       });
     } else if (command[0] === "component_schema") {
       const componentFilter = command[1];
 
       if (options?.smartComponentMap == null) {
+        headers.set(
+          "location",
+          new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+        );
+
         return new Response(null, {
           status: 302,
-          headers: new Headers({
-            ...headers,
-            location: new URL(
-              options?.notFoundPath || "/404",
-              baseUrl,
-            ).toString(),
-          }),
+          headers,
         });
       } else if (componentFilter == null) {
         // Return entire schema if no filter was given.
@@ -291,34 +294,37 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           { headers },
         );
       }
-    } else if (command[0] === "component" && options?.componentPreviewPath) {
+    } else if (
+      command[0] === "component" &&
+      options?.componentPreviewPath &&
+      command[1] != null
+    ) {
       const previewPath = options.componentPreviewPath(command[1]);
       const pathParts = previewPath.split("?");
       const query = queryString.parse(pathParts[1] || "");
+      headers.set(
+        "location",
+        new URL(
+          `${pathParts[0]}?${queryString.stringify({
+            ...restOfQuery,
+            ...query,
+          })}`,
+          baseUrl,
+        ).toString(),
+      );
 
       return new Response(null, {
         status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            `${pathParts[0]}?${queryString.stringify({
-              ...restOfQuery,
-              ...query,
-            })}`,
-            baseUrl,
-          ).toString(),
-        }),
+        headers,
       });
     } else {
+      headers.set(
+        "location",
+        new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+      );
       return new Response(null, {
         status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            options?.notFoundPath || "/404",
-            baseUrl,
-          ).toString(),
-        }),
+        headers,
       });
     }
   };
