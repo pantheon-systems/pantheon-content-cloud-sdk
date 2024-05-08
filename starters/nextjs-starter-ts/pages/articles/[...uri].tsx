@@ -102,7 +102,9 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
-      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(article.id),
+      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
+        article.id,
+      ),
     },
   };
 }

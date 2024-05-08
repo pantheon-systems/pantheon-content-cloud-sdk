@@ -72,7 +72,7 @@ const PantheonTreeRenderer = ({
 
   if (
     disableAllStyles === true &&
-    (element.tag !== "img" || preserveImageStyles)
+    (element.tag !== "img" || !preserveImageStyles)
   ) {
     element.style = null;
     delete element.attrs?.class;

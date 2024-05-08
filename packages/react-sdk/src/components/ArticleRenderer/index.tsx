@@ -150,8 +150,8 @@ const ArticleRenderer = ({
       element: titleContent,
       componentMap,
       smartComponentMap,
-      preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+      preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
     });
