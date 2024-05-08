@@ -1,5 +1,14 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.4.1
+
+### Patch Changes
+
+- 19f9ac8: Fix how preview JWT token is set from PantheonAPI
+- c8800c8: Add preserveImageStyles experimental flag for article rendering.
+- Updated dependencies [19f9ac8]
+  - @pantheon-systems/pcc-sdk-core@3.4.1
+
 ## 3.4.0
 
 ### Minor Changes
