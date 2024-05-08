@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.4.1
+
+### Patch Changes
+
+- 19f9ac8: Fix how preview JWT token is set from PantheonAPI
+
 ## 3.4.0
 
 ### Minor Changes
