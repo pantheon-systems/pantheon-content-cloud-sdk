@@ -34,7 +34,7 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
           },
         ) => {
           if (options.headers) {
-            options.headers.forEach((k, v) => setResponseHeader(event, k, v));
+            options.headers.forEach((v, k) => setResponseHeader(event, k, v));
           }
 
           if (options.status) {

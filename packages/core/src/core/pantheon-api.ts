@@ -129,7 +129,7 @@ function generateBaseURL(req: ApiRequest) {
             ? "https"
             : "http"
         }://${req.headers.host}`
-      : "";
+      : null;
   }
 }
 
@@ -145,6 +145,10 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     req: ApiRequest,
     { params, ...res }: ApiResponse | AppRouterParams,
   ) => {
+    if (!options.notFoundPath) {
+      options.notFoundPath = "/404";
+    }
+
     const headers = new Headers({
       ...(res.headers || []),
       // Allow the external Pantheon system to access these API routes.
@@ -167,7 +171,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     if (!commandInput) {
       headers.set(
         "location",
-        new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+        baseUrl
+          ? new URL(options.notFoundPath, baseUrl).toString()
+          : options.notFoundPath,
       );
 
       return new Response(null, {
@@ -243,7 +249,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       if (article == null) {
         headers.set(
           "location",
-          new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+          baseUrl
+            ? new URL(options.notFoundPath, baseUrl).toString()
+            : options.notFoundPath,
         );
 
         return new Response(null, {
@@ -255,17 +263,17 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       const resolvedPath = options?.resolvePath
         ? options.resolvePath(article)
         : defaultOptions.resolvePath(article);
+      const path =
+        resolvedPath +
+        (publishingLevel && typeof publishingLevel === "string"
+          ? `?publishingLevel=${encodeURIComponent(
+              publishingLevel,
+            ).toUpperCase()}`
+          : "");
+
       headers.set(
         "location",
-        new URL(
-          resolvedPath +
-            (publishingLevel && typeof publishingLevel === "string"
-              ? `?publishingLevel=${encodeURIComponent(
-                  publishingLevel,
-                ).toUpperCase()}`
-              : ""),
-          baseUrl,
-        ).toString(),
+        baseUrl ? new URL(path, baseUrl).toString() : path,
       );
 
       return new Response(null, {
@@ -278,7 +286,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       if (options?.smartComponentMap == null) {
         headers.set(
           "location",
-          new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+          baseUrl
+            ? new URL(options.notFoundPath, baseUrl).toString()
+            : options.notFoundPath,
         );
 
         return new Response(null, {
@@ -302,17 +312,15 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       const previewPath = options.componentPreviewPath(command[1]);
       const pathParts = previewPath.split("?");
       const query = queryString.parse(pathParts[1] || "");
+      const path = `${pathParts[0]}?${queryString.stringify({
+        ...restOfQuery,
+        ...query,
+      })}`;
+
       headers.set(
         "location",
-        new URL(
-          `${pathParts[0]}?${queryString.stringify({
-            ...restOfQuery,
-            ...query,
-          })}`,
-          baseUrl,
-        ).toString(),
+        baseUrl ? new URL(path, baseUrl).toString() : path,
       );
-
       return new Response(null, {
         status: 302,
         headers,
@@ -320,7 +328,9 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     } else {
       headers.set(
         "location",
-        new URL(options?.notFoundPath || "/404", baseUrl).toString(),
+        baseUrl
+          ? new URL(options.notFoundPath, baseUrl).toString()
+          : options.notFoundPath,
       );
       return new Response(null, {
         status: 302,
@@ -346,8 +356,8 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         });
       } else {
         res.json(response.body, {
-          headers: response.headers,
           status: response.status,
+          headers: response.headers,
         });
       }
     }
