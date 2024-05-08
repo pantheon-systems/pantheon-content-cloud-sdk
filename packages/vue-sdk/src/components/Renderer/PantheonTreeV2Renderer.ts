@@ -68,7 +68,10 @@ const PantheonTreeRenderer = defineComponent({
 
     const nodeChildren = [element.data, ...children].filter(Boolean);
 
-    if (__experimentalFlags?.disableAllStyles === true) {
+    if (
+      __experimentalFlags?.disableAllStyles === true &&
+      (element.tag !== "img" || !__experimentalFlags?.preserveImageStyles)
+    ) {
       element.style = null;
       delete element.attrs?.class;
     }

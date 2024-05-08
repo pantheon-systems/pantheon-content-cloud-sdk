@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
@@ -46,7 +47,10 @@ export default function ArticleView({
         </div>
       )}
       smartComponentMap={clientSmartComponentMap}
-      __experimentalFlags={{ disableAllStyles: !!onlyContent }}
+      __experimentalFlags={{
+        disableAllStyles: !!onlyContent,
+        preserveImageStyles: true,
+      }}
     />
   );
 }

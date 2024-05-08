@@ -10,6 +10,7 @@ interface Props {
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableAllStyles?: boolean;
+  preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
 }
 
@@ -18,6 +19,7 @@ const PantheonTreeRenderer = ({
   smartComponentMap,
   componentMap,
   disableAllStyles,
+  preserveImageStyles,
   disableDefaultErrorBoundaries,
 }: Props): React.ReactElement | null => {
   const children =
@@ -28,6 +30,7 @@ const PantheonTreeRenderer = ({
         smartComponentMap,
         componentMap,
         disableAllStyles,
+        preserveImageStyles,
         disableDefaultErrorBoundaries,
       }),
     ) ?? [];
@@ -67,7 +70,10 @@ const PantheonTreeRenderer = ({
 
   const nodeChildren = [element.data, ...children].filter(Boolean);
 
-  if (disableAllStyles === true) {
+  if (
+    disableAllStyles === true &&
+    (element.tag !== "img" || !preserveImageStyles)
+  ) {
     element.style = null;
     delete element.attrs?.class;
   }

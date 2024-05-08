@@ -38,6 +38,7 @@ export type PreviewBarProps = {
 
 export type ExperimentalFlags = {
   disableAllStyles?: boolean;
+  preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries: boolean;
   useUnintrusiveTitleRendering?: boolean;
 };
