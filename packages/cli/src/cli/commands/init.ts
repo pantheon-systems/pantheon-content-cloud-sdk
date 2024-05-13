@@ -1,6 +1,7 @@
 import {
   copyFileSync,
   existsSync,
+  openSync,
   readFileSync,
   rmdirSync,
   rmSync,
@@ -117,11 +118,15 @@ const init = async ({
       ...ESLINT_DEPENDENCIES,
     };
 
-    if (!existsSync(eslintFilePath)) {
-      writeFileSync(eslintFilePath, JSON.stringify(ESLINT_CONFIG, null, 2));
+    try {
+      const esLintFd = openSync(eslintFilePath, "wx");
+      writeFileSync(esLintFd, JSON.stringify(ESLINT_CONFIG, null, 2));
+    } catch {
+      // Ignore when eslint file already exists
     }
-  } else if (!eslint && existsSync(eslintFilePath)) {
-    rmSync(eslintFilePath);
+  } else if (!eslint) {
+    // Remove eslint file and don't raise exception if doesn't exist
+    rmSync(eslintFilePath, { force: true });
   }
 
   writeFileSync(
