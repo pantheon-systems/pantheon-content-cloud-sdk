@@ -125,7 +125,7 @@ const init = async ({
       // Ignore when eslint file already exists
     }
   } else if (!eslint) {
-    // Remove eslint file and don't raise exception if doesn't exist
+    // Remove eslint file and don't raise exception if it doesn't exist
     rmSync(eslintFilePath, { force: true });
   }
 
