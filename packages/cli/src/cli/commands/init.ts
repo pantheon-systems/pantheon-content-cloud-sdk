@@ -118,12 +118,14 @@ const init = async ({
       ...ESLINT_DEPENDENCIES,
     };
 
+    let esLintFd = null;
     try {
-      const esLintFd = openSync(eslintFilePath, "wx");
-      writeFileSync(esLintFd, JSON.stringify(ESLINT_CONFIG, null, 2));
+      esLintFd = openSync(eslintFilePath, "wx");
     } catch {
       // Ignore when eslint file already exists
     }
+    if (esLintFd)
+      writeFileSync(esLintFd, JSON.stringify(ESLINT_CONFIG, null, 2));
   } else if (!eslint) {
     // Remove eslint file and don't raise exception if it doesn't exist
     rmSync(eslintFilePath, { force: true });
