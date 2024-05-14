@@ -168,11 +168,18 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       req.query != null
         ? req.query
         : queryString.parse(req.url.split("?")[1] || "");
+
     const {
       command: commandInput,
       pccGrant,
       ...restOfQuery
-    }: any = { ...query, ...params };
+    }: {
+      command?: string | undefined | null;
+      pccGrant?: string | undefined | null;
+    } & { [k: string]: string | string[] | undefined | null } = {
+      ...(query as Record<string, string>),
+      ...params,
+    };
 
     const { publishingLevel } = restOfQuery;
 

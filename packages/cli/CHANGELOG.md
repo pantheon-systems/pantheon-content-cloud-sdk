@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-cli
 
+## 3.4.1
+
+### Patch Changes
+
+- Updated dependencies [19f9ac8]
+  - @pantheon-systems/pcc-sdk-core@3.4.1
+
 ## 3.4.0
 
 ### Minor Changes

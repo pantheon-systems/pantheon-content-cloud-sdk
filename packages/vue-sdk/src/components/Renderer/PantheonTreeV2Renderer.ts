@@ -70,7 +70,8 @@ const PantheonTreeRenderer = defineComponent({
     const convertedTagName = element.tag === "title" ? "h1" : element.tag;
     const componentOverride = componentMap?.[element.tag as "div"];
     const shouldPruneStyles =
-      __experimentalFlags?.disableAllStyles === true &&
+      __experimentalFlags?.disableAllStyles === true && 
+      (element.tag !== "img" || !__experimentalFlags?.preserveImageStyles) &&
       (typeof componentOverride === "string" || componentOverride == null);
 
     return h(
