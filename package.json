@@ -2,7 +2,7 @@
   "name": "pantheon-content-cloud-sdks",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.6.11",
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
