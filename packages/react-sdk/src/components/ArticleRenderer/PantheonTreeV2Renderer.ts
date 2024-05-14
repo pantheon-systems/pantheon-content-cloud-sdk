@@ -81,10 +81,12 @@ const PantheonTreeRenderer = ({
 
       // If shouldPruneStyles, then overwrite the class
       // but leave other attrs intact.
-      ...Object.assign(
-        {},
-        convertAttributes(element.attrs),
-        shouldPruneStyles ? { class: null } : {},
+      ...convertAttributes(
+        Object.assign(
+          {},
+          element.attrs,
+          shouldPruneStyles ? { class: null } : {},
+        ),
       ),
     },
     nodeChildren.length ? nodeChildren : undefined,
