@@ -93,7 +93,7 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.9.5",
+    "@apollo/client": "^3.10.3",
     "@pantheon-systems/pcc-sdk-core": "~3.4.1",
     "framer-motion": "^10.18.0",
     "goober": "^2.1.14",
