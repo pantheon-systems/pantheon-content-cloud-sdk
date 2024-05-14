@@ -53,9 +53,11 @@ export default function Layout({ children, footerMenu, preview }: Props) {
                 </li>
               );
             })}
-            <div>
-              <Searchbar />
-            </div>
+            <Suspense>
+              <div>
+                <Searchbar />
+              </div>
+            </Suspense>
           </ul>
         </nav>
       </div>
