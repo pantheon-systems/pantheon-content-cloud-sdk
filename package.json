@@ -2,7 +2,7 @@
   "name": "pantheon-content-cloud-sdks",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.6.11",
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
@@ -28,7 +28,8 @@
       "@pantheon-systems/pcc-react-sdk>trim": ">=0.0.3",
       "@pantheon-systems/pcc-react-sdk>trim-newlines": ">=3.0.1",
       "@pantheon-systems/pcc-react-sdk>yaml": ">=2.2.2",
-      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0"
+      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0",
+      "webpack-dev-middleware": "^7.2.1"
     }
   },
   "devDependencies": {
