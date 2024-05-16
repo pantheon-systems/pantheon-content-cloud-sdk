@@ -7,6 +7,7 @@ import {
 
 export type RendererConfig = {
   disableStyles?: boolean;
+  preserveImageStyles?: boolean;
 };
 
 export function renderArticleToElement(
@@ -73,8 +74,12 @@ export const renderContentNode = (
 
   const node = document.createElement(element.tag);
 
-  // Remove styles and classes if disableStyles is true
-  if (config?.disableStyles) {
+  // Remove styles and classes if disableStyles is true,
+  // unless the element is an img and preserveImageStyles is true.
+  if (
+    config?.disableStyles === true &&
+    (element.tag !== "img" || !config.preserveImageStyles)
+  ) {
     delete element.style;
     delete element.attrs?.class;
   }
