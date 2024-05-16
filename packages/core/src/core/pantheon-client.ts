@@ -154,13 +154,6 @@ export class PantheonClient {
       defaultOptions: {
         query: {
           fetchPolicy: "no-cache",
-          errorPolicy: "all",
-        },
-        watchQuery: {
-          errorPolicy: "all",
-        },
-        mutate: {
-          errorPolicy: "all",
         },
       },
     });

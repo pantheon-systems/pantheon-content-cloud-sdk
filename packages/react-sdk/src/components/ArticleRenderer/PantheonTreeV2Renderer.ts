@@ -69,22 +69,29 @@ const PantheonTreeRenderer = ({
   }
 
   const nodeChildren = [element.data, ...children].filter(Boolean);
-
-  if (
-    disableAllStyles === true &&
-    (element.tag !== "img" || !preserveImageStyles)
-  ) {
-    element.style = null;
-    delete element.attrs?.class;
-  }
-
   const convertedTagName = element.tag === "title" ? "h1" : element.tag;
+  const componentOverride = componentMap?.[element.tag as "div"];
+  const shouldPruneStyles =
+    disableAllStyles === true &&
+    (element.tag !== "img" || !preserveImageStyles) &&
+    (typeof componentOverride === "string" || componentOverride == null);
 
   return React.createElement(
-    componentMap?.[element.tag as "div"] || convertedTagName,
+    componentOverride || convertedTagName,
     {
-      style: getStyleObjectFromString(element?.style),
-      ...convertAttributes(element.attrs),
+      style: shouldPruneStyles
+        ? undefined
+        : getStyleObjectFromString(element?.style),
+
+      // If shouldPruneStyles, then overwrite the class
+      // but leave other attrs intact.
+      ...convertAttributes(
+        Object.assign(
+          {},
+          element.attrs,
+          shouldPruneStyles ? { class: null } : {},
+        ),
+      ),
     },
     nodeChildren.length ? nodeChildren : undefined,
   );

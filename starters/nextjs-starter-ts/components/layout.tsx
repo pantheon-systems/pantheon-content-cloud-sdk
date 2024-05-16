@@ -1,5 +1,5 @@
-import { Footer, PreviewRibbon } from "@pantheon-systems/nextjs-kit";
 import Link from "next/link";
+import { Footer } from "./footer";
 import { Searchbar } from "./searchbar";
 
 interface Props {
@@ -10,10 +10,9 @@ interface Props {
       label: string;
     },
   ];
-  preview?: boolean;
 }
 
-export default function Layout({ children, footerMenu, preview }: Props) {
+export default function Layout({ children, footerMenu }: Props) {
   const navItems = [
     {
       linkText: "🏠 Home",
@@ -37,7 +36,6 @@ export default function Layout({ children, footerMenu, preview }: Props) {
 
   return (
     <div className="min-h-screen max-h-screen min-w-screen max-w-screen flex flex-col overflow-x-hidden">
-      {preview && <PreviewRibbon />}
       <div className="ps-my-0 ps-pt-10 ps-px-5 ps-text-xl">
         <nav>
           <ul className="ps-flex ps-flex-row ps-flex-wrap sm:ps-flex-nowrap ps-list-none ps-justify-between max-w-screen-lg ps-mx-auto">
