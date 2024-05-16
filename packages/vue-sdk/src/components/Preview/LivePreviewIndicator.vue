@@ -31,7 +31,7 @@ defineProps({
           <br />
           <span>
             To reconnect, navigate to the document and select the
-            'Preview' button in the Content Cloud add-on.
+            &apos;Preview&apos; button in the Content Cloud add-on.
           </span>
         </div>
       </template>
