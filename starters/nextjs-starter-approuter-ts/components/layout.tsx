@@ -31,18 +31,18 @@ export default function Layout({ children, footerMenu }: Props) {
   }));
 
   return (
-    <div className="min-h-screen max-h-screen min-w-screen max-w-screen flex flex-col overflow-x-hidden">
-      <div className="ps-my-0 ps-pt-10 ps-px-5 ps-text-xl">
+    <div className="flex flex-col max-h-screen min-h-screen overflow-x-hidden min-w-screen max-w-screen">
+      <div className="px-5 pt-10 my-0 text-xl">
         <nav>
-          <ul className="ps-flex ps-flex-row ps-flex-wrap sm:ps-flex-nowrap ps-list-none ps-justify-between max-w-screen-lg ps-mx-auto">
+          <ul className="flex flex-row flex-wrap justify-between max-w-screen-lg mx-auto list-none sm:flex-nowrap">
             {navItems.map((item) => {
               return (
                 <li
-                  className={`${item.href === "/" ? "ps-mr-auto" : "ps-mx-4"}`}
+                  className={`${item.href === "/" ? "mr-auto" : "mx-4"}`}
                   key={item.href}
                 >
                   <Link
-                    className="ps-font-sans hover:ps-underline"
+                    className="font-sans hover:underline"
                     href={item.href}
                   >
                     {item.linkText}
