@@ -143,7 +143,7 @@ export const PreviewBar = ({
                       setCopyResetTimeoutId(timeoutId);
                     }}
                   >
-                    {hasCopied ? "Copied URL" : "Copy URL"}
+                    {hasCopied ? "Copied URL" : "Share preview"}
                   </CopyUrlButton>
                 </CopyUrlButtonContainer>
               </EndBlock>
