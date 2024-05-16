@@ -64,8 +64,17 @@ export const Grid = ({ children }) => {
   );
 };
 
+interface GriddedComponentProps {
+  data: any[] | null;
+  FallbackComponent?: any | null | undefined;
+}
+
 export const withGrid = (Component) => {
-  const GriddedComponents = ({ data, FallbackComponent, ...props }) => {
+  const GriddedComponents = ({
+    data,
+    FallbackComponent,
+    ...props
+  }: GriddedComponentProps & any) => {
     return (
       <>
         {data ? (
