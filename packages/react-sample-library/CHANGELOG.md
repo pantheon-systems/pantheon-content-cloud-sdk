@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.5.1
+
+### Patch Changes
+
+- Fix incorrect build of 3.5.0
+  - @pantheon-systems/pcc-sdk-core@3.5.1
+  - @pantheon-systems/pcc-react-sdk@3.5.1
+
 ## 3.5.0
 
 ### Patch Changes
