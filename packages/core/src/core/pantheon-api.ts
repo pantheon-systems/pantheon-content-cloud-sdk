@@ -375,12 +375,12 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         response.status <= 308 &&
         location != null
       ) {
-        return res.redirect(location, {
+        res.redirect(location, {
           status: response.status,
           headers: response.headers,
         });
       } else {
-        return res.json(await response.json(), {
+        res.json(await response.json(), {
           status: response.status,
           headers: response.headers,
         });
