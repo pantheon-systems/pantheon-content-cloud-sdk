@@ -1,5 +1,18 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.5.0
+
+### Minor Changes
+
+- 8ff023b: disableAllStyles is no longer applied to functional component
+  overrides given in componentMap to ArticleRenderer
+
+### Patch Changes
+
+- Updated dependencies [0e74720]
+- Updated dependencies [4cab3e2]
+  - @pantheon-systems/pcc-sdk-core@3.5.0
+
 ## 3.4.1
 
 ### Patch Changes
