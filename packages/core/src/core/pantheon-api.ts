@@ -35,7 +35,7 @@ export interface ApiResponse {
   setHeader: (
     key: string,
     value: string | string[],
-  ) => Promise<unknown> | unknown;
+  ) => Promise<ApiResponse> | unknown;
   /**
    * Function to get a header set on the api response.
    */
@@ -43,14 +43,14 @@ export interface ApiResponse {
   /**
    * Function to return a redirect response.
    */
-  redirect: (url: string, options: Options) => Promise<unknown> | unknown;
+  redirect: (url: string, options: Options) => Promise<ApiResponse> | unknown;
   /**
    * Function to return a JSON response.
    */
   json: (
     data: string | object | unknown,
     options: Options,
-  ) => Promise<unknown> | unknown;
+  ) => Promise<ApiResponse> | unknown;
 
   headers: Record<string, string>;
   params?: undefined;
@@ -363,8 +363,18 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     if (res?.params) {
       return response;
     } else {
+      response.headers.forEach((v, k) => {
+        res.setHeader(k, v);
+      });
+
       const location = response.headers.get("location");
-      if (response.status === 302 && location != null) {
+
+      // Redirect HTTP status codes exist between 300 - 308 inclusive.
+      if (
+        response.status >= 300 &&
+        response.status <= 308 &&
+        location != null
+      ) {
         return res.redirect(location, {
           status: response.status,
           headers: response.headers,
