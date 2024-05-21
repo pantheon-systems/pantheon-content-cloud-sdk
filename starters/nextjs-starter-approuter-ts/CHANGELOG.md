@@ -1,5 +1,14 @@
 # @pantheon-systems/next-pcc-starter
 
+## 1.1.3-beta.0
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+- Updated dependencies
+  - @pantheon-systems/pcc-react-sdk@3.5.2-beta.1
+
 ## 1.1.2-beta.0
 
 ### Patch Changes

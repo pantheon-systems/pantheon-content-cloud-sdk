@@ -19,6 +19,7 @@
     "@pantheon-systems/vue-pcc-starter-ts": null
   },
   "changesets": [
-    "olive-terms-sing"
+    "olive-terms-sing",
+    "sweet-zoos-mix"
   ]
 }

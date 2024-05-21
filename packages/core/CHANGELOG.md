@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.2-beta.1
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+
 ## 3.5.2-beta.0
 
 ### Patch Changes

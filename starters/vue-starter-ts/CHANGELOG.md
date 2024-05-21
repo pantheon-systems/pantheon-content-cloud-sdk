@@ -1,5 +1,14 @@
 # @pantheon-systems/vue-pcc-starter-ts
 
+## 1.0.2-beta.0
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+- Updated dependencies
+  - @pantheon-systems/pcc-vue-sdk@3.5.2-beta.1
+
 ## 1.0.1-beta.0
 
 ### Patch Changes
