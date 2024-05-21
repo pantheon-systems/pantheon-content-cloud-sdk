@@ -1,4 +1,4 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import { Client } from "./client";

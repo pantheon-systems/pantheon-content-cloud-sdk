@@ -37,7 +37,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-sdk-core": "~3.5.2-beta.0",
+    "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "axios": "^1.6.8",
     "bluebird": "^3.7.2",
     "boxen": "^7.1.1",

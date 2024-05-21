@@ -1,6 +1,6 @@
 "use client";
 
-import { Article } from "@pantheon-systems/pcc-sdk-core/types";
+import { Article } from "@pantheon-systems/pcc-react-sdk";
 import { PageGrid } from "../../components/grid";
 
 interface Props {
