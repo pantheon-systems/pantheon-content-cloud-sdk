@@ -1,10 +1,9 @@
 import {
-  Article,
   GET_RECOMMENDED_ARTICLES_QUERY,
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import { PaginatedArticle } from "../types";
+import { Article, PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
   getPaginatedArticles as _getPaginatedArticles,
@@ -98,7 +97,7 @@ async function getArticleBySlugOrId(
     id,
     {
       publishingLevel,
-      contentType: "TREE_PANTHEON",
+      contentType: "TREE_PANTHEON_V2",
     },
   );
 
