@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.5.2-beta.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.2-beta.0
+
 ## 3.5.1
 
 ### Patch Changes

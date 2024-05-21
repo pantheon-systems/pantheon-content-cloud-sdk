@@ -1,5 +1,13 @@
 # @pantheon-systems/next-pcc-starter
 
+## 1.1.2-beta.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.2-beta.0
+  - @pantheon-systems/pcc-react-sdk@3.5.2-beta.0
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.2-beta.0
+
+### Patch Changes
+
+- Fix graphql error handling issue which caused sites to show error pages
+  instead of 404.
+
 ## 3.5.1
 
 ## 3.5.0
