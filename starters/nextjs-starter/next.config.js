@@ -28,11 +28,6 @@ if (process.env.IS_CICD !== "true") {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  env: {
-    PCC_SITE_ID: process.env.PCC_SITE_ID,
-    PCC_TOKEN: process.env.PCC_TOKEN,
-    ...(process.env.PCC_HOST && { PCC_HOST: process.env.PCC_HOST }),
-  },
   output: "standalone",
 };
 

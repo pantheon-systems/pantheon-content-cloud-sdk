@@ -271,7 +271,8 @@ export async function getArticleBySlugOrId(
   }
 
   try {
-    return await getArticle(client, slugOrId, args);
+    const article = await getArticle(client, slugOrId, args);
+    return article;
   } catch (e) {
     if (
       !(e instanceof ApolloError) ||
