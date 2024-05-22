@@ -583,8 +583,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: workspace:*
-        version: link:../../packages/react-sdk
+        specifier: ~3.5.2
+        version: 3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -626,8 +626,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: workspace:*
-        version: link:../../packages/react-sdk
+        specifier: ~3.5.2
+        version: 3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -669,8 +669,8 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.1(@babel/core@7.24.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: workspace:*
-        version: link:../../packages/react-sdk
+        specifier: ~3.5.2
+        version: 3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -751,8 +751,8 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.6(@babel/core@7.24.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: workspace:*
-        version: link:../../packages/react-sdk
+        specifier: ~3.5.2
+        version: 3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
@@ -833,8 +833,8 @@ importers:
         specifier: 1.7.2
         version: 1.7.2(next@13.5.1(@babel/core@7.24.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(tailwindcss@3.4.1)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: workspace:*
-        version: link:../../packages/react-sdk
+        specifier: ~3.5.2
+        version: 3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -918,8 +918,8 @@ importers:
   starters/vue-starter:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
-        specifier: ~3.5.1
-        version: 3.5.1(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))
+        specifier: ~3.5.2
+        version: 3.5.2(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))
     devDependencies:
       '@nuxt/devtools':
         specifier: 1.0.0
@@ -952,8 +952,8 @@ importers:
   starters/vue-starter-ts:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
-        specifier: ~3.5.1
-        version: 3.5.1(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))
+        specifier: ~3.5.2
+        version: 3.5.2(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))
     devDependencies:
       '@nuxt/devtools':
         specifier: 1.0.0
@@ -3269,11 +3269,23 @@ packages:
       react-dom: 18.2.0
       tailwindcss: ^3.1.8
 
+  '@pantheon-systems/pcc-react-sdk@3.5.2':
+    resolution: {integrity: sha512-BAhcG3lC7RYVsKyysOfcWDPGrLTN9vxY0142VVHB9+1TotpW0xKCGa221yQlhLdf+4XUR1xLxVu5/KuKhApV0g==}
+    engines: {node: '>=18.10.0'}
+    peerDependencies:
+      '@types/react': '>=18'
+      '@types/react-dom': '>=18'
+      react: '>=18'
+      react-dom: '>=18'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+
   '@pantheon-systems/pcc-sdk-core@3.5.1':
     resolution: {integrity: sha512-8D70bFDHEQ9C/lBdTogJXJPc1bXwi45ca6/HCmYOhn9WxC1CxP44pB7yUBYP5y+5F5cAKpDlv8nOdbqrlbvGmQ==}
 
-  '@pantheon-systems/pcc-vue-sdk@3.5.1':
-    resolution: {integrity: sha512-Ke+ldRoBOPEESmFW5PV6ZrXMyImDTOkMJmRaIz+KAhcS5t34ajbDdADG1HI0xx/WIfUGC69MZgDfvZ5UVJAbZA==}
+  '@pantheon-systems/pcc-vue-sdk@3.5.2':
+    resolution: {integrity: sha512-dg4mELlbPkt7hdley0PZ5GIaIVCCMWaizFnERKLb13VXtH6WDm9kjYF1jhxCP/v91UOobFukPyYm41QdsU+uzA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@vue/composition-api': '>=1.0.0-rc.1'
@@ -17085,6 +17097,30 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       tailwindcss: 3.4.1
 
+  '@pantheon-systems/pcc-react-sdk@3.5.2(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@apollo/client': 3.9.5(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@pantheon-systems/pcc-sdk-core': 3.5.1(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@types/react-dom': 18.2.19
+      framer-motion: 10.18.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      goober: 2.1.14(csstype@3.1.3)
+      graphql: 16.8.1
+      query-string: 8.2.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-laag: 2.0.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-markdown: 8.0.7(@types/react@18.2.60)(react@18.2.0)
+      rehype-raw: 6.1.1
+      remark-heading-id: 1.0.1
+      unist-util-visit: 5.0.0
+    optionalDependencies:
+      '@types/react': 18.2.60
+    transitivePeerDependencies:
+      - csstype
+      - graphql-ws
+      - subscriptions-transport-ws
+      - supports-color
+
   '@pantheon-systems/pcc-sdk-core@3.5.1(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@apollo/client': 3.9.5(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -17101,7 +17137,7 @@ snapshots:
       - react-dom
       - subscriptions-transport-ws
 
-  '@pantheon-systems/pcc-vue-sdk@3.5.1(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))':
+  '@pantheon-systems/pcc-vue-sdk@3.5.2(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.21(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(typescript@5.4.2)(vue@3.4.21(typescript@5.4.2))':
     dependencies:
       '@apollo/client': 3.9.5(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@pantheon-systems/pcc-sdk-core': 3.5.1(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
