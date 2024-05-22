@@ -1,5 +1,15 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.1
+
+## 3.5.0
+
+### Patch Changes
+
+- 0e74720: Add textarea to supported smartcomponent metadata fields
+- 4cab3e2: Fix how JSON was returned, headers were set, and redirect codes were
+  checked for PantheonAPI affecting Nextjs page router implementations.
+
 ## 3.4.1
 
 ### Patch Changes

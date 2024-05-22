@@ -21,7 +21,7 @@
     "vue-router": "^4.3.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-vue-sdk": "~3.4.0"
+    "@pantheon-systems/pcc-vue-sdk": "~3.5.0"
   },
   "version": null
 }
