@@ -1,5 +1,15 @@
 # @pantheon-systems/pcc-cli
 
+## 3.5.2
+
+### Patch Changes
+
+- 289e05c: Add updateConfig function which will override the default PCC
+  connection settings that PCCConvenienceFunctions will use.
+- Updated dependencies [fcfa574]
+- Updated dependencies [289e05c]
+  - @pantheon-systems/pcc-sdk-core@3.5.2
+
 ## 3.5.2-beta.1
 
 ### Patch Changes
