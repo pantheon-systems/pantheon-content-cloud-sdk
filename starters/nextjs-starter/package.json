@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@pantheon-systems/nextjs-kit": "1.7.2",
-    "@pantheon-systems/pcc-react-sdk": "workspace:*",
+    "@pantheon-systems/pcc-react-sdk": "~3.5.2",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
     "@tailwindcss/typography": "^0.5.10",
     "classnames": "^2.5.1",
