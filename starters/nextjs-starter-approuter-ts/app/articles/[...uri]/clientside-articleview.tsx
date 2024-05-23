@@ -1,10 +1,10 @@
 "use client";
 
-import { PantheonProvider } from "@pantheon-systems/pcc-react-sdk";
 import {
   Article,
+  PantheonProvider,
   PCCConvenienceFunctions,
-} from "@pantheon-systems/pcc-sdk-core";
+} from "@pantheon-systems/pcc-react-sdk";
 import ArticleView from "../../../components/article-view";
 
 export default function ClientsideArticleView({

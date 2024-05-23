@@ -1,5 +1,40 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.3
+
+### Patch Changes
+
+- Fix type export for Article
+
+## 3.5.3-beta.0
+
+### Patch Changes
+
+- Fix type export for Article
+
+## 3.5.2
+
+### Patch Changes
+
+- fcfa574: Fix graphql error handling issue which caused sites to show error
+  pages instead of 404.
+- 289e05c: Add updateConfig function which will override the default PCC
+  connection settings that PCCConvenienceFunctions will use.
+
+## 3.5.2-beta.1
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+
+## 3.5.2-beta.0
+
+### Patch Changes
+
+- Fix graphql error handling issue which caused sites to show error pages
+  instead of 404.
+
 ## 3.5.1
 
 ## 3.5.0

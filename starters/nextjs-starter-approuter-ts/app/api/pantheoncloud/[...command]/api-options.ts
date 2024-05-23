@@ -1,4 +1,4 @@
-import { PantheonAPIOptions } from "@pantheon-systems/pcc-sdk-core";
+import { PantheonAPIOptions } from "@pantheon-systems/pcc-react-sdk/server";
 import { serverSmartComponentMap } from "../../../../components/smart-components/server-components";
 
 export const pantheonAPIOptions: PantheonAPIOptions = {

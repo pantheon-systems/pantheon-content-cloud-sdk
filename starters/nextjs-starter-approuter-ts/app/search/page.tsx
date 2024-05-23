@@ -1,4 +1,4 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import Image from "next/image";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
