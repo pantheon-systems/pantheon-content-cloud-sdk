@@ -1,4 +1,3 @@
-import { withGrid } from "@pantheon-systems/nextjs-kit";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import { Tags } from "./tags";
@@ -83,8 +82,45 @@ const PageGridItem = ({ content: article }) => {
   );
 };
 
-// export const PostGrid = ({data}) => { return <div>Hey</div>}
-// export const PageGrid = ({data}) => { return <div>Hey</div>}
+export const Grid = ({ children }) => {
+  return (
+    <div
+      className={`mt-12 grid gap-5 max-w-content mx-auto lg:max-w-screen-lg lg:grid-cols-3`}
+    >
+      {children}
+    </div>
+  );
+};
+
+interface GriddedComponentProps {
+  data: any[] | null;
+  FallbackComponent?: any | null | undefined;
+}
+
+export const withGrid = (Component) => {
+  const GriddedComponents = ({
+    data,
+    FallbackComponent,
+    ...props
+  }: GriddedComponentProps & any) => {
+    return (
+      <>
+        {data ? (
+          <Grid>
+            {data.map((content, i) => {
+              return <Component key={i} content={content} {...props} />;
+            })}
+          </Grid>
+        ) : FallbackComponent ? (
+          FallbackComponent
+        ) : null}
+      </>
+    );
+  };
+
+  return GriddedComponents;
+};
+
 export const PostGrid = withGrid(PostGridItem);
 export const PageGrid = withGrid(PageGridItem);
 export const SkeletonPageGrid = withGrid(SkeletonGridItem);
