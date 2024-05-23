@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.5.4-beta.0
+
+### Patch Changes
+
+- Move an unnecessary import outside of /server
+  - @pantheon-systems/pcc-sdk-core@3.5.4-beta.0
+
 ## 3.5.3
 
 ### Patch Changes

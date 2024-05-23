@@ -1,5 +1,7 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.4-beta.0
+
 ## 3.5.3
 
 ### Patch Changes
