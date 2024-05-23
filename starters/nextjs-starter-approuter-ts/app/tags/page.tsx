@@ -51,7 +51,7 @@ export default async function TagSearch({ searchParams }) {
     <Layout>
       <HomepageHeader />
       <TagResults articles={articles} searchString={searchString} />
-      <div className="max-w-screen-lg mt-16 ps-mx-auto">
+      <div className="max-w-screen-lg mt-16 mx-auto">
         <h3>Site-wide</h3>
         <Tags tags={tags} />
       </div>

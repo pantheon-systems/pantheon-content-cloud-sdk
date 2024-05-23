@@ -23,7 +23,6 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@pantheon-systems/nextjs-kit": "1.7.2",
     "@pantheon-systems/pcc-react-sdk": "~3.5.2",
     "@tailwindcss/typography": "^0.5.10",
     "classnames": "^2.5.1",

@@ -63,7 +63,7 @@ export default function TagSearch({ articles, tags, searchString }) {
           </section>
         </>
       ) : null}
-      <div className="max-w-screen-lg mt-16 ps-mx-auto">
+      <div className="max-w-screen-lg mt-16 mx-auto">
         <h3>Site-wide</h3>
         <Tags tags={tags} />
       </div>
