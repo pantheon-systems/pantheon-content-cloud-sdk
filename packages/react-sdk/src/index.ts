@@ -4,4 +4,6 @@
 // https://github.com/facebook/react/issues/19541
 export * from "./hooks";
 
+export * from "./core/pantheon-context";
+
 export * from "./server";
