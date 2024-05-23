@@ -12,13 +12,13 @@ import {
 } from "./articles";
 import { getAllTags } from "./metadata";
 
-let config = {
+const config = {
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   pccHost: process.env.PCC_HOST as string,
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   siteId: process.env.PCC_SITE_ID as string,
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
   token:
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     (process.env.PCC_TOKEN as string) ||
     // eslint-disable-next-line turbo/no-undeclared-env-vars
     (process.env.PCC_API_KEY as string),
