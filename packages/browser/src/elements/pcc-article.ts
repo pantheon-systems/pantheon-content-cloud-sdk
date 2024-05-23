@@ -15,6 +15,8 @@ class PCCArticle extends HTMLElement {
     const id = this.getAttribute("id") || undefined;
     const slug = this.getAttribute("slug") || undefined;
     const disableStyles = this.getAttribute("disable-styles") != null;
+    const preserveImageStyles =
+      this.getAttribute("preserve-image-styles") != null;
     const passedInPublishingLevel =
       this.getAttribute("publishing-level") || undefined;
 
@@ -27,6 +29,7 @@ class PCCArticle extends HTMLElement {
 
     const config = {
       disableStyles,
+      preserveImageStyles,
       publishingLevel: publishingLevel
         ? publishingLevel
         : // Default to REALTIME

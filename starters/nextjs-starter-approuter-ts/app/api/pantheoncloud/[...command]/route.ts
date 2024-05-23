@@ -1,4 +1,4 @@
-import { PantheonAPI } from "@pantheon-systems/pcc-sdk-core";
+import { PantheonAPI } from "@pantheon-systems/pcc-react-sdk/server";
 import { pantheonAPIOptions } from "./api-options";
 
 const handler = PantheonAPI(pantheonAPIOptions);

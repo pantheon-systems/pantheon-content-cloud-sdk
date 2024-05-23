@@ -1,10 +1,9 @@
 import {
-  Article,
   GET_RECOMMENDED_ARTICLES_QUERY,
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import { PaginatedArticle } from "../types";
+import type { Article, PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
   getPaginatedArticles as _getPaginatedArticles,
@@ -12,6 +11,32 @@ import {
   getArticlesWithSummary,
 } from "./articles";
 import { getAllTags } from "./metadata";
+
+const config = {
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  pccHost: process.env.PCC_HOST as string,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  siteId: process.env.PCC_SITE_ID as string,
+  token:
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    (process.env.PCC_TOKEN as string) ||
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    (process.env.PCC_API_KEY as string),
+};
+
+export const updateConfig = ({
+  pccHost,
+  siteId,
+  token,
+}: Partial<{
+  pccHost: string;
+  siteId: string;
+  token: string;
+}>) => {
+  config.pccHost = pccHost ?? config.pccHost;
+  config.siteId = siteId ?? config.siteId;
+  config.token = token ?? config.token;
+};
 
 const buildPantheonClient = ({
   isClientSide,
@@ -23,16 +48,9 @@ const buildPantheonClient = ({
   props?: Partial<PantheonClientConfig>;
 }) => {
   return new PantheonClient({
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    pccHost: process.env.PCC_HOST as string,
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    siteId: process.env.PCC_SITE_ID as string,
-    apiKey: isClientSide
-      ? "not-needed-on-client"
-      : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_TOKEN as string) ||
-        // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_API_KEY as string),
+    pccHost: config.pccHost,
+    siteId: config.siteId,
+    apiKey: isClientSide ? "not-needed-on-client" : config.token,
     pccGrant,
     ...props,
   });
@@ -98,7 +116,7 @@ async function getArticleBySlugOrId(
     id,
     {
       publishingLevel,
-      contentType: "TREE_PANTHEON",
+      contentType: "TREE_PANTHEON_V2",
     },
   );
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-sdk-core";
+import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { useSetAtom } from "jotai";
 import { useEffect } from "react";
 import { PostGrid } from "../../components/grid";
