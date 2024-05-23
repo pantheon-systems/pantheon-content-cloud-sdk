@@ -1,5 +1,17 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.5.3
+
+### Patch Changes
+
+- Fix type export for Article
+
+## 3.5.3-beta.0
+
+### Patch Changes
+
+- Fix type export for Article
+
 ## 3.5.2
 
 ### Patch Changes

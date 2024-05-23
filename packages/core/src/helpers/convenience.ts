@@ -3,7 +3,7 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import { Article, PaginatedArticle } from "../types";
+import type { Article, PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
   getPaginatedArticles as _getPaginatedArticles,
