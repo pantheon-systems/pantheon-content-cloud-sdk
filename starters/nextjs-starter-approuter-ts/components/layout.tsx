@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Footer } from "./footer";
 import { Searchbar } from "./searchbar";
 
@@ -50,9 +51,11 @@ export default function Layout({ children, footerMenu }: Props) {
                 </li>
               );
             })}
-            <div>
-              <Searchbar />
-            </div>
+            <Suspense>
+              <div>
+                <Searchbar />
+              </div>
+            </Suspense>
           </ul>
         </nav>
       </div>

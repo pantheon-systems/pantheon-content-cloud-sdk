@@ -63,27 +63,22 @@
     "unplugin-vue": "^4.5.2",
     "vite": "^5.1.4",
     "vue": "^3.3.4",
-    "vue-2": "npm:vue@^2.7.16",
-    "vue-3": "npm:vue@^3.3.4"
+    "vue-3": "npm:vue@^3.4.27"
   },
   "peerDependencies": {
-    "@vue/composition-api": ">=1.0.0-rc.1",
     "h3": "^1.8.2",
-    "vue": "^2.6.11 || >=3.0.0"
+    "vue": ">=3.0.0"
   },
   "peerDependenciesMeta": {
-    "@vue/composition-api": {
-      "optional": true
-    },
     "h3": {
       "optional": true
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.9.5",
+    "@apollo/client": "^3.10.3",
     "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "@vue/apollo-composable": "4.0.0-beta.12",
-    "floating-vue": "2.0.0-beta.24",
+    "floating-vue": "^5.2.2",
     "graphql": "^16.8.1",
     "hast-util-to-jsx-runtime": "^2.3.0",
     "html-url-attributes": "^3.0.0",
