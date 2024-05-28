@@ -1,19 +1,10 @@
-import {
-  PCCConvenienceFunctions,
-  updateConfig,
-} from "@pantheon-systems/pcc-react-sdk/server";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";
 import { Tags } from "../../../components/tags";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
 import ClientsideArticleView from "./clientside-articleview";
-
-updateConfig({
-  pccHost: process.env.PCC_HOST,
-  siteId: process.env.PCC_SITE_ID,
-  token: process.env.PCC_TOKEN,
-});
 
 export const ArticleView = async ({ params, searchParams }) => {
   const { article, grant } = await getServersideArticle(params, searchParams);

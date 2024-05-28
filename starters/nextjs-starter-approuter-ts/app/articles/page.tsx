@@ -1,13 +1,7 @@
-import { PCCConvenienceFunctions, updateConfig } from "@pantheon-systems/pcc-react-sdk/server";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import { Client } from "./client";
-
-updateConfig({
-  pccHost: process.env.PCC_HOST,
-  siteId: process.env.PCC_SITE_ID,
-  token: process.env.PCC_TOKEN,
-});
 
 export default async function ArticlesListTemplate() {
   const articles = await PCCConvenienceFunctions.getAllArticles();
