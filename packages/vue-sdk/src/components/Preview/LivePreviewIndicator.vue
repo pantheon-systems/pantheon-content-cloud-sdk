@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="lpi-container">
     <IconDot :fill="isLive ? '#218C5F' : '#CFCFD3'" />
-    <span>{{ isLive ? "Active Live Preview" : "Inactive Live Preview" }}</span>
+    <span>{{ isLive ? "Page preview: On" : "Page preview: Off" }}</span>
 
     <Tooltip>
       <div class="info-tooltip-button">
@@ -28,7 +28,7 @@ defineProps({
             the document will not be displayed until this is reconnected).
           </span>
           <br />
-          <span style="font-weight: 500">
+          <span>
             To reconnect, navigate to the document and select the
             &apos;Preview&apos; button in the Content Cloud add-on.
           </span>
