@@ -10,6 +10,7 @@
     "dev": "turbo run dev --concurrency=20",
     "build": "turbo run build --filter=./packages/*",
     "lint": "turbo run lint --filter=./{packages,starters}/*",
+    "lint:fix": "turbo run lint:fix --filter=./{packages}/*",
     "test": "turbo run test --filter=./{packages,starters}/*",
     "build:starters": "turbo run build --filter=./starters/*",
     "lint:starters": "turbo run lint --filter=./starters/*",
