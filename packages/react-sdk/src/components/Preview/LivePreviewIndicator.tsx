@@ -24,7 +24,7 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
   return (
     <Container>
       <IconDot fill={isLive ? "#218C5F" : "#CFCFD3"} />
-      <span>{isLive ? "Active Live Preview" : "Inactive Live Preview"}</span>
+      <span>{isLive ? "Page preview: On" : "Page preview: Off"}</span>
       {!isLive ? (
         <InfoButton onClick={() => setIsOpen(!isOpen)} {...triggerProps}>
           <IconInfo />
@@ -54,12 +54,12 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
                 <span>
                   This preview page is no longer connected to the document
                   (updates to the document will not be displayed until this is
-                  reconnected).{" "}
+                  reconnected).
                 </span>
                 <br />
-                <span style={{ fontWeight: 500 }}>
-                  To reconnect, navigate to the document and click the
-                  &apos;PREVIEW&apos; button in the Content Cloud add-on.
+                <span>
+                  To reconnect, navigate to the document and select the
+                  &apos;Preview&apos; button in the Content Cloud add-on.
                 </span>
               </div>
               <Arrow
