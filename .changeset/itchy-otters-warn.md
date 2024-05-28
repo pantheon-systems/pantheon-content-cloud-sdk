@@ -3,4 +3,4 @@
 "@pantheon-systems/pcc-vue-sdk": patch
 ---
 
-Update preview bar copy
+Update preview bar copy and icons
