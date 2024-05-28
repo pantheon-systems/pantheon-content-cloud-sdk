@@ -29,6 +29,9 @@ if (process.env.IS_CICD !== "true") {
 const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
+  env: {
+    NEXT_PUBLIC_PCC_SITE_ID: process.env.PCC_SITE_ID,
+  },
 };
 
 module.exports = nextConfig;
