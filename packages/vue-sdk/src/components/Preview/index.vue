@@ -3,10 +3,10 @@ import type { PreviewBarProps } from "../Renderer";
 import queryString from "query-string";
 import { PropType, ref, watchEffect } from "vue-demi";
 
-import DocsLogo from "./assets/DocsLogo.vue";
-import IconUp from "./assets/IconUp.vue";
+import IconDocs from "./assets/IconDocs.vue";
+import IconExport from "./assets/IconExport.vue";
+import IconShare from "./assets/IconShare.vue";
 import LivePreviewIndicator from "./LivePreviewIndicator.vue";
-import HamburgerIcon from "./assets/HamburgerIcon.vue";
 import HoverButton from "../Common/HoverButton.vue";
 import { getCookie } from "../../utils/cookies";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
@@ -17,10 +17,6 @@ const props = defineProps({
     type: Object as PropType<PreviewBarProps["previewBarOverride"]>,
     required: false,
   },
-  collapsedPreviewBarProps: {
-    type: Object as PropType<PreviewBarProps["collapsedPreviewBarProps"]>,
-    required: false,
-  },
 });
 
 const isLive = ref(false);
@@ -28,6 +24,12 @@ const isHidden = ref(false);
 const hasCopied = ref(false);
 const copyResetTimeoutId = ref<NodeJS.Timeout | null>(null);
 const pccGrant = getCookie("PCC-GRANT");
+
+const maxDocTitleLength = 51;
+const truncatedDocTitle =
+  article?.title && article?.title?.length >= maxDocTitleLength
+    ? `${article?.title.substring(0, maxDocTitleLength)}...`
+    : article?.title;
 
 function copyURL() {
   if (copyResetTimeoutId.value) {
@@ -87,8 +89,9 @@ watchEffect(() => {
   <div v-else :class="['wrapper', isHidden && 'hidden']">
     <div v-if="!isHidden" class="container">
       <a class="title-link">
-        <DocsLogo />
-        <span>{{ article?.title }}</span>
+        <IconDocs />
+        <span>{{ truncatedDocTitle }}</span>
+        <IconExport />
       </a>
       <div class="lpi-wrapper">
         <LivePreviewIndicator :isLive="isLive" />
@@ -96,33 +99,12 @@ watchEffect(() => {
         <div class="end-block">
           <div class="copy-url-container">
             <button @click="copyURL">
-              {{ hasCopied ? "Copied URL" : "Copy URL" }}
+              <IconShare :flip="true" />
+              {{ hasCopied ? "Copied URL" : "Share preview URL" }}
             </button>
           </div>
         </div>
       </div>
-    </div>
-
-    <div
-      v-bind="isHidden ? collapsedPreviewBarProps : null"
-      :class="['controller-container', isHidden && 'active']"
-    >
-      <div v-if="isHidden">
-        <LivePreviewIndicator :isLive="isLive" />
-        <HoverButton @click="isHidden = !isHidden">
-          <template v-slot="{ isHovered }">
-            <template v-if="!isHidden || isHovered">
-              <IconUp :flip="true" />
-            </template>
-            <template v-else>
-              <HamburgerIcon />
-            </template>
-          </template>
-        </HoverButton>
-      </div>
-      <button v-else @click="isHidden = !isHidden">
-        <IconUp />
-      </button>
     </div>
   </div>
 </template>

@@ -33,7 +33,6 @@ export type ComponentMap = {
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
-  collapsedPreviewBarProps?: Record<string, unknown>;
 };
 
 export type ExperimentalFlags = {
