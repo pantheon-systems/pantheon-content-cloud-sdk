@@ -17,6 +17,7 @@ const config = {
   pccHost: (process.env.PCC_HOST || process.env.NEXT_PUBLIC_PCC_HOST) as string,
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   siteId: (process.env.PCC_SITE_ID ||
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
     process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
   token:
     // eslint-disable-next-line turbo/no-undeclared-env-vars
