@@ -193,25 +193,25 @@ type InferFieldProps<T extends SmartComponentMapField> = T extends {
   ? O extends readonly { value: infer V }[]
     ? V
     : O extends readonly string[]
-      ? O[number]
-      : unknown
+    ? O[number]
+    : unknown
   : T extends { type: "number" }
-    ? number
-    : T extends { type: "boolean" }
-      ? boolean
-      : T extends { type: "string" | "file" | "date" }
-        ? string
-        : T extends {
-              type: "object";
-              fields: Record<string, unknown>;
-            }
-          ? T["multiple"] extends true
-            ? Optional<
-                { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
-                OptionalFields<T["fields"]>
-              >[]
-            : Optional<
-                { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
-                OptionalFields<T["fields"]>
-              >
-          : unknown;
+  ? number
+  : T extends { type: "boolean" }
+  ? boolean
+  : T extends { type: "string" | "file" | "date" }
+  ? string
+  : T extends {
+      type: "object";
+      fields: Record<string, unknown>;
+    }
+  ? T["multiple"] extends true
+    ? Optional<
+        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+        OptionalFields<T["fields"]>
+      >[]
+    : Optional<
+        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+        OptionalFields<T["fields"]>
+      >
+  : unknown;
