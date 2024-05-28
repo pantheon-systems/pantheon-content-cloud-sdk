@@ -128,9 +128,8 @@ function generateBaseURL(req: ApiRequest) {
     // If this is a forwarded request, use the protocol and host from the headers.
     if (req.headers?.["x-forwarded-host"]) {
       return `${
-        req.headers["x-forwarded-proto"] || req.connection?.encrypted
-          ? "https"
-          : "http"
+        req.headers["x-forwarded-proto"] ||
+        (req.connection?.encrypted ? "https" : "http")
       }://${req.headers["x-forwarded-host"]}`;
     }
 
