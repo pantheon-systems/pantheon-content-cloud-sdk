@@ -1,4 +1,4 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";

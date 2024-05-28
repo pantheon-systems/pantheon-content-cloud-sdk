@@ -1,5 +1,6 @@
 {
   "name": "pantheon-content-cloud-sdks",
+  "version": "0.0.1",
   "private": true,
   "license": "MIT",
   "packageManager": "pnpm@9.1.1",
