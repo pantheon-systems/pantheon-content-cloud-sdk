@@ -24,9 +24,8 @@ defineProps({
       <template #popper>
         <div class="info-tooltip">
           <span>
-            This preview page is no longer connected to the document
-            (updates to the document will not be displayed until this is
-            reconnected).
+            This preview page is no longer connected to the document (updates to
+            the document will not be displayed until this is reconnected).
           </span>
           <br />
           <span>
