@@ -17,7 +17,7 @@
     "dev": "pnpm run build --watch",
     "build": "pnpm run clean && tsup && pnpm run copy-files",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit",
+    "lint:fix": "eslint . --fix && prettier --write .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },

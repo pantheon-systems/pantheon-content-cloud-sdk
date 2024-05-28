@@ -30,9 +30,9 @@ const nextConfig = {
   reactStrictMode: true,
   output: "standalone",
   env: {
-    NEXT_PUBLIC_PCC_HOST: process.env.PCC_HOST,
     NEXT_PUBLIC_PCC_SITE_ID: process.env.PCC_SITE_ID,
-  }
+    NEXT_PUBLIC_PCC_HOST: process.env.PCC_HOST,
+  },
 };
 
 module.exports = nextConfig;

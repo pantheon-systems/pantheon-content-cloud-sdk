@@ -20,7 +20,7 @@
     "build": "tsup",
     "type-check": "tsc --noEmit",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit",
+    "lint:fix": "eslint . --fix && prettier --write .",
     "test": "jest --coverage --passWithNoTests",
     "test:ci": "pnpm run test --ci",
     "test:watch": "jest --watch"
