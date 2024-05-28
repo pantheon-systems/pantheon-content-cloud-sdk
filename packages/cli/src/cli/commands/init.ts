@@ -143,8 +143,8 @@ const init = async ({
     template === "gatsby"
       ? ".env.development"
       : template === "vue"
-        ? ".env"
-        : ".env.local";
+      ? ".env"
+      : ".env.local";
 
   copyFileSync(
     path.join(absoluteProjectPath, ".env.example"),
