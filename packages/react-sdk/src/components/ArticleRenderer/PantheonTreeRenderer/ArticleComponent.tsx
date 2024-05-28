@@ -53,7 +53,7 @@ const ArticleComponent = ({
   const tableElements = ["tr", "td"];
 
   if (tableElements.includes(x.tag)) {
-    const { colspan, rowspan, ...attrs } = x.attrs;
+    const { colspan, rowspan, ...attrs } = x.attrs || {};
 
     const colSpan = colspan ? { colSpan: Number(colspan) } : {};
     const rowSpan = rowspan ? { rowSpan: Number(rowspan) } : {};

@@ -36,7 +36,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+    "lint:fix": "eslint . --fix && prettier --write ."
   },
   "dependencies": {
     "@apollo/client": "^3.10.3",

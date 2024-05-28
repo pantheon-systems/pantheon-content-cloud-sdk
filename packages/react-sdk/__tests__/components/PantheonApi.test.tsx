@@ -12,10 +12,17 @@ describe("PantheonApi", () => {
       },
       redirect: jest.fn(),
     };
-    const mockRes = {};
+
+    const mockRes = {
+      redirect: jest.fn(),
+      setHeader: jest.fn(),
+      json: jest.fn(),
+      getHeader: jest.fn(),
+    };
 
     await PantheonAPI({
       resolvePath: (article) => `/articles/${article.slug || article.id}`,
+      componentPreviewPath: (x) => `/components/${x}`,
       smartComponentMap: {
         LEAD_CAPTURE: {
           title: "Lead Capture Form",
@@ -28,7 +35,11 @@ describe("PantheonApi", () => {
       },
     })(mockReq, mockRes as any);
 
-    expect(mockReq.redirect).toBeCalledWith(301, "/components/");
+    const redirectArgs = mockRes.redirect.mock.calls[0];
+    expect(redirectArgs[0]).toEqual(
+      "/components/LEAD_CAPTURE?height=650&width=500",
+    );
+    expect(redirectArgs[1].status).toEqual(302);
   });
 
   it("should pass on component variables in redirect", async () => {
@@ -41,10 +52,17 @@ describe("PantheonApi", () => {
       },
       redirect: jest.fn(),
     };
-    const mockRes = {};
+
+    const mockRes = {
+      redirect: jest.fn(),
+      setHeader: jest.fn(),
+      json: jest.fn(),
+      getHeader: jest.fn(),
+    };
 
     await PantheonAPI({
       resolvePath: (article) => `/articles/${article.slug || article.id}`,
+      componentPreviewPath: (x) => `/components/${x}`,
       smartComponentMap: {
         LEAD_CAPTURE: {
           title: "Lead Capture Form",
@@ -57,6 +75,10 @@ describe("PantheonApi", () => {
       },
     })(mockReq, mockRes as any);
 
-    expect(mockReq.redirect).toBeCalledWith(301, "/components/");
+    const redirectArgs = mockRes.redirect.mock.calls[0];
+    expect(redirectArgs[0]).toEqual(
+      "/components/LEAD_CAPTURE?height=650&width=500",
+    );
+    expect(redirectArgs[1].status).toEqual(302);
   });
 });

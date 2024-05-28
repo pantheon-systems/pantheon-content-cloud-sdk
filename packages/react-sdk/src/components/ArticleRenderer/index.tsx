@@ -77,11 +77,13 @@ const ArticleRenderer = ({
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
-  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
-    console.warn(
-      "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
-    );
-  }
+  useEffect(() => {
+    if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+      console.warn(
+        "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
+      );
+    }
+  }, [__experimentalFlags]);
 
   useEffect(() => {
     setRenderCSR(true);

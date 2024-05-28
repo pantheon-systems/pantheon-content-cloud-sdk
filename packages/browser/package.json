@@ -12,7 +12,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+    "lint:fix": "eslint . --fix && prettier --write ."
   },
   "devDependencies": {
     "eslint": "^8.57.0",

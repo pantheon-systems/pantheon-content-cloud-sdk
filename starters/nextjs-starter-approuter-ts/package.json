@@ -23,7 +23,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.5.3",
+    "@pantheon-systems/pcc-react-sdk": "3.5.4-beta.0",
     "@tailwindcss/typography": "^0.5.10",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
@@ -43,7 +43,7 @@
     "eslint-config-next": "^14.2.3",
     "jsdom": "^22.1.0",
     "postcss": "^8.4.35",
-    "prettier": "^3.2.5",
+    "prettier": "3.2.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2",
     "vite": "^5.1.4",
