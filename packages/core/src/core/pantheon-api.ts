@@ -200,8 +200,8 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
-      ? commandInput.split("/")
-      : [commandInput];
+        ? commandInput.split("/")
+        : [commandInput];
 
     if (pccGrant) {
       setCookie(headers, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
@@ -398,8 +398,8 @@ function setCookie(headers: Headers, value: string) {
       ...(typeof previous === "string"
         ? [previous]
         : Array.isArray(previous)
-        ? previous
-        : []),
+          ? previous
+          : []),
       value,
     ].join("; "),
   );
