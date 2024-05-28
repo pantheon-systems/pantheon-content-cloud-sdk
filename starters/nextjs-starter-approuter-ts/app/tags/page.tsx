@@ -1,17 +1,8 @@
-import {
-  PCCConvenienceFunctions,
-  updateConfig,
-} from "@pantheon-systems/pcc-react-sdk/server";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import Image from "next/image";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
 import TagResults from "./tag-results";
-
-updateConfig({
-  pccHost: process.env.PCC_HOST,
-  siteId: process.env.PCC_SITE_ID,
-  token: process.env.PCC_TOKEN,
-});
 
 export default async function TagSearch({ searchParams }) {
   const [articles, tags] = await Promise.all([
