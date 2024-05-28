@@ -63,6 +63,22 @@ interface Props {
   };
 }
 
+function getOrCreatePortalTarget(
+  targetOverride: globalThis.Element | null | undefined,
+) {
+  const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
+  let portalTarget =
+    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
+
+  if (!portalTarget) {
+    portalTarget = document.createElement("div");
+    portalTarget.id = pccGeneratedPortalTargetKey;
+    document.body.prepend(portalTarget);
+  }
+
+  return portalTarget;
+}
+
 const ArticleRenderer = ({
   article,
   bodyClassName,
@@ -93,15 +109,22 @@ const ArticleRenderer = ({
     return null;
   }
 
+  const portalTarget =
+    renderCSR && typeof document !== "undefined"
+      ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
+      : null;
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {renderCSR && article != null && article.publishingLevel === "REALTIME"
+        {renderCSR &&
+        article != null &&
+        portalTarget != null &&
+        article.publishingLevel === "REALTIME"
           ? createPortal(
               <PreviewBar {...previewBarProps} article={article} />,
-              document.body,
+              portalTarget,
             )
           : null}
 
@@ -179,10 +202,13 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      {renderCSR && article != null && article.publishingLevel === "REALTIME"
+      {renderCSR &&
+      article != null &&
+      portalTarget != null &&
+      article.publishingLevel === "REALTIME"
         ? createPortal(
             <PreviewBar {...previewBarProps} article={article} />,
-            previewBarProps?.portalTarget || document.body,
+            portalTarget,
           )
         : null}
 

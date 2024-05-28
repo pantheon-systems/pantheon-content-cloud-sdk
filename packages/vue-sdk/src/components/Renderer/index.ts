@@ -33,7 +33,12 @@ export type ComponentMap = {
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
-  collapsedPreviewBarProps?: Record<string, unknown>;
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  portalTarget?:
+    | InstanceType<DefineComponent<any, any, any>>
+    | null
+    | undefined;
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
 };
 
 export type ExperimentalFlags = {
@@ -42,6 +47,22 @@ export type ExperimentalFlags = {
   disableDefaultErrorBoundaries: boolean;
   useUnintrusiveTitleRendering?: boolean;
 };
+
+const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
+function getOrCreatePortalTarget(
+  targetOverride: globalThis.Element | null | undefined,
+) {
+  let portalTarget =
+    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
+
+  if (!portalTarget) {
+    portalTarget = document.createElement("div");
+    portalTarget.id = pccGeneratedPortalTargetKey;
+    document.body.prepend(portalTarget);
+  }
+
+  return portalTarget;
+}
 
 const ArticleRenderer = defineComponent({
   name: "ArticleRenderer",
@@ -82,12 +103,17 @@ const ArticleRenderer = defineComponent({
     const props = this.$props;
     const slots = this.$slots;
 
-    if (!props.article.content) return null;
+    const portalTarget =
+      typeof document !== "undefined"
+        ? getOrCreatePortalTarget(this.previewBarProps?.portalTarget)
+        : this.previewBarProps?.portalTarget;
+
+    if (!props.article?.content) return null;
 
     if (props.article.contentType === "TEXT_MARKDOWN") {
       return h("div", {}, [
         props.article.publishingLevel === "REALTIME"
-          ? h(Teleport, { to: "body" }, [
+          ? h(Teleport, { to: portalTarget }, [
               h(PreviewBar, { article: props.article }),
             ])
           : null,
@@ -141,8 +167,8 @@ const ArticleRenderer = defineComponent({
     }
 
     return h("div", {}, [
-      props.article.publishingLevel === "REALTIME"
-        ? h(Teleport, { to: "body" }, [
+      props.article?.publishingLevel === "REALTIME" && portalTarget != null
+        ? h(Teleport, { to: `#${portalTarget?.id}` }, [
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,

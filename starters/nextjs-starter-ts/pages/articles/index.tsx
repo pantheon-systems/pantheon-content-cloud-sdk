@@ -3,7 +3,7 @@ import {
   usePagination,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
-import { PageGrid, PostGrid } from "../../components/grid";
+import { PostGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import Pagination from "../../components/pagination";

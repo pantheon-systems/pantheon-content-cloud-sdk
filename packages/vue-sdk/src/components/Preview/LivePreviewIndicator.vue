@@ -28,6 +28,7 @@ defineProps({
             the document will not be displayed until this is reconnected).
           </span>
           <br />
+          <br />
           <span>
             To reconnect, navigate to the document and select the
             &apos;Preview&apos; button in the Content Cloud add-on.
@@ -43,7 +44,8 @@ defineProps({
 
 .lpi-container {
   border: 1px solid #cfcfd3;
-  font-weight: 600;
+  font-family: Poppins, sans-serif;
+  font-weight: 500;
   display: flex;
   align-items: center;
   border-radius: 100px;
@@ -72,9 +74,17 @@ defineProps({
 }
 
 .info-tooltip {
-  font-size: 0.8rem;
-  font-weight: 400;
-  background: #283139;
-  max-width: 320px;
+  background: #23232d;
+  color: #fff;
+  width: 320px;
+  border-radius: 6px;
+  padding: 16px 19px;
+  line-height: 120%;
+  letter-spacing: 0.04em;
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 1px 1px rgba(0, 0, 0, 0.02),
+    0px 8px 16px -4px rgba(0, 0, 0, 0.04),
+    0px 24px 32px -8px rgba(0, 0, 0, 0.06);
 }
 </style>
