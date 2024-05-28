@@ -31,7 +31,8 @@
       "@pantheon-systems/pcc-react-sdk>trim": ">=0.0.3",
       "@pantheon-systems/pcc-react-sdk>trim-newlines": ">=3.0.1",
       "@pantheon-systems/pcc-react-sdk>yaml": ">=2.2.2",
-      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0"
+      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0",
+      "webpack-dev-middleware": "^7.2.1"
     }
   },
   "devDependencies": {
