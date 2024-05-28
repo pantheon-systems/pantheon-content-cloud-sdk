@@ -1,5 +1,17 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.6.0-beta.0
+
+### Minor Changes
+
+- 7df9251: Upgraded Vue dependencies. Removed support for vue@2
+
+### Patch Changes
+
+- 80ef092: Update preview bar copy and icons
+- 14a968b: Make preview bar sticky at the top by default
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.0
+
 ## 3.5.3
 
 ### Patch Changes

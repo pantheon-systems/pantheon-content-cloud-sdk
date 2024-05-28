@@ -1,5 +1,15 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.6.0-beta.0
+
+### Patch Changes
+
+- 14a968b: Make preview bar sticky at the top by default
+- Updated dependencies [80ef092]
+- Updated dependencies [14a968b]
+  - @pantheon-systems/pcc-react-sdk@3.6.0-beta.0
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.0
+
 ## 3.5.3
 
 ### Patch Changes
