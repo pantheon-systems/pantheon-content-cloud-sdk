@@ -187,7 +187,7 @@ export const PreviewBar = ({
 const Wrapper = styled("div")<{ isHidden: boolean }>`
   font-family: Poppins, sans-serif;
   z-index: 5;
-  position: absolute;
+  position: relative;
   top: 0;
   width: 100%;
   border-bottom: ${({ isHidden }) =>
