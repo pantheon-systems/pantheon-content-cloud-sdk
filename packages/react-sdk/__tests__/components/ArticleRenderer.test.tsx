@@ -14,6 +14,7 @@ describe("<ArticleRenderer />", () => {
       )
       .toJSON();
     const title = getArticleTitle(article as Article);
+    expect(title).toEqual("Test 1");
     expect(tree).toMatchSnapshot();
   });
 });
