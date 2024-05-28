@@ -109,9 +109,10 @@ const ArticleRenderer = ({
     return null;
   }
 
-  const portalTarget = renderCSR
-    ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
-    : null;
+  const portalTarget =
+    renderCSR && typeof document !== "undefined"
+      ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
+      : null;
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
