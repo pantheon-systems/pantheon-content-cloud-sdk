@@ -33,11 +33,12 @@ export type ComponentMap = {
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   portalTarget?:
     | InstanceType<DefineComponent<any, any, any>>
     | null
     | undefined;
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
 };
 
 export type ExperimentalFlags = {
