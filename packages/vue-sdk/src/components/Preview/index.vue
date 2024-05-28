@@ -27,9 +27,10 @@ const pccGrant = getCookie("PCC-GRANT");
 
 const maxDocTitleLength = 51;
 const truncatedDocTitle =
-  article?.title && article?.title?.length >= maxDocTitleLength
-    ? `${article?.title.substring(0, maxDocTitleLength)}...`
-    : article?.title;
+  props?.article?.title != null &&
+  props?.article?.title?.length >= maxDocTitleLength
+    ? `${props?.article?.title.substring(0, maxDocTitleLength)}...`
+    : props?.article?.title || "";
 
 function copyURL() {
   if (copyResetTimeoutId.value) {
@@ -88,7 +89,12 @@ watchEffect(() => {
 
   <div v-else :class="['wrapper', isHidden && 'hidden']">
     <div v-if="!isHidden" class="container">
-      <a class="title-link">
+      <a
+        class="title-link"
+        :href="`https://docs.google.com/document/d/${article.id}/edit`"
+        rel="noreferrer"
+        target="_blank"
+      >
         <IconDocs />
         <span>{{ truncatedDocTitle }}</span>
         <IconExport />
@@ -116,11 +122,15 @@ watchEffect(() => {
   position: absolute;
   top: 0;
   width: 100%;
-  border-bottom: 1px solid #cfcfd3;
   transition: all 0.2s ease-in-out;
   display: flex;
   justify-content: flex-end;
   background: white;
+
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.04);
+  padding: 15px 0;
 }
 
 .wrapper.hidden {
@@ -129,7 +139,7 @@ watchEffect(() => {
 }
 
 .container {
-  padding-left: 20px;
+  padding: 32px;
   padding-block: 8px;
   display: grid;
   gap: 1em;
@@ -173,14 +183,17 @@ watchEffect(() => {
 
 .copy-url-container {
   > button {
-    background-color: #ffdc28;
-    height: 32px;
-    font-size: 0.875rem;
-
+    height: 100%;
+    padding: 8px 13px;
+    background-color: #3017a1;
+    color: white;
     border-radius: 3px;
-    font-weight: 700;
-    padding: 0px 10px;
-    color: rgb(35, 35, 45);
+    font-size: 0.875rem;
+    font-weight: 600;
+    column-gap: 5px;
+
+    display: flex;
+    align-items: center;
 
     &:hover {
       opacity: 0.8;

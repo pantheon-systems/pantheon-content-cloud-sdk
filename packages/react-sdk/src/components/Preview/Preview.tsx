@@ -105,12 +105,6 @@ export const PreviewBar = ({
             <EndBlock>
               <CopyUrlButtonContainer>
                 <CopyUrlButton
-                  style={{
-                    borderRadius: "3px",
-                    fontWeight: 700,
-                    padding: "0 10px",
-                    color: "#23232D",
-                  }}
                   onClick={() => {
                     if (copyResetTimeoutId) {
                       clearTimeout(copyResetTimeoutId);
@@ -163,14 +157,18 @@ const Wrapper = styled("div")`
   position: relative;
   top: 0;
   width: 100%;
-  border-bottom: "1px solid #CFCFD3";
   transition: all 0.2s ease-in-out;
   display: flex;
   justify-content: flex-end;
+
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.04);
+  padding: 15px 0;
 `;
 
 const Container = styled(motion.div)`
-  padding-left: 20px;
+  padding: 32px;
   padding-block: 8px;
   background: white;
   display: grid;
@@ -224,9 +222,17 @@ const CopyUrlButtonContainer = styled("div")`
 `;
 
 const CopyUrlButton = styled("button")`
-  background-color: #ffdc28;
   height: 100%;
+  padding: 0 13px;
+  background-color: #3017a1;
+  color: white;
+  border-radius: 3px;
   font-size: 0.875rem;
+  font-weight: 600;
+  column-gap: 5px;
+
+  display: flex;
+  align-items: center;
 
   &:hover {
     opacity: 0.8;

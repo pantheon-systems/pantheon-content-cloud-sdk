@@ -68,7 +68,7 @@ function getOrCreatePortalTarget(
 ) {
   const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
   let portalTarget =
-    targetOverride || document.getElementById("pccGeneratedPortalTargetKey");
+    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
 
   if (!portalTarget) {
     portalTarget = document.createElement("div");
@@ -107,13 +107,18 @@ const ArticleRenderer = ({
     return null;
   }
 
-  const portalTarget = getOrCreatePortalTarget(previewBarProps?.portalTarget);
+  const portalTarget = renderCSR
+    ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
+    : null;
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {renderCSR && article != null && article.publishingLevel === "REALTIME"
+        {renderCSR &&
+        article != null &&
+        portalTarget != null &&
+        article.publishingLevel === "REALTIME"
           ? createPortal(
               <PreviewBar {...previewBarProps} article={article} />,
               portalTarget,
@@ -194,7 +199,10 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      {renderCSR && article != null && article.publishingLevel === "REALTIME"
+      {renderCSR &&
+      article != null &&
+      portalTarget != null &&
+      article.publishingLevel === "REALTIME"
         ? createPortal(
             <PreviewBar {...previewBarProps} article={article} />,
             portalTarget,
