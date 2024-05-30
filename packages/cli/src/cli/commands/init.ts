@@ -143,8 +143,8 @@ const init = async ({
     template === "gatsby"
       ? ".env.development"
       : template === "vue"
-      ? ".env"
-      : ".env.local";
+        ? ".env"
+        : ".env.local";
 
   copyFileSync(
     path.join(absoluteProjectPath, ".env.example"),
@@ -181,7 +181,7 @@ const init = async ({
           await inquirer.prompt({
             type: "list",
             name: "siteId",
-            choices: (await AddOnApiHelper.listSites())
+            choices: (await AddOnApiHelper.listSites({}))
               .filter((x) => !x.__isPlayground)
               .map((x) => `${x.url} (${x.id})`),
           })

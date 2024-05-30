@@ -128,9 +128,8 @@ function generateBaseURL(req: ApiRequest) {
     // If this is a forwarded request, use the protocol and host from the headers.
     if (req.headers?.["x-forwarded-host"]) {
       return `${
-        req.headers["x-forwarded-proto"] || req.connection?.encrypted
-          ? "https"
-          : "http"
+        req.headers["x-forwarded-proto"] ||
+        (req.connection?.encrypted ? "https" : "http")
       }://${req.headers["x-forwarded-host"]}`;
     }
 
@@ -200,8 +199,8 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
-      ? commandInput.split("/")
-      : [commandInput];
+        ? commandInput.split("/")
+        : [commandInput];
 
     if (pccGrant) {
       setCookie(headers, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
@@ -398,8 +397,8 @@ function setCookie(headers: Headers, value: string) {
       ...(typeof previous === "string"
         ? [previous]
         : Array.isArray(previous)
-        ? previous
-        : []),
+          ? previous
+          : []),
       value,
     ].join("; "),
   );
