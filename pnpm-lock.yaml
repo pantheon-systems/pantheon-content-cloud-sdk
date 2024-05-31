@@ -749,8 +749,8 @@ importers:
   starters/nextjs-starter-approuter-ts:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.5.4-beta.0
-        version: 3.5.4-beta.0(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
@@ -782,6 +782,9 @@ importers:
       '@testing-library/react':
         specifier: 13.4.0
         version: 13.4.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react':
+        specifier: ^18.2.60
+        version: 18.2.60
       '@vitejs/plugin-react':
         specifier: ^4.2.1
         version: 4.2.1(vite@5.1.4(@types/node@20.11.21)(sass@1.71.1)(terser@5.28.1))
@@ -3835,23 +3838,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@pantheon-systems/pcc-react-sdk@3.5.4-beta.0':
-    resolution: {integrity: sha512-YWqZTfkd055zKF3BhAzO6F2EOXCKWnncbLMhjE55PNbh944vJtuFSctMOVtNtZYm7nxPZpr+mOXTrJ37rP8Czg==}
-    engines: {node: '>=18.10.0'}
-    peerDependencies:
-      '@types/react': '>=18'
-      '@types/react-dom': '>=18'
-      react: '>=18'
-      react-dom: '>=18'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-
   '@pantheon-systems/pcc-sdk-core@3.5.3':
     resolution: {integrity: sha512-QUhZRlgf/5J+NjNX/rz9C5APEYjU6QWVAok/8VKbB6ry1VfdbgA3v1RHjU6+/usEVnMVjzS6k7T7LTxRmkUG7g==}
-
-  '@pantheon-systems/pcc-sdk-core@3.5.4-beta.0':
-    resolution: {integrity: sha512-n1rAUlbauzM22J5r03bAYHwDIZwftJRWRrSl7vAaS7Waq3FfOy0pKclJ6Z0CufOzBLISQYi5PrTX56uBskG02A==}
 
   '@pantheon-systems/pcc-vue-sdk@3.5.3':
     resolution: {integrity: sha512-KhMfFAQ6XrKmv8xMP9ybfp6tKkOqoz/Av15X6OeCTDkbVDLoFCwkZBfJRTnJbErUFFiH495o4CDuqRxgoyJy8g==}
@@ -18096,30 +18084,6 @@ snapshots:
       - subscriptions-transport-ws
       - supports-color
 
-  '@pantheon-systems/pcc-react-sdk@3.5.4-beta.0(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@pantheon-systems/pcc-sdk-core': 3.5.4-beta.0(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-dom': 18.2.19
-      framer-motion: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      goober: 2.1.14(csstype@3.1.3)
-      graphql: 16.8.1
-      query-string: 8.2.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-laag: 2.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-markdown: 8.0.7(@types/react@18.2.60)(react@18.3.1)
-      rehype-raw: 6.1.1
-      remark-heading-id: 1.0.1
-      unist-util-visit: 5.0.0
-    optionalDependencies:
-      '@types/react': 18.2.60
-    transitivePeerDependencies:
-      - csstype
-      - graphql-ws
-      - subscriptions-transport-ws
-      - supports-color
-
   '@pantheon-systems/pcc-sdk-core@3.5.3(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -18137,22 +18101,6 @@ snapshots:
       - subscriptions-transport-ws
 
   '@pantheon-systems/pcc-sdk-core@3.5.3(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      graphql: 16.8.1
-      graphql-tag: 2.12.6(graphql@16.8.1)
-      graphql-ws: 5.15.0(graphql@16.8.1)
-      query-string: 8.2.0
-      typescript: 5.4.2
-      zod: 3.22.4
-      zod-validation-error: 1.5.0(zod@3.22.4)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - react-dom
-      - subscriptions-transport-ws
-
-  '@pantheon-systems/pcc-sdk-core@3.5.4-beta.0(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       graphql: 16.8.1
