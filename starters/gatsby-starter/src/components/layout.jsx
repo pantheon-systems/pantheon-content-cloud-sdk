@@ -1,6 +1,6 @@
+import { Link } from "gatsby";
 import React from "react";
 import { Footer } from "./footer";
-import { Link } from "gatsby";
 
 export default function Layout({ children, footerMenu }) {
   const navItems = [
@@ -22,6 +22,7 @@ export default function Layout({ children, footerMenu }) {
 
   return (
     <div className="flex flex-col max-h-screen min-h-screen overflow-x-hidden min-w-screen max-w-screen">
+      <div id="__pcc-portal-target__" />
       <div className="px-5 pt-10 my-0 text-xl">
         <nav>
           <ul className="flex flex-row flex-wrap justify-between max-w-screen-lg mx-auto list-none sm:flex-nowrap">

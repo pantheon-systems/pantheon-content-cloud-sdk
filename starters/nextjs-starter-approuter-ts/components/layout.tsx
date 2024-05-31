@@ -33,6 +33,7 @@ export default function Layout({ children, footerMenu }: Props) {
 
   return (
     <div className="flex flex-col max-h-screen min-h-screen overflow-x-hidden min-w-screen max-w-screen">
+      <div id="__pcc-portal-target__" />
       <div className="px-5 pt-10 my-0 text-xl">
         <nav>
           <ul className="flex flex-row flex-wrap justify-between max-w-screen-lg mx-auto list-none sm:flex-nowrap">
@@ -42,10 +43,7 @@ export default function Layout({ children, footerMenu }: Props) {
                   className={`${item.href === "/" ? "mr-auto" : "mx-4"}`}
                   key={item.href}
                 >
-                  <Link
-                    className="font-sans hover:underline"
-                    href={item.href}
-                  >
+                  <Link className="font-sans hover:underline" href={item.href}>
                     {item.linkText}
                   </Link>
                 </li>
