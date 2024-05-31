@@ -10,7 +10,6 @@ import {
   sendRedirect,
   setResponseHeader,
   getResponseHeader,
-  setResponseStatus,
 } from "h3";
 
 export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
@@ -19,48 +18,18 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
       {
         query: { ...getQuery(event), command: getRouterParams(event).command },
         cookies: parseCookies(event),
-        // url: event.path,
       },
       {
-        headers: {},
-        setHeader: (key: string, value: string | string[]) => {
+        setHeader: (key, value) => {
           setResponseHeader(event, key, value);
         },
-        redirect: async (
-          url: string,
-          options: {
-            status?: number;
-            headers?: Headers;
-          },
-        ) => {
-          if (options.headers) {
-            options.headers.forEach((v, k) => setResponseHeader(event, k, v));
-          }
-
-          if (options.status) {
-            setResponseStatus(event, options.status);
-          }
-
-          await sendRedirect(event, url, options.status);
+        redirect: async (code, url) => {
+          await sendRedirect(event, url, code);
         },
-        json: (
-          data: unknown,
-          options: {
-            status?: number;
-            headers?: Headers;
-          },
-        ) => {
-          if (options.headers) {
-            options.headers.forEach((k, v) => setResponseHeader(event, k, v));
-          }
-
-          if (options.status) {
-            setResponseStatus(event, options.status);
-          }
-
+        json: (data) => {
           return data;
         },
-        getHeader: (key: string) => {
+        getHeader: (key) => {
           return getResponseHeader(event, key);
         },
       },
