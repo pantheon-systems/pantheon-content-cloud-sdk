@@ -286,6 +286,9 @@ importers:
       '@types/node':
         specifier: ^20.11.21
         version: 20.11.21
+      '@vitest/coverage-v8':
+        specifier: ^1.6.0
+        version: 1.6.0(vitest@1.3.1(@types/node@20.11.21)(jsdom@22.1.0)(sass@1.71.1)(terser@5.28.1))
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -295,6 +298,9 @@ importers:
       tsup:
         specifier: ^7.2.0
         version: 7.2.0(@swc/core@1.4.2)(postcss@8.4.38)(typescript@5.3.3)
+      vitest:
+        specifier: ^1.3.1
+        version: 1.3.1(@types/node@20.11.21)(jsdom@22.1.0)(sass@1.71.1)(terser@5.28.1)
 
   packages/react-sample-library:
     dependencies:
@@ -456,6 +462,9 @@ importers:
       jest:
         specifier: 29.5.0
         version: 29.5.0(@types/node@18.16.9)(babel-plugin-macros@3.1.0)
+      next:
+        specifier: ^14.2.3
+        version: 14.2.3(@babel/core@7.21.8)(babel-plugin-macros@3.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1)
       octokit:
         specifier: ^3.1.2
         version: 3.1.2
@@ -5434,6 +5443,11 @@ packages:
       vite: ^4.0.0 || ^5.0.0
       vue: ^3.2.25
 
+  '@vitest/coverage-v8@1.6.0':
+    resolution: {integrity: sha512-KvapcbMY/8GYIG0rlwwOKCVNRc0OL20rrhFkg/CHNzncV03TE2XWvO5w9uZYoxNiMEBacAJt3unSOiZ7svePew==}
+    peerDependencies:
+      vitest: 1.6.0
+
   '@vitest/expect@1.3.1':
     resolution: {integrity: sha512-xofQFwIzfdmLLlHa6ag0dPV8YsnKOCP1KdAeVVh34vSjN2dcUiXYCD9htu/9eM7t8Xln4v03U9HLxLpPlsXdZw==}
 
@@ -9286,6 +9300,10 @@ packages:
 
   istanbul-lib-source-maps@4.0.1:
     resolution: {integrity: sha512-n3s8EwkdFIJCG3BPKBYvskgXGoy88ARzvegkitk60NxRdwltLOTaH7CUiMRXvwYorl0Q712iEjcWB+fK/MrWVw==}
+    engines: {node: '>=10'}
+
+  istanbul-lib-source-maps@5.0.4:
+    resolution: {integrity: sha512-wHOoEsNJTVltaJp8eVkm8w+GVkVNHT2YDYo53YdzQEL2gWm1hBX5cGFR9hQJtuGLebidVX7et3+dmDZrmclduw==}
     engines: {node: '>=10'}
 
   istanbul-reports@3.1.7:
@@ -14218,8 +14236,8 @@ snapshots:
 
   '@ampproject/remapping@2.2.1':
     dependencies:
-      '@jridgewell/gen-mapping': 0.3.4
-      '@jridgewell/trace-mapping': 0.3.23
+      '@jridgewell/gen-mapping': 0.3.5
+      '@jridgewell/trace-mapping': 0.3.25
 
   '@antfu/utils@0.7.7': {}
 
@@ -18863,7 +18881,7 @@ snapshots:
       estree-walker: 2.0.2
       glob: 8.1.0
       is-reference: 1.2.1
-      magic-string: 0.30.7
+      magic-string: 0.30.10
     optionalDependencies:
       rollup: 4.12.0
 
@@ -18871,7 +18889,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.12.0)
       estree-walker: 2.0.2
-      magic-string: 0.30.7
+      magic-string: 0.30.10
     optionalDependencies:
       rollup: 4.12.0
 
@@ -18895,7 +18913,7 @@ snapshots:
   '@rollup/plugin-replace@5.0.5(rollup@4.12.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@4.12.0)
-      magic-string: 0.30.7
+      magic-string: 0.30.10
     optionalDependencies:
       rollup: 4.12.0
 
@@ -20805,6 +20823,25 @@ snapshots:
       vite: 4.5.2(@types/node@20.11.21)(sass@1.71.1)(terser@5.28.1)
       vue: 3.4.27(typescript@5.4.2)
 
+  '@vitest/coverage-v8@1.6.0(vitest@1.3.1(@types/node@20.11.21)(jsdom@22.1.0)(sass@1.71.1)(terser@5.28.1))':
+    dependencies:
+      '@ampproject/remapping': 2.2.1
+      '@bcoe/v8-coverage': 0.2.3
+      debug: 4.3.4
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 5.0.4
+      istanbul-reports: 3.1.7
+      magic-string: 0.30.10
+      magicast: 0.3.3
+      picocolors: 1.0.0
+      std-env: 3.7.0
+      strip-literal: 2.0.0
+      test-exclude: 6.0.0
+      vitest: 1.3.1(@types/node@20.11.21)(jsdom@22.1.0)(sass@1.71.1)(terser@5.28.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitest/expect@1.3.1':
     dependencies:
       '@vitest/spy': 1.3.1
@@ -20819,7 +20856,7 @@ snapshots:
 
   '@vitest/snapshot@1.3.1':
     dependencies:
-      magic-string: 0.30.7
+      magic-string: 0.30.10
       pathe: 1.1.2
       pretty-format: 29.7.0
 
@@ -20988,7 +21025,7 @@ snapshots:
       '@vue/compiler-ssr': 3.4.21
       '@vue/shared': 3.4.21
       estree-walker: 2.0.2
-      magic-string: 0.30.7
+      magic-string: 0.30.10
       postcss: 8.4.38
       source-map-js: 1.2.0
 
@@ -21037,7 +21074,7 @@ snapshots:
       '@vue/compiler-core': 3.3.4
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2
-      magic-string: 0.30.7
+      magic-string: 0.30.10
 
   '@vue/reactivity@3.3.4':
     dependencies:
@@ -22810,12 +22847,12 @@ snapshots:
   css-tree@2.2.1:
     dependencies:
       mdn-data: 2.0.28
-      source-map-js: 1.0.2
+      source-map-js: 1.2.0
 
   css-tree@2.3.1:
     dependencies:
       mdn-data: 2.0.30
-      source-map-js: 1.0.2
+      source-map-js: 1.2.0
 
   css-what@6.1.0: {}
 
@@ -26264,6 +26301,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  istanbul-lib-source-maps@5.0.4:
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      debug: 4.3.4
+      istanbul-lib-coverage: 3.2.2
+    transitivePeerDependencies:
+      - supports-color
+
   istanbul-reports@3.1.7:
     dependencies:
       html-escaper: 2.0.2
@@ -27143,7 +27188,7 @@ snapshots:
 
   magic-string-ast@0.3.0:
     dependencies:
-      magic-string: 0.30.7
+      magic-string: 0.30.10
 
   magic-string@0.30.10:
     dependencies:
@@ -28046,7 +28091,7 @@ snapshots:
       postcss: 8.4.31
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      styled-jsx: 5.1.1(@babel/core@7.24.6)(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.21.8)(babel-plugin-macros@3.1.0)(react@18.2.0)
       watchpack: 2.4.0
     optionalDependencies:
       '@next/swc-darwin-arm64': 13.5.6
@@ -28058,6 +28103,32 @@ snapshots:
       '@next/swc-win32-arm64-msvc': 13.5.6
       '@next/swc-win32-ia32-msvc': 13.5.6
       '@next/swc-win32-x64-msvc': 13.5.6
+      sass: 1.71.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+
+  next@14.2.3(@babel/core@7.21.8)(babel-plugin-macros@3.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(sass@1.71.1):
+    dependencies:
+      '@next/env': 14.2.3
+      '@swc/helpers': 0.5.5
+      busboy: 1.6.0
+      caniuse-lite: 1.0.30001591
+      graceful-fs: 4.2.11
+      postcss: 8.4.31
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      styled-jsx: 5.1.1(@babel/core@7.21.8)(babel-plugin-macros@3.1.0)(react@18.2.0)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 14.2.3
+      '@next/swc-darwin-x64': 14.2.3
+      '@next/swc-linux-arm64-gnu': 14.2.3
+      '@next/swc-linux-arm64-musl': 14.2.3
+      '@next/swc-linux-x64-gnu': 14.2.3
+      '@next/swc-linux-x64-musl': 14.2.3
+      '@next/swc-win32-arm64-msvc': 14.2.3
+      '@next/swc-win32-ia32-msvc': 14.2.3
+      '@next/swc-win32-x64-msvc': 14.2.3
       sass: 1.71.1
     transitivePeerDependencies:
       - '@babel/core'
@@ -29389,7 +29460,7 @@ snapshots:
     dependencies:
       nanoid: 3.3.7
       picocolors: 1.0.0
-      source-map-js: 1.0.2
+      source-map-js: 1.2.0
 
   postcss@8.4.35:
     dependencies:
@@ -30989,6 +31060,14 @@ snapshots:
     dependencies:
       inline-style-parser: 0.2.2
 
+  styled-jsx@5.1.1(@babel/core@7.21.8)(babel-plugin-macros@3.1.0)(react@18.2.0):
+    dependencies:
+      client-only: 0.0.1
+      react: 18.2.0
+    optionalDependencies:
+      '@babel/core': 7.21.8
+      babel-plugin-macros: 3.1.0
+
   styled-jsx@5.1.1(@babel/core@7.24.0)(react@18.3.1):
     dependencies:
       client-only: 0.0.1
@@ -31962,7 +32041,7 @@ snapshots:
 
   unwasm@0.3.7:
     dependencies:
-      magic-string: 0.30.7
+      magic-string: 0.30.10
       mlly: 1.6.1
       pathe: 1.1.2
       pkg-types: 1.0.3
@@ -32250,7 +32329,7 @@ snapshots:
       debug: 4.3.4
       execa: 8.0.1
       local-pkg: 0.5.0
-      magic-string: 0.30.7
+      magic-string: 0.30.10
       pathe: 1.1.2
       picocolors: 1.0.0
       std-env: 3.7.0

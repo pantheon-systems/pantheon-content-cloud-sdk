@@ -19,7 +19,7 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
       {
         query: { ...getQuery(event), command: getRouterParams(event).command },
         cookies: parseCookies(event),
-        url: event.path,
+        // url: event.path,
       },
       {
         headers: {},
