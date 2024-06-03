@@ -1,5 +1,19 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.6.0-beta.3
+
+### Patch Changes
+
+- Export pantheon-content from root entry point.
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.3
+
+## 3.6.0-beta.2
+
+### Patch Changes
+
+- Don't export pantheon-context in server export.
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.2
+
 ## 3.6.0-beta.1
 
 ### Patch Changes

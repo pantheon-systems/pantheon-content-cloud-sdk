@@ -7,13 +7,13 @@ import {
 } from "@pantheon-systems/pcc-react-sdk";
 import ArticleView from "../../../components/article-view";
 
-export default function ClientsideArticleView({
+export const ClientsideArticleView = ({
   grant,
   article,
 }: {
   grant: string;
   article: Article;
-}) {
+}) => {
   return (
     <PantheonProvider
       client={PCCConvenienceFunctions.buildPantheonClient({
@@ -24,4 +24,4 @@ export default function ClientsideArticleView({
       <ArticleView article={article} />
     </PantheonProvider>
   );
-}
+};
