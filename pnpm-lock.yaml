@@ -740,8 +740,8 @@ importers:
   starters/nextjs-starter-approuter-ts:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.5.4-beta.0
-        version: 3.5.4-beta.0(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: 3.6.0-beta.1
+        version: 3.6.0-beta.1(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
@@ -3826,8 +3826,8 @@ packages:
       '@types/react':
         optional: true
 
-  '@pantheon-systems/pcc-react-sdk@3.5.4-beta.0':
-    resolution: {integrity: sha512-YWqZTfkd055zKF3BhAzO6F2EOXCKWnncbLMhjE55PNbh944vJtuFSctMOVtNtZYm7nxPZpr+mOXTrJ37rP8Czg==}
+  '@pantheon-systems/pcc-react-sdk@3.6.0-beta.1':
+    resolution: {integrity: sha512-SwoHHO8u+7T2StPc4tjQAd8XZn0U2mWmfHreSUpRk/DRtXKyp1llLRD4QIPG/PtxV0VZyfY1/2xLAzBLLK4rUw==}
     engines: {node: '>=18.10.0'}
     peerDependencies:
       '@types/react': '>=18'
@@ -3841,8 +3841,8 @@ packages:
   '@pantheon-systems/pcc-sdk-core@3.5.3':
     resolution: {integrity: sha512-QUhZRlgf/5J+NjNX/rz9C5APEYjU6QWVAok/8VKbB6ry1VfdbgA3v1RHjU6+/usEVnMVjzS6k7T7LTxRmkUG7g==}
 
-  '@pantheon-systems/pcc-sdk-core@3.5.4-beta.0':
-    resolution: {integrity: sha512-n1rAUlbauzM22J5r03bAYHwDIZwftJRWRrSl7vAaS7Waq3FfOy0pKclJ6Z0CufOzBLISQYi5PrTX56uBskG02A==}
+  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.1':
+    resolution: {integrity: sha512-hCPOXelqhS3OZFxOVM9v5u8XGVsMUHstDBkANKlM6b7qlzCJwzTbxBF52dHVMEuO9i40NpPAS6KbftzZNGX5zw==}
 
   '@pantheon-systems/pcc-vue-sdk@3.5.3':
     resolution: {integrity: sha512-KhMfFAQ6XrKmv8xMP9ybfp6tKkOqoz/Av15X6OeCTDkbVDLoFCwkZBfJRTnJbErUFFiH495o4CDuqRxgoyJy8g==}
@@ -18078,10 +18078,10 @@ snapshots:
       - subscriptions-transport-ws
       - supports-color
 
-  '@pantheon-systems/pcc-react-sdk@3.5.4-beta.0(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@pantheon-systems/pcc-react-sdk@3.6.0-beta.1(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@pantheon-systems/pcc-sdk-core': 3.5.4-beta.0(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.1(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react-dom': 18.2.19
       framer-motion: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       goober: 2.1.14(csstype@3.1.3)
@@ -18134,7 +18134,7 @@ snapshots:
       - react-dom
       - subscriptions-transport-ws
 
-  '@pantheon-systems/pcc-sdk-core@3.5.4-beta.0(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.1(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       graphql: 16.8.1
