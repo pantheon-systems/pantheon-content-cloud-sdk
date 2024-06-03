@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@testing-library/react": "13.4.0",
-    "@types/react": "^18.2.60",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",
     "c8": "^7.14.0",

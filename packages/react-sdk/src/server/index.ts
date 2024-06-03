@@ -16,4 +16,6 @@ export {
 } from "@pantheon-systems/pcc-sdk-core";
 export * from "@pantheon-systems/pcc-sdk-core/types";
 
+export * from "../core/pantheon-context";
+
 export { NextPantheonAPI as PantheonAPI } from "../core/pantheon-api";
