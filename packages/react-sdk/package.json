@@ -84,7 +84,7 @@
     "react-test-renderer": "18.2.0",
     "ts-jest": "29.1.0",
     "tsup": "6.7.0",
-    "typescript": "5.0.4",
+    "typescript": "5.4.5",
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
