@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.6.0-beta.1
+
+### Patch Changes
+
+- Fix how protocols are being forwarded by API handler.
+
 ## 3.6.0-beta.0
 
 ## 3.5.3
