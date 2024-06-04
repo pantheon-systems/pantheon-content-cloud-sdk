@@ -10,6 +10,12 @@ export interface AppRouterParams {
   headers?: null;
 }
 
+export function NextPantheonAPI(
+  options?: PantheonAPIOptions,
+): (req: NextRequest, res: AppRouterParams) => Promise<Response | void>;
+export function NextPantheonAPI(
+  options?: PantheonAPIOptions,
+): (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
 export function NextPantheonAPI(options?: PantheonAPIOptions) {
   const api = PantheonAPI(options);
 
@@ -18,22 +24,23 @@ export function NextPantheonAPI(options?: PantheonAPIOptions) {
     // In App routing, req is NextRequest and the second argument is AppRouterParams
     req: NextRequest | NextApiRequest,
     res: AppRouterParams | NextApiResponse,
-  ) => {
+  ): Promise<void | Response> => {
     if (isPagesRouterResponse(res)) {
       // Pages routing
-      return await api(req as NextApiRequest, res as NextApiResponse);
+      await api(req as NextApiRequest, res as NextApiResponse);
     }
 
     // App router
+    const appRouterParams = res as AppRouterParams;
     const headers = new Headers({
-      ...(res.headers || {}),
+      ...(appRouterParams.headers || {}),
     });
 
-    return await api(
+    return (await api(
       {
         query: {
           ...Object.fromEntries((req as NextRequest).nextUrl.searchParams),
-          ...res.params,
+          ...appRouterParams.params,
         },
         cookies: cookiesToObj((req as NextRequest).cookies),
       },
@@ -53,7 +60,7 @@ export function NextPantheonAPI(options?: PantheonAPIOptions) {
           });
         },
       },
-    );
+    )) as Response | void;
   };
 }
 
