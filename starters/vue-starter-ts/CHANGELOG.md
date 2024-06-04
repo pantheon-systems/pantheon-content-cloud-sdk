@@ -1,5 +1,36 @@
 # @pantheon-systems/vue-pcc-starter-ts
 
+## 1.1.0-beta.3
+
+### Patch Changes
+
+- @pantheon-systems/pcc-vue-sdk@3.6.0-beta.3
+
+## 1.1.0-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-vue-sdk@3.6.0-beta.2
+
+## 1.1.0-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-vue-sdk@3.6.0-beta.1
+
+## 1.1.0-beta.0
+
+### Minor Changes
+
+- 7df9251: Upgraded Vue dependencies. Removed support for vue@2
+
+### Patch Changes
+
+- Updated dependencies [80ef092]
+- Updated dependencies [7df9251]
+- Updated dependencies [14a968b]
+  - @pantheon-systems/pcc-vue-sdk@3.6.0-beta.0
+
 ## 1.0.3
 
 ### Patch Changes
