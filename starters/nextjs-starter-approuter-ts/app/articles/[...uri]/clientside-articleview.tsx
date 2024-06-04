@@ -14,13 +14,13 @@ updateConfig({
     process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
 });
 
-export default function ClientsideArticleView({
+export const ClientsideArticleView = ({
   grant,
   article,
 }: {
   grant: string;
   article: Article;
-}) {
+}) => {
   return (
     <PantheonProvider
       client={PCCConvenienceFunctions.buildPantheonClient({
@@ -31,4 +31,4 @@ export default function ClientsideArticleView({
       <ArticleView article={article} />
     </PantheonProvider>
   );
-}
+};
