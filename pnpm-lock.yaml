@@ -911,7 +911,7 @@ importers:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
         specifier: ~3.6.0-beta.0
-        version: 3.6.0-beta.2(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.5)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))
+        version: 3.6.0-beta.3(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))
     devDependencies:
       '@nuxt/devtools':
         specifier: 1.0.0
@@ -3778,14 +3778,11 @@ packages:
       '@types/react':
         optional: true
 
-  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.2':
-    resolution: {integrity: sha512-rLzZoJO892kUy1J2MDscY6dXYySjQC8umDPoETkryxX5342yGwR1awJHOyEwqKZPESH9hmu8N7eYDWHSdpInxw==}
-
   '@pantheon-systems/pcc-sdk-core@3.6.0-beta.3':
     resolution: {integrity: sha512-/uzo+Xm1aRbnMcEek5iPDLWFMhS9/tJQm8y0rS9TbzNY1GCY5CcL9tuSmibaF+vIHvkAqDnrOLTkk74z18vbFQ==}
 
-  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.2':
-    resolution: {integrity: sha512-AYATc8aYe3JTuGzAKGYel0tmHOt9/5KXugoj54aQA3rYbFiYHZIZc81XaDlPAhEO5Ok7xy4BXgWEI4pKSchFWg==}
+  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.3':
+    resolution: {integrity: sha512-/5Nw8itKpfuorTmEtfmZYphvbzJqcdR0G66lHnsZybJC9yI/EdyO3KDJjLZyRpyU0FdlUQGojUzaBk7zbEoGZw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       h3: ^1.8.2
@@ -17932,9 +17929,9 @@ snapshots:
       - subscriptions-transport-ws
       - supports-color
 
-  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.2(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       graphql: 16.8.1
       graphql-tag: 2.12.6(graphql@16.8.1)
       graphql-ws: 5.15.0(graphql@16.8.1)
@@ -17964,12 +17961,12 @@ snapshots:
       - react-dom
       - subscriptions-transport-ws
 
-  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.2(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.5)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))':
+  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.3(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))':
     dependencies:
       '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.2(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@vue/apollo-composable': 4.0.0-beta.12(@apollo/client@3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.5)))(graphql@16.8.1)(typescript@5.4.5)(vue@3.4.27(typescript@5.4.5))
-      floating-vue: 5.2.2(@nuxt/kit@3.10.3(rollup@4.12.0))(vue@3.4.27(typescript@5.4.5))
+      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@vue/apollo-composable': 4.0.0-beta.12(@apollo/client@3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql@16.8.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))
+      floating-vue: 5.2.2(@nuxt/kit@3.10.3(rollup@4.12.0))(vue@3.4.27(typescript@5.4.2))
       graphql: 16.8.1
       hast-util-to-jsx-runtime: 2.3.0
       html-url-attributes: 3.0.0
