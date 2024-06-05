@@ -6,12 +6,12 @@ describe("hasConfiguredPantheonClient", () => {
   });
 
   it("Resolve document by article id", () => {
-    expect(pantheonAPIOptions.resolvePath({ id: 123 })).toBe("/articles/123");
+    expect(pantheonAPIOptions.resolvePath({ id: "123" })).toBe("/articles/123");
   });
 
   it("Resolve document by article slug", () => {
-    expect(pantheonAPIOptions.resolvePath({ slug: "foo-bar-slug" })).toBe(
-      "/articles/foo-bar-slug",
-    );
+    expect(
+      pantheonAPIOptions.resolvePath({ id: undefined, slug: "foo-bar-slug" }),
+    ).toBe("/articles/foo-bar-slug");
   });
 });

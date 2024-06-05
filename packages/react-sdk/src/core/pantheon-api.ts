@@ -10,24 +10,22 @@ export interface AppRouterParams {
   headers?: null;
 }
 
-export function NextPantheonAPI(
-  options?: PantheonAPIOptions,
-): (req: NextRequest, res: AppRouterParams) => Promise<Response | void>;
-export function NextPantheonAPI(
-  options?: PantheonAPIOptions,
-): (req: NextApiRequest, res: NextApiResponse) => Promise<unknown>;
+type Handler = {
+  // In Pages routing, req and res are NextApiRequest and NextApiResponse
+  (req: NextApiRequest, res: NextApiResponse): Promise<unknown>;
+  // In App routing, req is NextRequest and the second argument is AppRouterParams
+  (req: NextRequest, res: AppRouterParams): Promise<void | Response>;
+};
+
 export function NextPantheonAPI(options?: PantheonAPIOptions) {
   const api = PantheonAPI(options);
 
-  return async (
-    // In Pages routing, req and res are NextApiRequest and NextApiResponse
-    // In App routing, req is NextRequest and the second argument is AppRouterParams
-    req: NextRequest | NextApiRequest,
-    res: AppRouterParams | NextApiResponse,
-  ): Promise<void | Response> => {
+  const handler: Handler = async (req, res) => {
     if (isPagesRouterResponse(res)) {
-      // Pages routing
-      await api(req as NextApiRequest, res as NextApiResponse);
+      // Pages router
+      // Intentionally voiding the return value, page router API routes should not return a value
+      // https://github.com/vercel/next.js/discussions/48951
+      return void (await api(req as NextApiRequest, res as NextApiResponse));
     }
 
     // App router
@@ -60,8 +58,10 @@ export function NextPantheonAPI(options?: PantheonAPIOptions) {
           });
         },
       },
-    )) as Response | void;
+    )) as void | Response;
   };
+
+  return handler;
 }
 
 function isPagesRouterResponse(
@@ -70,8 +70,7 @@ function isPagesRouterResponse(
   // We can differentiate between app router vs pages api
   // by checking for params
   // reference: (https://github.com/nextauthjs/next-auth/blob/v4/packages/next-auth/src/next/index.ts)
-  // @ts-expect-error - This is the point of the type guard
-  return !res?.params;
+  return res != null && typeof res === "object" && !("params" in res);
 }
 
 function cookiesToObj(cookies: NextRequest["cookies"]) {
