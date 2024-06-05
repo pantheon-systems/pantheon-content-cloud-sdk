@@ -13,6 +13,8 @@ overrides:
   '@pantheon-systems/pcc-react-sdk>prettier': ^3.0.0
   webpack-dev-middleware: ^7.2.1
 
+pnpmfileChecksum: yvwchj2zo3bjwuf3najohupabu
+
 importers:
 
   .:
@@ -578,8 +580,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.6.0-beta.3
-        version: 3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -621,8 +623,8 @@ importers:
         specifier: ^2.3.0
         version: 2.3.0(react@18.2.0)
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.6.0-beta.3
-        version: 3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -661,8 +663,8 @@ importers:
   starters/nextjs-starter:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.6.0-beta.3
-        version: 3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -740,8 +742,8 @@ importers:
   starters/nextjs-starter-approuter-ts:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.6.0-beta.3
-        version: 3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
@@ -816,8 +818,8 @@ importers:
   starters/nextjs-starter-ts:
     dependencies:
       '@pantheon-systems/pcc-react-sdk':
-        specifier: 3.6.0-beta.3
-        version: 3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: workspace:*
+        version: link:../../packages/react-sdk
       '@pantheon-systems/pds-toolkit-react':
         specifier: 1.0.0-dev.55
         version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -901,8 +903,8 @@ importers:
   starters/vue-starter:
     dependencies:
       '@pantheon-systems/pcc-vue-sdk':
-        specifier: ~3.6.0-beta.0
-        version: 3.6.0-beta.3(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))
+        specifier: workspace:*
+        version: link:../../packages/vue-sdk
     devDependencies:
       '@nuxt/devtools':
         specifier: 1.0.0
@@ -3756,31 +3758,6 @@ packages:
   '@octokit/webhooks@12.1.2':
     resolution: {integrity: sha512-+nGS3ReCByF6m+nbNB59x7Aa3CNjCCGuBLFzfkiJP1O3uVKKuJbkP4uO4t46YqH26nlugmOhqjT7nx5D0VPtdA==}
     engines: {node: '>= 18'}
-
-  '@pantheon-systems/pcc-react-sdk@3.6.0-beta.3':
-    resolution: {integrity: sha512-//VPpA/0ZnuBcDsPbSrdwfHmkFj15Csoe0J13ES5Nuf8/wnXakWNWvI1MuTonsgo1KJSJkAM7MLjTziU4BoFXg==}
-    engines: {node: '>=18.10.0'}
-    peerDependencies:
-      '@types/react': '>=18'
-      '@types/react-dom': '>=18'
-      react: '>=18'
-      react-dom: '>=18'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-
-  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.3':
-    resolution: {integrity: sha512-/uzo+Xm1aRbnMcEek5iPDLWFMhS9/tJQm8y0rS9TbzNY1GCY5CcL9tuSmibaF+vIHvkAqDnrOLTkk74z18vbFQ==}
-
-  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.3':
-    resolution: {integrity: sha512-/5Nw8itKpfuorTmEtfmZYphvbzJqcdR0G66lHnsZybJC9yI/EdyO3KDJjLZyRpyU0FdlUQGojUzaBk7zbEoGZw==}
-    engines: {node: '>=18.0.0'}
-    peerDependencies:
-      h3: ^1.8.2
-      vue: '>=3.0.0'
-    peerDependenciesMeta:
-      h3:
-        optional: true
 
   '@pantheon-systems/pds-toolkit-react@1.0.0-dev.55':
     resolution: {integrity: sha512-xjXj7asV6oeTKiYQGkl0APX5fovjF1DDbSmD79p52S8jb+Mto1k9w//+aDg0yBjTKPwUi+NrHZ7FQ34uQlXmbQ==}
@@ -17905,117 +17882,6 @@ snapshots:
       '@octokit/webhooks-types': 7.3.2
       aggregate-error: 3.1.0
 
-  '@pantheon-systems/pcc-react-sdk@3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@types/react-dom': 18.2.19
-      framer-motion: 10.18.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      goober: 2.1.14(csstype@3.1.3)
-      graphql: 16.8.1
-      query-string: 8.2.0
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-laag: 2.0.5(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      react-markdown: 8.0.7(@types/react@18.2.60)(react@18.2.0)
-      rehype-raw: 6.1.1
-      remark-heading-id: 1.0.1
-      unist-util-visit: 5.0.0
-    optionalDependencies:
-      '@types/react': 18.2.60
-    transitivePeerDependencies:
-      - csstype
-      - graphql-ws
-      - subscriptions-transport-ws
-      - supports-color
-
-  '@pantheon-systems/pcc-react-sdk@3.6.0-beta.3(@types/react-dom@18.2.19)(@types/react@18.2.60)(csstype@3.1.3)(graphql-ws@5.15.0(graphql@16.8.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@types/react-dom': 18.2.19
-      framer-motion: 10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      goober: 2.1.14(csstype@3.1.3)
-      graphql: 16.8.1
-      query-string: 8.2.0
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      react-laag: 2.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react-markdown: 8.0.7(@types/react@18.2.60)(react@18.3.1)
-      rehype-raw: 6.1.1
-      remark-heading-id: 1.0.1
-      unist-util-visit: 5.0.0
-    optionalDependencies:
-      '@types/react': 18.2.60
-    transitivePeerDependencies:
-      - csstype
-      - graphql-ws
-      - subscriptions-transport-ws
-      - supports-color
-
-  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      graphql: 16.8.1
-      graphql-tag: 2.12.6(graphql@16.8.1)
-      graphql-ws: 5.15.0(graphql@16.8.1)
-      query-string: 8.2.0
-      typescript: 5.4.2
-      zod: 3.22.4
-      zod-validation-error: 1.5.0(zod@3.22.4)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - react-dom
-      - subscriptions-transport-ws
-
-  '@pantheon-systems/pcc-sdk-core@3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      graphql: 16.8.1
-      graphql-tag: 2.12.6(graphql@16.8.1)
-      graphql-ws: 5.15.0(graphql@16.8.1)
-      query-string: 8.2.0
-      typescript: 5.4.2
-      zod: 3.22.4
-      zod-validation-error: 1.5.0(zod@3.22.4)
-    transitivePeerDependencies:
-      - '@types/react'
-      - react
-      - react-dom
-      - subscriptions-transport-ws
-
-  '@pantheon-systems/pcc-vue-sdk@3.6.0-beta.3(@nuxt/kit@3.10.3(rollup@4.12.0))(@types/react@18.2.60)(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql-ws@5.15.0(graphql@16.8.1))(h3@1.11.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@pantheon-systems/pcc-sdk-core': 3.6.0-beta.3(@types/react@18.2.60)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@vue/apollo-composable': 4.0.0-beta.12(@apollo/client@3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql@16.8.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))
-      floating-vue: 5.2.2(@nuxt/kit@3.10.3(rollup@4.12.0))(vue@3.4.27(typescript@5.4.2))
-      graphql: 16.8.1
-      hast-util-to-jsx-runtime: 2.3.0
-      html-url-attributes: 3.0.0
-      query-string: 8.2.0
-      rehype-raw: 6.1.1
-      remark-heading-id: 1.0.1
-      remark-parse: 11.0.0
-      remark-rehype: 11.1.0
-      unified: 11.0.4
-      unist-util-visit: 5.0.0
-      vue: 3.4.27(typescript@5.4.2)
-      vue-demi: 0.14.7(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(vue@3.4.27(typescript@5.4.2))
-    optionalDependencies:
-      h3: 1.11.1
-    transitivePeerDependencies:
-      - '@nuxt/kit'
-      - '@types/react'
-      - '@vue/composition-api'
-      - graphql-ws
-      - react
-      - react-dom
-      - subscriptions-transport-ws
-      - supports-color
-      - typescript
-
   '@pantheon-systems/pds-toolkit-react@1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
       '@floating-ui/react': 0.24.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -20693,19 +20559,6 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vue/apollo-composable@4.0.0-beta.12(@apollo/client@3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(graphql@16.8.1)(typescript@5.4.2)(vue@3.4.27(typescript@5.4.2))':
-    dependencies:
-      '@apollo/client': 3.10.4(@types/react@18.2.60)(graphql-ws@5.15.0(graphql@16.8.1))(graphql@16.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      graphql: 16.8.1
-      throttle-debounce: 5.0.0
-      ts-essentials: 9.4.1(typescript@5.4.2)
-      vue: 3.4.27(typescript@5.4.2)
-      vue-demi: 0.14.7(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(vue@3.4.27(typescript@5.4.2))
-    optionalDependencies:
-      '@vue/composition-api': 1.7.2(vue@3.4.27(typescript@5.4.2))
-    transitivePeerDependencies:
-      - typescript
-
   '@vue/babel-helper-vue-transform-on@1.2.1': {}
 
   '@vue/babel-plugin-jsx@1.2.1(@babel/core@7.24.0)':
@@ -20855,11 +20708,6 @@ snapshots:
   '@vue/composition-api@1.7.2(vue@3.3.4)':
     dependencies:
       vue: 3.3.4
-    optional: true
-
-  '@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2))':
-    dependencies:
-      vue: 3.4.27(typescript@5.4.2)
     optional: true
 
   '@vue/devtools-api@6.6.1': {}
@@ -24325,14 +24173,6 @@ snapshots:
 
   flatted@3.3.1: {}
 
-  floating-vue@5.2.2(@nuxt/kit@3.10.3(rollup@4.12.0))(vue@3.4.27(typescript@5.4.2)):
-    dependencies:
-      '@floating-ui/dom': 1.1.1
-      vue: 3.4.27(typescript@5.4.2)
-      vue-resize: 2.0.0-alpha.1(vue@3.4.27(typescript@5.4.2))
-    optionalDependencies:
-      '@nuxt/kit': 3.10.3(rollup@4.12.0)
-
   floating-vue@5.2.2(@nuxt/kit@3.10.3)(vue@3.3.4):
     dependencies:
       '@floating-ui/dom': 1.1.1
@@ -24437,14 +24277,6 @@ snapshots:
       '@emotion/is-prop-valid': 0.8.8
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-
-  framer-motion@10.18.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      tslib: 2.6.2
-    optionalDependencies:
-      '@emotion/is-prop-valid': 0.8.8
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
 
   fresh@0.5.2: {}
 
@@ -29581,12 +29413,6 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       tiny-warning: 1.0.3
 
-  react-laag@2.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      tiny-warning: 1.0.3
-
   react-loading-skeleton@3.4.0(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -29602,28 +29428,6 @@ snapshots:
       prop-types: 15.8.1
       property-information: 6.4.1
       react: 18.2.0
-      react-is: 18.2.0
-      remark-parse: 10.0.2
-      remark-rehype: 10.1.0
-      space-separated-tokens: 2.0.2
-      style-to-object: 0.4.4
-      unified: 10.1.2
-      unist-util-visit: 4.1.2
-      vfile: 5.3.7
-    transitivePeerDependencies:
-      - supports-color
-
-  react-markdown@8.0.7(@types/react@18.2.60)(react@18.3.1):
-    dependencies:
-      '@types/hast': 2.3.10
-      '@types/prop-types': 15.7.11
-      '@types/react': 18.2.60
-      '@types/unist': 2.0.10
-      comma-separated-tokens: 2.0.3
-      hast-util-whitespace: 2.0.1
-      prop-types: 15.8.1
-      property-information: 6.4.1
-      react: 18.3.1
       react-is: 18.2.0
       remark-parse: 10.0.2
       remark-rehype: 10.1.0
@@ -31184,10 +30988,6 @@ snapshots:
     optionalDependencies:
       typescript: 5.3.3
 
-  ts-essentials@9.4.1(typescript@5.4.2):
-    optionalDependencies:
-      typescript: 5.4.2
-
   ts-interface-checker@0.1.13: {}
 
   ts-invariant@0.10.3:
@@ -32150,21 +31950,11 @@ snapshots:
     optionalDependencies:
       '@vue/composition-api': 1.7.2(vue@3.3.4)
 
-  vue-demi@0.14.7(@vue/composition-api@1.7.2(vue@3.4.27(typescript@5.4.2)))(vue@3.4.27(typescript@5.4.2)):
-    dependencies:
-      vue: 3.4.27(typescript@5.4.2)
-    optionalDependencies:
-      '@vue/composition-api': 1.7.2(vue@3.4.27(typescript@5.4.2))
-
   vue-devtools-stub@0.1.0: {}
 
   vue-resize@2.0.0-alpha.1(vue@3.3.4):
     dependencies:
       vue: 3.3.4
-
-  vue-resize@2.0.0-alpha.1(vue@3.4.27(typescript@5.4.2)):
-    dependencies:
-      vue: 3.4.27(typescript@5.4.2)
 
   vue-router@4.3.0(vue@3.4.27(typescript@5.4.2)):
     dependencies:
