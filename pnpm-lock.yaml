@@ -13,7 +13,7 @@ overrides:
   '@pantheon-systems/pcc-react-sdk>prettier': ^3.0.0
   webpack-dev-middleware: ^7.2.1
 
-pnpmfileChecksum: yvwchj2zo3bjwuf3najohupabu
+pnpmfileChecksum: fxjsw7uvrtjknx3cbmatfizpni
 
 importers:
 
