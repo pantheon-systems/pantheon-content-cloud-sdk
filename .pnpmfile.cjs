@@ -2,10 +2,9 @@ const fs = require("fs");
 const path = require("path");
 
 /**
- * This pnpmfile.js script is used to modify the lockfile so starters are linked to internal packages even
- * though their dependency versions point to the public registry.
- * It checks if the project is in the monorepo, if so, any packages used in the project
- * available in the monorepo are linked to the local package.
+ * This pnpm install hook links all packages in the monorepo to their local versions.
+ * This allows us to use published version numbers in package.json files, while still
+ * depending on the local version of the package when inside the monorepo.
  */
 const monorepoRoot = findMonorepoRoot(process.cwd());
 const workspacePackageDirectories = [
@@ -33,6 +32,11 @@ workspacePackageDirectories.forEach((workspacePackageDir) => {
 
 module.exports = {
   hooks: {
+    // This runs after package.json is parsed but before versions are resolved
+    // We just set the dependencies to the local version if they are in the monorepo
+    // These changes to the package.json are not saved to disk, but the resolved versions
+    // are, which is fine for us because users cloning the starterkits will not use the
+    // monorepo's lockfile
     readPackage(pkg) {
       for (const dep in pkg.dependencies) {
         if (workspacePackages.has(dep)) {
