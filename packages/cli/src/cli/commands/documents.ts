@@ -61,4 +61,9 @@ export const DOCUMENT_EXAMPLES = [
     description: "Generate preview link for given document ID",
     command: "$0 document preview 1234567890example1234567890exam_ple123456789",
   },
+  {
+    description: "Generate preview link for given document URL",
+    command:
+      "$0 document preview https://docs.google.com/document/d/1234567890example1234567890exam_ple123456789",
+  },
 ];

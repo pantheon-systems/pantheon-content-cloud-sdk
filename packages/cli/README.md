@@ -56,6 +56,9 @@ $ pcc site webhooks history 123456789example1234
 # Generate preview link for given document ID
 $ pcc document preview 1234567890example1234567890exam_ple123456789
 
+# Generate preview link for given document URL
+$ pcc document preview https://docs.google.com/document/d/1234567890example1234567890exam_ple123456789
+
 # Get details of logged-in user
 $ pcc whoami
 
