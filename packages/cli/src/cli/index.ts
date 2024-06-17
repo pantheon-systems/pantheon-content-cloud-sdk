@@ -2,7 +2,7 @@
 import ora from "ora";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import checkUpdate from "../lib/checkUpdate";
+import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import {
   printConfigurationData,
@@ -59,6 +59,13 @@ yargs(hideBin(process.argv))
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
+  .version(false)
+  .command(
+    "version",
+    "Prints the version of this CLI",
+    () => void 0,
+    () => console.log(getPackageDetails().version),
+  )
   .command(
     "init <project_directory> [options]",
     "Sets up project with required files.",
