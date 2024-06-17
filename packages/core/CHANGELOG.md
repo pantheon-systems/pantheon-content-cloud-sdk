@@ -1,5 +1,83 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.6.0
+
+### Patch Changes
+
+- 61363af: Fixes issue where redirects to local preview/publish targets would be redirected to https://localhost
+- 3651708: Fix how protocols are being forwarded by API handler.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+
+## 3.6.0-beta.3
+
+## 3.6.0-beta.2
+
+## 3.6.0-beta.1
+
+### Patch Changes
+
+- Fix how protocols are being forwarded by API handler.
+
+## 3.6.0-beta.0
+
+## 3.5.3
+
+### Patch Changes
+
+- Fix type export for Article
+
+## 3.5.3-beta.0
+
+### Patch Changes
+
+- Fix type export for Article
+
+## 3.5.2
+
+### Patch Changes
+
+- fcfa574: Fix graphql error handling issue which caused sites to show error
+  pages instead of 404.
+- 289e05c: Add updateConfig function which will override the default PCC
+  connection settings that PCCConvenienceFunctions will use.
+
+## 3.5.2-beta.1
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+
+## 3.5.2-beta.0
+
+### Patch Changes
+
+- Fix graphql error handling issue which caused sites to show error pages
+  instead of 404.
+
+## 3.5.1
+
+## 3.5.0
+
+### Patch Changes
+
+- 0e74720: Add textarea to supported smartcomponent metadata fields
+- 4cab3e2: Fix how JSON was returned, headers were set, and redirect codes were
+  checked for PantheonAPI affecting Nextjs page router implementations.
+
+## 3.4.1
+
+### Patch Changes
+
+- 19f9ac8: Fix how preview JWT token is set from PantheonAPI
+
+## 3.4.0
+
+### Minor Changes
+
+- 37e1c39: PantheonAPI now supports app router.
+- 5124a8b: Added support for `metadataFilters` parameter sent to GraphQL API.
+
 ## 3.3.3
 
 ## 3.3.2

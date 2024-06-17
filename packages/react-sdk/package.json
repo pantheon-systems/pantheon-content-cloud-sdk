@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "3.3.3",
+  "version": "3.6.0",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -20,7 +20,7 @@
     "build": "tsup",
     "type-check": "tsc --noEmit",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit",
+    "lint:fix": "eslint . --fix && prettier --write .",
     "test": "jest --coverage --passWithNoTests",
     "test:ci": "pnpm run test --ci",
     "test:watch": "jest --watch"
@@ -38,6 +38,11 @@
       "types": "./dist/components/index.d.ts",
       "require": "./dist/components/index.js",
       "import": "./dist/components/index.mjs"
+    },
+    "./server": {
+      "types": "./dist/server/index.d.ts",
+      "require": "./dist/server/index.js",
+      "import": "./dist/server/index.mjs"
     }
   },
   "typesVersions": {
@@ -71,14 +76,15 @@
     "eslint": "8.46.0",
     "eslint-config-pcc-custom": "workspace:*",
     "jest": "29.5.0",
+    "next": "^14.2.3",
     "octokit": "^3.1.2",
     "ora": "^6.3.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-test-renderer": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-test-renderer": "18.3.1",
     "ts-jest": "29.1.0",
     "tsup": "6.7.0",
-    "typescript": "5.0.4",
+    "typescript": "5.4.5",
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
@@ -93,8 +99,8 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "^3.9.5",
-    "@pantheon-systems/pcc-sdk-core": "~3.3.3",
+    "@apollo/client": "^3.10.3",
+    "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "framer-motion": "^10.18.0",
     "goober": "^2.1.14",
     "graphql": "^16.8.1",

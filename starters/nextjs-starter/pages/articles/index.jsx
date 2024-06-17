@@ -1,14 +1,25 @@
-import { Paginator } from "@pantheon-systems/nextjs-kit";
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
+import {
+  PCCConvenienceFunctions,
+  usePagination,
+} from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
-import { PageGrid } from "../../components/grid";
+import { PostGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
+import Pagination from "../../components/pagination";
 
-export default function ArticlesListTemplate({ articles }) {
-  const RenderCurrentItems = ({ currentItems }) => {
-    return <PageGrid contentType="pages" data={currentItems} />;
-  };
+const PAGE_SIZE = 20;
+export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
+  const {
+    data: currentArticles,
+    onPageChange,
+    fetching,
+    currentPage,
+  } = usePagination({
+    cursor,
+    initialArticles: articles,
+    pageSize: PAGE_SIZE,
+  });
 
   return (
     <Layout>
@@ -19,11 +30,16 @@ export default function ArticlesListTemplate({ articles }) {
       <div className="max-w-screen-lg mx-auto">
         <section>
           <PageHeader title="Articles" />
-          <Paginator
-            data={articles}
-            itemsPerPage={12}
-            Component={RenderCurrentItems}
-          />
+          <PostGrid contentType="posts" data={currentArticles} />
+          <div className="flex flex-row mt-4 justify-center items-center">
+            <Pagination
+              totalCount={totalCount}
+              pageSize={PAGE_SIZE}
+              currentPage={currentPage}
+              onChange={onPageChange}
+              disabled={fetching}
+            />
+          </div>
         </section>
       </div>
     </Layout>
@@ -31,11 +47,19 @@ export default function ArticlesListTemplate({ articles }) {
 }
 
 export async function getServerSideProps() {
-  const articles = await PCCConvenienceFunctions.getAllArticles();
+  const {
+    data: articles,
+    totalCount,
+    cursor,
+  } = await PCCConvenienceFunctions.getPaginatedArticles({
+    pageSize: PAGE_SIZE,
+  });
 
   return {
     props: {
       articles,
+      totalCount,
+      cursor,
     },
   };
 }

@@ -1,6 +1,7 @@
 import {
   copyFileSync,
   existsSync,
+  openSync,
   readFileSync,
   rmdirSync,
   rmSync,
@@ -117,11 +118,17 @@ const init = async ({
       ...ESLINT_DEPENDENCIES,
     };
 
-    if (!existsSync(eslintFilePath)) {
-      writeFileSync(eslintFilePath, JSON.stringify(ESLINT_CONFIG, null, 2));
+    let esLintFd = null;
+    try {
+      esLintFd = openSync(eslintFilePath, "wx");
+    } catch {
+      // Ignore when eslint file already exists
     }
-  } else if (!eslint && existsSync(eslintFilePath)) {
-    rmSync(eslintFilePath);
+    if (esLintFd)
+      writeFileSync(esLintFd, JSON.stringify(ESLINT_CONFIG, null, 2));
+  } else if (!eslint) {
+    // Remove eslint file and don't raise exception if it doesn't exist
+    rmSync(eslintFilePath, { force: true });
   }
 
   writeFileSync(
@@ -136,8 +143,8 @@ const init = async ({
     template === "gatsby"
       ? ".env.development"
       : template === "vue"
-      ? ".env"
-      : ".env.local";
+        ? ".env"
+        : ".env.local";
 
   copyFileSync(
     path.join(absoluteProjectPath, ".env.example"),
@@ -174,7 +181,7 @@ const init = async ({
           await inquirer.prompt({
             type: "list",
             name: "siteId",
-            choices: (await AddOnApiHelper.listSites())
+            choices: (await AddOnApiHelper.listSites({}))
               .filter((x) => !x.__isPlayground)
               .map((x) => `${x.url} (${x.id})`),
           })

@@ -63,6 +63,7 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           disableAllStyles: !!onlyContent,
+          preserveImageStyles: true,
           useUnintrusiveTitleRendering: true,
         }}
       />

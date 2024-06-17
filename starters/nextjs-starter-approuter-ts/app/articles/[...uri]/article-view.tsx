@@ -1,10 +1,10 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";
 import { Tags } from "../../../components/tags";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
-import ClientsideArticleView from "./clientside-articleview";
+import { ClientsideArticleView } from "./clientside-articleview";
 
 export const ArticleView = async ({ params, searchParams }) => {
   const { article, grant } = await getServersideArticle(params, searchParams);

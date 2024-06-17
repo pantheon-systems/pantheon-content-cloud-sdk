@@ -4,6 +4,7 @@ import {
   defineComponent,
   h,
   PropType,
+  VNode,
 } from "vue-demi";
 import type { ComponentMap, ExperimentalFlags, SmartComponentMap } from "./";
 import { unified } from "unified";
@@ -150,7 +151,7 @@ const MarkdownRenderer = defineComponent({
         },
         jsx: jsx as Jsx,
         jsxs: jsx as Jsx,
-      }),
+      }) as VNode,
     );
   },
 });

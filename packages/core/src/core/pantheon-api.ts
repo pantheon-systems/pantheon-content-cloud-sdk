@@ -10,23 +10,11 @@ export interface ApiRequest {
    */
   query: Record<string, string | string[] | undefined>;
 
-  url: string;
-
+  /**
+   * Object containing cookies sent with the request.
+   */
   cookies?: Record<string, string | string[] | undefined>;
-
-  headers?: Record<string, string> | undefined;
-
-  connection?: {
-    encrypted?: boolean;
-  };
 }
-
-type HeaderValue = string | string[] | number | undefined;
-
-type Options = {
-  headers?: Headers;
-  status?: number;
-};
 
 export interface ApiResponse {
   /**
@@ -35,7 +23,7 @@ export interface ApiResponse {
   setHeader: (
     key: string,
     value: string | string[],
-  ) => Promise<unknown> | unknown;
+  ) => Promise<ApiResponse> | unknown;
   /**
    * Function to get a header set on the api response.
    */
@@ -43,23 +31,17 @@ export interface ApiResponse {
   /**
    * Function to return a redirect response.
    */
-  redirect: (url: string, options: Options) => Promise<unknown> | unknown;
+  redirect: (status: number, path: string) => Promise<ApiResponse> | unknown;
   /**
    * Function to return a JSON response.
    */
-  json: (
-    data: string | object | unknown,
-    options: Options,
-  ) => Promise<unknown> | unknown;
+  json: (data: string | object | unknown) => Promise<ApiResponse> | unknown;
 
-  headers: Record<string, string>;
-  params?: undefined;
+  // headers: Record<string, string>;
+  // params?: undefined;
 }
 
-export interface AppRouterParams {
-  params: Record<string, string>;
-  headers?: null;
-}
+type HeaderValue = string | string[] | number | undefined;
 
 export interface PantheonAPIOptions {
   /**
@@ -100,7 +82,7 @@ export interface PantheonAPIOptions {
   getPantheonClient?: (props?: Partial<PantheonClientConfig>) => PantheonClient;
 
   /**
-   * Map of type to React smart components.
+   * Map of smart component names to their schemas.
    */
   smartComponentMap?: SmartComponentMap;
 }
@@ -115,73 +97,37 @@ const defaultOptions = {
     `/articles/${article.id}`,
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   getSiteId: () => process.env.PCC_SITE_ID as string,
+  notFoundPath: "/404",
 } satisfies PantheonAPIOptions;
-
-function generateBaseURL(req: ApiRequest) {
-  try {
-    // Return req.url if it can be parsed as a URL by itself.
-    new URL(req.url);
-    return req.url;
-  } catch (e) {
-    return req.headers?.host
-      ? `${
-          req.headers["x-forwarded-proto"] || req.connection?.encrypted
-            ? "https"
-            : "http"
-        }://${req.headers.host}`
-      : "";
-  }
-}
 
 type AllowablePublishingLevels = "PRODUCTION" | "REALTIME" | undefined;
 
 export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
-  const options: PantheonAPIOptions = {
+  const options = {
     ...defaultOptions,
     ...givenOptions,
   };
 
-  const internalHandler = async (
-    req: ApiRequest,
-    { params, ...res }: ApiResponse | AppRouterParams,
-  ) => {
-    const headers = new Headers({
-      ...(res.headers || []),
-      // Allow the external Pantheon system to access these API routes.
-      "Access-Control-Allow-Origin": "*",
-    });
+  const handler = async (req: ApiRequest, res: ApiResponse) => {
+    // Allow the external Pantheon system to access these API routes.
+    await res.setHeader("Access-Control-Allow-Origin", "*");
 
-    const baseUrl = generateBaseURL(req);
-
-    const {
-      command: commandInput,
-      pccGrant,
-      ...restOfQuery
-    } = req.query || params;
-
+    const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
     const { publishingLevel } = restOfQuery;
 
     if (!commandInput) {
-      return new Response(null, {
-        status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            options?.notFoundPath || "/404",
-            baseUrl,
-          ).toString(),
-        }),
-      });
+      return await res.redirect(302, options?.notFoundPath || "/404");
     }
 
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
-      ? commandInput.split("/")
-      : [commandInput];
+        ? commandInput.split("/")
+        : [commandInput];
 
+    // Set or delete the PCC-GRANT cookie.
     if (pccGrant) {
-      setCookie(headers, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
+      await setCookie(res, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
     } else if (
       options?.getSiteId != null &&
       req.cookies?.["PCC-GRANT"] != null
@@ -199,167 +145,116 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           pccGrantFromCookie.siteId != null &&
           pccGrantFromCookie.siteId !== resolvedSiteId
         ) {
-          setCookie(
-            headers,
+          await setCookie(
+            res,
             `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
           );
         }
       } catch (e) {
-        // eslint-disable-next-line no-empty
+        // noop
       }
     }
 
-    if (command[0] === "status") {
-      const smartComponentStatus = {
-        smartComponents: Boolean(options?.smartComponentMap),
-        smartComponentPreview: Boolean(options?.componentPreviewPath),
-      };
+    switch (command[0]) {
+      case "status": {
+        const smartComponentStatus = {
+          smartComponents: Boolean(options?.smartComponentMap),
+          smartComponentPreview: Boolean(options?.componentPreviewPath),
+        };
 
-      return Response.json(smartComponentStatus, { headers });
-    }
-
-    if (command[0] === "document") {
-      const parsedArticleId = command[1];
-
-      const article: (Partial<Article> & Pick<Article, "id">) | null =
-        await getArticleBySlugOrId(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          options.getPantheonClient!({
-            pccGrant: pccGrant ? pccGrant.toString() : undefined,
-          }),
-          parsedArticleId,
-          // We will let downstream validate the publishingLevel param.
-          {
-            publishingLevel: publishingLevel
-              ?.toString()
-              .toUpperCase() as AllowablePublishingLevels,
-          },
-        );
-
-      if (article == null) {
-        return new Response(null, {
-          status: 302,
-          headers: new Headers({
-            ...headers,
-            location: new URL(
-              options?.notFoundPath || "/404",
-              baseUrl,
-            ).toString(),
-          }),
-        });
+        return await res.json(smartComponentStatus);
       }
 
-      const resolvedPath = options?.resolvePath
-        ? options.resolvePath(article)
-        : defaultOptions.resolvePath(article);
+      case "document": {
+        const parsedArticleId = command[1];
 
-      return new Response(null, {
-        status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            resolvedPath +
-              (publishingLevel && typeof publishingLevel === "string"
-                ? `?publishingLevel=${encodeURIComponent(
-                    publishingLevel,
-                  ).toUpperCase()}`
-                : ""),
-            baseUrl,
-          ).toString(),
-        }),
-      });
-    } else if (command[0] === "component_schema") {
-      const componentFilter = command[1];
+        const article: (Partial<Article> & Pick<Article, "id">) | null =
+          parsedArticleId == null
+            ? null
+            : await getArticleBySlugOrId(
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                options.getPantheonClient({
+                  pccGrant: pccGrant ? pccGrant.toString() : undefined,
+                }),
+                parsedArticleId,
+                // We will let downstream validate the publishingLevel param.
+                {
+                  publishingLevel: publishingLevel
+                    ?.toString()
+                    .toUpperCase() as AllowablePublishingLevels,
+                },
+              );
 
-      if (options?.smartComponentMap == null) {
-        return new Response(null, {
-          status: 302,
-          headers: new Headers({
-            ...headers,
-            location: new URL(
-              options?.notFoundPath || "/404",
-              baseUrl,
-            ).toString(),
-          }),
-        });
-      } else if (componentFilter == null) {
-        // Return entire schema if no filter was given.
-        return Response.json(options?.smartComponentMap, { headers });
-      } else {
-        return Response.json(
-          options?.smartComponentMap[componentFilter.toUpperCase()],
-          { headers },
+        if (article == null) {
+          return res.redirect(302, options.notFoundPath);
+        }
+
+        const resolvedPath = options.resolvePath(article);
+
+        return await res.redirect(
+          302,
+          resolvedPath +
+            (publishingLevel && typeof publishingLevel === "string"
+              ? `?publishingLevel=${encodeURIComponent(
+                  publishingLevel,
+                ).toUpperCase()}`
+              : ""),
         );
       }
-    } else if (command[0] === "component" && options?.componentPreviewPath) {
-      const previewPath = options.componentPreviewPath(command[1]);
-      const pathParts = previewPath.split("?");
-      const query = queryString.parse(pathParts[1] || "");
 
-      return new Response(null, {
-        status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
+      case "component_schema": {
+        const componentFilter = command[1];
+
+        if (options?.smartComponentMap == null) {
+          return await res.redirect(302, options.notFoundPath);
+        } else if (componentFilter == null) {
+          // Return entire schema if no filter was given.
+          return await res.json(options?.smartComponentMap);
+        } else {
+          return await res.json(
+            options?.smartComponentMap[componentFilter.toUpperCase()],
+          );
+        }
+      }
+
+      case "component": {
+        if (options?.componentPreviewPath && command[1] != null) {
+          const previewPath = options.componentPreviewPath(command[1]);
+          const pathParts = previewPath.split("?");
+          const query = queryString.parse(pathParts[1] || "");
+
+          return await res.redirect(
+            302,
             `${pathParts[0]}?${queryString.stringify({
               ...restOfQuery,
               ...query,
             })}`,
-            baseUrl,
-          ).toString(),
-        }),
-      });
-    } else {
-      return new Response(null, {
-        status: 302,
-        headers: new Headers({
-          ...headers,
-          location: new URL(
-            options?.notFoundPath || "/404",
-            baseUrl,
-          ).toString(),
-        }),
-      });
-    }
-  };
+          );
+        }
 
-  return async (req: unknown, res: ApiResponse | AppRouterParams) => {
-    const response = await internalHandler(req as ApiRequest, res);
+        return await res.redirect(302, options.notFoundPath);
+      }
 
-    // We can differentiate between app router vs pages api
-    // by checking for params
-    // reference: (https://github.com/nextauthjs/next-auth/blob/v4/packages/next-auth/src/next/index.ts)
-    if (res?.params) {
-      return response;
-    } else {
-      const location = response.headers.get("location");
-      if (response.status === 302 && location != null) {
-        res.redirect(location, {
-          status: response.status,
-          headers: response.headers,
-        });
-      } else {
-        res.json(response.body, {
-          headers: response.headers,
-          status: response.status,
-        });
+      default: {
+        return await res.redirect(302, options.notFoundPath);
       }
     }
   };
+
+  handler.options = options;
+
+  return handler;
 };
 
-function setCookie(headers: Headers, value: string) {
-  const previous = headers.get("Set-Cookie");
+export async function setCookie(res: ApiResponse, value: string) {
+  const previous = res.getHeader("Set-Cookie");
 
-  headers.set(
-    `Set-Cookie`,
-    [
-      ...(typeof previous === "string"
-        ? [previous]
-        : Array.isArray(previous)
+  await res.setHeader(`Set-Cookie`, [
+    ...(typeof previous === "string"
+      ? [previous]
+      : Array.isArray(previous)
         ? previous
         : []),
-      value,
-    ].join("; "),
-  );
+    value,
+  ]);
 }

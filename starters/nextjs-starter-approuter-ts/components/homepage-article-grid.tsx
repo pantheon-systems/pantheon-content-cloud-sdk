@@ -1,4 +1,4 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-sdk-core";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import { PostGrid } from "./grid";
 
 export default async function HomepageArticleGrid() {

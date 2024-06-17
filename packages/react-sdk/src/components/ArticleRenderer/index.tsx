@@ -57,9 +57,26 @@ interface Props {
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
   __experimentalFlags?: {
     disableAllStyles?: boolean;
+    preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
   };
+}
+
+function getOrCreatePortalTarget(
+  targetOverride: globalThis.Element | null | undefined,
+) {
+  const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
+  let portalTarget =
+    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
+
+  if (!portalTarget) {
+    portalTarget = document.createElement("div");
+    portalTarget.id = pccGeneratedPortalTargetKey;
+    document.body.prepend(portalTarget);
+  }
+
+  return portalTarget;
 }
 
 const ArticleRenderer = ({
@@ -76,11 +93,13 @@ const ArticleRenderer = ({
 }: Props) => {
   const [renderCSR, setRenderCSR] = React.useState(false);
 
-  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
-    console.warn(
-      "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
-    );
-  }
+  useEffect(() => {
+    if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+      console.warn(
+        "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
+      );
+    }
+  }, [__experimentalFlags]);
 
   useEffect(() => {
     setRenderCSR(true);
@@ -90,15 +109,22 @@ const ArticleRenderer = ({
     return null;
   }
 
+  const portalTarget =
+    renderCSR && typeof document !== "undefined"
+      ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
+      : null;
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {renderCSR && article != null && article.publishingLevel === "REALTIME"
+        {renderCSR &&
+        article != null &&
+        portalTarget != null &&
+        article.publishingLevel === "REALTIME"
           ? createPortal(
               <PreviewBar {...previewBarProps} article={article} />,
-              document.body,
+              portalTarget,
             )
           : null}
 
@@ -150,6 +176,7 @@ const ArticleRenderer = ({
       componentMap,
       smartComponentMap,
       disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+      preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
     });
@@ -165,6 +192,7 @@ const ArticleRenderer = ({
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+          preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
           disableDefaultErrorBoundaries:
             !!__experimentalFlags?.disableDefaultErrorBoundaries,
         }),
@@ -174,10 +202,13 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      {renderCSR && article != null && article.publishingLevel === "REALTIME"
+      {renderCSR &&
+      article != null &&
+      portalTarget != null &&
+      article.publishingLevel === "REALTIME"
         ? createPortal(
             <PreviewBar {...previewBarProps} article={article} />,
-            previewBarProps?.portalTarget || document.body,
+            portalTarget,
           )
         : null}
 

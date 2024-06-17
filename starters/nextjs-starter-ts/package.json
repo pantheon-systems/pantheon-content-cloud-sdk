@@ -23,17 +23,17 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@pantheon-systems/nextjs-kit": "1.7.2",
-    "@pantheon-systems/pcc-react-sdk": "~3.3.3",
+    "@pantheon-systems/pcc-react-sdk": "~3.6.0",
+    "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
     "@tailwindcss/typography": "^0.5.10",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "jotai": "^2.7.0",
-    "next": "13.5.1",
+    "next": "14.2.3",
     "next-seo": "^5.15.0",
     "query-string": "^8.2.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
     "@testing-library/react": "13.4.0",
@@ -43,10 +43,10 @@
     "autoprefixer": "^10.4.17",
     "c8": "^7.14.0",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^13.5.6",
+    "eslint-config-next": "^14.2.3",
     "jsdom": "^22.1.0",
     "postcss": "^8.4.35",
-    "prettier": "^3.2.5",
+    "prettier": "3.2.5",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.2",
     "vite": "^5.1.4",

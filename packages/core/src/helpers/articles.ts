@@ -206,30 +206,26 @@ export async function getArticle(
   id: number | string,
   args?: ArticleQueryArgs,
 ) {
-  try {
-    const {
-      contentType: requestedContentType,
-      metadataFilters,
-      ...rest
-    } = args || {};
-    const contentType = buildContentType(requestedContentType);
+  const {
+    contentType: requestedContentType,
+    metadataFilters,
+    ...rest
+  } = args || {};
+  const contentType = buildContentType(requestedContentType);
 
-    const article = await client.apolloClient.query({
-      query: GET_ARTICLE_QUERY,
-      variables: {
-        id: id.toString(),
-        contentType,
-        ...rest,
-        ...(metadataFilters && {
-          metadataFilters: JSON.stringify(metadataFilters),
-        }),
-      },
-    });
+  const article = await client.apolloClient.query({
+    query: GET_ARTICLE_QUERY,
+    variables: {
+      id: id.toString(),
+      contentType,
+      ...rest,
+      ...(metadataFilters && {
+        metadataFilters: JSON.stringify(metadataFilters),
+      }),
+    },
+  });
 
-    return article.data.article as Article;
-  } catch (e) {
-    handleApolloError(e);
-  }
+  return article.data.article as Article;
 }
 
 export async function getArticleBySlug(
@@ -237,30 +233,26 @@ export async function getArticleBySlug(
   slug: string,
   args?: ArticleQueryArgs,
 ) {
-  try {
-    const {
-      contentType: requestedContentType,
-      metadataFilters,
-      ...rest
-    } = args || {};
-    const contentType = buildContentType(requestedContentType);
+  const {
+    contentType: requestedContentType,
+    metadataFilters,
+    ...rest
+  } = args || {};
+  const contentType = buildContentType(requestedContentType);
 
-    const article = await client.apolloClient.query({
-      query: GET_ARTICLE_QUERY,
-      variables: {
-        slug,
-        contentType,
-        ...rest,
-        ...(metadataFilters && {
-          metadataFilters: JSON.stringify(metadataFilters),
-        }),
-      },
-    });
+  const article = await client.apolloClient.query({
+    query: GET_ARTICLE_QUERY,
+    variables: {
+      slug,
+      contentType,
+      ...rest,
+      ...(metadataFilters && {
+        metadataFilters: JSON.stringify(metadataFilters),
+      }),
+    },
+  });
 
-    return article.data.article as Article;
-  } catch (e) {
-    handleApolloError(e);
-  }
+  return article.data.article as Article;
 }
 
 export async function getArticleBySlugOrId(
@@ -278,24 +270,23 @@ export async function getArticleBySlugOrId(
     }
     // eslint-disable-next-line no-empty
   } catch (e) {
-    if (
-      !(e instanceof ApolloError) ||
-      (e instanceof ApolloError &&
-        e.graphQLErrors[0]?.message !==
-          "No document matching this slug was found.")
-    ) {
-      handleApolloError(e);
-    }
+    // Ignore any errors with retrieving by slug, because next we will try
+    // to retrieve by id.
   }
 
   try {
-    return await getArticle(client, slugOrId, args);
+    const article = await getArticle(client, slugOrId, args);
+    return article;
   } catch (e) {
     if (
       !(e instanceof ApolloError) ||
       (e instanceof ApolloError &&
+        e.message !== "No document matching this slug was found." &&
+        e.message !== "No document matching this ID was found." &&
         e.graphQLErrors[0]?.message !==
-          "No document matching this ID was found.")
+          "No document matching this ID was found." &&
+        e.graphQLErrors[0]?.message !==
+          "No document matching this slug was found.")
     ) {
       handleApolloError(e);
     }

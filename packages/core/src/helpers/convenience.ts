@@ -1,15 +1,44 @@
 import {
-  Article,
   GET_RECOMMENDED_ARTICLES_QUERY,
   PantheonClient,
   PantheonClientConfig,
 } from "..";
+import type { Article, PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
+  getPaginatedArticles as _getPaginatedArticles,
   getArticles,
   getArticlesWithSummary,
 } from "./articles";
 import { getAllTags } from "./metadata";
+
+const config = {
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  pccHost: (process.env.PCC_HOST || process.env.NEXT_PUBLIC_PCC_HOST) as string,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  siteId: (process.env.PCC_SITE_ID ||
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
+  token:
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    (process.env.PCC_TOKEN as string) ||
+    // eslint-disable-next-line turbo/no-undeclared-env-vars
+    (process.env.PCC_API_KEY as string),
+};
+
+export const updateConfig = ({
+  pccHost,
+  siteId,
+  token,
+}: Partial<{
+  pccHost: string;
+  siteId: string;
+  token: string;
+}>) => {
+  config.pccHost = pccHost ?? config.pccHost;
+  config.siteId = siteId ?? config.siteId;
+  config.token = token ?? config.token;
+};
 
 const buildPantheonClient = ({
   isClientSide,
@@ -21,16 +50,9 @@ const buildPantheonClient = ({
   props?: Partial<PantheonClientConfig>;
 }) => {
   return new PantheonClient({
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    pccHost: process.env.PCC_HOST as string,
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    siteId: process.env.PCC_SITE_ID as string,
-    apiKey: isClientSide
-      ? "not-needed-on-client"
-      : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_TOKEN as string) ||
-        // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_API_KEY as string),
+    pccHost: config.pccHost,
+    siteId: config.siteId,
+    apiKey: isClientSide ? "not-needed-on-client" : config.token,
     pccGrant,
     ...props,
   });
@@ -45,6 +67,24 @@ async function getAllArticles(
   options?: Parameters<typeof getArticles>[2],
 ) {
   return (await getAllArticlesWithSummary(args, options, false)).articles;
+}
+
+async function getPaginatedArticles(
+  args?: Parameters<typeof _getPaginatedArticles>[1],
+  searchParams?: Parameters<typeof _getPaginatedArticles>[2],
+): Promise<PaginatedArticle> {
+  return await _getPaginatedArticles(
+    buildPantheonClient({ isClientSide: false }),
+    {
+      publishingLevel: "PRODUCTION",
+      ...args,
+    },
+    {
+      publishStatus: "published",
+      ...searchParams,
+    },
+    false,
+  );
 }
 
 async function getAllArticlesWithSummary(
@@ -78,7 +118,7 @@ async function getArticleBySlugOrId(
     id,
     {
       publishingLevel,
-      contentType: "TREE_PANTHEON",
+      contentType: "TREE_PANTHEON_V2",
     },
   );
 
@@ -107,5 +147,6 @@ export const PCCConvenienceFunctions = {
   getAllArticlesWithSummary,
   getArticleBySlugOrId,
   getRecommendedArticles,
+  getPaginatedArticles,
   getTags,
 };

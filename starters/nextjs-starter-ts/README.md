@@ -24,15 +24,9 @@ pcc init ./my-new-site --template=nextjs
 
 2. Follow the prompts in your terminal to complete the setup.
 
-## Pantheon @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react-sdk
+## Pantheon's @pantheon-systems/pcc-react-sdk
 
-Pantheon's @pantheon-systems/nextjs-kit and @pantheon-systems/pcc-react-sdk are
-included as dependencies in this project. This allows developers to make use of
-utility functions to simplify the process of building and maintaining a
-Front-End site on Pantheon.
-
-Full documentation can be found at:
-https://github.com/pantheon-systems/decoupled-kit-js/tree/canary/web/docs/Packages
+Pantheon's @pantheon-systems/pcc-react-sdk is included as a dependency in this project.
 
 ## Tests
 
