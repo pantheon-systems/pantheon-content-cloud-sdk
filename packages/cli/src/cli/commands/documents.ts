@@ -10,7 +10,7 @@ type GeneratePreviewParam = {
 };
 
 const GDOCS_URL_REGEX =
-  /^(https|http):\/\/docs.google.com\/document\/d\/(?<id>[^/]+).*$/;
+  /^(https|http):\/\/(www.)?docs.google.com\/document\/d\/(?<id>[^/]+).*$/;
 
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
   async ({ documentId, baseUrl }: GeneratePreviewParam) => {
