@@ -568,7 +568,7 @@ yargs(hideBin(process.argv))
             yargs
               .strictCommands()
               .positional("<id>", {
-                describe: "ID of the document.",
+                describe: "ID or URL of the document.",
                 demandOption: true,
                 type: "string",
               })

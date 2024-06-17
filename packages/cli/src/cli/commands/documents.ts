@@ -9,9 +9,16 @@ type GeneratePreviewParam = {
   baseUrl: string;
 };
 
+const GDOCS_URL_REGEX =
+  /^(https|http):\/\/(www.)?docs.google.com\/document\/d\/(?<id>[^/]+).*$/;
+
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
   async ({ documentId, baseUrl }: GeneratePreviewParam) => {
     const logger = new Logger();
+
+    let cleanedId = documentId.trim();
+    const match = cleanedId.match(GDOCS_URL_REGEX);
+    if (match?.groups?.id) cleanedId = match.groups.id;
 
     if (baseUrl) {
       try {
@@ -38,7 +45,7 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     const generateLinkLogger = new SpinnerLogger("Generating preview link");
     generateLinkLogger.start();
 
-    const previewLink = await AddOnApiHelper.previewFile(documentId, {
+    const previewLink = await AddOnApiHelper.previewFile(cleanedId, {
       baseUrl,
     });
 
@@ -53,5 +60,10 @@ export const DOCUMENT_EXAMPLES = [
   {
     description: "Generate preview link for given document ID",
     command: "$0 document preview 1234567890example1234567890exam_ple123456789",
+  },
+  {
+    description: "Generate preview link for given document URL",
+    command:
+      "$0 document preview https://docs.google.com/document/d/1234567890example1234567890exam_ple123456789",
   },
 ];
