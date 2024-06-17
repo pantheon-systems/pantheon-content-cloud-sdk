@@ -1,5 +1,14 @@
 # @pantheon-systems/pcc-cli
 
+## 3.6.1
+
+### Patch Changes
+
+- 0c75736: CLI replaces "--version" command with "version"
+  - @pantheon-systems/pcc-sdk-core@3.6.1
+
+- QoL change for CLI's preview command to accept a document URL. Example: "$0 document preview https://docs.google.com/document/d/SOME_ID_HERE"
+
 ## 3.6.0
 
 ### Patch Changes
