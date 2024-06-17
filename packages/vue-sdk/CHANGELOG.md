@@ -1,5 +1,21 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.6.0
+
+### Minor Changes
+
+- 7df9251: Upgraded Vue dependencies. Removed support for vue@2
+
+### Patch Changes
+
+- 80ef092: Update preview bar copy and icons
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 14a968b: Make preview bar sticky at the top by default
+- Updated dependencies [61363af]
+- Updated dependencies [3651708]
+- Updated dependencies [61363af]
+  - @pantheon-systems/pcc-sdk-core@3.6.0
+
 ## 3.6.0-beta.3
 
 ### Patch Changes

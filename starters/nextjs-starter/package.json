@@ -23,7 +23,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "3.6.0-beta.3",
+    "@pantheon-systems/pcc-react-sdk": "~3.6.0",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
     "@tailwindcss/typography": "^0.5.10",
     "classnames": "^2.5.1",
