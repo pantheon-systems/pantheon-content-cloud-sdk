@@ -48,6 +48,16 @@ export enum SortOrder {
   DESC = "DESC",
 }
 
+export interface Site {
+  id: string;
+  name: string;
+  url: string;
+  domain: string;
+  tags: string[];
+  contentStructure: Record<string, unknown>;
+  metadataFields: Record<string, unknown>;
+}
+
 export interface TreePantheonContent {
   tag: string;
   attrs: {
