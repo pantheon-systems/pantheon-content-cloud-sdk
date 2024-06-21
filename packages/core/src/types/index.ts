@@ -54,7 +54,7 @@ export interface Site {
   url: string;
   domain: string;
   tags: string[];
-  contentStructure: Record<string, unknown>;
+  contentStructure: Record<string, unknown> | null;
   metadataFields: Record<string, unknown>;
 }
 
