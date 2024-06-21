@@ -5,7 +5,8 @@
 ### Patch Changes
 
 - 3651708: Fix how protocols are being forwarded by API handler.
-- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
 - Updated dependencies [61363af]
 - Updated dependencies [3651708]
 - Updated dependencies [61363af]

@@ -6,7 +6,8 @@
 
 - 80ef092: Update preview bar copy and icons
 - 4ed0c05: Don't export pantheon-context in server export.
-- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
 - 4ed0c05: Export pantheon-content from root entry point.
 - 14a968b: Make preview bar sticky at the top by default
 - Updated dependencies [61363af]
