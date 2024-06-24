@@ -1,5 +1,12 @@
 # @pantheon-systems/vue-pcc-starter
 
+## 1.1.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [edf7252]
+  - @pantheon-systems/pcc-vue-sdk@3.6.1-beta.0
+
 ## 1.1.0
 
 ### Minor Changes
