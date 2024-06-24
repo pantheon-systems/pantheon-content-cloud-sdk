@@ -430,15 +430,17 @@ class AddOnApiHelper {
       url,
       webhookUrl,
       webhookSecret,
+      preferredEvents,
     }: {
       url?: string;
       webhookUrl?: string;
       webhookSecret?: string;
+      preferredEvents?: string[];
     },
   ): Promise<void> {
     const idToken = await this.getIdToken();
 
-    const configuredWebhook = webhookUrl || webhookSecret;
+    const configuredWebhook = webhookUrl || webhookSecret || preferredEvents;
 
     await axios.patch(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
@@ -448,6 +450,7 @@ class AddOnApiHelper {
           webhookConfig: {
             ...(webhookUrl && { webhookUrl: webhookUrl }),
             ...(webhookSecret && { webhookSecret: webhookSecret }),
+            ...(preferredEvents && { preferredEvents }),
           },
         }),
       },
@@ -485,6 +488,21 @@ class AddOnApiHelper {
     );
 
     return resp.data as WebhookDeliveryLog[];
+  }
+
+  static async fetchAvailableWebhookEvents(siteId: string) {
+    const idToken = await this.getIdToken();
+
+    const resp = await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/availableWebhookEvents`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+
+    return resp.data as string[];
   }
 }
 

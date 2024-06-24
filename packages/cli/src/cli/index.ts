@@ -34,6 +34,7 @@ import {
   SITE_EXAMPLES,
   updateSiteConfig,
 } from "./commands/sites/site";
+import configurePreferredWebhookEvents from "./commands/sites/webhooks";
 import {
   createToken,
   listTokens,
@@ -552,6 +553,19 @@ yargs(hideBin(process.argv))
                     id: args.id as string,
                     limit: args.limit as number,
                   }),
+              )
+              .command(
+                "preferred-events <id>",
+                "Set preferred webhook events for a given site. Your webhook will only receive notifications for events that you specify.",
+                (yargs) => {
+                  yargs.strictCommands().positional("<id>", {
+                    describe: "ID of the site for which you want to configure.",
+                    demandOption: true,
+                    type: "string",
+                  });
+                },
+                async (args) =>
+                  configurePreferredWebhookEvents(String(args.id)),
               );
           },
         )
