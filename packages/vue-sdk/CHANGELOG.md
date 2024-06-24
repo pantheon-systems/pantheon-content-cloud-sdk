@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.6.1
+
+### Patch Changes
+
+- edf7252: GraphQL queries and query hooks are now exposed for custom usage
+- Updated dependencies [183ad17]
+  - @pantheon-systems/pcc-sdk-core@3.6.1
+
 ## 3.6.0
 
 ### Minor Changes

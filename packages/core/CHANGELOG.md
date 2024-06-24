@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.6.1
+
+### Patch Changes
+
+- 183ad17: Added queries and helper methods for fetching site information
+
 ## 3.6.0
 
 ### Patch Changes
