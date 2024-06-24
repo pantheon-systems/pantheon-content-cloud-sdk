@@ -32,8 +32,8 @@ export function errorHandler<T>(
       if (cleanup) cleanup(arg);
 
       if (e instanceof UserNotLoggedIn) {
-        console.log(chalk.red("Error: User is not logged in."));
-        console.log(chalk.yellow('Please run "pcc login" to login.'));
+        console.log(chalk.red("\nError: User is not logged in."));
+        console.log(chalk.yellow('\nPlease run "pcc login" to login.'));
       } else {
         if (
           axios.isAxiosError(e) &&
@@ -41,7 +41,7 @@ export function errorHandler<T>(
           e.response?.data?.message
         ) {
           // Operational error
-          console.log(chalk.red(`Error: ${e.response.data.message}`));
+          console.log(chalk.red(`\nError: ${e.response.data.message}`));
         } else {
           // Unhandled error
           console.log(
@@ -49,7 +49,7 @@ export function errorHandler<T>(
           );
           console.log(
             chalk.red(
-              "Error: Something went wrong. Please contact Pantheon support team.",
+              "\nError: Something went wrong. Please contact Pantheon support team.",
             ),
           );
         }
