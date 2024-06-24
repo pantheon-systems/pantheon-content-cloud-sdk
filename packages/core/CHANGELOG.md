@@ -4,9 +4,11 @@
 
 ### Patch Changes
 
-- 61363af: Fixes issue where redirects to local preview/publish targets would be redirected to https://localhost
+- 61363af: Fixes issue where redirects to local preview/publish targets would be
+  redirected to https://localhost
 - 3651708: Fix how protocols are being forwarded by API handler.
-- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
 
 ## 3.6.0-beta.3
 
