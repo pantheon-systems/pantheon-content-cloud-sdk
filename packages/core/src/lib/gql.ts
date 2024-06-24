@@ -204,3 +204,17 @@ export const GET_RECOMMENDED_ARTICLES_QUERY = gql`
     }
   }
 `;
+
+export const GET_SITE_QUERY = gql`
+  query GetSite($id: String!) {
+    site(id: $id) {
+      id
+      name
+      url
+      domain
+      contentStructure
+      tags
+      metadataFields
+    }
+  }
+`;
