@@ -17,6 +17,7 @@ import {
   ArticleV2Response,
   ArticleWithoutContent,
   ContentType,
+  PageInfo,
   PaginatedArticle,
   PublishingLevel,
   SortOrder,
@@ -38,7 +39,7 @@ export interface ArticlePaginatedQueryArgs {
   sortOrder?: keyof typeof SortOrder;
   metadataFilters?: { [key: string]: unknown };
   pageSize?: number;
-  cursor?: number;
+  cursor?: string;
 }
 
 type FilterableFields = "body" | "tag" | "title";
@@ -89,7 +90,7 @@ export function convertSearchParamsToGQL(
 
 function fetchEmptyPage(
   total: number,
-  cursor: number,
+  cursor: string,
 ): () => Promise<PaginatedArticle> {
   return async () => ({
     data: [],
@@ -125,23 +126,26 @@ export async function getPaginatedArticles(
         contentType,
       },
     });
-    const articles = response.data.articles as ArticleWithoutContent[];
-    const { total, cursor } = response.data.extensions?.pagination || {};
+    const responseData = response.data.articlesv3;
+    const { articles, pageInfo } = responseData as {
+      articles: ArticleWithoutContent[];
+      pageInfo: PageInfo;
+    };
 
     return {
       data: articles,
-      totalCount: total,
-      cursor,
+      totalCount: pageInfo.totalCount,
+      cursor: pageInfo.nextCursor,
       fetchNextPage:
-        cursor && articles.length > 0
+        pageInfo.nextCursor && articles.length > 0
           ? () =>
               getPaginatedArticles(
                 client,
-                { ...args, cursor },
+                { ...args, cursor: pageInfo.nextCursor },
                 searchParams,
                 includeContent,
               )
-          : fetchEmptyPage(total, cursor),
+          : fetchEmptyPage(pageInfo.totalCount, pageInfo.nextCursor),
     };
   } catch (e) {
     handleApolloError(e);
@@ -191,7 +195,7 @@ export async function getArticlesWithSummary(
       },
     });
 
-    return response.data.articlesv2;
+    return response.data.articlesv3;
   } catch (e) {
     handleApolloError(e);
   }
