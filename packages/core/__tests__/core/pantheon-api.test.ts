@@ -110,7 +110,7 @@ describe("Request Handling", () => {
     );
 
     expect(mockResponse.setHeader).toHaveBeenCalledWith("Set-Cookie", [
-      "PCC-GRANT=test-grant; Path=/; SameSite=Lax",
+      "PCC-GRANT=test-grant; Path=/; SameSite=None;Secure;",
     ]);
   });
 

@@ -127,7 +127,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
 
     // Set or delete the PCC-GRANT cookie.
     if (pccGrant) {
-      await setCookie(res, `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`);
+      await setCookie(res, `PCC-GRANT=${pccGrant}; Path=/; SameSite=None;Secure;`);
     } else if (
       options?.getSiteId != null &&
       req.cookies?.["PCC-GRANT"] != null
