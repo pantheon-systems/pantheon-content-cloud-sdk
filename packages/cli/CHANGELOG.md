@@ -5,7 +5,8 @@
 ### Patch Changes
 
 - 0c75736: CLI replaces "--version" command with "version"
-- 1fd7c4d: Added support for setting preferred webhook events. Webhook notifications will only be sent on events matching preferred events
+- 1fd7c4d: Added support for setting preferred webhook events. Webhook
+  notifications will only be sent on events matching preferred events
 - Updated dependencies [183ad17]
   - @pantheon-systems/pcc-sdk-core@3.6.1
 
