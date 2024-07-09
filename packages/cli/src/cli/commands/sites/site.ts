@@ -25,8 +25,8 @@ export const deleteSite = errorHandler<{
 }>(async ({ id, transferToSiteId, force }) => {
   const spinner = ora("Deleting site...").start();
   try {
-    const siteId = await AddOnApiHelper.deleteSite(id, transferToSiteId, force);
-    spinner.succeed(`Successfully deleted the site with id "${siteId}"`);
+    await AddOnApiHelper.deleteSite(id, transferToSiteId, force);
+    spinner.succeed(`Successfully deleted the site with id "${id}"`);
   } catch (e) {
     spinner.fail();
     throw e;
