@@ -2,6 +2,7 @@ import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
+import queryString from "query-string";
 import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import { getApiConfig } from "./apiConfig";
@@ -281,6 +282,30 @@ class AddOnApiHelper {
     const resp = await axios.post(
       (await getApiConfig()).SITE_ENDPOINT,
       { name: "", url, emailList: "" },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+    return resp.data.id as string;
+  }
+
+  static async deleteSite(
+    id: string,
+    transferToSiteId: string | null | undefined,
+    force: boolean,
+  ): Promise<string> {
+    const idToken = await this.getIdToken();
+
+    const resp = await axios.delete(
+      queryString.stringifyUrl({
+        url: `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
+        query: {
+          transferToSiteId,
+          force,
+        },
+      }),
       {
         headers: {
           Authorization: `Bearer ${idToken}`,

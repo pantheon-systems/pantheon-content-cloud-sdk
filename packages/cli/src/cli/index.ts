@@ -30,6 +30,7 @@ import {
 import {
   configurableSiteProperties,
   createSite,
+  deleteSite,
   listSites,
   SITE_EXAMPLES,
   updateSiteConfig,
@@ -378,6 +379,35 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await createSite(args.url as string),
+        )
+        .command(
+          "create [options]",
+          "Delete site.",
+          (yargs) => {
+            yargs.option("id", {
+              describe: "Site id",
+              type: "string",
+              demandOption: true,
+            });
+            yargs.option("transferToSiteId", {
+              describe:
+                "Id of site to transfer connected documents to. Required if force is not used.",
+              type: "string",
+              demandOption: false,
+            });
+            yargs.option("force", {
+              describe:
+                "If true, delete even if documents are connected to it.",
+              type: "string",
+              demandOption: false,
+            });
+          },
+          async (args) =>
+            await deleteSite({
+              id: args.id as string,
+              transferToSiteId: args.transferToSiteId as string,
+              force: args.force === "true",
+            }),
         )
         .command(
           "componentschema [command] [options]",
