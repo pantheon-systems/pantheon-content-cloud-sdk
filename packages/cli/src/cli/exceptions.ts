@@ -38,10 +38,12 @@ export function errorHandler<T>(
         if (
           axios.isAxiosError(e) &&
           (e.response?.status ?? 500) < 500 && // Treat internal server errors as unhandled errors
-          e.response?.data?.message
+          e.response?.data
         ) {
           // Operational error
-          console.log(chalk.red(`\nError: ${e.response.data.message}`));
+          console.log(
+            chalk.red(`\nError: ${e.response.data.message || e.response.data}`),
+          );
         } else {
           // Unhandled error
           console.log(

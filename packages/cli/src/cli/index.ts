@@ -381,7 +381,7 @@ yargs(hideBin(process.argv))
           async (args) => await createSite(args.url as string),
         )
         .command(
-          "create [options]",
+          "delete [options]",
           "Delete site.",
           (yargs) => {
             yargs.option("id", {
