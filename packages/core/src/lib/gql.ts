@@ -65,11 +65,21 @@ export function generateListArticlesGQL({
 }) {
   return gql`
   query ListArticles(
+    $pageSize: Int
+    $sortBy: ArticleSortField
+    $sortOrder: SortOrder
+    $cursor: Float
+    $metadataFilters: String
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
     articlesv2(
+      pageSize: $pageSize
+      sortBy: $sortBy
+      sortOrder: $sortOrder
+      cursor: $cursor
+      metadataFilters: $metadataFilters
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
