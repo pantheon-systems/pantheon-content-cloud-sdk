@@ -41,6 +41,15 @@ const MarkdownRenderer = ({
             const { reactComponent: Component } = smartComponentMap[type];
             const decodedAttrs = isomorphicBase64Decode(attrs);
 
+            if (!Component) {
+              return (
+                <div>
+                  Error: Cannot render {type} because it was provided without a
+                  reactComponent property.
+                </div>
+              );
+            }
+
             return (
               <div>
                 {disableDefaultErrorBoundaries ? (
