@@ -45,6 +45,15 @@ const PantheonTreeRenderer = ({
     const component = smartComponentMap?.[componentType];
 
     if (component) {
+      if (!component.reactComponent) {
+        return (
+          <div>
+            Error: Cannot render {componentType} because it was provided without
+            a reactComponent property.
+          </div>
+        );
+      }
+
       return disableDefaultErrorBoundaries
         ? React.createElement(
             component.reactComponent,
