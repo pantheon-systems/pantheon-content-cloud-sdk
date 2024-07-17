@@ -6,7 +6,7 @@ import {
 import { useEffect, useState } from "react";
 
 interface Props {
-  cursor?: number;
+  cursor?: string;
   pageSize: number;
   initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
 }

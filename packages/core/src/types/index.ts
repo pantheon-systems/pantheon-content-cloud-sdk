@@ -15,15 +15,19 @@ export interface Article {
   snippet?: string | null;
 }
 
-export type ArticleV2Response = {
+export type ArticleSummaryResponse = {
   articles: Omit<Article, "content">[];
   summary: string;
+};
+export type PageInfo = {
+  totalCount: number;
+  nextCursor: string;
 };
 export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];
   totalCount: number;
-  cursor: number;
+  cursor: string;
   fetchNextPage: () => Promise<PaginatedArticle>;
 };
 
