@@ -14,7 +14,7 @@ import {
 import {
   Article,
   ArticleSortField,
-  ArticleV2Response,
+  ArticleSummaryResponse,
   ArticleWithoutContent,
   ContentType,
   PageInfo,
@@ -169,7 +169,7 @@ export async function getArticlesWithSummary(
   searchParams?: ArticleSearchArgs,
   withContent?: boolean,
   withSummary?: boolean,
-): Promise<ArticleV2Response> {
+): Promise<ArticleSummaryResponse> {
   try {
     const {
       contentType: requestedContentType,

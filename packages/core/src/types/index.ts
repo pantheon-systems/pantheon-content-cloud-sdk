@@ -15,7 +15,7 @@ export interface Article {
   snippet?: string | null;
 }
 
-export type ArticleV2Response = {
+export type ArticleSummaryResponse = {
   articles: Omit<Article, "content">[];
   summary: string;
 };
