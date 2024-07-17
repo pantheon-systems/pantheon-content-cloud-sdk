@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.7.0
+
+### Patch Changes
+
+- e7d5252: Gracefully handle implementation edge case where a smart component
+  map was provided to the ArticlerRenderer but without defining the react
+  components that should be used.
+- Updated dependencies [11e0509]
+- Updated dependencies [87fdf27]
+  - @pantheon-systems/pcc-sdk-core@3.7.0
+
 ## 3.6.1
 
 ### Patch Changes

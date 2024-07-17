@@ -1,5 +1,19 @@
 # @pantheon-systems/pcc-cli
 
+## 3.7.0
+
+### Minor Changes
+
+- fc9b0dd: New command: site delete.
+
+### Patch Changes
+
+- a388ad0: Don't notify the user that an update is available, if it is only a
+  pre-release.
+- Updated dependencies [11e0509]
+- Updated dependencies [87fdf27]
+  - @pantheon-systems/pcc-sdk-core@3.7.0
+
 ## 3.6.1
 
 ### Patch Changes
