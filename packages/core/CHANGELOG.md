@@ -4,9 +4,10 @@
 
 ### Patch Changes
 
-- 11e0509: Fixed issue where some GQL parameters would not be passed to the API in
-  `getAllArticles`
-- 87fdf27: PCC-GRANT (preview token) cookie now set with most relaxed security so that preview-pages can be shown in iframes.
+- 11e0509: Fixed issue where some GQL parameters would not be passed to the API
+  in `getAllArticles`
+- 87fdf27: PCC-GRANT (preview token) cookie now set with most relaxed security
+  so that preview-pages can be shown in iframes.
 
 ## 3.6.1
 
