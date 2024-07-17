@@ -1,11 +1,22 @@
 # @pantheon-systems/pcc-cli
 
+## 3.6.1
+
+### Patch Changes
+
+- 0c75736: CLI replaces "--version" command with "version"
+- 1fd7c4d: Added support for setting preferred webhook events. Webhook
+  notifications will only be sent on events matching preferred events
+- Updated dependencies [183ad17]
+  - @pantheon-systems/pcc-sdk-core@3.6.1
+
 ## 3.6.0
 
 ### Patch Changes
 
 - 3651708: Fix how protocols are being forwarded by API handler.
-- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
 - Updated dependencies [61363af]
 - Updated dependencies [3651708]
 - Updated dependencies [61363af]

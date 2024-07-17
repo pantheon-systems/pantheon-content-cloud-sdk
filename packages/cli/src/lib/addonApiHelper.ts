@@ -2,6 +2,7 @@ import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
+import queryString from "query-string";
 import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import { getApiConfig } from "./apiConfig";
@@ -290,6 +291,30 @@ class AddOnApiHelper {
     return resp.data.id as string;
   }
 
+  static async deleteSite(
+    id: string,
+    transferToSiteId: string | null | undefined,
+    force: boolean,
+  ): Promise<string> {
+    const idToken = await this.getIdToken();
+
+    const resp = await axios.delete(
+      queryString.stringifyUrl({
+        url: `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
+        query: {
+          transferToSiteId,
+          force,
+        },
+      }),
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+    return resp.data.id as string;
+  }
+
   static async listSites({
     withConnectionStatus,
   }: {
@@ -430,15 +455,17 @@ class AddOnApiHelper {
       url,
       webhookUrl,
       webhookSecret,
+      preferredEvents,
     }: {
       url?: string;
       webhookUrl?: string;
       webhookSecret?: string;
+      preferredEvents?: string[];
     },
   ): Promise<void> {
     const idToken = await this.getIdToken();
 
-    const configuredWebhook = webhookUrl || webhookSecret;
+    const configuredWebhook = webhookUrl || webhookSecret || preferredEvents;
 
     await axios.patch(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
@@ -448,6 +475,7 @@ class AddOnApiHelper {
           webhookConfig: {
             ...(webhookUrl && { webhookUrl: webhookUrl }),
             ...(webhookSecret && { webhookSecret: webhookSecret }),
+            ...(preferredEvents && { preferredEvents }),
           },
         }),
       },
@@ -485,6 +513,21 @@ class AddOnApiHelper {
     );
 
     return resp.data as WebhookDeliveryLog[];
+  }
+
+  static async fetchAvailableWebhookEvents(siteId: string) {
+    const idToken = await this.getIdToken();
+
+    const resp = await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/availableWebhookEvents`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+
+    return resp.data as string[];
   }
 }
 

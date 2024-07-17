@@ -2,7 +2,7 @@
 import ora from "ora";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import checkUpdate from "../lib/checkUpdate";
+import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import {
   printConfigurationData,
@@ -30,10 +30,12 @@ import {
 import {
   configurableSiteProperties,
   createSite,
+  deleteSite,
   listSites,
   SITE_EXAMPLES,
   updateSiteConfig,
 } from "./commands/sites/site";
+import configurePreferredWebhookEvents from "./commands/sites/webhooks";
 import {
   createToken,
   listTokens,
@@ -59,6 +61,13 @@ yargs(hideBin(process.argv))
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
+  .version(false)
+  .command(
+    "version",
+    "Prints the version of this CLI",
+    () => void 0,
+    () => console.log(getPackageDetails().version),
+  )
   .command(
     "init <project_directory> [options]",
     "Sets up project with required files.",
@@ -372,6 +381,35 @@ yargs(hideBin(process.argv))
           async (args) => await createSite(args.url as string),
         )
         .command(
+          "delete [options]",
+          "Delete site.",
+          (yargs) => {
+            yargs.option("id", {
+              describe: "Site id",
+              type: "string",
+              demandOption: true,
+            });
+            yargs.option("transferToSiteId", {
+              describe:
+                "Id of site to transfer connected documents to. Required if force is not used.",
+              type: "string",
+              demandOption: false,
+            });
+            yargs.option("force", {
+              describe:
+                "If true, delete even if documents are connected to it.",
+              type: "string",
+              demandOption: false,
+            });
+          },
+          async (args) =>
+            await deleteSite({
+              id: args.id as string,
+              transferToSiteId: args.transferToSiteId as string,
+              force: args.force === "true",
+            }),
+        )
+        .command(
           "componentschema [command] [options]",
           "Make changes & inspect the component schema for a site",
           (yargs) => {
@@ -545,6 +583,19 @@ yargs(hideBin(process.argv))
                     id: args.id as string,
                     limit: args.limit as number,
                   }),
+              )
+              .command(
+                "preferred-events <id>",
+                "Set preferred webhook events for a given site. Your webhook will only receive notifications for events that you specify.",
+                (yargs) => {
+                  yargs.strictCommands().positional("<id>", {
+                    describe: "ID of the site for which you want to configure.",
+                    demandOption: true,
+                    type: "string",
+                  });
+                },
+                async (args) =>
+                  configurePreferredWebhookEvents(String(args.id)),
               );
           },
         )

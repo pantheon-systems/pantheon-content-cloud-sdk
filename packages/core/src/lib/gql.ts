@@ -65,11 +65,21 @@ export function generateListArticlesGQL({
 }) {
   return gql`
   query ListArticles(
+    $pageSize: Int
+    $sortBy: ArticleSortField
+    $sortOrder: SortOrder
+    $cursor: Float
+    $metadataFilters: String
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
   ) {
     articlesv3(
+      pageSize: $pageSize
+      sortBy: $sortBy
+      sortOrder: $sortOrder
+      cursor: $cursor
+      metadataFilters: $metadataFilters
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
@@ -213,6 +223,20 @@ export const GET_RECOMMENDED_ARTICLES_QUERY = gql`
       contentType
       updatedAt
       previewActiveUntil
+    }
+  }
+`;
+
+export const GET_SITE_QUERY = gql`
+  query GetSite($id: String!) {
+    site(id: $id) {
+      id
+      name
+      url
+      domain
+      contentStructure
+      tags
+      metadataFields
     }
   }
 `;

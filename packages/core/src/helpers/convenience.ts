@@ -11,6 +11,7 @@ import {
   getArticlesWithSummary,
 } from "./articles";
 import { getAllTags } from "./metadata";
+import { getSite as _getSite } from "./site";
 
 const config = {
   // eslint-disable-next-line turbo/no-undeclared-env-vars
@@ -141,6 +142,13 @@ async function getRecommendedArticles(id: number | string) {
   return article.data.recommendedArticles as Article[];
 }
 
+async function getSite() {
+  const client = buildPantheonClient({ isClientSide: false });
+  const site = await _getSite(client, client.siteId);
+
+  return site;
+}
+
 export const PCCConvenienceFunctions = {
   buildPantheonClient,
   getAllArticles,
@@ -149,4 +157,5 @@ export const PCCConvenienceFunctions = {
   getRecommendedArticles,
   getPaginatedArticles,
   getTags,
+  getSite,
 };

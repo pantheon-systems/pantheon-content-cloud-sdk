@@ -18,6 +18,21 @@ export const createSite = errorHandler<string>(async (url: string) => {
   }
 });
 
+export const deleteSite = errorHandler<{
+  id: string;
+  transferToSiteId: string | null | undefined;
+  force: boolean;
+}>(async ({ id, transferToSiteId, force }) => {
+  const spinner = ora("Deleting site...").start();
+  try {
+    await AddOnApiHelper.deleteSite(id, transferToSiteId, force);
+    spinner.succeed(`Successfully deleted the site with id "${id}"`);
+  } catch (e) {
+    spinner.fail();
+    throw e;
+  }
+});
+
 export const listSites = errorHandler<{
   withStatus?: boolean;
 }>(async ({ withStatus }) => {

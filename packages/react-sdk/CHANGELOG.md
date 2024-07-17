@@ -1,12 +1,21 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.6.1
+
+### Patch Changes
+
+- edf7252: GraphQL queries and query hooks are now exposed for custom usage
+- Updated dependencies [183ad17]
+  - @pantheon-systems/pcc-sdk-core@3.6.1
+
 ## 3.6.0
 
 ### Patch Changes
 
 - 80ef092: Update preview bar copy and icons
 - 4ed0c05: Don't export pantheon-context in server export.
-- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked in separate files instead.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
 - 4ed0c05: Export pantheon-content from root entry point.
 - 14a968b: Make preview bar sticky at the top by default
 - Updated dependencies [61363af]
