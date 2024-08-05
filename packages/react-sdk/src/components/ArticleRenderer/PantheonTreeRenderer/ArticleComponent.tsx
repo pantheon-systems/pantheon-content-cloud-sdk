@@ -36,8 +36,8 @@ const ArticleComponent = ({
 
   const textContent = typeof x === "string" ? x : x.data;
   const styles = getStyleObjectFromString(x?.style || []);
-  const isSuperscript = Boolean(styles["vertical-align"] === "super");
-  const isSubscript = Boolean(styles["vertical-align"] === "sub");
+  const isSuperscript = Boolean(styles?.["vertical-align"] === "super");
+  const isSubscript = Boolean(styles?.["vertical-align"] === "sub");
 
   if (x.tag === "li") {
     return React.createElement(
@@ -53,7 +53,7 @@ const ArticleComponent = ({
   const tableElements = ["tr", "td"];
 
   if (tableElements.includes(x.tag)) {
-    const { colspan, rowspan, ...attrs } = x.attrs;
+    const { colspan, rowspan, ...attrs } = x.attrs || {};
 
     const colSpan = colspan ? { colSpan: Number(colspan) } : {};
     const rowSpan = rowspan ? { rowSpan: Number(rowspan) } : {};

@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import { getArticleBySlugOrId } from "../helpers";
+import { getArticleBySlugOrId, PCCConvenienceFunctions } from "../helpers";
 import { parseJwt } from "../lib/jwt";
 import { Article, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
@@ -8,27 +8,40 @@ export interface ApiRequest {
   /**
    * The query string parameters.
    */
-  query: Record<string, string | string[]> & {
-    command: string | string[];
-  };
+  query: Record<string, string | string[] | undefined>;
 
-  cookies?: Record<string, string | string[]>;
+  /**
+   * Object containing cookies sent with the request.
+   */
+  cookies?: Record<string, string | string[] | undefined>;
 }
 
 export interface ApiResponse {
   /**
    * Function to set a header on the api response.
    */
-  setHeader: (key: string, value: string) => Promise<unknown> | unknown;
+  setHeader: (
+    key: string,
+    value: string | string[],
+  ) => Promise<ApiResponse> | unknown;
+  /**
+   * Function to get a header set on the api response.
+   */
+  getHeader: (key: string) => HeaderValue | Promise<HeaderValue>;
   /**
    * Function to return a redirect response.
    */
-  redirect: (code: number, url: string) => Promise<unknown> | unknown;
+  redirect: (status: number, path: string) => Promise<ApiResponse> | unknown;
   /**
    * Function to return a JSON response.
    */
-  json: (data: string | object | unknown) => Promise<unknown> | unknown;
+  json: (data: string | object | unknown) => Promise<ApiResponse> | unknown;
+
+  // headers: Record<string, string>;
+  // params?: undefined;
 }
+
+type HeaderValue = string | string[] | number | undefined;
 
 export interface PantheonAPIOptions {
   /**
@@ -69,33 +82,54 @@ export interface PantheonAPIOptions {
   getPantheonClient?: (props?: Partial<PantheonClientConfig>) => PantheonClient;
 
   /**
-   * Map of type to React smart components.
+   * Map of smart component names to their schemas.
    */
   smartComponentMap?: SmartComponentMap;
 }
 
-function defaultResolvePath(article: Pick<Article, "id">) {
-  return `/articles/${article.id}`;
-}
+const defaultOptions = {
+  getPantheonClient: (props?: Partial<PantheonClientConfig>) =>
+    PCCConvenienceFunctions.buildPantheonClient({
+      isClientSide: false,
+      ...props,
+    }),
+  resolvePath: (article: Partial<Article> & Pick<Article, "id">) =>
+    `/articles/${article.id}`,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  getSiteId: () => process.env.PCC_SITE_ID as string,
+  notFoundPath: "/404",
+} satisfies PantheonAPIOptions;
 
-export const PantheonAPI =
-  (options?: PantheonAPIOptions) =>
-  async (req: ApiRequest, res: ApiResponse) => {
+type AllowablePublishingLevels = "PRODUCTION" | "REALTIME" | undefined;
+
+export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
+  const options = {
+    ...defaultOptions,
+    ...givenOptions,
+  };
+
+  const handler = async (req: ApiRequest, res: ApiResponse) => {
     // Allow the external Pantheon system to access these API routes.
     await res.setHeader("Access-Control-Allow-Origin", "*");
 
     const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
     const { publishingLevel } = restOfQuery;
+
+    if (!commandInput) {
+      return await res.redirect(302, options?.notFoundPath || "/404");
+    }
+
     const command = Array.isArray(commandInput)
       ? commandInput
       : typeof commandInput === "string"
-      ? commandInput.split("/")
-      : [commandInput];
+        ? commandInput.split("/")
+        : [commandInput];
 
+    // Set or delete the PCC-GRANT cookie.
     if (pccGrant) {
-      await res.setHeader(
-        "Set-Cookie",
-        `PCC-GRANT=${pccGrant}; Path=/; SameSite=Lax`,
+      await setCookie(
+        res,
+        `PCC-GRANT=${pccGrant}; Path=/; SameSite=None;Secure;`,
       );
     } else if (
       options?.getSiteId != null &&
@@ -114,88 +148,116 @@ export const PantheonAPI =
           pccGrantFromCookie.siteId != null &&
           pccGrantFromCookie.siteId !== resolvedSiteId
         ) {
-          await res.setHeader(
-            "Set-Cookie",
+          await setCookie(
+            res,
             `PCC-GRANT=deleted; Path=/; SameSite=Lax; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
           );
         }
       } catch (e) {
-        // eslint-disable-next-line no-empty
+        // noop
       }
     }
 
-    if (command[0] === "status") {
-      const status = {
-        smartComponents: Boolean(options?.smartComponentMap),
-        smartComponentPreview: Boolean(options?.componentPreviewPath),
-      };
+    switch (command[0]) {
+      case "status": {
+        const smartComponentStatus = {
+          smartComponents: Boolean(options?.smartComponentMap),
+          smartComponentPreview: Boolean(options?.componentPreviewPath),
+        };
 
-      return await res.json(status);
-    }
-
-    if (command[0] === "document") {
-      const parsedArticleId = command[1];
-
-      const article: (Partial<Article> & Pick<Article, "id">) | null =
-        options?.getPantheonClient
-          ? await getArticleBySlugOrId(
-              options?.getPantheonClient({
-                pccGrant: pccGrant ? pccGrant.toString() : undefined,
-              }),
-              parsedArticleId,
-              // We will let downstream validate the publishingLevel param.
-              {
-                publishingLevel: publishingLevel
-                  ?.toString()
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  .toUpperCase() as any,
-              },
-            )
-          : null;
-
-      if (article == null) {
-        return res.redirect(302, options?.notFoundPath || "/404");
+        return await res.json(smartComponentStatus);
       }
 
-      const resolvedPath = options?.resolvePath
-        ? options.resolvePath(article)
-        : defaultResolvePath(article);
+      case "document": {
+        const parsedArticleId = command[1];
 
-      return await res.redirect(
-        302,
-        resolvedPath +
-          (publishingLevel && typeof publishingLevel === "string"
-            ? `?publishingLevel=${encodeURIComponent(
-                publishingLevel,
-              ).toUpperCase()}`
-            : ""),
-      );
-    } else if (command[0] === "component_schema") {
-      const componentFilter = command[1];
+        const article: (Partial<Article> & Pick<Article, "id">) | null =
+          parsedArticleId == null
+            ? null
+            : await getArticleBySlugOrId(
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                options.getPantheonClient({
+                  pccGrant: pccGrant ? pccGrant.toString() : undefined,
+                }),
+                parsedArticleId,
+                // We will let downstream validate the publishingLevel param.
+                {
+                  publishingLevel: publishingLevel
+                    ?.toString()
+                    .toUpperCase() as AllowablePublishingLevels,
+                },
+              );
 
-      if (options?.smartComponentMap == null) {
-        return await res.redirect(302, options?.notFoundPath || "/404");
-      } else if (componentFilter == null) {
-        // Return entire schema if no filter was given.
-        return await res.json(options?.smartComponentMap);
-      } else {
-        return await res.json(
-          options?.smartComponentMap[componentFilter.toUpperCase()],
+        if (article == null) {
+          return res.redirect(302, options.notFoundPath);
+        }
+
+        const resolvedPath = options.resolvePath(article);
+
+        return await res.redirect(
+          302,
+          resolvedPath +
+            (publishingLevel && typeof publishingLevel === "string"
+              ? `?publishingLevel=${encodeURIComponent(
+                  publishingLevel,
+                ).toUpperCase()}`
+              : ""),
         );
       }
-    } else if (command[0] === "component" && options?.componentPreviewPath) {
-      const previewPath = options.componentPreviewPath(command[1]);
-      const pathParts = previewPath.split("?");
-      const query = queryString.parse(pathParts[1] || "");
 
-      return await res.redirect(
-        302,
-        `${pathParts[0]}?${queryString.stringify({
-          ...restOfQuery,
-          ...query,
-        })}`,
-      );
-    } else {
-      return await res.redirect(302, options?.notFoundPath || "/404");
+      case "component_schema": {
+        const componentFilter = command[1];
+
+        if (options?.smartComponentMap == null) {
+          return await res.redirect(302, options.notFoundPath);
+        } else if (componentFilter == null) {
+          // Return entire schema if no filter was given.
+          return await res.json(options?.smartComponentMap);
+        } else {
+          return await res.json(
+            options?.smartComponentMap[componentFilter.toUpperCase()],
+          );
+        }
+      }
+
+      case "component": {
+        if (options?.componentPreviewPath && command[1] != null) {
+          const previewPath = options.componentPreviewPath(command[1]);
+          const pathParts = previewPath.split("?");
+          const query = queryString.parse(pathParts[1] || "");
+
+          return await res.redirect(
+            302,
+            `${pathParts[0]}?${queryString.stringify({
+              ...restOfQuery,
+              ...query,
+            })}`,
+          );
+        }
+
+        return await res.redirect(302, options.notFoundPath);
+      }
+
+      default: {
+        return await res.redirect(302, options.notFoundPath);
+      }
     }
   };
+
+  handler.options = options;
+
+  return handler;
+};
+
+export async function setCookie(res: ApiResponse, value: string) {
+  const previous = res.getHeader("Set-Cookie");
+
+  await res.setHeader(`Set-Cookie`, [
+    ...(typeof previous === "string"
+      ? [previous]
+      : Array.isArray(previous)
+        ? previous
+        : []),
+    value,
+  ]);
+}

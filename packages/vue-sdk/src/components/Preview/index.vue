@@ -3,10 +3,10 @@ import type { PreviewBarProps } from "../Renderer";
 import queryString from "query-string";
 import { PropType, ref, watchEffect } from "vue-demi";
 
-import DocsLogo from "./assets/DocsLogo.vue";
-import IconUp from "./assets/IconUp.vue";
+import IconDocs from "./assets/IconDocs.vue";
+import IconExport from "./assets/IconExport.vue";
+import IconShare from "./assets/IconShare.vue";
 import LivePreviewIndicator from "./LivePreviewIndicator.vue";
-import HamburgerIcon from "./assets/HamburgerIcon.vue";
 import HoverButton from "../Common/HoverButton.vue";
 import { getCookie } from "../../utils/cookies";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
@@ -17,10 +17,6 @@ const props = defineProps({
     type: Object as PropType<PreviewBarProps["previewBarOverride"]>,
     required: false,
   },
-  collapsedPreviewBarProps: {
-    type: Object as PropType<PreviewBarProps["collapsedPreviewBarProps"]>,
-    required: false,
-  },
 });
 
 const isLive = ref(false);
@@ -28,6 +24,13 @@ const isHidden = ref(false);
 const hasCopied = ref(false);
 const copyResetTimeoutId = ref<NodeJS.Timeout | null>(null);
 const pccGrant = getCookie("PCC-GRANT");
+
+const maxDocTitleLength = 51;
+const truncatedDocTitle =
+  props?.article?.title != null &&
+  props?.article?.title?.length >= maxDocTitleLength
+    ? `${props?.article?.title.substring(0, maxDocTitleLength)}...`
+    : props?.article?.title || "";
 
 function copyURL() {
   if (copyResetTimeoutId.value) {
@@ -86,9 +89,15 @@ watchEffect(() => {
 
   <div v-else :class="['wrapper', isHidden && 'hidden']">
     <div v-if="!isHidden" class="container">
-      <a class="title-link">
-        <DocsLogo />
-        <span>{{ article?.title }}</span>
+      <a
+        class="title-link"
+        :href="`https://docs.google.com/document/d/${article.id}/edit`"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <IconDocs />
+        <span>{{ truncatedDocTitle }}</span>
+        <IconExport />
       </a>
       <div class="lpi-wrapper">
         <LivePreviewIndicator :isLive="isLive" />
@@ -96,33 +105,12 @@ watchEffect(() => {
         <div class="end-block">
           <div class="copy-url-container">
             <button @click="copyURL">
-              {{ hasCopied ? "Copied URL" : "Copy URL" }}
+              <IconShare :flip="true" />
+              {{ hasCopied ? "Copied URL" : "Share preview URL" }}
             </button>
           </div>
         </div>
       </div>
-    </div>
-
-    <div
-      v-bind="isHidden ? collapsedPreviewBarProps : null"
-      :class="['controller-container', isHidden && 'active']"
-    >
-      <div v-if="isHidden">
-        <LivePreviewIndicator :isLive="isLive" />
-        <HoverButton @click="isHidden = !isHidden">
-          <template v-slot="{ isHovered }">
-            <template v-if="!isHidden || isHovered">
-              <IconUp :flip="true" />
-            </template>
-            <template v-else>
-              <HamburgerIcon />
-            </template>
-          </template>
-        </HoverButton>
-      </div>
-      <button v-else @click="isHidden = !isHidden">
-        <IconUp />
-      </button>
     </div>
   </div>
 </template>
@@ -134,11 +122,15 @@ watchEffect(() => {
   position: absolute;
   top: 0;
   width: 100%;
-  border-bottom: 1px solid #cfcfd3;
   transition: all 0.2s ease-in-out;
   display: flex;
   justify-content: flex-end;
   background: white;
+
+  box-shadow:
+    0px 0px 0px 1px rgba(0, 0, 0, 0.08),
+    0px 8px 8px -8px rgba(0, 0, 0, 0.04);
+  padding: 15px 0;
 }
 
 .wrapper.hidden {
@@ -147,7 +139,7 @@ watchEffect(() => {
 }
 
 .container {
-  padding-left: 20px;
+  padding: 32px;
   padding-block: 8px;
   display: grid;
   gap: 1em;
@@ -191,14 +183,17 @@ watchEffect(() => {
 
 .copy-url-container {
   > button {
-    background-color: #ffdc28;
-    height: 32px;
-    font-size: 0.875rem;
-
+    height: 100%;
+    padding: 8px 13px;
+    background-color: #3017a1;
+    color: white;
     border-radius: 3px;
-    font-weight: 700;
-    padding: 0px 10px;
-    color: rgb(35, 35, 45);
+    font-size: 0.875rem;
+    font-weight: 600;
+    column-gap: 5px;
+
+    display: flex;
+    align-items: center;
 
     &:hover {
       opacity: 0.8;

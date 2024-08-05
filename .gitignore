@@ -2,6 +2,7 @@ node_modules/
 yarn.lock
 yarn-error.log
 package-lock.json
+tsup.config.*.mjs
 
 .env.local
 .env.development

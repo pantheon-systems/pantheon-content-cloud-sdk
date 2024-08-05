@@ -24,6 +24,8 @@ jobs:
             shell: cmd
     env:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      PCC_SITE_ID: ${{ secrets.PCC_SITE_ID }}
+      PCC_TOKEN: ${{ secrets.PCC_TOKEN }}
       IS_CICD: true
 
     steps:
@@ -47,4 +49,4 @@ jobs:
         run: pnpm --filter '*cli*' build:test
 
       - name: Test
-        run: pnpm --filter '*cli*' test
+        run: pnpm test

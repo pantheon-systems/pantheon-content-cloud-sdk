@@ -1,10 +1,25 @@
+import {
+  PCCConvenienceFunctions,
+  usePagination,
+} from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
 import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
-import { getAllArticles } from "../lib/Articles";
+import Pagination from "../components/pagination";
 
-export default function Home({ articles }) {
+const PAGE_SIZE = 20;
+export default function Home({ articles, totalCount, cursor }) {
+  const {
+    data: currentArticles,
+    onPageChange,
+    fetching,
+    currentPage,
+  } = usePagination({
+    cursor,
+    initialArticles: articles,
+    pageSize: PAGE_SIZE,
+  });
   const HomepageHeader = () => (
     <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
       <h1 className="h-full text-4xl prose text-center">
@@ -41,18 +56,35 @@ export default function Home({ articles }) {
       />
       <HomepageHeader />
       <section>
-        <PostGrid contentType="posts" data={articles} />
+        <PostGrid contentType="posts" data={currentArticles} />
+        <div className="flex flex-row mt-4 justify-center items-center">
+          <Pagination
+            totalCount={totalCount}
+            pageSize={PAGE_SIZE}
+            currentPage={currentPage}
+            onChange={onPageChange}
+            disabled={fetching}
+          />
+        </div>
       </section>
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const articles = await getAllArticles();
+  const {
+    data: articles,
+    totalCount,
+    cursor,
+  } = await PCCConvenienceFunctions.getPaginatedArticles({
+    pageSize: PAGE_SIZE,
+  });
 
   return {
     props: {
       articles,
+      totalCount,
+      cursor,
     },
   };
 }

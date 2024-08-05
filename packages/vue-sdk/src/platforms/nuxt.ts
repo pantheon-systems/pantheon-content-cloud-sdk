@@ -9,6 +9,7 @@ import {
   getRouterParams,
   sendRedirect,
   setResponseHeader,
+  getResponseHeader,
 } from "h3";
 
 export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
@@ -27,6 +28,9 @@ export function NuxtPantheonAPI(options?: PantheonAPIOptions) {
         },
         json: (data) => {
           return data;
+        },
+        getHeader: (key) => {
+          return getResponseHeader(event, key);
         },
       },
     );

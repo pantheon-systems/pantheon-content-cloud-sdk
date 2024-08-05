@@ -1,7 +1,7 @@
 export const getStyleObjectFromString = (str?: string[] | null) => {
-  const style = {} as Record<string, string>;
+  if (!str || str.length < 1) return null;
 
-  if (!str || str.length < 1) return style;
+  const style = {} as Record<string, string>;
 
   str.forEach((el) => {
     const [property, value] = el.split(":");

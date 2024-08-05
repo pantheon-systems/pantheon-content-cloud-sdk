@@ -16,7 +16,9 @@ be found
 [here](https://decoupledkit.pantheon.io/docs/frontend-starters/using-the-cli) on
 our docs site.
 
-For a quick start, follow the instructions below:
+## Deploy your own
+
+For a quick start on your local machine, follow the instructions below:
 
 1. In your terminal, run the following command:
 
@@ -52,14 +54,21 @@ npm init pantheon-decoupled-kit -- gatsby-pcc
 
 ## Serverside Rendering
 
-This starter uses Gatsby's [createPages API](https://www.gatsbyjs.com/docs/creating-and-modifying-pages/) to pre-render the pages on the server. See `gatsby-node.mjs` file for the implementation details.
+This starter uses Gatsby's
+[createPages API](https://www.gatsbyjs.com/docs/creating-and-modifying-pages/)
+to pre-render the pages on the server. See `gatsby-node.mjs` file for the
+implementation details.
 
-You could also use the provided client-side hooks in @pantheon-systems/pcc-react-sdk (`useArticles` and `useArticle`) to render the pages on the client.
+You could also use the provided client-side hooks in
+@pantheon-systems/pcc-react-sdk (`useArticles` and `useArticle`) to render the
+pages on the client.
 
 ## Pantheon @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react-sdk
 
-Pantheon's @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react-sdk are included as dependencies in this project. This allows developers to make use of utility functions to simplify the
-process of building and maintaining a Front-End site on Pantheon.
+Pantheon's @pantheon-systems/gatsby-kit and @pantheon-systems/pcc-react-sdk are
+included as dependencies in this project. This allows developers to make use of
+utility functions to simplify the process of building and maintaining a
+Front-End site on Pantheon.
 
 Full documentation can be found at:
 https://github.com/pantheon-systems/decoupled-kit-js/tree/canary/web/docs/Packages

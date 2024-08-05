@@ -1,23 +1,28 @@
 {
   "name": "pantheon-content-cloud-sdks",
+  "version": "0.0.1",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@8.6.11",
+  "packageManager": "pnpm@9.1.1",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
     "dev": "turbo run dev --concurrency=20",
     "build": "turbo run build --filter=./packages/*",
     "lint": "turbo run lint --filter=./{packages,starters}/*",
+    "lint:fix": "turbo run lint:fix --filter=./{packages}/*",
+    "test": "turbo run test --filter=./{packages,starters}/*",
     "build:starters": "turbo run build --filter=./starters/*",
     "lint:starters": "turbo run lint --filter=./starters/*",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
-    "publish:packages": "pnpm build && pnpm ci:publish"
+    "publish:packages": "pnpm build && pnpm ci:publish",
+    "prepare": "husky"
   },
   "dependencies": {
     "@changesets/cli": "^2.27.1",
-    "eslint": "^8.56.0",
-    "turbo": "^1.11.3"
+    "eslint": "^8.57.0",
+    "turbo": "^1.12.4"
   },
   "pnpm": {
     "overrides": {
@@ -26,10 +31,13 @@
       "@pantheon-systems/pcc-react-sdk>trim": ">=0.0.3",
       "@pantheon-systems/pcc-react-sdk>trim-newlines": ">=3.0.1",
       "@pantheon-systems/pcc-react-sdk>yaml": ">=2.2.2",
-      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0"
+      "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0",
+      "webpack-dev-middleware": "^7.2.1",
+      "@pantheon-systems/pcc-vue-sdk>ufo": "1.5.3"
     }
   },
   "devDependencies": {
-    "eslint-config-pcc-custom": "workspace:*"
+    "eslint-config-pcc-custom": "workspace:*",
+    "husky": "^9.0.11"
   }
 }

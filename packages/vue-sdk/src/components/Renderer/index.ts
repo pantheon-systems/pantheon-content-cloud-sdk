@@ -17,6 +17,8 @@ import MarkdownRenderer from "./MarkdownRenderer";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
+export { getArticleTitle } from "./getArticleTitle";
+
 export type SmartComponentMap = {
   // Can't know prop types of component, so we use any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,8 +33,36 @@ export type ComponentMap = {
 export type PreviewBarProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   previewBarOverride?: InstanceType<DefineComponent<any, any, any>>;
-  collapsedPreviewBarProps?: Record<string, unknown>;
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  portalTarget?:
+    | InstanceType<DefineComponent<any, any, any>>
+    | null
+    | undefined;
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
 };
+
+export type ExperimentalFlags = {
+  disableAllStyles?: boolean;
+  preserveImageStyles?: boolean;
+  disableDefaultErrorBoundaries: boolean;
+  useUnintrusiveTitleRendering?: boolean;
+};
+
+const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
+function getOrCreatePortalTarget(
+  targetOverride: globalThis.Element | null | undefined,
+) {
+  let portalTarget =
+    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
+
+  if (!portalTarget) {
+    portalTarget = document.createElement("div");
+    portalTarget.id = pccGeneratedPortalTargetKey;
+    document.body.prepend(portalTarget);
+  }
+
+  return portalTarget;
+}
 
 const ArticleRenderer = defineComponent({
   name: "ArticleRenderer",
@@ -61,6 +91,10 @@ const ArticleRenderer = defineComponent({
       type: Object as PropType<PreviewBarProps>,
       required: false,
     },
+    __experimentalFlags: {
+      type: Object as PropType<ExperimentalFlags>,
+      required: false,
+    },
   },
   slots: Object as SlotsType<{
     titleRenderer: VNode | undefined;
@@ -69,12 +103,17 @@ const ArticleRenderer = defineComponent({
     const props = this.$props;
     const slots = this.$slots;
 
-    if (!props.article.content) return null;
+    const portalTarget =
+      typeof document !== "undefined"
+        ? getOrCreatePortalTarget(this.previewBarProps?.portalTarget)
+        : this.previewBarProps?.portalTarget;
+
+    if (!props.article?.content) return null;
 
     if (props.article.contentType === "TEXT_MARKDOWN") {
       return h("div", {}, [
         props.article.publishingLevel === "REALTIME"
-          ? h(Teleport, { to: "body" }, [
+          ? h(Teleport, { to: portalTarget }, [
               h(PreviewBar, { article: props.article }),
             ])
           : null,
@@ -85,6 +124,7 @@ const ArticleRenderer = defineComponent({
           options: {
             html: true,
           },
+          __experimentalFlags: props.__experimentalFlags,
         }),
       ]);
     }
@@ -101,35 +141,44 @@ const ArticleRenderer = defineComponent({
       ? content
       : content.children || [];
 
-    const indexOfFirstHeader = parsedContent.findIndex((x) =>
-      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-    );
+    let titleElement = null;
 
-    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-    const resolvedTitleIndex =
-      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+    if (props.__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+      const indexOfFirstHeader = parsedContent.findIndex((x) =>
+        ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+      );
 
-    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+      const indexOfFirstParagraph = parsedContent.findIndex(
+        (x) => x.tag === "p",
+      );
+      const resolvedTitleIndex =
+        indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
 
-    const titleElement =
-      // @ts-expect-error Dynamic component props
-      h(renderer, {
-        element: titleContent,
-        smartComponentMap: props.smartComponentMap,
-        componentMap: props.componentMap,
-      });
+      const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
+
+      titleElement =
+        // @ts-expect-error Dynamic component props
+        h(renderer, {
+          element: titleContent,
+          smartComponentMap: props.smartComponentMap,
+          componentMap: props.componentMap,
+          __experimentalFlags: props.__experimentalFlags,
+        });
+    }
 
     return h("div", {}, [
-      props.article.publishingLevel === "REALTIME"
-        ? h(Teleport, { to: "body" }, [
+      props.article?.publishingLevel === "REALTIME" && portalTarget != null
+        ? h(Teleport, { to: `#${portalTarget?.id}` }, [
             h(PreviewBar, { ...this.previewBarProps, article: props.article }),
           ])
         : null,
-      h(
-        "div",
-        { class: ["title", props.headerClass] },
-        slots.titleRenderer?.(titleElement) ?? titleElement,
-      ),
+      titleElement != null
+        ? h(
+            "div",
+            { class: ["title", props.headerClass] },
+            slots.titleRenderer?.(titleElement) ?? titleElement,
+          )
+        : null,
       h("div", { class: props.bodyClass }, [
         parsedContent.map((element) => {
           // @ts-expect-error Dynamic component props
@@ -137,6 +186,7 @@ const ArticleRenderer = defineComponent({
             element,
             smartComponentMap: props.smartComponentMap,
             componentMap: props.componentMap,
+            __experimentalFlags: props.__experimentalFlags,
           });
         }),
       ]),

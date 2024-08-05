@@ -1,15 +1,21 @@
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
-import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
+import {
+  ArticleRenderer,
+  useArticleTitle,
+} from "@pantheon-systems/pcc-react-sdk/components";
+import { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
+
+type ArticleViewProps = {
+  article: Article;
+  onlyContent?: boolean;
+};
 
 export default function ArticleView({
   article,
   onlyContent,
-}: {
-  article: Article;
-  onlyContent?: boolean;
-}) {
+}: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
@@ -21,31 +27,46 @@ export default function ArticleView({
     },
   );
 
-  const hydratedArticle = data?.article ?? article;
+  const hydratedArticle = useMemo(
+    () => data?.article ?? article,
+    [data, article],
+  );
 
   return (
-    <ArticleRenderer
-      article={hydratedArticle}
-      renderTitle={(titleElement) => (
-        <div>
-          <div className="text-3xl font-bold md:text-4xl">{titleElement}</div>
+    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+  );
+}
 
-          {article.updatedAt ? (
-            <p className="py-2">
-              Last Updated:{" "}
-              {new Date(article.updatedAt).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          ) : null}
+export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+  const articleTitle = useArticleTitle(article);
 
-          <hr className="mt-6 mb-8" />
-        </div>
-      )}
-      smartComponentMap={clientSmartComponentMap}
-      __experimentalFlags={{ disableAllStyles: !!onlyContent }}
-    />
+  return (
+    <>
+      <div>
+        <div className="text-3xl font-bold md:text-4xl">{articleTitle}</div>
+
+        {article.updatedAt ? (
+          <p className="py-2">
+            Last Updated:{" "}
+            {new Date(article.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        ) : null}
+
+        <hr className="mt-6 mb-8" />
+      </div>
+      <ArticleRenderer
+        article={article}
+        smartComponentMap={clientSmartComponentMap}
+        __experimentalFlags={{
+          disableAllStyles: !!onlyContent,
+          preserveImageStyles: true,
+          useUnintrusiveTitleRendering: true,
+        }}
+      />
+    </>
   );
 }

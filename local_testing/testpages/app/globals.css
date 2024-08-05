@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Revert custom font's bullet rendering styles */
+li::before {
+  font-family: auto;
+}

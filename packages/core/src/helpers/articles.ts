@@ -5,27 +5,31 @@
 import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
 import {
+  generateListArticlesGQL,
   GET_ARTICLE_QUERY,
-  LIST_ARTICLES_QUERY,
-  LIST_ARTICLES_QUERY_W_CONTENT,
+  GET_RECOMMENDED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT,
 } from "../lib/gql";
 import {
   Article,
   ArticleSortField,
+  ArticleSummaryResponse,
   ArticleWithoutContent,
   ContentType,
+  PageInfo,
   PaginatedArticle,
   PublishingLevel,
   SortOrder,
 } from "../types";
+import { handleApolloError } from "./errors";
 
 export interface ArticleQueryArgs {
   contentType?: keyof typeof ContentType;
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  metadataFilters?: { [key: string]: unknown };
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -33,8 +37,9 @@ export interface ArticlePaginatedQueryArgs {
   publishingLevel?: keyof typeof PublishingLevel;
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
+  metadataFilters?: { [key: string]: unknown };
   pageSize?: number;
-  cursor?: number;
+  cursor?: string;
 }
 
 type FilterableFields = "body" | "tag" | "title";
@@ -85,7 +90,7 @@ export function convertSearchParamsToGQL(
 
 function fetchEmptyPage(
   total: number,
-  cursor: number,
+  cursor: string,
 ): () => Promise<PaginatedArticle> {
   return async () => ({
     data: [],
@@ -100,58 +105,100 @@ export async function getPaginatedArticles(
   searchParams?: ArticleSearchArgs,
   includeContent?: boolean,
 ): Promise<PaginatedArticle> {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  try {
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  const response = await client.apolloClient.query({
-    query: includeContent
-      ? LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT
-      : LIST_PAGINATED_ARTICLES_QUERY,
-    variables: {
-      ...rest,
-      ...convertSearchParamsToGQL(searchParams),
-      contentType,
-    },
-  });
-  const articles = response.data.articles as ArticleWithoutContent[];
-  const { total, cursor } = response.data.extensions?.pagination || {};
+    const response = await client.apolloClient.query({
+      query: includeContent
+        ? LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT
+        : LIST_PAGINATED_ARTICLES_QUERY,
+      variables: {
+        ...rest,
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
+        ...convertSearchParamsToGQL(searchParams),
+        contentType,
+      },
+    });
+    const responseData = response.data.articlesv3;
+    const { articles, pageInfo } = responseData as {
+      articles: ArticleWithoutContent[];
+      pageInfo: PageInfo;
+    };
 
-  return {
-    data: articles,
-    totalCount: total,
-    cursor,
-    fetchNextPage:
-      cursor && articles.length > 0
-        ? () =>
-            getPaginatedArticles(
-              client,
-              { ...args, cursor },
-              searchParams,
-              includeContent,
-            )
-        : fetchEmptyPage(total, cursor),
-  };
+    return {
+      data: articles,
+      totalCount: pageInfo.totalCount,
+      cursor: pageInfo.nextCursor,
+      fetchNextPage:
+        pageInfo.nextCursor && articles.length > 0
+          ? () =>
+              getPaginatedArticles(
+                client,
+                { ...args, cursor: pageInfo.nextCursor },
+                searchParams,
+                includeContent,
+              )
+          : fetchEmptyPage(pageInfo.totalCount, pageInfo.nextCursor),
+    };
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticles(
   client: PantheonClient,
   args?: ArticleQueryArgs,
   searchParams?: ArticleSearchArgs,
-  includeContent?: boolean,
-) {
-  const { contentType: requestedContentType, ...rest } = args || {};
-  const contentType = buildContentType(requestedContentType);
+  withContent?: boolean,
+): Promise<ArticleWithoutContent[]> {
+  return (
+    await getArticlesWithSummary(client, args, searchParams, withContent, false)
+  ).articles;
+}
 
-  const response = await client.apolloClient.query({
-    query: includeContent ? LIST_ARTICLES_QUERY_W_CONTENT : LIST_ARTICLES_QUERY,
-    variables: {
-      ...rest,
-      ...convertSearchParamsToGQL(searchParams),
-      contentType,
-    },
-  });
+export async function getArticlesWithSummary(
+  client: PantheonClient,
+  args?: ArticleQueryArgs,
+  searchParams?: ArticleSearchArgs,
+  withContent?: boolean,
+  withSummary?: boolean,
+): Promise<ArticleSummaryResponse> {
+  try {
+    const {
+      contentType: requestedContentType,
+      metadataFilters,
+      ...rest
+    } = args || {};
+    const contentType = buildContentType(requestedContentType);
 
-  return response.data.articles as ArticleWithoutContent[];
+    const query = generateListArticlesGQL({
+      withContent,
+      withSummary,
+    });
+
+    const response = await client.apolloClient.query({
+      query,
+      variables: {
+        ...rest,
+        ...convertSearchParamsToGQL(searchParams),
+        ...(metadataFilters && {
+          metadataFilters: JSON.stringify(metadataFilters),
+        }),
+        contentType,
+      },
+    });
+
+    return response.data.articlesv3;
+  } catch (e) {
+    handleApolloError(e);
+  }
 }
 
 export async function getArticle(
@@ -159,12 +206,23 @@ export async function getArticle(
   id: number | string,
   args?: ArticleQueryArgs,
 ) {
-  const { contentType: requestedContentType, ...rest } = args || {};
+  const {
+    contentType: requestedContentType,
+    metadataFilters,
+    ...rest
+  } = args || {};
   const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { id: id.toString(), contentType, ...rest },
+    variables: {
+      id: id.toString(),
+      contentType,
+      ...rest,
+      ...(metadataFilters && {
+        metadataFilters: JSON.stringify(metadataFilters),
+      }),
+    },
   });
 
   return article.data.article as Article;
@@ -175,12 +233,23 @@ export async function getArticleBySlug(
   slug: string,
   args?: ArticleQueryArgs,
 ) {
-  const { contentType: requestedContentType, ...rest } = args || {};
+  const {
+    contentType: requestedContentType,
+    metadataFilters,
+    ...rest
+  } = args || {};
   const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
     query: GET_ARTICLE_QUERY,
-    variables: { slug, contentType, ...rest },
+    variables: {
+      slug,
+      contentType,
+      ...rest,
+      ...(metadataFilters && {
+        metadataFilters: JSON.stringify(metadataFilters),
+      }),
+    },
   });
 
   return article.data.article as Article;
@@ -201,26 +270,25 @@ export async function getArticleBySlugOrId(
     }
     // eslint-disable-next-line no-empty
   } catch (e) {
-    if (
-      !(e instanceof ApolloError) ||
-      (e instanceof ApolloError &&
-        e.graphQLErrors[0]?.message !==
-          "No document matching this slug was found.")
-    ) {
-      console.error(e);
-    }
+    // Ignore any errors with retrieving by slug, because next we will try
+    // to retrieve by id.
   }
 
   try {
-    return await getArticle(client, slugOrId, args);
+    const article = await getArticle(client, slugOrId, args);
+    return article;
   } catch (e) {
     if (
       !(e instanceof ApolloError) ||
       (e instanceof ApolloError &&
+        e.message !== "No document matching this slug was found." &&
+        e.message !== "No document matching this ID was found." &&
         e.graphQLErrors[0]?.message !==
-          "No document matching this ID was found.")
+          "No document matching this ID was found." &&
+        e.graphQLErrors[0]?.message !==
+          "No document matching this slug was found.")
     ) {
-      console.error(e);
+      handleApolloError(e);
     }
 
     return null;
@@ -238,4 +306,20 @@ export function buildContentType(contentType?: keyof typeof ContentType) {
   }
 
   return contentType;
+}
+
+export async function getRecommendedArticles(
+  client: PantheonClient,
+  id: number | string,
+) {
+  try {
+    const article = await client.apolloClient.query({
+      query: GET_RECOMMENDED_ARTICLES_QUERY,
+      variables: { id: id.toString() },
+    });
+
+    return article.data.recommendedArticles as Article[];
+  } catch (e) {
+    handleApolloError(e);
+  }
 }

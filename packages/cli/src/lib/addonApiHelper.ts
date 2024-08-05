@@ -1,35 +1,39 @@
-import { SmartComponentMap } from "@pantheon-systems/pcc-sdk-core/types";
+import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import { Credentials } from "google-auth-library";
 import ora from "ora";
+import queryString from "query-string";
 import login from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
-import config from "./config";
+import { getApiConfig } from "./apiConfig";
 import { getLocalAuthDetails } from "./localStorage";
 import { toKebabCase } from "./utils";
 
-const API_KEY_ENDPOINT = `${config.addOnApiEndpoint}/api-key`;
-const SITE_ENDPOINT = `${config.addOnApiEndpoint}/sites`;
-const DOCUMENT_ENDPOINT = `${config.addOnApiEndpoint}/articles`;
-const OAUTH_ENDPOINT = `${config.addOnApiEndpoint}/oauth`;
-
 class AddOnApiHelper {
   static async getToken(code: string): Promise<Credentials> {
-    const resp = await axios.post(`${OAUTH_ENDPOINT}/token`, {
-      code: code,
-    });
+    const resp = await axios.post(
+      `${(await getApiConfig()).OAUTH_ENDPOINT}/token`,
+      {
+        code: code,
+      },
+    );
     return resp.data as Credentials;
   }
   static async refreshToken(refreshToken: string): Promise<Credentials> {
-    const resp = await axios.post(`${OAUTH_ENDPOINT}/refresh`, {
-      refreshToken,
-    });
+    const resp = await axios.post(
+      `${(await getApiConfig()).OAUTH_ENDPOINT}/refresh`,
+      {
+        refreshToken,
+      },
+    );
     return resp.data as Credentials;
   }
 
   static async getCurrentTime(): Promise<number> {
     try {
-      const resp = await axios.get(`${config.addOnApiEndpoint}/ping`);
+      const resp = await axios.get(
+        `${(await getApiConfig()).addOnApiEndpoint}/ping`,
+      );
       return Number(resp.data.timestamp);
     } catch {
       // If ping fails, return current time
@@ -37,7 +41,11 @@ class AddOnApiHelper {
     }
   }
 
-  static async getIdToken(requiredScopes?: string[]): Promise<string> {
+  static async getIdToken(
+    requiredScopes?: string[],
+    withAuthToken?: true,
+  ): Promise<{ idToken: string; oauthToken: string }>;
+  static async getIdToken(requiredScopes?: string[], withAuthToken?: boolean) {
     let authDetails = await getLocalAuthDetails(requiredScopes);
 
     // If auth details not found, try user logging in
@@ -49,7 +57,9 @@ class AddOnApiHelper {
       if (!authDetails) throw new UserNotLoggedIn();
     }
 
-    return authDetails.id_token as string;
+    return withAuthToken
+      ? { idToken: authDetails.id_token, oauthToken: authDetails.access_token }
+      : authDetails.id_token;
   }
 
   static async getDocument(
@@ -59,17 +69,20 @@ class AddOnApiHelper {
   ): Promise<Article> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(`${DOCUMENT_ENDPOINT}/${documentId}`, {
-      params: {
-        insertIfMissing,
-        ...(title && {
-          withMetadata: { title, slug: toKebabCase(title) },
-        }),
+    const resp = await axios.get(
+      `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
+      {
+        params: {
+          insertIfMissing,
+          ...(title && {
+            withMetadata: { title, slug: toKebabCase(title) },
+          }),
+        },
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    });
+    );
     return resp.data as Article;
   }
 
@@ -82,7 +95,7 @@ class AddOnApiHelper {
     const idToken = await this.getIdToken();
 
     await axios.post(
-      `${SITE_ENDPOINT}/${siteId}/metadata`,
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/metadata`,
       {
         contentType,
         field: {
@@ -123,7 +136,7 @@ class AddOnApiHelper {
     }
 
     const resp = await axios.patch(
-      `${DOCUMENT_ENDPOINT}/${documentId}`,
+      `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
       {
         siteId,
         tags,
@@ -143,39 +156,75 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async publishFile(documentId: string) {
-    const authDetails = await getLocalAuthDetails();
-    const publishUrl = `${config.publishEndpoint}/?docId=${documentId}&publishLevel=prod`;
+  static async publishDocument(documentId: string) {
+    const { idToken, oauthToken } = await this.getIdToken(
+      ["https://www.googleapis.com/auth/drive"],
+      true,
+    );
+
+    if (!idToken || !oauthToken) {
+      throw new UserNotLoggedIn();
+    }
+
+    const resp = await axios.post<{ url: string }>(
+      `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}/publish`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+          "oauth-token": oauthToken,
+        },
+      },
+    );
+
+    const publishUrl = resp.data.url;
 
     try {
-      const resp = await axios.get(publishUrl, {
-        headers: {
-          Authorization: `Bearer ${authDetails?.access_token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const resp = await axios.get(publishUrl);
 
-      return resp.data;
+      // Get the published URL
+      console.log("Published to ", resp.request.res.responseUrl);
     } catch (e) {
       if (e instanceof AxiosError) console.error(e, e.code, e.message);
       throw e;
     }
   }
 
-  static async getPreviewJwt(docId: string): Promise<string> {
-    const idToken = await this.getIdToken();
+  static async previewFile(
+    docId: string,
+    {
+      baseUrl,
+    }: {
+      baseUrl?: string;
+    },
+  ): Promise<string> {
+    const { idToken, oauthToken } = await this.getIdToken(
+      ["https://www.googleapis.com/auth/drive"],
+      true,
+    );
 
-    const resp = await axios.post(
-      `${DOCUMENT_ENDPOINT}/${docId}/preview`,
-      null,
+    if (!idToken || !oauthToken) {
+      throw new UserNotLoggedIn();
+    }
+
+    const resp = await axios.post<{ url: string }>(
+      `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${docId}/preview`,
+      {
+        baseUrl,
+      },
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
+          "Content-Type": "application/json",
+          "oauth-token": oauthToken,
         },
       },
     );
 
-    return resp.data.grantToken as string;
+    const previewURL = resp.data.url;
+
+    return previewURL;
   }
 
   static async createApiKey({
@@ -184,7 +233,7 @@ class AddOnApiHelper {
     const idToken = await this.getIdToken();
 
     const resp = await axios.post(
-      API_KEY_ENDPOINT,
+      (await getApiConfig()).API_KEY_ENDPOINT,
       {
         siteId,
       },
@@ -200,7 +249,7 @@ class AddOnApiHelper {
   static async listApiKeys(): Promise<ApiKey[]> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(API_KEY_ENDPOINT, {
+    const resp = await axios.get((await getApiConfig()).API_KEY_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -213,7 +262,7 @@ class AddOnApiHelper {
     const idToken = await this.getIdToken();
 
     try {
-      await axios.delete(`${API_KEY_ENDPOINT}/${id}`, {
+      await axios.delete(`${(await getApiConfig()).API_KEY_ENDPOINT}/${id}`, {
         headers: {
           Authorization: `Bearer ${idToken}`,
         },
@@ -265,8 +314,32 @@ class AddOnApiHelper {
     const idToken = await this.getIdToken();
 
     const resp = await axios.post(
-      SITE_ENDPOINT,
+      (await getApiConfig()).SITE_ENDPOINT,
       { name: "", url, emailList: "" },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+    return resp.data.id as string;
+  }
+
+  static async deleteSite(
+    id: string,
+    transferToSiteId: string | null | undefined,
+    force: boolean,
+  ): Promise<string> {
+    const idToken = await this.getIdToken();
+
+    const resp = await axios.delete(
+      queryString.stringifyUrl({
+        url: `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
+        query: {
+          transferToSiteId,
+          force,
+        },
+      }),
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
@@ -283,7 +356,7 @@ class AddOnApiHelper {
   }): Promise<Site[]> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(SITE_ENDPOINT, {
+    const resp = await axios.get((await getApiConfig()).SITE_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
@@ -298,11 +371,14 @@ class AddOnApiHelper {
   static async getSite(siteId: string): Promise<Site> {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const resp = await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-    });
+    );
 
     return resp.data as Site;
   }
@@ -311,7 +387,7 @@ class AddOnApiHelper {
     const idToken = await this.getIdToken();
 
     await axios.patch(
-      `${SITE_ENDPOINT}/${id}`,
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
       { url },
       {
         headers: {
@@ -321,30 +397,119 @@ class AddOnApiHelper {
     );
   }
 
+  static async getServersideComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async pushComponentSchema(
+    id: string,
+    componentSchema: typeof SmartComponentMapZod,
+  ): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.post(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
+      {
+        componentSchema,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeComponentSchema(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async listAdmins(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    return (
+      await axios.get(`${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+    ).data;
+  }
+
+  static async addAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.patch(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeAdmin(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(`${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`, {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+      data: {
+        email,
+      },
+    });
+  }
+
   static async updateSiteConfig(
     id: string,
     {
       url,
       webhookUrl,
       webhookSecret,
+      preferredEvents,
     }: {
       url?: string;
       webhookUrl?: string;
       webhookSecret?: string;
+      preferredEvents?: string[];
     },
   ): Promise<void> {
     const idToken = await this.getIdToken();
 
-    const configuredWebhook = webhookUrl || webhookSecret;
+    const configuredWebhook = webhookUrl || webhookSecret || preferredEvents;
 
     await axios.patch(
-      `${SITE_ENDPOINT}/${id}`,
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
       {
         ...(url && { url: url }),
         ...(configuredWebhook && {
           webhookConfig: {
             ...(webhookUrl && { webhookUrl: webhookUrl }),
-            ...(webhookSecret && { webhookSecret: webhookUrl }),
+            ...(webhookSecret && { webhookSecret: webhookSecret }),
+            ...(preferredEvents && { preferredEvents }),
           },
         }),
       },
@@ -368,28 +533,35 @@ class AddOnApiHelper {
   ) {
     const idToken = await this.getIdToken();
 
-    const resp = await axios.get(`${SITE_ENDPOINT}/${siteId}/webhookLogs`, {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
+    const resp = await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/webhookLogs`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+        params: {
+          limit,
+          offset,
+        },
       },
-      params: {
-        limit,
-        offset,
-      },
-    });
+    );
 
     return resp.data as WebhookDeliveryLog[];
   }
 
-  static async publishDocument(docId: string, token: string) {
-    const publishUrl = `${config.publishEndpoint}/?docId=${docId}&publishLevel=prod`;
+  static async fetchAvailableWebhookEvents(siteId: string) {
+    const idToken = await this.getIdToken();
 
-    const response = await axios.get(publishUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
+    const resp = await axios.get(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/availableWebhookEvents`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
       },
-    });
-    return response.data;
+    );
+
+    return resp.data as string[];
   }
 }
 

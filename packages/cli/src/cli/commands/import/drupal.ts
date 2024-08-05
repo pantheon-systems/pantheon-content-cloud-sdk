@@ -8,10 +8,10 @@ import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
 import { HTMLElement, parse } from "node-html-parser";
 import queryString from "query-string";
+import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../../lib/localStorage";
 import { Logger } from "../../../lib/logger";
 import { errorHandler } from "../../exceptions";
-import AddOnApiHelper from "../../../lib/addonApiHelper";
 
 type DrupalImportParams = {
   baseUrl: string;
@@ -81,6 +81,14 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
     if (baseUrl) {
       try {
         new URL(baseUrl);
+
+        // If protocol is not provided, add it for convenience
+        if (baseUrl.startsWith("localhost:")) {
+          baseUrl = `http://${baseUrl}`;
+
+          // Validate again
+          new URL(baseUrl);
+        }
       } catch (_err) {
         logger.error(
           chalk.red(
@@ -234,7 +242,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
             verbose,
           );
 
-          await AddOnApiHelper.publishFile(fileId);
+          await AddOnApiHelper.publishDocument(fileId);
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;

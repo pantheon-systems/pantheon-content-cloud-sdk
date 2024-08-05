@@ -1,6 +1,5 @@
-<script>
-export default {
-  props: {
+<script setup>
+defineProps({
     title: {
       type: String,
       required: true,
@@ -8,8 +7,7 @@ export default {
     body: {
       type: String,
     },
-  },
-}
+});
 </script>
 
 <template>

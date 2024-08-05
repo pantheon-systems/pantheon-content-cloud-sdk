@@ -6,7 +6,17 @@ module.exports = {
     `./src/templates/**/*.{js,jsx,ts,tsx}`,
   ],
   theme: {
-    extend: {},
+    extend: {
+      typography: () => ({
+        DEFAULT: {
+          css: {
+            a: {
+              color: "rgb(17, 85, 204)", // "dark cornflower blue 2" in Google Docs
+            },
+          },
+        },
+      }),
+    },
   },
   plugins: [require("@tailwindcss/typography")],
 };

@@ -24,49 +24,54 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
   return (
     <Container>
       <IconDot fill={isLive ? "#218C5F" : "#CFCFD3"} />
-      <span>{isLive ? "Active Live Preview" : "Inactive Live Preview"}</span>
+      <span>{isLive ? "Page preview: On" : "Page preview: Off"}</span>
       {!isLive ? (
         <InfoButton onClick={() => setIsOpen(!isOpen)} {...triggerProps}>
           <IconInfo />
         </InfoButton>
       ) : null}
-      {isOpen
+      {isOpen && !isLive
         ? renderLayer(
             <div
               {...layerProps}
               style={{
                 ...layerProps.style,
                 zIndex: 10,
+                fontFamily: "Poppins, sans-serif",
+                fontWeight: "500",
                 fontSize: "13px",
-                fontWeight: 400,
-                fontFamily: "Roboto, sans-serif",
               }}
             >
               <div
                 style={{
-                  background: "#283139",
+                  background: "#23232D",
                   color: "#fff",
                   width: "320px",
-                  borderRadius: "4px",
-                  padding: "8px 16px",
+                  borderRadius: "6px",
+                  padding: "16px 19px",
+                  lineHeight: "120%",
+                  letterSpacing: "0.04em",
+                  boxShadow:
+                    "0px 0px 0px 1px rgba(0, 0, 0, 0.08), 0px 1px 1px rgba(0, 0, 0, 0.02), 0px 8px 16px -4px rgba(0, 0, 0, 0.04), 0px 24px 32px -8px rgba(0, 0, 0, 0.06)",
                 }}
               >
                 <span>
                   This preview page is no longer connected to the document
                   (updates to the document will not be displayed until this is
-                  reconnected).{" "}
+                  reconnected).
                 </span>
                 <br />
-                <span style={{ fontWeight: 500 }}>
-                  To reconnect, navigate to the document and click the
-                  &apos;PREVIEW&apos; button in the Content Cloud add-on.
+                <br />
+                <span>
+                  To reconnect, navigate to the document and select the
+                  &apos;Preview&apos; button in the Content Cloud add-on.
                 </span>
               </div>
               <Arrow
                 {...arrowProps}
-                size={16}
+                size={9}
                 roundness={0}
-                backgroundColor="#283139"
+                backgroundColor="#23232D"
               />
             </div>,
           )

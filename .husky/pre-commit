@@ -1,0 +1,2 @@
+pnpm prettier ./**/*.md -w
+pnpm pre-commit

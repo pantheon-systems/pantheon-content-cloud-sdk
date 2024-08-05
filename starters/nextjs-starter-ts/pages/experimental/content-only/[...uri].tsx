@@ -1,26 +1,36 @@
 import {
   PantheonProvider,
+  PCCConvenienceFunctions,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../../components/article-view";
+import { PostGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import { Tags } from "../../../components/tags";
-import { getArticleBySlugOrId } from "../../../lib/Articles";
-import { buildPantheonClientWithGrant } from "../../../lib/PantheonClient";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
+  recommendedArticles: Article[];
   grant: string;
 }
 
-export default function ArticlePage({ article, grant }: ArticlePageProps) {
+export default function ArticlePage({
+  article,
+  recommendedArticles,
+  grant,
+}: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
-    <PantheonProvider client={buildPantheonClientWithGrant(grant)}>
+    <PantheonProvider
+      client={PCCConvenienceFunctions.buildPantheonClient({
+        isClientSide: true,
+        pccGrant: grant,
+      })}
+    >
       <Layout>
         <NextSeo
           title={seoMetadata.title}
@@ -39,10 +49,14 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
           }}
         />
 
-        <div className="max-w-screen-lg mx-auto mt-16 prose">
+        <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
           <ArticleView article={article} onlyContent={true} />
 
           <Tags tags={article?.tags} />
+          <section>
+            <h3>Recommended Articles</h3>
+            <PostGrid data={recommendedArticles} />
+          </section>
         </div>
       </Layout>
     </PantheonProvider>
@@ -56,7 +70,7 @@ export async function getServerSideProps({
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
-  const article = await getArticleBySlugOrId(
+  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     slugOrId,
     publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
   );
@@ -88,6 +102,9 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
+        article.id,
+      ),
     },
   };
 }
@@ -100,7 +117,7 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
   return (v as DateInputObject).msSinceEpoch != null;
 }
 
-const getSeoMetadata = (article) => {
+export const getSeoMetadata = (article) => {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   let authors = [];
   let publishedTime = null;

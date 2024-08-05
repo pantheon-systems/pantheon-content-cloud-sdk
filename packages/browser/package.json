@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-browser-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Browser SDK",
-  "version": "3.1.2",
+  "version": "3.7.0",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -12,15 +12,15 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "eslint . && prettier --check . && tsc --noEmit",
-    "lint:fix": "eslint . --fix && prettier --write . && tsc --noEmit"
+    "lint:fix": "eslint . --fix && prettier --write ."
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
-    "tsup": "^8.0.1",
+    "tsup": "^8.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-sdk-core": "^3.1.2"
+    "@pantheon-systems/pcc-sdk-core": "workspace:*"
   }
 }

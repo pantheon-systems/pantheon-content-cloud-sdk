@@ -12,13 +12,22 @@ export interface Article {
   updatedAt: number | null;
   metadata: Record<string, unknown> | null;
   previewActiveUntil: number | null;
+  snippet?: string | null;
 }
 
+export type ArticleSummaryResponse = {
+  articles: Omit<Article, "content">[];
+  summary: string;
+};
+export type PageInfo = {
+  totalCount: number;
+  nextCursor: string;
+};
 export type ArticleWithoutContent = Omit<Article, "content">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];
   totalCount: number;
-  cursor: number;
+  cursor: string;
   fetchNextPage: () => Promise<PaginatedArticle>;
 };
 
@@ -41,6 +50,16 @@ export enum ArticleSortField {
 export enum SortOrder {
   ASC = "ASC",
   DESC = "DESC",
+}
+
+export interface Site {
+  id: string;
+  name: string;
+  url: string;
+  domain: string;
+  tags: string[];
+  contentStructure: Record<string, unknown> | null;
+  metadataFields: Record<string, unknown>;
 }
 
 export interface TreePantheonContent {
@@ -94,7 +113,14 @@ export interface PantheonTree {
   children: PantheonTreeNode[];
 }
 
-const fieldTypes = z.enum(["string", "number", "boolean", "date", "file"]);
+const fieldTypes = z.enum([
+  "string",
+  "textarea",
+  "number",
+  "boolean",
+  "date",
+  "file",
+]);
 
 const baseFieldSchema = z.object({
   type: fieldTypes,
@@ -181,25 +207,25 @@ type InferFieldProps<T extends SmartComponentMapField> = T extends {
   ? O extends readonly { value: infer V }[]
     ? V
     : O extends readonly string[]
-    ? O[number]
-    : unknown
+      ? O[number]
+      : unknown
   : T extends { type: "number" }
-  ? number
-  : T extends { type: "boolean" }
-  ? boolean
-  : T extends { type: "string" | "file" | "date" }
-  ? string
-  : T extends {
-      type: "object";
-      fields: Record<string, unknown>;
-    }
-  ? T["multiple"] extends true
-    ? Optional<
-        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
-        OptionalFields<T["fields"]>
-      >[]
-    : Optional<
-        { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
-        OptionalFields<T["fields"]>
-      >
-  : unknown;
+    ? number
+    : T extends { type: "boolean" }
+      ? boolean
+      : T extends { type: "string" | "file" | "date" }
+        ? string
+        : T extends {
+              type: "object";
+              fields: Record<string, unknown>;
+            }
+          ? T["multiple"] extends true
+            ? Optional<
+                { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+                OptionalFields<T["fields"]>
+              >[]
+            : Optional<
+                { [K in keyof T["fields"]]: InferFieldProps<T["fields"][K]> },
+                OptionalFields<T["fields"]>
+              >
+          : unknown;

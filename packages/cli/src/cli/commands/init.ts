@@ -1,8 +1,10 @@
 import {
   copyFileSync,
   existsSync,
+  openSync,
   readFileSync,
   rmdirSync,
+  rmSync,
   writeFileSync,
 } from "fs";
 import path from "path";
@@ -43,6 +45,7 @@ const init = async ({
   silentLogs,
   eslint,
   appName,
+  useAppRouter,
   useTypescript,
   printVerbose,
 }: {
@@ -55,6 +58,7 @@ const init = async ({
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
 }) => {
@@ -77,9 +81,16 @@ const init = async ({
   const fetchStarter = new SpinnerLogger("Fetching starter kit...", silentLogs);
   fetchStarter.start();
 
+  if (template === "nextjs" && useAppRouter && !useTypescript) {
+    logger.error(
+      chalk.red("ERROR: Typescript is required when using nextjs app router"),
+    );
+    exit(1);
+  }
+
   const starterPath = `starters/${TEMPLATE_FOLDER_MAP[template]}${
-    useTypescript ? "-ts" : ""
-  }/`;
+    useAppRouter ? "-approuter" : ""
+  }${useTypescript ? "-ts" : ""}/`;
 
   const absoluteProjectPath = await downloadTemplateDirectory(
     starterPath,
@@ -100,16 +111,24 @@ const init = async ({
   if (appName) packageJson.name = appName;
   else packageJson.name = path.parse(dirName).base;
 
+  const eslintFilePath = path.join(absoluteProjectPath, ".eslintrc.json");
   if (eslint && template === "nextjs") {
     packageJson.devDependencies = {
       ...packageJson.devDependencies,
       ...ESLINT_DEPENDENCIES,
     };
 
-    writeFileSync(
-      path.join(absoluteProjectPath, ".eslintrc.json"),
-      JSON.stringify(ESLINT_CONFIG, null, 2),
-    );
+    let esLintFd = null;
+    try {
+      esLintFd = openSync(eslintFilePath, "wx");
+    } catch {
+      // Ignore when eslint file already exists
+    }
+    if (esLintFd)
+      writeFileSync(esLintFd, JSON.stringify(ESLINT_CONFIG, null, 2));
+  } else if (!eslint) {
+    // Remove eslint file and don't raise exception if it doesn't exist
+    rmSync(eslintFilePath, { force: true });
   }
 
   writeFileSync(
@@ -124,8 +143,8 @@ const init = async ({
     template === "gatsby"
       ? ".env.development"
       : template === "vue"
-      ? ".env"
-      : ".env.local";
+        ? ".env"
+        : ".env.local";
 
   copyFileSync(
     path.join(absoluteProjectPath, ".env.example"),
@@ -162,7 +181,7 @@ const init = async ({
           await inquirer.prompt({
             type: "list",
             name: "siteId",
-            choices: (await AddOnApiHelper.listSites())
+            choices: (await AddOnApiHelper.listSites({}))
               .filter((x) => !x.__isPlayground)
               .map((x) => `${x.url} (${x.id})`),
           })
@@ -231,7 +250,7 @@ const init = async ({
   }
 
   if (template === "nextjs" || template === "vue")
-    logger.log(chalk.green(`  ${packageManager} run dev`));
+    logger.log(chalk.green(`   ${packageManager} run dev`));
   else logger.log(chalk.green(`   ${packageManager} run start`));
 };
 
@@ -245,6 +264,7 @@ export default errorHandler<{
   silentLogs: boolean;
   eslint: boolean;
   appName?: string;
+  useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
 }>(init, (args) => {

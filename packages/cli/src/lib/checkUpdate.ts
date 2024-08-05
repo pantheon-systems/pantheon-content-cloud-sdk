@@ -9,13 +9,36 @@ import semver from "semver";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const checkUpdate = async () => {
+export function getPackageDetails() {
   const { name, version } = JSON.parse(
     fs.readFileSync(__dirname + "/../package.json").toString(),
   );
-  const { version: latestVersion } = await pkgJson(name);
 
-  const updateAvailable = semver.lt(version, latestVersion as string);
+  return { name, version };
+}
+
+const checkUpdate = async () => {
+  const { name, version } = getPackageDetails();
+  const { versions: allPublishedVersions } = await pkgJson(name, {
+    allVersions: true,
+  });
+
+  const versionKeys = Object.keys(allPublishedVersions);
+  let latestVersion = versionKeys.pop();
+
+  while (latestVersion != null) {
+    if (
+      !semver.prerelease(latestVersion) &&
+      semver.gt(latestVersion, version)
+    ) {
+      break;
+    }
+
+    latestVersion = versionKeys.pop();
+  }
+
+  const updateAvailable =
+    latestVersion != null && semver.lt(version, latestVersion as string);
   if (updateAvailable) {
     const msg = {
       updateAvailable: `Update available! ${chalk.dim(version)} → ${chalk.green(

@@ -1,5 +1,209 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.7.0
+
+### Patch Changes
+
+- e7d5252: Gracefully handle implementation edge case where a smart component
+  map was provided to the ArticlerRenderer but without defining the react
+  components that should be used.
+- Updated dependencies [11e0509]
+- Updated dependencies [87fdf27]
+  - @pantheon-systems/pcc-sdk-core@3.7.0
+
+## 3.6.1
+
+### Patch Changes
+
+- edf7252: GraphQL queries and query hooks are now exposed for custom usage
+- Updated dependencies [183ad17]
+  - @pantheon-systems/pcc-sdk-core@3.6.1
+
+## 3.6.0
+
+### Patch Changes
+
+- 80ef092: Update preview bar copy and icons
+- 4ed0c05: Don't export pantheon-context in server export.
+- 61363af: Removes inline sourcemaps. Sourcemaps are still provided, just linked
+  in separate files instead.
+- 4ed0c05: Export pantheon-content from root entry point.
+- 14a968b: Make preview bar sticky at the top by default
+- Updated dependencies [61363af]
+- Updated dependencies [3651708]
+- Updated dependencies [61363af]
+  - @pantheon-systems/pcc-sdk-core@3.6.0
+
+## 3.6.0-beta.3
+
+### Patch Changes
+
+- Export pantheon-content from root entry point.
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.3
+
+## 3.6.0-beta.2
+
+### Patch Changes
+
+- Don't export pantheon-context in server export.
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.2
+
+## 3.6.0-beta.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.1
+
+## 3.6.0-beta.0
+
+### Patch Changes
+
+- 80ef092: Update preview bar copy and icons
+- 14a968b: Make preview bar sticky at the top by default
+  - @pantheon-systems/pcc-sdk-core@3.6.0-beta.0
+
+## 3.5.3
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.3
+
+## 3.5.3-beta.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.3-beta.0
+
+## 3.5.2
+
+### Patch Changes
+
+- 289e05c: Add updateConfig function which will override the default PCC
+  connection settings that PCCConvenienceFunctions will use.
+- Updated dependencies [fcfa574]
+- Updated dependencies [289e05c]
+  - @pantheon-systems/pcc-sdk-core@3.5.2
+
+## 3.5.2-beta.1
+
+### Patch Changes
+
+- Add updateConfig function which will override the default PCC connection
+  settings that PCCConvenienceFunctions will use.
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.2-beta.1
+
+## 3.5.2-beta.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.5.2-beta.0
+
+## 3.5.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.5.1
+
+## 3.5.0
+
+### Minor Changes
+
+- 8ff023b: disableAllStyles is no longer applied to functional component
+  overrides given in componentMap to ArticleRenderer
+
+### Patch Changes
+
+- Updated dependencies [0e74720]
+- Updated dependencies [4cab3e2]
+  - @pantheon-systems/pcc-sdk-core@3.5.0
+
+## 3.4.1
+
+### Patch Changes
+
+- 19f9ac8: Fix how preview JWT token is set from PantheonAPI
+- c8800c8: Add preserveImageStyles experimental flag for article rendering.
+- Updated dependencies [19f9ac8]
+  - @pantheon-systems/pcc-sdk-core@3.4.1
+
+## 3.4.0
+
+### Minor Changes
+
+- 37e1c39: PantheonAPI now supports app router.
+
+### Patch Changes
+
+- Updated dependencies [37e1c39]
+- Updated dependencies [5124a8b]
+  - @pantheon-systems/pcc-sdk-core@3.4.0
+
+## 3.3.3
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.3.3
+
+## 3.3.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.3.2
+
+## 3.3.1
+
+### Patch Changes
+
+- 28e312e: New previewbar props added for finer control over where and how it
+  renders.
+- Updated dependencies [63537f7]
+  - @pantheon-systems/pcc-sdk-core@3.3.1
+
+## 3.3.0
+
+### Minor Changes
+
+- 24be191: Add experimental flag "useUnintrusiveTitleRendering" which will use
+  the new way of rendering titles, where the document's content will not be
+  affected. The old (and still default) way will forcibly move the detected
+  title element to the top of the document when rendering.
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.3.0
+
+## 3.2.1
+
+### Patch Changes
+
+- 8e880f2: Ability to retrieve gen AI summary results for a search query.
+- Updated dependencies [8e880f2]
+  - @pantheon-systems/pcc-sdk-core@3.2.1
+
+## 3.2.0
+
+### Minor Changes
+
+- - More detailed Apollo errors will be surfaced from the SDK.
+  - Bump minimum React version to 18.
+  - Gracefully handle rendering errors that occur inside smart components.
+  - Added disableAllStyles to the Vue SDK (React SDK already had this).
+  - Simplified SDK integration. Less boilerplate needed to turn on by using
+    commonsense defaults under the hood. New PCCConvenienceFunctions utilities
+    object which provides what used to be in the boilerplate (such as
+    getAllArticles, getArticleBySlugOrId, getRecommendedArticles, and getTags).
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.2.0
+
 ## 3.1.2
 
 ### Patch Changes

@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "1d4bc459-8fee-4b36-8380-c3e5122596ec",
+		"name": "Pantheon Content Cloud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9461222"
+	},
+	"item": [
+		{
+			"name": "Get all articles",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "{\n    articles {\n        id\n        title\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single article",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetArticle($articleId: String !){\n    article(id: $articleId) {\n        id\n        title\n    }\n}",
+						"variables": "{\n    \"articleId\": \"{{PCC_ARTICLE_ID}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get single site",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetSite($siteId: String!) {\n    site(id: $siteId) {\n        id\n        url\n    }\n}",
+						"variables": "{\n    \"siteId\": \"{{PCC_SITE_ID}}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get articles filtered on metadata",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "PCC-TOKEN",
+						"value": "{{PCC_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query GetFilteredArticles($metadataFilters: String!) {\n    articles(metadataFilters: $metadataFilters ) {\n        id\n        metadata\n    }\n}",
+						"variables": "{\n    \"metadataFilters\": \"{\\\"Author\\\": \\\"Test User\\\", \\\"Category\\\": [\\\"Technical\\\", \\\"Sales\\\"]}\"\n}"
+					}
+				},
+				"url": {
+					"raw": "https://gql.prod.pcc.pantheon.io/sites/{{PCC_SITE_ID}}/query",
+					"protocol": "https",
+					"host": [
+						"gql",
+						"prod",
+						"pcc",
+						"pantheon",
+						"io"
+					],
+					"path": [
+						"sites",
+						"{{PCC_SITE_ID}}",
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "PCC_SITE_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PCC_TOKEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PCC_ARTICLE_ID",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

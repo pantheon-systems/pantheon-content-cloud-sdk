@@ -1,8 +1,14 @@
 #!/usr/bin/env node
+import ora from "ora";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import checkUpdate from "../lib/checkUpdate";
+import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
+import {
+  printConfigurationData,
+  resetTargetEnvironment,
+  setTargetEnvironment,
+} from "./commands/config";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
 import { importFromDrupal, importFromMarkdown } from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
@@ -10,13 +16,26 @@ import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
 import showLogs from "./commands/logs";
 import {
+  addAdminSchema,
+  listAdminsSchema,
+  removeAdminSchema,
+} from "./commands/sites/admins";
+import {
+  getComponentSchema,
+  printLiveComponentSchema,
+  printStoredComponentSchema,
+  pushComponentSchema,
+  removeStoredComponentSchema,
+} from "./commands/sites/componentschema";
+import {
   configurableSiteProperties,
   createSite,
-  getComponentSchema,
+  deleteSite,
   listSites,
   SITE_EXAMPLES,
   updateSiteConfig,
-} from "./commands/sites";
+} from "./commands/sites/site";
+import configurePreferredWebhookEvents from "./commands/sites/webhooks";
 import {
   createToken,
   listTokens,
@@ -42,6 +61,13 @@ yargs(hideBin(process.argv))
   .middleware(configureMiddleware(checkUpdate))
   .strictCommands()
   .demandCommand()
+  .version(false)
+  .command(
+    "version",
+    "Prints the version of this CLI",
+    () => void 0,
+    () => console.log(getPackageDetails().version),
+  )
   .command(
     "init <project_directory> [options]",
     "Sets up project with required files.",
@@ -138,6 +164,7 @@ yargs(hideBin(process.argv))
       const nonInteractive = args.nonInteractive as boolean;
       const siteId = args.siteId as string;
       const eslint = args.eslint as boolean;
+      const useAppRouter = args.appRouter as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
 
@@ -173,6 +200,7 @@ yargs(hideBin(process.argv))
         siteId,
         silentLogs: silent,
         eslint,
+        useAppRouter,
         useTypescript,
         printVerbose,
       });
@@ -224,12 +252,122 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
+    "config <cmd> [options]",
+    "Manage configuration for this CLI.",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "info",
+          "Print configuration info.",
+          () => {
+            // noop
+          },
+          async () => await printConfigurationData(),
+        )
+        .command(
+          "reset",
+          "Reset configuration to defaults.",
+          () => {
+            // noop
+          },
+          async () => await resetTargetEnvironment(),
+        )
+        .command(
+          "update <target>",
+          "Set the target environment.",
+          (yargs) => {
+            yargs.positional("<target>", {
+              describe: "Target environment: either 'production' or 'staging'.",
+              demandOption: true,
+              type: "string",
+            });
+          },
+          async (args) =>
+            await setTargetEnvironment(args.target as "production" | "staging"),
+        );
+    },
+    async () => {
+      // noop
+    },
+  )
+  .command(
     "site <cmd> [options]",
     "Manage sites for a PCC project.",
     (yargs) => {
       yargs
         .strictCommands()
         .demandCommand()
+        .command(
+          "admins [options]",
+          "CRUD admins for a site",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "list [options]",
+                "List admins for a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await listAdminsSchema({
+                    siteId: args.siteId as string,
+                  }),
+              )
+              .command(
+                "remove [options]",
+                "Remove admin for a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("email", {
+                    describe: "Email of admin to remove",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await removeAdminSchema({
+                    siteId: args.siteId as string,
+                    email: args.email as string,
+                  }),
+              )
+              .command(
+                "add [options]",
+                "Add admin to a site",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("email", {
+                    describe: "Email of admin to add",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await addAdminSchema({
+                    siteId: args.siteId as string,
+                    email: args.email as string,
+                  }),
+              );
+          },
+          async (args) => await createSite(args.url as string),
+        )
         .command(
           "create [options]",
           "Creates new site.",
@@ -241,6 +379,99 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) => await createSite(args.url as string),
+        )
+        .command(
+          "delete [options]",
+          "Delete site.",
+          (yargs) => {
+            yargs.option("id", {
+              describe: "Site id",
+              type: "string",
+              demandOption: true,
+            });
+            yargs.option("transferToSiteId", {
+              describe:
+                "Id of site to transfer connected documents to. Required if force is not used.",
+              type: "string",
+              demandOption: false,
+            });
+            yargs.option("force", {
+              describe:
+                "If true, delete even if documents are connected to it.",
+              type: "string",
+              demandOption: false,
+            });
+          },
+          async (args) =>
+            await deleteSite({
+              id: args.id as string,
+              transferToSiteId: args.transferToSiteId as string,
+              force: args.force === "true",
+            }),
+        )
+        .command(
+          "componentschema [command] [options]",
+          "Make changes & inspect the component schema for a site",
+          (yargs) => {
+            yargs
+              .command(
+                "push [options]",
+                "Retrieve the schema from the provided target URL and use that for the PCC site's component schema.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+
+                  yargs.option("target", {
+                    describe:
+                      "API path such as https://localhost:3000/api/pantheoncloud",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await pushComponentSchema({
+                    siteId: args.siteId as string,
+                    componentSchema: await getComponentSchema(
+                      args.target as string,
+                      "",
+                      ora("Retrieving live schema").start(),
+                    ),
+                  }),
+              )
+              .command(
+                "print [options]",
+                "Print the schema that PCC knows about.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await printStoredComponentSchema({
+                    siteId: args.siteId as string,
+                  }),
+              )
+              .command(
+                "remove [options]",
+                "Use this command to stop using the pushed schema and revert back to real-time schema requests from PCC.",
+                (yargs) => {
+                  yargs.option("siteId", {
+                    describe: "Site id",
+                    type: "string",
+                    demandOption: true,
+                  });
+                },
+                async (args) =>
+                  await removeStoredComponentSchema({
+                    siteId: args.siteId as string,
+                  }),
+              );
+          },
         )
         .command(
           "components [options]",
@@ -259,7 +490,7 @@ yargs(hideBin(process.argv))
             });
           },
           async (args) =>
-            await getComponentSchema({
+            await printLiveComponentSchema({
               url: args.url as string,
               apiPath: args.apiPath as string | null,
             }),
@@ -352,6 +583,19 @@ yargs(hideBin(process.argv))
                     id: args.id as string,
                     limit: args.limit as number,
                   }),
+              )
+              .command(
+                "preferred-events <id>",
+                "Set preferred webhook events for a given site. Your webhook will only receive notifications for events that you specify.",
+                (yargs) => {
+                  yargs.strictCommands().positional("<id>", {
+                    describe: "ID of the site for which you want to configure.",
+                    demandOption: true,
+                    type: "string",
+                  });
+                },
+                async (args) =>
+                  configurePreferredWebhookEvents(String(args.id)),
               );
           },
         )
@@ -375,7 +619,7 @@ yargs(hideBin(process.argv))
             yargs
               .strictCommands()
               .positional("<id>", {
-                describe: "ID of the document.",
+                describe: "ID or URL of the document.",
                 demandOption: true,
                 type: "string",
               })

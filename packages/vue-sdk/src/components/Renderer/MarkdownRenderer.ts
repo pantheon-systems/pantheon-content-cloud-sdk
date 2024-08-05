@@ -4,8 +4,9 @@ import {
   defineComponent,
   h,
   PropType,
+  VNode,
 } from "vue-demi";
-import type { ComponentMap, SmartComponentMap } from "./";
+import type { ComponentMap, ExperimentalFlags, SmartComponentMap } from "./";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
@@ -16,6 +17,7 @@ import { Fragment, jsx } from "vue/jsx-runtime";
 import type { UnistParent } from "unist-util-visit/lib";
 import { visit } from "unist-util-visit";
 import { urlAttributes } from "html-url-attributes";
+import withSmartComponentErrorBoundary from "../Common/ErrorBoundaries/SmartComponents";
 
 const safeProtocol = /^(https?|ircs?|mailto|xmpp)$/i;
 
@@ -107,6 +109,10 @@ const MarkdownRenderer = defineComponent({
       default: () => ({}),
       required: false,
     },
+    __experimentalFlags: {
+      type: Object as PropType<ExperimentalFlags>,
+      required: false,
+    },
   },
   render() {
     const props = this.$props;
@@ -129,7 +135,9 @@ const MarkdownRenderer = defineComponent({
 
     const pccComponent = buildPccCustomComponent(
       props.smartComponentMap,
+      !!props.__experimentalFlags?.disableDefaultErrorBoundaries,
     ) as DefineComponent<any, any, any>;
+
     return h(
       "div",
       {
@@ -143,7 +151,7 @@ const MarkdownRenderer = defineComponent({
         },
         jsx: jsx as Jsx,
         jsxs: jsx as Jsx,
-      }),
+      }) as VNode,
     );
   },
 });
@@ -154,7 +162,10 @@ interface ComponentProps extends Record<string, unknown> {
   type: string;
 }
 
-const buildPccCustomComponent = (smartComponentMap: SmartComponentMap) => {
+const buildPccCustomComponent = (
+  smartComponentMap: SmartComponentMap,
+  disableDefaultErrorBoundaries: boolean,
+) => {
   return defineComponent({
     props: {
       id: {
@@ -177,14 +188,18 @@ const buildPccCustomComponent = (smartComponentMap: SmartComponentMap) => {
 
       const decodedAttrs = isomorphicBase64Decode(attrs);
 
+      const componentToRender = component
+        ? h(component, decodedAttrs)
+        : h("u", {}, `PCC Component - ${type}`);
+
       return h(
         "div",
         {
           class: "pcc-component",
         },
-        component
-          ? h(component, decodedAttrs)
-          : h("u", {}, `PCC Component - ${type}`),
+        disableDefaultErrorBoundaries
+          ? componentToRender
+          : h(withSmartComponentErrorBoundary(component), decodedAttrs),
       );
     },
   });
