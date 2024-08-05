@@ -12,6 +12,7 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../../lib/localStorage";
 import { Logger } from "../../../lib/logger";
 import { errorHandler } from "../../exceptions";
+import { createFileOnDrive } from "./common";
 
 type DrupalImportParams = {
   baseUrl: string;
@@ -187,29 +188,21 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
 
         // Initially create a blank document, just to get an article id
         // that we can work with for further steps, such as adding smart components.
-        let res = (await drive.files.create({
-          requestBody: {
-            // Name from the article.
+        const { fileId, spinner, drive } = await createFileOnDrive(
+          {
             name: post.attributes.title,
-            mimeType: "application/vnd.google-apps.document",
+
             parents: [folderId],
           },
-          media: {
-            mimeType: "text/html",
-            body: "",
-          },
-        })) as GaxiosResponse<drive_v3.Schema$File>;
-        const fileId = res.data.id;
-
-        if (!fileId) {
-          throw new Error(`Failed to create file for ${post.attributes.title}`);
-        }
+          "",
+        );
+        spinner.succeed();
 
         // Add it to the PCC site.
         await AddOnApiHelper.getDocument(fileId, true);
 
         // Set the document's content.
-        res = (await drive.files.update({
+        const res = (await drive.files.update({
           requestBody: {
             id: fileId,
             mimeType: "application/vnd.google-apps.document",

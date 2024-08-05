@@ -11,6 +11,7 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../../lib/localStorage";
 import { Logger } from "../../../lib/logger";
 import { errorHandler } from "../../exceptions";
+import { createFileOnDrive } from "./common";
 
 const HEADING_TAGS = ["h1", "h2", "h3", "title"];
 
@@ -37,24 +38,6 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
 
-    // Check user has required permission to create drive file
-    await AddOnApiHelper.getIdToken([
-      "https://www.googleapis.com/auth/drive.file",
-    ]);
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) {
-      logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
-      exit(1);
-    }
-
-    // Create Google Doc
-    const spinner = ora("Creating document on the Google Drive...").start();
-    const oauth2Client = new OAuth2Client();
-    oauth2Client.setCredentials(authDetails);
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client,
-    });
     const converter = new showdown.Converter();
     const html = converter.makeHtml(content);
     const dom = parseFromString(html);
@@ -70,23 +53,10 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
     title = title || "Untitled Document";
 
-    const res = (await drive.files.create({
-      requestBody: {
-        name: title,
-        mimeType: "application/vnd.google-apps.document",
-      },
-      media: {
-        mimeType: "text/html",
-        body: html,
-      },
-    })) as GaxiosResponse<drive_v3.Schema$File>;
-    const fileId = res.data.id;
-    const fileUrl = `https://docs.google.com/document/d/${fileId}`;
-
-    if (!fileId) {
-      spinner.fail("Failed to create document on the Google Drive.");
-      exit(1);
-    }
+    const { fileId, fileUrl, spinner } = await createFileOnDrive(
+      { name: title },
+      html,
+    );
 
     // Create PCC document
     await AddOnApiHelper.getDocument(fileId, true, title);
@@ -104,8 +74,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
 
     // Publish PCC document
     if (publish) {
-      const { token } = await oauth2Client.getAccessToken();
-      await AddOnApiHelper.publishDocument(fileId, token as string);
+      await AddOnApiHelper.publishDocument(fileId);
     }
     spinner.succeed(
       `Successfully created document at below path${
