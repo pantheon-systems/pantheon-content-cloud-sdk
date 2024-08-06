@@ -8,31 +8,38 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { getLocalAuthDetails } from "../../../lib/localStorage";
 import { Logger } from "../../../lib/logger";
 
-export async function createFileOnDrive(
-  requestBody: Partial<drive_v3.Schema$File>,
-  body: string,
-) {
+export async function createFileOnDrive({
+  requestBody,
+  body,
+  drive,
+}: {
+  requestBody: Partial<drive_v3.Schema$File>;
+  body: string;
+  drive?: drive_v3.Drive;
+}) {
   const logger = new Logger();
 
-  // Check user has required permission to create drive file
-  await AddOnApiHelper.getIdToken([
-    "https://www.googleapis.com/auth/drive.file",
-  ]);
-  const authDetails = await getLocalAuthDetails();
-  if (!authDetails) {
-    logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
-    exit(1);
+  if (!drive) {
+    // Check user has required permission to create drive file
+    await AddOnApiHelper.getIdToken([
+      "https://www.googleapis.com/auth/drive.file",
+    ]);
+    const authDetails = await getLocalAuthDetails();
+    if (!authDetails) {
+      logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
+      exit(1);
+    }
+
+    const oauth2Client = new OAuth2Client();
+    oauth2Client.setCredentials(authDetails);
+    drive = google.drive({
+      version: "v3",
+      auth: oauth2Client,
+    });
   }
 
   // Create Google Doc
   const spinner = ora("Creating document on the Google Drive...").start();
-  const oauth2Client = new OAuth2Client();
-  oauth2Client.setCredentials(authDetails);
-  const drive = google.drive({
-    version: "v3",
-    auth: oauth2Client,
-  });
-
   const res = (await drive.files.create({
     requestBody: {
       ...requestBody,

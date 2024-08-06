@@ -18,6 +18,7 @@ type DrupalImportParams = {
   baseUrl: string;
   siteId: string;
   verbose: boolean;
+  automaticallyPublish: boolean;
 };
 
 interface DrupalPost {
@@ -76,7 +77,12 @@ async function getDrupalPosts(url: string) {
 }
 
 export const importFromDrupal = errorHandler<DrupalImportParams>(
-  async ({ baseUrl, siteId, verbose }: DrupalImportParams) => {
+  async ({
+    baseUrl,
+    siteId,
+    verbose,
+    automaticallyPublish,
+  }: DrupalImportParams) => {
     const logger = new Logger();
 
     if (baseUrl) {
@@ -100,7 +106,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       }
     }
 
-    await AddOnApiHelper.getIdToken([
+    const idToken = await AddOnApiHelper.getIdToken([
       "https://www.googleapis.com/auth/drive.file",
     ]);
 
@@ -118,11 +124,12 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       auth: oauth2Client,
     });
 
+    const folderName = `PCC Import from Drupal on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`;
     const folderRes = (await drive.files
       .create({
         fields: "id,name",
         requestBody: {
-          name: `PCC Import from Drupal on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
+          name: folderName,
           mimeType: "application/vnd.google-apps.folder",
         },
       })
@@ -188,23 +195,24 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
 
         // Initially create a blank document, just to get an article id
         // that we can work with for further steps, such as adding smart components.
-        const { fileId, spinner, drive } = await createFileOnDrive(
-          {
+        const { fileId, spinner } = await createFileOnDrive({
+          requestBody: {
             name: post.attributes.title,
 
             parents: [folderId],
           },
-          "",
-        );
+          body: "",
+          drive,
+        });
         spinner.succeed();
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocument(fileId, true, undefined, idToken);
 
         // Set the document's content.
-        const res = (await drive.files.update({
+        (await drive.files.update({
+          fileId,
           requestBody: {
-            id: fileId,
             mimeType: "application/vnd.google-apps.document",
           },
           media: {
@@ -235,7 +243,9 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
             verbose,
           );
 
-          await AddOnApiHelper.publishDocument(fileId);
+          if (automaticallyPublish) {
+            await AddOnApiHelper.publishDocument(fileId);
+          }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
           throw e;
@@ -248,7 +258,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
 
     logger.log(
       chalk.green(
-        `Successfully imported ${allPosts.length} documents into ${folderRes.data.name}`,
+        `Successfully imported ${allPosts.length} documents into ${folderName} (https://drive.google.com/drive/u/0/folders/${folderRes.data.id})`,
       ),
     );
   },
