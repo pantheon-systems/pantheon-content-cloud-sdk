@@ -666,6 +666,12 @@ yargs(hideBin(process.argv))
                 default: false,
                 demandOption: false,
               })
+              .option("publish", {
+                describe: "Automatically publish each imported article.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
               .demandOption(["baseUrl", "siteId"]);
           },
           async (args) =>
@@ -673,6 +679,7 @@ yargs(hideBin(process.argv))
               baseUrl: args.baseUrl as string,
               siteId: args.siteId as string,
               verbose: args.verbose as boolean,
+              automaticallyPublish: args.publish as boolean,
             }),
         )
         .command(
