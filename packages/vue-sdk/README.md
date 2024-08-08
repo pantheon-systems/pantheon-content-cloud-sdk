@@ -1,3 +1,7 @@
+### IMPORTANT NOTE
+
+This package has been **deprecated**, but remains here in case there is a developer who may benefit from using this as an (outdated) integration reference in the future.
+
 <div align="center">
 	<h1>Pantheon Content Cloud SDK for Vue.js</h1>
 	<p>
