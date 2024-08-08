@@ -1,3 +1,9 @@
+### IMPORTANT NOTE
+
+This starter kit has been **deprecated**, but remains here in case there is a
+developer who may benefit from using this as an (outdated) integration reference
+in the future.
+
 # Pantheon Decoupled Kit Next Pantheon Content Cloud Starter
 
 ## Getting Started
