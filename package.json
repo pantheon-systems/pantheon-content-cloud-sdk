@@ -17,6 +17,7 @@
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "publish:packages": "pnpm build && pnpm ci:publish",
+    "publish:npm": "pnpm build && pnpm -r --filter \"{./packages/**/*,!./packages/vue*}\" publish",
     "prepare": "husky"
   },
   "dependencies": {
