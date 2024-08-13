@@ -133,6 +133,14 @@ export const configurableSiteProperties = [
       type: "string",
     },
   },
+  {
+    id: "visibility",
+    command: {
+      name: "visibility <visibility>",
+      description: "Set the collection's visibility (either 'private' or 'workspace')",
+      type: "string",
+    },
+  },
 ] as const;
 
 export const SITE_EXAMPLES = [

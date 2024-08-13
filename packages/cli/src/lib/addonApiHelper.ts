@@ -449,6 +449,53 @@ class AddOnApiHelper {
     });
   }
 
+  static async listCollaborators(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    return (
+      await axios.get(
+        `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
+      )
+    ).data;
+  }
+
+  static async addCollaborator(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.patch(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeCollaborator(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+        data: {
+          email,
+        },
+      },
+    );
+  }
+
   static async updateSiteConfig(
     id: string,
     {
