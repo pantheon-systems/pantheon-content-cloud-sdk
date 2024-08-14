@@ -9,7 +9,7 @@
     "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
     "dev": "turbo run dev --concurrency=20",
     "build": "turbo run build --filter=./packages/*",
-    "lint": "turbo run lint --filter=./{packages,starters}/*",
+    "lint": "manypkg check && turbo run lint --filter=./{packages,starters}/*",
     "lint:fix": "turbo run lint:fix --filter=./{packages}/*",
     "test": "turbo run test --filter=./{packages,starters}/*",
     "build:starters": "turbo run build --filter=./starters/*",
@@ -21,7 +21,10 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.27.1",
+    "@manypkg/cli": "^0.21.4",
     "eslint": "^8.57.0",
+    "eslint-config-pcc-custom": "workspace:*",
+    "husky": "^9.0.11",
     "turbo": "^1.12.4"
   },
   "pnpm": {
@@ -35,9 +38,5 @@
       "webpack-dev-middleware": "^7.2.1",
       "@pantheon-systems/pcc-vue-sdk>ufo": "1.5.3"
     }
-  },
-  "devDependencies": {
-    "eslint-config-pcc-custom": "workspace:*",
-    "husky": "^9.0.11"
   }
 }
