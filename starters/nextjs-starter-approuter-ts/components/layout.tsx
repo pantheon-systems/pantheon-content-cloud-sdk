@@ -42,10 +42,7 @@ export default function Layout({ children, footerMenu }: Props) {
                   className={`${item.href === "/" ? "mr-auto" : "mx-4"}`}
                   key={item.href}
                 >
-                  <Link
-                    className="font-sans hover:underline"
-                    href={item.href}
-                  >
+                  <Link className="hover:underline" href={item.href}>
                     {item.linkText}
                   </Link>
                 </li>
@@ -64,7 +61,7 @@ export default function Layout({ children, footerMenu }: Props) {
         <span className="mx-auto">
           © {new Date().getFullYear()} Built with{" "}
           <a
-            className="text-white hover:text-blue-100 underline"
+            className="text-white underline hover:text-blue-100"
             href="https://nextjs.org/"
           >
             Next.js
