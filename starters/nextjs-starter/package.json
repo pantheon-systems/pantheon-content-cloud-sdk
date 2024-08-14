@@ -25,15 +25,19 @@
   "dependencies": {
     "@pantheon-systems/pcc-react-sdk": "~3.7.0",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
+    "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/typography": "^0.5.10",
+    "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "jotai": "^2.7.0",
     "next": "^14.2.5",
     "next-seo": "^5.15.0",
     "query-string": "^8.2.0",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
     "@testing-library/react": "13.4.0",
