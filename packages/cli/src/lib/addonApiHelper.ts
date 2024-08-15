@@ -44,7 +44,7 @@ class AddOnApiHelper {
   static async getIdToken(
     requiredScopes?: string[],
   ): Promise<{ idToken: string; oauthToken: string }>;
-  static async getIdToken(requiredScopes?: string[], withAuthToken?: boolean) {
+  static async getIdToken(requiredScopes?: string[]) {
     let authDetails = await getLocalAuthDetails(requiredScopes);
 
     // If auth details not found, try user logging in

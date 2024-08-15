@@ -11,7 +11,6 @@ export function preprocessBaseURL(originalBaseURL: string) {
   let baseURL: string | null = originalBaseURL;
 
   if (originalBaseURL == null) {
-    console.log("ITS NULL");
     return null;
   }
 
@@ -26,10 +25,9 @@ export function preprocessBaseURL(originalBaseURL: string) {
       new URL(originalBaseURL);
     }
 
-    console.log({baseURL});
     return baseURL;
   } catch (_err) {
-    console.log(_err);
+    console.error(_err);
     return null;
   }
 }
