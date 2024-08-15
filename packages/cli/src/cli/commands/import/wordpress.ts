@@ -29,7 +29,9 @@ interface WPPost {
   title: {
     rendered: string;
   };
-  content: string;
+  content: {
+    rendered: string;
+  };
   excerpt: {
     rendered: string;
     protected: boolean;
@@ -64,8 +66,10 @@ async function getWPPosts(url: string) {
     }
 
     query.pageSize = pageSize.toString();
+    // Try to parse the page, otherwise start at the second page, since
+    // we just processed (presumably) the first one.
     query.page = (
-      query.page != null ? parseInt(query.page.toString(), 10) + 1 : 1
+      query.page != null ? parseInt(query.page.toString(), 10) + 1 : 2
     ).toString();
 
     let nextURL: string | null = queryString.stringifyUrl({
@@ -114,6 +118,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
     const logger = new Logger();
     const processedBaseURL = preprocessBaseURL(baseUrl);
 
+    console.log({ baseUrl, processedBaseURL });
     if (!processedBaseURL) {
       logger.error(
         chalk.red(`ERROR: Value provided for \`baseUrl\` is not a valid URL. `),
@@ -124,7 +129,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
     const drive = await getAuthedDrive(logger);
     const folder = await createFolder(
       drive,
-      `PCC Import from Drupal on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
+      `PCC Import from WordPress on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
     );
 
     if (!folder?.id) {
@@ -137,10 +142,11 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
     }
 
     // Get results.
-    let page = 0;
+    let page = 1;
     const { url, query } = queryString.parseUrl(processedBaseURL);
     query.per_page = DEFAULT_PAGE_SIZE.toString();
-    query.page = "0";
+    query.page = page.toString();
+    query._embed = "";
     const allPosts: WPPost[] = [];
     let nextURL: string | null = queryString.stringifyUrl({
       url: new URL("/wp-json/wp/v2/posts", url).href,
@@ -186,7 +192,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
           },
           media: {
             mimeType: "text/html",
-            body: post.content,
+            body: post.content.rendered,
           },
         })) as GaxiosResponse<drive_v3.Schema$File>;
         const fileId = res.data.id;

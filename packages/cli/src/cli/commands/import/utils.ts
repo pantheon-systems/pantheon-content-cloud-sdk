@@ -8,9 +8,10 @@ import { getLocalAuthDetails } from "../../../lib/localStorage";
 import { Logger } from "../../../lib/logger";
 
 export function preprocessBaseURL(originalBaseURL: string) {
-  let baseURL: string | null = null;
+  let baseURL: string | null = originalBaseURL;
 
   if (originalBaseURL == null) {
+    console.log("ITS NULL");
     return null;
   }
 
@@ -23,10 +24,12 @@ export function preprocessBaseURL(originalBaseURL: string) {
 
       // Validate again
       new URL(originalBaseURL);
-
-      return baseURL;
     }
+
+    console.log({baseURL});
+    return baseURL;
   } catch (_err) {
+    console.log(_err);
     return null;
   }
 }
