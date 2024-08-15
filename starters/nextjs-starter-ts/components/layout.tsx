@@ -12,21 +12,6 @@ interface Props {
 }
 
 export default function Layout({ children, footerMenu }: Props) {
-  const navItems = [
-    {
-      linkText: "🏠 Home",
-      href: "/",
-    },
-    {
-      linkText: "📑 Articles",
-      href: "/articles",
-    },
-    {
-      linkText: "⚛️ Examples",
-      href: "/examples",
-    },
-  ];
-
   const footerMenuItems = footerMenu?.map(({ path, label }) => ({
     linkText: label,
     href: path,
@@ -34,7 +19,7 @@ export default function Layout({ children, footerMenu }: Props) {
   }));
 
   return (
-    <div className="flex flex-col max-h-screen min-h-screen overflow-x-hidden min-w-screen max-w-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden min-w-screen max-w-screen">
       <Header />
       <main className="mb-auto">{children}</main>
       <Footer footerMenuItems={footerMenuItems}>
