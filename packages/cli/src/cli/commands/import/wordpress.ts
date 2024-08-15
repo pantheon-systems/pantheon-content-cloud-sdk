@@ -94,6 +94,8 @@ async function getWPPosts(url: string) {
 }
 
 async function getTagInfo(baseURL: string, tags: number[]) {
+  if (!tags?.length) return [];
+
   const { data } = await axios.get<WPTag[]>(
     new URL(`/wp-json/wp/v2/tags?include=${tags.join()}`, baseURL).href,
   );
