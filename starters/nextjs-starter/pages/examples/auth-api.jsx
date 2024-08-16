@@ -1,11 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
-
 import Layout from "../../components/layout";
 
 export default function AuthApiExampleTemplate({ menuItems, privatePosts }) {
   return (
-    <Layout footerMenu={menuItems}>
+    <Layout>
       <Head>
         <title>API Authorization Example</title>
         <meta
