@@ -1,21 +1,10 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
-import { useAtom } from "jotai";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import { useEffect } from "react";
 import { PostGrid } from "../components/grid";
 import Layout from "../components/layout";
-import { searchQueryAtom } from "../components/searchbar";
 
 export default function Search({ articles, searchString, summary }) {
-  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom);
-
-  useEffect(() => {
-    setSearchQuery(searchString);
-    // Don't include searchString as a hook dependency because we only
-    // want to update it when this component initially mounts.
-  }, [setSearchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const HomepageHeader = () => (
     <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
       <h1 className="h-full text-4xl prose text-center">
@@ -64,7 +53,7 @@ export default function Search({ articles, searchString, summary }) {
         </div>
       </section>
       <h3 className="mt-4 text-3xl text-center">
-        Search results for &quot;{searchQuery}&quot;
+        Search results for &quot;{searchString}&quot;
       </h3>
       <section>
         <PostGrid contentType="posts" data={articles} />

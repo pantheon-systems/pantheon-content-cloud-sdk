@@ -20,6 +20,7 @@ export default function Home({ articles, totalCount, cursor }) {
     initialArticles: articles,
     pageSize: PAGE_SIZE,
   });
+
   const HomepageHeader = () => (
     <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
       <h1 className="h-full text-4xl prose text-center">
@@ -31,20 +32,6 @@ export default function Home({ articles, totalCount, cursor }) {
           Next.js!
         </a>
       </h1>
-      <div className="text-2xl">
-        <div className="flex items-center justify-center p-4 text-white bg-black rounded">
-          Decoupled PCC on{" "}
-          <Image
-            src="/pantheon.png"
-            alt="Pantheon Logo"
-            style={{
-              margin: 0,
-            }}
-            width={191}
-            height={60}
-          />
-        </div>
-      </div>
     </div>
   );
 
@@ -57,7 +44,7 @@ export default function Home({ articles, totalCount, cursor }) {
       <HomepageHeader />
       <section>
         <PostGrid contentType="posts" data={currentArticles} />
-        <div className="flex mt-4 flex-row justify-center items-center">
+        <div className="flex flex-row items-center justify-center mt-4">
           <Pagination
             totalCount={totalCount}
             pageSize={PAGE_SIZE}
