@@ -1,38 +1,14 @@
 import * as Popover from "@radix-ui/react-popover";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
+import { navItems } from ".";
 import CloseIcon from "../../assets/icons/close.svg";
 import HamburgerMenuIcon from "../../assets/icons/hamburger-menu.svg";
 import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
-
-export const navItems = {
-  links: [
-    {
-      href: "/",
-      label: "Home",
-    },
-    {
-      href: "/articles",
-      label: "Articles",
-    },
-  ],
-  buttons: [
-    {
-      href: "https://pcc.pantheon.io/docs",
-      label: "Docs",
-      variant: "secondary",
-    },
-    {
-      href: "/examples",
-      label: "Examples",
-      variant: "primary",
-    },
-  ],
-} as const;
 
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
@@ -96,14 +72,8 @@ export default function NavMenu() {
   );
 }
 
-export function NavItem({
-  href,
-  children,
-}: {
-  href: string;
-  children: string;
-}) {
-  const activePath = useRouter().pathname;
+export function NavItem({ href, children }) {
+  const activePath = usePathname();
 
   return (
     <li>

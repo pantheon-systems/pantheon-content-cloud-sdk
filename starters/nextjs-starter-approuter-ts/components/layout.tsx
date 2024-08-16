@@ -1,7 +1,5 @@
-import Link from "next/link";
-import { Suspense } from "react";
 import { Footer } from "./footer";
-import { Searchbar } from "./searchbar";
+import Header from "./header";
 
 interface Props {
   children: React.ReactNode;
@@ -14,17 +12,6 @@ interface Props {
 }
 
 export default function Layout({ children, footerMenu }: Props) {
-  const navItems = [
-    {
-      linkText: "🏠 Home",
-      href: "/",
-    },
-    {
-      linkText: "📑 Articles",
-      href: "/articles",
-    },
-  ];
-
   const footerMenuItems = footerMenu?.map(({ path, label }) => ({
     linkText: label,
     href: path,
@@ -32,30 +19,8 @@ export default function Layout({ children, footerMenu }: Props) {
   }));
 
   return (
-    <div className="flex flex-col max-h-screen min-h-screen overflow-x-hidden min-w-screen max-w-screen">
-      <div className="px-5 pt-10 my-0 text-xl">
-        <nav>
-          <ul className="flex flex-row flex-wrap justify-between max-w-screen-lg mx-auto list-none sm:flex-nowrap">
-            {navItems.map((item) => {
-              return (
-                <li
-                  className={`${item.href === "/" ? "mr-auto" : "mx-4"}`}
-                  key={item.href}
-                >
-                  <Link className="hover:underline" href={item.href}>
-                    {item.linkText}
-                  </Link>
-                </li>
-              );
-            })}
-            <Suspense>
-              <div>
-                <Searchbar />
-              </div>
-            </Suspense>
-          </ul>
-        </nav>
-      </div>
+    <div className="flex flex-col min-h-screen overflow-x-hidden min-w-screen max-w-screen">
+      <Header />
       <main className="mb-auto">{children}</main>
       <Footer footerMenuItems={footerMenuItems}>
         <span className="mx-auto">
