@@ -1,16 +1,39 @@
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import chalk from "chalk";
-import { getLocalAuthDetails } from "../../lib/localStorage";
+import { Credentials } from "google-auth-library";
+import {
+  CREDENTIAL_TYPE,
+  getLocalAuthDetails,
+  NextJwtCredentials,
+} from "../../lib/localStorage";
 import { errorHandler } from "../exceptions";
 
 const printWhoAmI = async () => {
   try {
-    const authData = await getLocalAuthDetails();
-    if (!authData) {
+    const nextJwt = (await getLocalAuthDetails(
+      CREDENTIAL_TYPE.NEXT_JWT,
+    )) as NextJwtCredentials | null;
+    if (!nextJwt) {
       console.log("You aren't logged in.");
     } else {
+      console.log(`You're logged in as ${nextJwt.email}`);
+    }
+  } catch (e) {
+    chalk.red("Something went wrong - couldn't retrieve auth info.");
+    throw e;
+  }
+
+  try {
+    const authData = (await getLocalAuthDetails(
+      CREDENTIAL_TYPE.OAUTH,
+    )) as Credentials | null;
+    if (!authData) {
+      console.log(
+        "You aren't logged into oauth. For some actions, the oauth connection isn't necessary. If you run a command that requires it, you will be only prompted to log in with oauth at that point.",
+      );
+    } else {
       const jwtPayload = parseJwt(authData.id_token as string);
-      console.log(`You're logged in as ${jwtPayload.email}`);
+      console.log(`Oauth: You're logged in as ${jwtPayload.email}`);
     }
   } catch (e) {
     chalk.red("Something went wrong - couldn't retrieve auth info.");
