@@ -275,10 +275,6 @@ export const INIT_EXAMPLES = [
     command: "pcc init new_proj",
   },
   {
-    description: "Create project with gatsby template",
-    command: "pcc init new_proj --template=gatsby",
-  },
-  {
     description: "Create project using pnpm package manager",
     command: "pcc init new_proj --use-pnpm",
   },
