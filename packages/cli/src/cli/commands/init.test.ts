@@ -46,7 +46,6 @@ test("should be able to init starter kit for nextjs template", async () => {
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-
 test("should be able to init starter kit for nextjs template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
 
