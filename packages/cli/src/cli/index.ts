@@ -25,6 +25,11 @@ import {
   removeAdminSchema,
 } from "./commands/sites/admins";
 import {
+  addCollaborator,
+  listCollaborators,
+  removeCollaborator,
+} from "./commands/sites/collaborators";
+import {
   getComponentSchema,
   printLiveComponentSchema,
   printStoredComponentSchema,
@@ -608,6 +613,101 @@ yargs(hideBin(process.argv))
                   configurePreferredWebhookEvents(String(args.id)),
               );
           },
+        )
+        .command(
+          "publishing <cmd> [options]",
+          "Manage publishing permissions.",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .demandCommand()
+              .command(
+                "config [options]",
+                "Update the collection's visibility.",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .option("siteId", {
+                      describe: "The id of the collection to modify.",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("mode", {
+                      describe:
+                        "The visibility of this collection (either 'private' or 'workspace').",
+                      demandOption: true,
+                      type: "string",
+                    });
+                },
+                async (args) =>
+                  await updateSiteConfig({
+                    id: args.siteId as string,
+                    visibility: args.mode as string,
+                  }),
+              )
+              .command(
+                "list-user [options]",
+                "Print the users added as collaborators to this collection.",
+                (yargs) => {
+                  yargs.strictCommands().option("siteId", {
+                    describe: "The id of the collection to modify.",
+                    demandOption: true,
+                    type: "string",
+                  });
+                },
+                async (args) =>
+                  await listCollaborators({
+                    siteId: args.siteId as string,
+                  }),
+              )
+              .command(
+                "add-user [options]",
+                "Update the collection's visibility.",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .option("siteId", {
+                      describe: "The id of the collection to modify.",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("user", {
+                      describe: "The email of the user to add.",
+                      demandOption: true,
+                      type: "string",
+                    });
+                },
+                async (args) =>
+                  await addCollaborator({
+                    siteId: args.siteId as string,
+                    email: args.user as string,
+                  }),
+              )
+              .command(
+                "remove-user [options]",
+                "Update the collection's visibility.",
+                (yargs) => {
+                  yargs
+                    .strictCommands()
+                    .option("siteId", {
+                      describe: "The id of the collection to modify.",
+                      demandOption: true,
+                      type: "string",
+                    })
+                    .option("user", {
+                      describe: "The email of the user to remove.",
+                      demandOption: true,
+                      type: "string",
+                    });
+                },
+                async (args) =>
+                  await removeCollaborator({
+                    siteId: args.siteId as string,
+                    email: args.user as string,
+                  }),
+              );
+          },
+          async (args) => await createSite(args.url as string),
         )
         .example(formatExamples(SITE_EXAMPLES));
     },
