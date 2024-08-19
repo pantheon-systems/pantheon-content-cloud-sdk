@@ -46,30 +46,6 @@ test("should be able to init starter kit for nextjs template", async () => {
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-test("should be able to init starter kit for gatsby template", async () => {
-  const appFolder = tmp.tmpNameSync();
-
-  await executePCC("init", [appFolder, "--template", "gatsby", "--use-pnpm"]);
-
-  // Eslint should not be initialized
-  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
-
-  // Checking if primary required files for Gatsby starter kit are created.
-  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/gatsby-config.js`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
-
-  // package.json checks
-  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
-  const packageJson = JSON.parse(
-    readFileSync(`${appFolder}/package.json`).toString(),
-  );
-  expect(packageJson.name).toBe(path.parse(appFolder).base);
-
-  // Remove app folder
-  fs.rmSync(appFolder, { recursive: true, force: true });
-});
-
 test("should be able to init starter kit for nextjs template with typescript", async () => {
   const appFolder = tmp.tmpNameSync();
 
@@ -87,33 +63,6 @@ test("should be able to init starter kit for nextjs template with typescript", a
   // Checking if primary required files for Nextjs starter kit are created.
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
   expect(fs.existsSync(`${appFolder}/pages/index.tsx`)).toBe(true);
-
-  // package.json checks
-  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
-  const packageJson = JSON.parse(
-    readFileSync(`${appFolder}/package.json`).toString(),
-  );
-  expect(packageJson.name).toBe(path.parse(appFolder).base);
-
-  // Remove app folder
-  fs.rmSync(appFolder, { recursive: true, force: true });
-});
-
-test("should be able to init starter kit for gatsby template with typescript", async () => {
-  const appFolder = tmp.tmpNameSync();
-
-  await executePCC("init", [appFolder, "--template", "gatsby", "--ts"]);
-
-  // Check that TypesScript source files exist.
-  expect(fs.existsSync(`${appFolder}/src/templates/index.tsx`)).toBe(true);
-
-  // Eslint should not be initialized
-  expect(fs.existsSync(`${appFolder}/.eslintrc.json`)).toBe(false);
-
-  // Checking if primary required files for Gatsby starter kit are created
-  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/gatsby-config.js`)).toBe(true);
-  expect(fs.existsSync(`${appFolder}/gatsby-browser.js`)).toBe(true);
 
   // package.json checks
   expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);

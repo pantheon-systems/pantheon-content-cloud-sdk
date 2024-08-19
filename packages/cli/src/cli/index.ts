@@ -172,6 +172,12 @@ yargs(hideBin(process.argv))
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
 
+      if (args.template === "vue" || args.template === "gatsby") {
+        throw new Error(
+          `The ${args.template} starter kit is no longer supported or maintained. You may manually reference the deprecated source code for it in our github repo (https://github.com/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters).`,
+        );
+      }
+
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
       if (useYarn) {
