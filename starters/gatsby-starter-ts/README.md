@@ -1,3 +1,9 @@
+### IMPORTANT NOTE
+
+This starter kit has been **deprecated**, but remains here in case there is a
+developer who may benefit from using this as an (outdated) integration reference
+in the future.
+
 <p align="center">
   <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
     <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />

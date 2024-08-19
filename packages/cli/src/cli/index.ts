@@ -10,7 +10,11 @@ import {
   setTargetEnvironment,
 } from "./commands/config";
 import { DOCUMENT_EXAMPLES, generatePreviewLink } from "./commands/documents";
-import { importFromDrupal, importFromMarkdown } from "./commands/import";
+import {
+  importFromDrupal,
+  importFromMarkdown,
+  importFromWordPress,
+} from "./commands/import";
 import init, { INIT_EXAMPLES } from "./commands/init";
 import login, { LOGIN_EXAMPLES } from "./commands/login";
 import logout, { LOGOUT_EXAMPLES } from "./commands/logout";
@@ -172,6 +176,12 @@ yargs(hideBin(process.argv))
       const useAppRouter = args.appRouter as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
+
+      if (args.template === "vue" || args.template === "gatsby") {
+        throw new Error(
+          `The ${args.template} starter kit is no longer supported or maintained. You may manually reference the deprecated source code for it in our github repo (https://github.com/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters).`,
+        );
+      }
 
       // Deriving package manager from CLI flags in [NPM, PNPM, Yarn] order
       let packageManager: PackageManager;
@@ -747,13 +757,13 @@ yargs(hideBin(process.argv))
         .demandCommand()
         .command(
           "drupal <baseUrl> <siteId>",
-          "Imports all articles from a Drupal JSON API endpoint into a new Google Drive folder and connects them to a target PCC site",
+          "Imports all articles from a Drupal JSON API endpoint into a new Google Drive folder and connects them to a target PCC collection",
           (yargs) => {
             yargs
               .strictCommands()
               .positional("baseUrl", {
                 describe:
-                  'URL of drupal json API endpoint such as "https://example.com/jsonapi/node/blog".',
+                  'URL of drupal json API endpoint such as "https://example.com/jsonapi/node/blog"',
                 type: "string",
               })
               .positional("siteId", {
@@ -766,6 +776,12 @@ yargs(hideBin(process.argv))
                 default: false,
                 demandOption: false,
               })
+              .option("publish", {
+                describe: "Whether newly created article should be published",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
               .demandOption(["baseUrl", "siteId"]);
           },
           async (args) =>
@@ -773,6 +789,44 @@ yargs(hideBin(process.argv))
               baseUrl: args.baseUrl as string,
               siteId: args.siteId as string,
               verbose: args.verbose as boolean,
+              publish: args.publish as boolean,
+            }),
+        )
+        .command(
+          "wordpress <baseUrl> <siteId>",
+          "Imports all articles from a WordPress site into a new Google Drive folder and connects them to a target PCC collection",
+          (yargs) => {
+            yargs
+              .strictCommands()
+              .positional("baseUrl", {
+                describe:
+                  'URL of a WordPress site which has the JSON API enabled, such as "https://example.com"',
+                type: "string",
+              })
+              .positional("siteId", {
+                describe: "Id of site to import articles into.",
+                type: "string",
+              })
+              .option("verbose", {
+                describe: "Print verbose logs.",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .option("publish", {
+                describe: "Whether newly created article should be published",
+                type: "boolean",
+                default: false,
+                demandOption: false,
+              })
+              .demandOption(["baseUrl", "siteId"]);
+          },
+          async (args) =>
+            await importFromWordPress({
+              baseUrl: args.baseUrl as string,
+              siteId: args.siteId as string,
+              verbose: args.verbose as boolean,
+              publish: args.publish as boolean,
             }),
         )
         .command(
