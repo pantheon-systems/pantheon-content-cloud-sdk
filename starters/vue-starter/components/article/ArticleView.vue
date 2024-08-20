@@ -42,7 +42,6 @@ defineProps({
       <ArticleRenderer
         :article="article"
         :smart-component-map="smartComponentMap"
-        :__experimental-flags
       >
       </ArticleRenderer>
     </div>
