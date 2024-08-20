@@ -9,12 +9,7 @@ import { ClientsideArticleView } from "./clientside-articleview";
 export const ArticleView = async ({ params, searchParams }) => {
   const { article, grant } = await getServersideArticle(params, searchParams);
 
-  return (
-    <>
-      <ClientsideArticleView article={article} grant={grant} />
-      <Tags tags={article?.tags} />
-    </>
-  );
+  return <ClientsideArticleView article={article} grant={grant} />;
 };
 
 export async function getServersideArticle(params, searchParams) {
