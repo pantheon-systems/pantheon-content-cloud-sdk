@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { RemoveScroll } from "react-remove-scroll";
-import { navItems } from ".";
 import CloseIcon from "../../assets/icons/close.svg";
 import HamburgerMenuIcon from "../../assets/icons/hamburger-menu.svg";
 import { cn } from "../../lib/utils";
@@ -86,3 +85,28 @@ export function NavItem({ href, children }) {
     </li>
   );
 }
+
+export const navItems = {
+  links: [
+    {
+      href: "/",
+      label: "Home",
+    },
+    {
+      href: "/articles",
+      label: "Articles",
+    },
+  ],
+  buttons: [
+    {
+      href: "https://pcc.pantheon.io/docs",
+      label: "Docs",
+      variant: "secondary",
+    },
+    {
+      href: "/examples",
+      label: "Examples",
+      variant: "primary",
+    },
+  ],
+};
