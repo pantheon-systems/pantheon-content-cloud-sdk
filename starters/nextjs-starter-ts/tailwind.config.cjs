@@ -9,8 +9,33 @@ module.exports = {
       typography: () => ({
         DEFAULT: {
           css: {
+            img: {
+              borderRadius: "1rem",
+              maxWidth: "none !important",
+              maxHeight: "none !important",
+              aspectRatio: "3/2",
+            },
+            maxWidth: "80ch",
             a: {
               color: "rgb(17, 85, 204)", // "dark cornflower blue 2" in Google Docs
+            },
+            h1: {
+              fontSize: "3rem",
+            },
+            h2: {
+              fontSize: "2.25rem",
+            },
+            h3: {
+              fontSize: "1.875rem",
+            },
+            h4: {
+              fontSize: "1.5rem",
+            },
+            h5: {
+              fontSize: "1.25rem",
+            },
+            h6: {
+              fontSize: "1rem",
             },
           },
         },
