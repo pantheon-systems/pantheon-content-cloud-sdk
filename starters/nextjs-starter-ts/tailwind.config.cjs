@@ -9,13 +9,15 @@ module.exports = {
       typography: () => ({
         DEFAULT: {
           css: {
+            maxWidth: "80ch",
             img: {
               borderRadius: "1rem",
               maxWidth: "none !important",
               maxHeight: "none !important",
               aspectRatio: "3/2",
+              marginTop: "4rem !important",
+              marginBottom: "4rem !important",
             },
-            maxWidth: "80ch",
             a: {
               color: "rgb(17, 85, 204)", // "dark cornflower blue 2" in Google Docs
             },
