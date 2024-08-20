@@ -6,7 +6,7 @@ import {
 import { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
 
-export default function ArticleView({ article }) {
+export default function ArticleView({ article, onlyContent }) {
   const { data } = useArticle(
     article.id,
     {
@@ -23,10 +23,12 @@ export default function ArticleView({ article }) {
     [data, article],
   );
 
-  return <StaticArticleView article={hydratedArticle} />;
+  return (
+    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+  );
 }
 
-export function StaticArticleView({ article }) {
+export function StaticArticleView({ article, onlyContent }) {
   const articleTitle = useArticleTitle(article);
 
   return (
@@ -47,7 +49,10 @@ export function StaticArticleView({ article }) {
       <ArticleRenderer
         article={article}
         smartComponentMap={clientSmartComponentMap}
-        __experimentalFlags={{ useUnintrusiveTitleRendering: true }}
+        __experimentalFlags={{
+          useUnintrusiveTitleRendering: true,
+          disableAllStyles: !!onlyContent,
+        }}
       />
     </>
   );
