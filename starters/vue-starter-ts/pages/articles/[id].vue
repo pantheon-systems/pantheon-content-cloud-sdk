@@ -17,6 +17,7 @@ const pantheonConfig = {
 } satisfies PantheonClientConfig
 
 const articleId = route.params.id
+
 const { data, error } = await useFetch<{article:Article, recommendedArticles: ArticleWithoutContent[]}>(`/api/articles/${articleId}`, {
   query: {
     publishingLevel
