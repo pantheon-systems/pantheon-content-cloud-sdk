@@ -6,22 +6,15 @@ import {
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
-import { PageGrid } from "../../components/grid";
 import Layout from "../../components/layout";
-import { Tags } from "../../components/tags";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
   grant: string;
-  recommendedArticles: Article[];
 }
 
-export default function ArticlePage({
-  article,
-  grant,
-  recommendedArticles,
-}: ArticlePageProps) {
+export default function ArticlePage({ article, grant }: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -50,13 +43,8 @@ export default function ArticlePage({
           }}
         />
 
-        <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
-          <ArticleView article={article} />
-          <Tags tags={article?.tags} />
-          <section>
-            <h3>Recommended Articles</h3>
-            <PageGrid data={recommendedArticles} />
-          </section>
+        <div className="prose mx-4 mt-16 text-black sm:mx-6 lg:mx-auto">
+          <ArticleView article={article} onlyContent />
         </div>
       </Layout>
     </PantheonProvider>

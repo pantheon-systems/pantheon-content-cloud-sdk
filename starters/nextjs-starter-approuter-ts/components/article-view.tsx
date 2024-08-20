@@ -32,10 +32,9 @@ export default function ArticleView({
   return (
     <>
       <div>
-        <h1 className="text-3xl font-bold md:text-4xl">{title}</h1>
+        <h1 className="text-5xl font-bold">{title}</h1>
         {article.updatedAt ? (
           <p className="py-2">
-            Last Updated:{" "}
             {new Date(article.updatedAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -43,8 +42,6 @@ export default function ArticleView({
             })}
           </p>
         ) : null}
-
-        <hr className="mt-6 mb-8" />
       </div>
       <ArticleRenderer
         article={hydratedArticle}
