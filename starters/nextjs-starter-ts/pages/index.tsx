@@ -55,7 +55,7 @@ export default function Home({ articles }) {
 export async function getServerSideProps() {
   const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
     {
-      pageSize: 2,
+      pageSize: 3,
     },
   );
 

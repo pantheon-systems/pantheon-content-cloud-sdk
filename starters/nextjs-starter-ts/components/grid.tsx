@@ -10,7 +10,7 @@ interface ArticleGridProps {
 
 export default function ArticleGrid({ articles, showWide }: ArticleGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 px-4 mx-auto sm:grid-cols-2 2xl:grid-cols-3 sm:px-6 lg:px-0 lg:w-2/3 2xl:w-3/4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-0 lg:w-2/3 mx-auto">
       {articles.map((article, index) => (
         <ArticleGridCard
           key={article.id}
@@ -45,15 +45,13 @@ export function ArticleGridCard({
     <div
       className={cn(
         "flex flex-col h-full shadow-lg overflow-clip ring-1 ring-gray-300/50 rounded-xl",
-        isWide
-          ? "sm:flex-row 2xl:flex-col sm:col-span-2 2xl:col-span-1 only:2xl:col-span-3 only:2xl:flex-row only:2xl:w-[900px] only:2xl:mx-auto"
-          : "",
+        isWide ? "sm:flex-row 2xl:flex-col sm:col-span-2 2xl:col-span-1" : "",
       )}
     >
       <div
         className={cn(
           "w-full aspect-video min-h-[196px] flex-shrink-0",
-          isWide ? "sm:max-w-[49%] only:2xl:max-w-[100%]" : "max-w-[100%]",
+          isWide ? "sm:max-w-[49%] 2xl:max-w-[100%]" : "max-w-[100%]",
         )}
       >
         <GridItemCoverImage
@@ -64,16 +62,16 @@ export function ArticleGridCard({
       <div
         className={cn(
           "p-8 flex flex-col flex-grow justify-between",
-          isWide && "sm:py-24  only:2xl:py-24",
+          isWide && "sm:py-24 2xl:py-8",
         )}
       >
         <div>
           <h1 className="mb-3 text-xl font-semibold leading-7">
             {article.title}
           </h1>
-          {article.metadata?.["Description"] && (
+          {article.metadata?.["Guide Description"] && (
             <p className="text-gray-600 line-clamp-3 min-h-[4.5rem]">
-              {article.metadata?.["Description"]?.toString() || ""}
+              {article.metadata?.["Guide Description"]?.toString() || ""}
             </p>
           )}
         </div>
