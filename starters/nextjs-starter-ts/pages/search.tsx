@@ -4,7 +4,7 @@ import {
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import { PostGrid } from "../components/grid";
+import ArticleGrid from "../components/grid";
 import Layout from "../components/layout";
 
 interface Props {
@@ -65,7 +65,7 @@ export default function Search({ articles, summary, searchString }: Props) {
         Search results for &quot;{searchString}&quot;
       </h3>
       <section>
-        <PostGrid contentType="posts" data={articles} />
+        <ArticleGrid articles={articles} />
       </section>
     </Layout>
   );

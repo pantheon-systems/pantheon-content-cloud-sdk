@@ -6,7 +6,7 @@ import {
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
-import { PageGrid } from "../../components/grid";
+import ArticleGrid from "../../components/grid";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
@@ -55,7 +55,7 @@ export default function ArticlePage({
           <Tags tags={article?.tags} />
           <section>
             <h3>Recommended Articles</h3>
-            <PageGrid data={recommendedArticles} />
+            <ArticleGrid articles={recommendedArticles} />
           </section>
         </div>
       </Layout>

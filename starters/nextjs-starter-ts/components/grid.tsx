@@ -1,97 +1,99 @@
+import type { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import Link from "next/link";
-import { Tags } from "./tags";
+import { cn } from "../lib/utils";
+import { Button } from "./ui/button";
 
-const GradientPlaceholder = () => (
-  <div className="w-full h-full bg-gradient-to-b from-blue-100 to-blue-500" />
-);
-
-interface Props {
-  href: string;
-  imgSrc: string;
-  altText?: string;
-  tags?: string[];
-  title: string;
-  snippet?: string;
+interface ArticleGridProps {
+  articles: ArticleWithoutContent[];
+  showWide?: boolean;
 }
 
-const GridItem = ({ href, imgSrc, altText, tags, title, snippet }: Props) => {
+export default function ArticleGrid({ articles, showWide }: ArticleGridProps) {
   return (
-    <div className="flex flex-col h-full overflow-hidden rounded-lg shadow-lg">
-      <Link passHref href={href}>
-        <div className="relative flex-shrink-0 h-40 cursor-pointer hover:border-indigo-500 border-2s not-prose">
-          {imgSrc != null ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={imgSrc}
-              alt={altText || title}
-              className="object-cover w-full h-full"
-            />
-          ) : (
-            <GradientPlaceholder />
+    <div className="grid grid-cols-1 gap-6 px-4 mx-auto sm:grid-cols-2 2xl:grid-cols-3 sm:px-6 lg:px-0 lg:w-2/3 2xl:w-3/4">
+      {articles.map((article, index) => (
+        <ArticleGridCard
+          key={article.id}
+          article={article}
+          isWide={
+            showWide &&
+            (articles.length === 1 || (articles.length > 2 && index === 2))
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
+interface ArticleGridCardProps {
+  article: ArticleWithoutContent;
+  basePath?: string;
+  imageAltText?: string;
+  isWide?: boolean;
+}
+
+export function ArticleGridCard({
+  article,
+  basePath = "/articles",
+  imageAltText,
+  isWide = false,
+}: ArticleGridCardProps) {
+  const targetHref = `${basePath}/${article.slug || article.id}`;
+  const imageSrc = article.metadata?.["Hero Image"] || null;
+
+  return (
+    <div
+      className={cn(
+        "flex flex-col h-full shadow-lg overflow-clip ring-1 ring-gray-300/50 rounded-xl",
+        isWide
+          ? "sm:flex-row 2xl:flex-col sm:col-span-2 2xl:col-span-1 only:2xl:col-span-3 only:2xl:flex-row only:2xl:w-[900px] only:2xl:mx-auto"
+          : "",
+      )}
+    >
+      <div
+        className={cn(
+          "w-full aspect-video min-h-[196px] flex-shrink-0",
+          isWide ? "sm:max-w-[49%] only:2xl:max-w-[100%]" : "max-w-[100%]",
+        )}
+      >
+        <GridItemCoverImage
+          imageSrc={imageSrc}
+          imageAltText={imageAltText || `Cover image for ${article.title}`}
+        />
+      </div>
+      <div
+        className={cn(
+          "p-8 flex flex-col flex-grow justify-between",
+          isWide && "sm:py-24  only:2xl:py-24",
+        )}
+      >
+        <div>
+          <h1 className="mb-3 text-xl font-semibold leading-7">
+            {article.title}
+          </h1>
+          {article.metadata?.["Description"] && (
+            <p className="text-gray-600 line-clamp-3 min-h-[4.5rem]">
+              {article.metadata?.["Description"]?.toString() || ""}
+            </p>
           )}
-          {snippet != null ? <div>{snippet.substring(0, 120)}</div> : null}
         </div>
-      </Link>
-      <div className="mx-6 my-4 text-xl font-semibold leading-7 text-gray-900">
-        <Link passHref href={href}>
-          <div className="hover:scale-105">{title} &rarr;</div>
+        <Link href={targetHref} className="mt-8">
+          <Button size="large">View</Button>
         </Link>
-        <Tags tags={tags || []} />
       </div>
     </div>
   );
-};
-
-const ArticleGridItem = ({ content: article, basePath = "/articles" }) => {
-  return (
-    <GridItem
-      href={`${basePath}/${article.slug || article.id}`}
-      imgSrc={article.metadata?.["Hero Image"]}
-      title={article.title}
-      tags={article.tags}
-      snippet={article.snippet}
-    />
-  );
-};
-
-export const Grid = ({ children }) => {
-  return (
-    <div
-      className={`mt-12 grid gap-5 max-w-content mx-auto lg:max-w-screen-lg lg:grid-cols-3`}
-    >
-      {children}
-    </div>
-  );
-};
-
-interface GriddedComponentProps {
-  data: any[] | null;
-  FallbackComponent?: any | null | undefined;
 }
 
-export const withGrid = (Component) => {
-  const GriddedComponents = ({
-    data,
-    FallbackComponent,
-    ...props
-  }: GriddedComponentProps & any) => {
-    return (
-      <>
-        {data ? (
-          <Grid>
-            {data.map((content, i) => {
-              return <Component key={i} content={content} {...props} />;
-            })}
-          </Grid>
-        ) : FallbackComponent ? (
-          FallbackComponent
-        ) : null}
-      </>
-    );
-  };
-
-  return GriddedComponents;
-};
-
-export const PostGrid = withGrid(ArticleGridItem);
-export const PageGrid = PostGrid;
+function GridItemCoverImage({ imageSrc, imageAltText }) {
+  return imageSrc != null ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={imageSrc}
+      alt={imageAltText}
+      className="object-cover w-full h-full"
+    />
+  ) : (
+    <div className="w-full h-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+  );
+}
