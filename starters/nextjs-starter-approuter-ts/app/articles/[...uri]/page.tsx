@@ -6,7 +6,7 @@ import { ArticleView, getServersideArticle } from "./article-view";
 export default async function ArticlePage({ params, searchParams }) {
   return (
     <Layout>
-      <div className="prose mx-4 mt-16 text-black sm:mx-6 lg:mx-auto">
+      <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
         <Suspense fallback={<SkeletonArticleView />}>
           <ArticleView params={params} searchParams={searchParams} />
         </Suspense>
