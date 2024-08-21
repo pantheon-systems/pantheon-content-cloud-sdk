@@ -1,3 +1,4 @@
+import { withSmartComponentErrorBoundary } from "./error-boundary";
 import MediaPreview from "./media-preview";
 
 export const serverSmartComponentMap = {
@@ -19,7 +20,7 @@ export const serverSmartComponentMap = {
 export const clientSmartComponentMap = {
   MEDIA_PREVIEW: {
     ...serverSmartComponentMap.MEDIA_PREVIEW,
-    reactComponent: MediaPreview,
+    reactComponent: withSmartComponentErrorBoundary(MediaPreview),
   },
 };
 
