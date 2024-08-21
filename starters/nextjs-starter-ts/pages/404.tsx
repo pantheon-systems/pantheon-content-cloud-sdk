@@ -38,8 +38,7 @@ export default function Custom404() {
             src="/images/error.png"
             alt="Pantheon Logo"
             fill
-            objectFit="contain"
-            className="grayscale"
+            className="grayscale object-contain"
           />
         </div>
       </div>
