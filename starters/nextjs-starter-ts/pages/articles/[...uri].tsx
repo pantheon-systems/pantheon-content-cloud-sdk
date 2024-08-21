@@ -43,8 +43,8 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
           }}
         />
 
-        <div className="prose mx-4 mt-16 text-black sm:mx-6 lg:mx-auto">
-          <ArticleView article={article} onlyContent />
+        <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
+          <ArticleView article={article} />
         </div>
       </Layout>
     </PantheonProvider>
