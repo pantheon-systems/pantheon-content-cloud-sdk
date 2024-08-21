@@ -43,11 +43,10 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
   return (
     <>
       <div>
-        <div className="text-3xl font-bold md:text-4xl">{articleTitle}</div>
+        <div className="text-5xl font-bold">{articleTitle}</div>
 
         {article.updatedAt ? (
           <p className="py-2">
-            Last Updated:{" "}
             {new Date(article.updatedAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -55,8 +54,6 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             })}
           </p>
         ) : null}
-
-        <hr className="mt-6 mb-8" />
       </div>
       <ArticleRenderer
         article={article}

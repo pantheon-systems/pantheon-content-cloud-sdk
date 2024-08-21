@@ -1,17 +1,14 @@
+'use client'
+
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
-import { NextSeo } from "next-seo";
 
-export default function Custom500() {
+
+export default function GlobalError() {
   return (
     <Layout>
-      <NextSeo
-        title="Internal server error"
-        description="An error occurred while processing your request. Try again or return to homepage."
-      />
-
       <div className="flex flex-col xl:flex-row xl:gap-[139px] xl:items-center max-w-screen-3xl mx-auto py-0 3xl:px-12">
         <div className="mx-auto md:mx-0 px-6 mt-24 mb-32 xl:mt-0 xl:mb-0 sm:max-w-[600px] md:ml-24 xl:ml-32 xl:pl-0 xl:py-0 xl:max-w-max">
           <div>
@@ -43,4 +40,11 @@ export default function Custom500() {
       </div>
     </Layout>
   );
+}
+
+export async function generateMetadata() {
+  return {
+    title: "Internal server error",
+    description: "An error occurred while processing your request. Try again or return to homepage.",
+  };
 }

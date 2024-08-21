@@ -11,4 +11,12 @@ li::before {
   .p-default {
     @apply px-4 py-4 sm:px-6 lg:px-12;
   }
+
+  .responsive-iframe-container {
+    @apply max-w-[640px] relative overflow-hidden pt-[56.25%];
+  }
+
+  .responsive-iframe {
+    @apply absolute top-0 left-0 bottom-0 right-0 w-full h-full;
+  }
 }
