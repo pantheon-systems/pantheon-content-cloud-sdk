@@ -2,21 +2,18 @@ import {
   ServersideSmartComponentMap,
   SmartComponentMap,
 } from "@pantheon-systems/pcc-react-sdk/components";
-import LeadCapture from "./lead-capture";
+import MediaPreview from "./media-preview";
 
 export const serverSmartComponentMap = {
-  LEAD_CAPTURE: {
-    title: "Lead Capture Form",
+  MEDIA_PREVIEW: {
+    title: "Media Preview",
     iconUrl: null,
+    exampleImageUrl:
+      "https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png",
     fields: {
-      title: {
-        displayName: "Title",
+      url: {
+        displayName: "URL",
         required: true,
-        type: "string",
-      },
-      body: {
-        displayName: "Body",
-        required: false,
         type: "string",
       },
     },
@@ -24,8 +21,9 @@ export const serverSmartComponentMap = {
 } satisfies ServersideSmartComponentMap;
 
 export const clientSmartComponentMap: SmartComponentMap = {
-  LEAD_CAPTURE: {
-    ...serverSmartComponentMap.LEAD_CAPTURE,
-    reactComponent: LeadCapture,
+  MEDIA_PREVIEW: {
+    ...serverSmartComponentMap.MEDIA_PREVIEW,
+    reactComponent: MediaPreview,
   },
 };
+

@@ -38,6 +38,7 @@
     "react-dom": "18.3.1",
     "react-loading-skeleton": "^3.4.0",
     "react-remove-scroll": "^2.5.10",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {

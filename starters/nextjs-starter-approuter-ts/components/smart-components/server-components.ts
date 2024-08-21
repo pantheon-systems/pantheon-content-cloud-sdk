@@ -1,18 +1,15 @@
 import { ServersideSmartComponentMap } from "@pantheon-systems/pcc-react-sdk/components";
 
 const serverSmartComponentMap: ServersideSmartComponentMap = {
-  LEAD_CAPTURE: {
-    title: "Lead Capture Form",
+  MEDIA_PREVIEW: {
+    title: "Media Preview",
     iconUrl: null,
+    exampleImageUrl:
+      "https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png",
     fields: {
-      title: {
-        displayName: "Title",
+      url: {
+        displayName: "URL",
         required: true,
-        type: "string",
-      },
-      body: {
-        displayName: "Body",
-        required: false,
         type: "string",
       },
     },
