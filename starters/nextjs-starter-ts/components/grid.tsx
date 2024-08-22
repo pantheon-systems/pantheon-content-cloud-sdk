@@ -3,23 +3,37 @@ import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
-interface ArticleGridProps {
+export function HomepageArticleGrid({
+  articles,
+}: {
   articles: ArticleWithoutContent[];
-  showWide?: boolean;
-}
-
-export default function ArticleGrid({ articles, showWide }: ArticleGridProps) {
+}) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6 px-4 sm:px-6 lg:px-0 lg:w-2/3 mx-auto">
+    <div
+      className={cn(
+        "grid grid-cols-1 gap-6 sm:grid-cols-2 lg:w-2/3 2xl:w-full 2xl:grid-cols-[repeat(auto-fit,minmax(300px,438px))] 2xl:justify-center",
+      )}
+    >
       {articles.map((article, index) => (
         <ArticleGridCard
           key={article.id}
           article={article}
-          isWide={
-            showWide &&
-            (articles.length === 1 || (articles.length > 2 && index === 2))
-          }
+          isWide={articles.length === 1 || (articles.length > 2 && index === 2)}
         />
+      ))}
+    </div>
+  );
+}
+
+export function ArticleGrid({
+  articles,
+}: {
+  articles: ArticleWithoutContent[];
+}) {
+  return (
+    <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
+      {articles.map((article) => (
+        <ArticleGridCard key={article.id} article={article} />
       ))}
     </div>
   );
@@ -44,14 +58,18 @@ export function ArticleGridCard({
   return (
     <div
       className={cn(
-        "flex flex-col h-full shadow-lg overflow-clip ring-1 ring-gray-300/50 rounded-xl",
-        isWide ? "sm:flex-row 2xl:flex-col sm:col-span-2 2xl:col-span-1" : "",
+        "group flex h-full flex-col overflow-clip rounded-xl shadow-lg ring-1 ring-gray-300/50",
+        isWide
+          ? "sm:col-span-2 sm:flex-row 2xl:col-span-1 2xl:flex-col 2xl:only:col-span-2 2xl:only:flex-row"
+          : "",
       )}
     >
       <div
         className={cn(
-          "w-full aspect-video min-h-[196px] flex-shrink-0",
-          isWide ? "sm:max-w-[49%] 2xl:max-w-[100%]" : "max-w-[100%]",
+          "aspect-video w-full flex-shrink-0 overflow-hidden sm:h-[196px]",
+          isWide
+            ? "sm:h-full sm:max-w-[49%] 2xl:h-[196px] 2xl:max-w-[100%] 2xl:group-only:h-full 2xl:group-only:max-w-[49%]"
+            : "max-w-[100%]",
         )}
       >
         <GridItemCoverImage
@@ -61,17 +79,17 @@ export function ArticleGridCard({
       </div>
       <div
         className={cn(
-          "p-8 flex flex-col flex-grow justify-between",
-          isWide && "sm:py-24 2xl:py-8",
+          "flex flex-grow flex-col justify-between p-8",
+          isWide && "sm:py-24 2xl:py-8 2xl:group-only:py-24",
         )}
       >
         <div>
           <h1 className="mb-3 text-xl font-semibold leading-7">
             {article.title}
           </h1>
-          {article.metadata?.["Guide Description"] && (
-            <p className="text-gray-600 line-clamp-3 min-h-[4.5rem]">
-              {article.metadata?.["Guide Description"]?.toString() || ""}
+          {article.metadata?.["Description"] && (
+            <p className="line-clamp-3 min-h-[4.5rem] text-gray-600">
+              {article.metadata?.["Description"]?.toString() || ""}
             </p>
           )}
         </div>
@@ -89,9 +107,9 @@ function GridItemCoverImage({ imageSrc, imageAltText }) {
     <img
       src={imageSrc}
       alt={imageAltText}
-      className="object-cover w-full h-full"
+      className="h-full w-full object-cover"
     />
   ) : (
-    <div className="w-full h-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
   );
 }

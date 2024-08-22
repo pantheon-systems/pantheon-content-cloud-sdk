@@ -1,7 +1,7 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import ArticleGrid from "../components/grid";
+import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
 
@@ -14,8 +14,8 @@ export default function Home({ articles }) {
       />
 
       <section className="bg-neutral-100">
-        <div className="flex flex-col xl:flex-row xl:gap-[139px] xl:items-center max-w-screen-3xl mx-auto py-0 3xl:px-12">
-          <div className="mx-auto lg:mx-0 px-6 py-24 sm:max-w-[533px] sm:px-0 lg:pl-24 xl:ml-32 xl:pl-0 xl:py-0 xl:max-w-max">
+        <div className="max-w-screen-3xl 3xl:px-12 mx-auto flex flex-col py-0 xl:flex-row xl:items-center xl:gap-[139px]">
+          <div className="mx-auto px-6 py-24 sm:max-w-[533px] sm:px-0 lg:mx-0 lg:pl-24 xl:ml-32 xl:max-w-max xl:py-0 xl:pl-0">
             <p>WELCOME</p>
             <h1 className="my-3 text-5xl font-bold">
               Time to make this site your own.
@@ -25,7 +25,7 @@ export default function Home({ articles }) {
               <br />
               What are you waiting for?
             </p>
-            <div className="flex flex-wrap gap-4 mt-8 xl:flex-col 2xl:flex-row">
+            <div className="mt-8 flex flex-wrap gap-4 xl:flex-col 2xl:flex-row">
               <Button size="large" className="w-fit">
                 Discover examples
               </Button>
@@ -34,7 +34,7 @@ export default function Home({ articles }) {
               </Button>
             </div>
           </div>
-          <div className="relative w-full h-[490px] sm:h-[640px] xl:max-w-[900px]">
+          <div className="relative h-[490px] w-full sm:h-[640px] xl:max-w-[900px]">
             <Image
               src="/images/hero.png"
               alt="Pantheon Logo"
@@ -45,8 +45,8 @@ export default function Home({ articles }) {
         </div>
       </section>
 
-      <section className="mt-32 max-w-screen-3xl mx-auto">
-        <ArticleGrid articles={articles} showWide />
+      <section className="max-w-screen-3xl mx-auto mt-32 flex justify-center px-4 sm:px-6 lg:px-0">
+        <HomepageArticleGrid articles={articles} />
       </section>
     </Layout>
   );

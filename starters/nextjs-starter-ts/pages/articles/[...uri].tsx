@@ -6,7 +6,6 @@ import {
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
-import ArticleGrid from "../../components/grid";
 import Layout from "../../components/layout";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
