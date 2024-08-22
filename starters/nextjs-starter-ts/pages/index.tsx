@@ -1,6 +1,7 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
+import Link from "next/link";
 import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
@@ -26,20 +27,24 @@ export default function Home({ articles }) {
               What are you waiting for?
             </p>
             <div className="mt-8 flex flex-wrap gap-4 xl:flex-col 2xl:flex-row">
-              <Button size="large" className="w-fit">
-                Discover examples
-              </Button>
-              <Button size="large" className="w-fit" variant="secondary">
-                Read our Docs
-              </Button>
+              <Link href="/examples">
+                <Button size="large" className="w-fit">
+                  Discover examples
+                </Button>
+              </Link>
+              <a href="https://pcc.pantheon.io/docs">
+                <Button size="large" className="w-fit" variant="secondary">
+                  Read our Docs
+                </Button>
+              </a>
             </div>
           </div>
           <div className="relative h-[490px] w-full sm:h-[640px] xl:max-w-[900px]">
             <Image
-              src="/images/hero.png"
-              alt="Pantheon Logo"
+              src="/images/globe.png"
+              alt="Image of the earth at night illuminated by lights on the ground"
               fill
-              objectFit="cover"
+              className="object-cover"
             />
           </div>
         </div>

@@ -1,19 +1,22 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
+import { ArticleGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
-import { Client } from "./client";
 
 export default async function ArticlesListTemplate() {
-  const articles = await PCCConvenienceFunctions.getAllArticles();
+  const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
+    {
+      pageSize: 20,
+    },
+  );
 
   return (
     <Layout>
-      <div className="max-w-screen-lg mx-auto">
-        <section>
-          <PageHeader title="Articles" />
-          <Client articles={articles} />
-        </section>
-      </div>
+      <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
+        <PageHeader title="Articles" />
+
+        <ArticleGrid articles={articles} />
+      </section>
     </Layout>
   );
 }

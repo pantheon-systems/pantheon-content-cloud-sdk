@@ -1,45 +1,57 @@
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import Image from "next/image";
-import { Suspense } from "react";
-import { SkeletonPageGrid } from "../components/grid";
-import HomepageArticleGrid from "../components/homepage-article-grid";
+import Link from "next/link";
+import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
-
-const HomepageHeader = () => (
-  <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
-    <h1 className="h-full text-4xl prose text-center">
-      Welcome to{" "}
-      <a
-        className="text-blue-600 no-underline hover:underline"
-        href="https://nextjs.org"
-      >
-        Next.js!
-      </a>
-    </h1>
-    <div className="text-2xl">
-      <div className="flex items-center justify-center p-4 text-white bg-black rounded">
-        Decoupled PCC on{" "}
-        <Image
-          src="/pantheon.png"
-          alt="Pantheon Logo"
-          style={{
-            margin: 0,
-          }}
-          width={191}
-          height={60}
-        />
-      </div>
-    </div>
-  </div>
-);
+import { Button } from "../components/ui/button";
 
 export default async function Home() {
+  const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
+    {
+      pageSize: 3,
+    },
+  );
+
   return (
     <Layout>
-      <HomepageHeader />
-      <section>
-        <Suspense fallback={<SkeletonPageGrid data={[0, 1, 2, 3, 4, 5]} />}>
-          <HomepageArticleGrid />
-        </Suspense>
+      <section className="bg-neutral-100">
+        <div className="max-w-screen-3xl 3xl:px-12 mx-auto flex flex-col py-0 xl:flex-row xl:items-center xl:gap-[139px]">
+          <div className="mx-auto px-6 py-24 sm:max-w-[533px] sm:px-0 lg:mx-0 lg:pl-24 xl:ml-32 xl:max-w-max xl:py-0 xl:pl-0">
+            <p>WELCOME</p>
+            <h1 className="my-3 text-5xl font-bold">
+              Time to make this site your own.
+            </h1>
+            <p>
+              Your new website is waiting to be built for something amazing.
+              <br />
+              What are you waiting for?
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4 xl:flex-col 2xl:flex-row">
+              <Link href="/examples">
+                <Button size="large" className="w-fit">
+                  Discover examples
+                </Button>
+              </Link>
+              <a href="https://pcc.pantheon.io/docs">
+                <Button size="large" className="w-fit" variant="secondary">
+                  Read our Docs
+                </Button>
+              </a>
+            </div>
+          </div>
+          <div className="relative h-[490px] w-full sm:h-[640px] xl:max-w-[900px]">
+            <Image
+              src="/images/globe.png"
+              alt="Image of the earth at night illuminated by lights on the ground"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-screen-3xl mx-auto mt-32 flex justify-center px-4 sm:px-6 lg:px-0">
+        <HomepageArticleGrid articles={articles} />
       </section>
     </Layout>
   );
