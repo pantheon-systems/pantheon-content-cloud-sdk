@@ -2,7 +2,7 @@ import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server"
 import Image from "next/image";
 import Layout from "../../components/layout";
 import { Tags } from "../../components/tags";
-import TagResults from "./search-results";
+import TagResults from "./tag-results";
 
 export default async function TagSearch({ searchParams }) {
   const [articles, tags] = await Promise.all([
