@@ -8,13 +8,15 @@ import {
 } from "@pantheon-systems/pcc-react-sdk/components";
 import { clientSmartComponentMap } from "./smart-components/client-components";
 
+type ArticleViewProps = {
+  article: Article;
+  onlyContent?: boolean;
+};
+
 export default function ArticleView({
   article,
   onlyContent,
-}: {
-  article: Article;
-  onlyContent?: boolean;
-}) {
+}: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
@@ -45,6 +47,37 @@ export default function ArticleView({
       </div>
       <ArticleRenderer
         article={hydratedArticle}
+        smartComponentMap={clientSmartComponentMap}
+        __experimentalFlags={{
+          disableAllStyles: !!onlyContent,
+          preserveImageStyles: true,
+          useUnintrusiveTitleRendering: true,
+        }}
+      />
+    </>
+  );
+}
+
+export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+  const articleTitle = useArticleTitle(article);
+
+  return (
+    <>
+      <div>
+        <div className="text-5xl font-bold">{articleTitle}</div>
+
+        {article.updatedAt ? (
+          <p className="py-2">
+            {new Date(article.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+        ) : null}
+      </div>
+      <ArticleRenderer
+        article={article}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           disableAllStyles: !!onlyContent,

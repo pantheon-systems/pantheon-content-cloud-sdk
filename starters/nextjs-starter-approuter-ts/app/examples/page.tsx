@@ -1,4 +1,3 @@
-import { NextSeo } from "next-seo";
 import Link from "next/link";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
@@ -6,8 +5,6 @@ import PageHeader from "../../components/page-header";
 export default function ExamplesPageTemplate() {
   return (
     <Layout>
-      <NextSeo title="Examples" description="Examples" />
-
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
         <PageHeader title="Examples" />
         <section className="prose lg:prose-xl mx-auto mt-10 flex flex-col">
@@ -38,4 +35,11 @@ export default function ExamplesPageTemplate() {
       </section>
     </Layout>
   );
+}
+
+export async function generateMetadata({}) {
+  return {
+    title: "Examples",
+    description: "Examples",
+  };
 }

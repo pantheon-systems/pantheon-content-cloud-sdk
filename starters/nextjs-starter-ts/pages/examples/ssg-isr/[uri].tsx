@@ -5,9 +5,8 @@ import {
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
-import { PageGrid } from "../../../components/grid";
+import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
-import { Tags } from "../../../components/tags";
 import { getSeoMetadata } from "../../experimental/content-only/[...uri]";
 
 interface ArticlePageProps {
@@ -40,13 +39,15 @@ export default function ArticlePage({
         }}
       />
 
-      <div className="max-w-screen-lg mx-auto mt-16 prose text-black">
+      <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
         <StaticArticleView article={article} />
 
-        <Tags tags={article?.tags} />
         <section>
           <h3>Recommended Articles</h3>
-          <PageGrid data={recommendedArticles} basePath={"/examples/ssg-isr"} />
+          <ArticleGrid
+            articles={recommendedArticles}
+            basePath={"/examples/ssg-isr"}
+          />
         </section>
       </div>
     </Layout>
