@@ -20,8 +20,8 @@ export default async function TagSearch({ searchParams }) {
   const searchString = searchParams.q || "";
 
   const HomepageHeader = () => (
-    <div className="flex flex-col mx-auto mt-20 prose sm:prose-xl max-w-fit">
-      <h1 className="h-full text-4xl prose text-center">
+    <div className="prose sm:prose-xl mx-auto mt-20 flex max-w-fit flex-col">
+      <h1 className="prose h-full text-center text-4xl">
         Welcome to&quot;
         <a
           className="text-blue-600 no-underline hover:underline"
@@ -31,7 +31,7 @@ export default async function TagSearch({ searchParams }) {
         </a>
       </h1>
       <div className="text-2xl">
-        <div className="flex items-center justify-center p-4 text-white bg-black rounded">
+        <div className="flex items-center justify-center rounded bg-black p-4 text-white">
           Decoupled PCC on{" "}
           <Image
             src="/pantheon.png"
@@ -51,7 +51,7 @@ export default async function TagSearch({ searchParams }) {
     <Layout>
       <HomepageHeader />
       <TagResults articles={articles} searchString={searchString} />
-      <div className="max-w-screen-lg mt-16 mx-auto">
+      <div className="mx-auto mt-16 max-w-screen-lg">
         <h3>Site-wide</h3>
         <Tags tags={tags} />
       </div>

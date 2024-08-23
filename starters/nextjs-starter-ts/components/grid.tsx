@@ -27,13 +27,19 @@ export function HomepageArticleGrid({
 
 export function ArticleGrid({
   articles,
+  basePath = "/articles",
 }: {
   articles: ArticleWithoutContent[];
+  basePath?: string;
 }) {
   return (
     <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
       {articles.map((article) => (
-        <ArticleGridCard key={article.id} article={article} />
+        <ArticleGridCard
+          key={article.id}
+          article={article}
+          basePath={basePath}
+        />
       ))}
     </div>
   );

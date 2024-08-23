@@ -23,7 +23,7 @@ export default function TagResults({ articles, searchString }: Props) {
   return searchString.trim().length ? (
     <>
       {" "}
-      <h3 className="mt-4 text-3xl text-center">
+      <h3 className="mt-4 text-center text-3xl">
         Article with tag &quot;{searchString}&quot;
       </h3>
       <section>
