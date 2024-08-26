@@ -9,8 +9,8 @@ import SearchBar from "./search-bar";
 export default function Header() {
   return (
     <header>
-      <div className="relative flex items-center justify-between w-full mx-auto p-default max-w-screen-3xl">
-        <nav className="flex gap-8 shrink-0">
+      <div className="p-default max-w-screen-3xl relative mx-auto flex w-full items-center justify-between">
+        <nav className="flex shrink-0 gap-8">
           <Link href="/">
             <Image
               src={PantheonLogoBlack}
@@ -19,7 +19,7 @@ export default function Header() {
               height={40}
             />
           </Link>
-          <ul className="items-center hidden gap-8 lg:flex">
+          <ul className="hidden items-center gap-8 lg:flex">
             {navItems.links.map((link) => (
               <NavItem key={link.href} href={link.href}>
                 {link.label}
@@ -41,7 +41,7 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="flex lg:hidden shrink-0">
+          <div className="flex shrink-0 lg:hidden">
             <NavMenu />
           </div>
         </div>

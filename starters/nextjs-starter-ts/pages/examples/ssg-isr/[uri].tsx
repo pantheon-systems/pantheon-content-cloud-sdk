@@ -7,7 +7,7 @@ import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
 import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
-import { getSeoMetadata } from "../../experimental/content-only/[...uri]";
+import { getSeoMetadata } from "../../../lib/utils";
 
 interface ArticlePageProps {
   article: Article;
