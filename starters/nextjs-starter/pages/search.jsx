@@ -50,7 +50,7 @@ export default function Search() {
               <b>✨ Experimental:</b> Generative AI Result Summary
             </div>
             <hr className="my-2" />
-            <div className="w-full whitespace-pre-wrap py-4">
+            <div className="w-full whitespace-pre-wrap break-words py-4">
               {isLoading ? (
                 <Skeleton count={5} />
               ) : (

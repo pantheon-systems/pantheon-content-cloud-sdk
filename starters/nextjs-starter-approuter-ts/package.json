@@ -32,11 +32,13 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "jotai": "^2.7.0",
+    "markdown-to-txt": "^2.0.1",
     "next": "^14.2.5",
     "query-string": "^8.2.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-loading-skeleton": "^3.4.0",
+    "react-markdown": "^8.0.7",
     "react-remove-scroll": "^2.5.10",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.5.2"
