@@ -62,9 +62,9 @@ export default function NavMenu() {
       </Popover.Trigger>
       <Popover.Content
         className={cn(
-          "z-50 pt-8 bg-white w-screen h-screen text-popover-foreground shadow-md outline-none",
-          "data-[state=open]:animate-in data-[state=open]:duration-300 data-[state=open]:slide-in-from-right-full",
-          "data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=closed]:slide-out-to-right-full",
+          "text-popover-foreground z-50 mt-4 h-screen w-screen bg-white pt-4 shadow-md outline-none",
+          "data-[state=open]:animate-in data-[state=open]:slide-in-from-right-full data-[state=open]:duration-300",
+          "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right-full data-[state=closed]:duration-300",
         )}
         align="start"
       >
@@ -82,7 +82,7 @@ export default function NavMenu() {
 
             <hr className="my-4 border-neutral-300" />
 
-            <div className="space-y-8 p-default">
+            <div className="p-default space-y-8">
               {navItems.buttons.map((button) => (
                 <Link className="block" href={button.href} key={button.href}>
                   <Button variant={button.variant}>{button.label}</Button>

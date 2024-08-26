@@ -6,6 +6,7 @@ import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
+import { getSeoMetadata } from "../../lib/utils";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 export default function ArticlePage({ article, grant }) {
@@ -90,36 +91,3 @@ export async function getServerSideProps({
     },
   };
 }
-
-function isDateInputObject(v) {
-  return v.msSinceEpoch != null;
-}
-
-export const getSeoMetadata = (article) => {
-  const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let authors = [];
-  let publishedTime = null;
-
-  // Collecting data from metadata fields
-  Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
-      publishedTime = new Date(val.msSinceEpoch).toISOString();
-  });
-
-  const imageProperties = [
-    article.metadata?.["Hero Image"],
-    // Extend as needed
-  ]
-    .filter((url) => typeof url === "string")
-    .map((url) => ({ url }));
-
-  return {
-    title: article.title,
-    description: "Article hosted using Pantheon Content Cloud",
-    tags,
-    authors,
-    publishedTime,
-    images: imageProperties,
-  };
-};

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import CloseIcon from "../../assets/icons/close.svg";
 import SearchIcon from "../../assets/icons/search.svg";
@@ -6,7 +7,12 @@ import { cn } from "../../lib/utils";
 import { Button } from "../ui/button";
 
 export default function SearchBar() {
+  const router = useRouter();
+
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const { q } = router.query;
+  const defaultSearchQuery = q?.toString();
 
   return (
     <>
@@ -14,7 +20,7 @@ export default function SearchBar() {
       <Button
         variant="secondary"
         size="icon"
-        className="shrink-0 lg:hidden"
+        className={cn("shrink-0 lg:hidden", defaultSearchQuery && "hidden")}
         onClick={() => setIsExpanded(true)}
       >
         <Image
@@ -27,7 +33,7 @@ export default function SearchBar() {
       </Button>
       <div
         className={cn(
-          "flex items-center ml-auto transition-all duration-300 ease-in-out absolute",
+          "absolute ml-auto flex items-center transition-all duration-300 ease-in-out",
           isExpanded
             ? "inset-0 z-50 bg-white px-4 py-4 sm:px-6 lg:px-12"
             : "h-0 w-0",
@@ -52,41 +58,44 @@ export default function SearchBar() {
 
         <div
           className={cn(
-            "transition-all duration-300 ease-in-out ml-3 overflow-hidden",
+            "ml-3 overflow-hidden transition-all duration-300 ease-in-out",
             isExpanded ? "w-full" : "w-0",
           )}
         >
-          <SearchBarForm />
+          <SearchBarForm defaultSearchQuery={defaultSearchQuery} />
         </div>
       </div>
 
       {/* Desktop */}
-      <div className="hidden lg:flex">
-        <SearchBarForm />
+      <div className={cn("hidden lg:flex", defaultSearchQuery && "flex")}>
+        <SearchBarForm defaultSearchQuery={defaultSearchQuery} />
       </div>
     </>
   );
 }
 
-function SearchBarForm() {
-  const [searchQuery, setSearchQuery] = useState("");
+function SearchBarForm({ defaultSearchQuery }) {
+  const router = useRouter();
 
   const onSubmit = (e) => {
     e.preventDefault();
-    window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+
+    const searchQuery = e.currentTarget.elements.namedItem("search");
+
+    router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`);
   };
 
   return (
     <form
       onSubmit={onSubmit}
-      className="h-10 border border-neutral-400 rounded-lg flex items-center text-neutral-900 overflow-hidden transition-all duration-300 ease-in-out focus-within:border-neutral-900"
+      className="flex h-10 items-center overflow-hidden rounded-lg border border-neutral-400 text-neutral-900 transition-all duration-300 ease-in-out focus-within:border-neutral-900"
     >
       <input
         placeholder="Search"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="min-w-[291px] h-full w-full px-4 border-r outline-none border-inherit bg-transparent"
+        defaultValue={defaultSearchQuery}
+        className="h-full w-full border-r border-inherit bg-transparent px-4 outline-none sm:min-w-[291px]"
         required
+        name="search"
       />
       <Button
         type="submit"
