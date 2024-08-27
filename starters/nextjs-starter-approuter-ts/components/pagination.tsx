@@ -1,8 +1,7 @@
 import Image from "next/image";
 import React, { useCallback } from "react";
-
-// import ChevronLeft from "./../assets/icons/chevron-left.svg";
-// import ChevronRight from "./../assets/icons/chevron-right.svg";
+import ChevronLeft from "./../assets/icons/chevron-left.svg";
+import ChevronRight from "./../assets/icons/chevron-right.svg";
 
 interface Props {
   totalCount: number;
@@ -42,14 +41,13 @@ const Pagination = ({
         onClick={goToPreviousPage}
         disabled={disabled || !showPrevButton}
       >
-        {"<"}
-        {/* <Image
+        <Image
           src={ChevronLeft}
           alt="Previous"
           title="Previous"
           width={11}
           height={16}
-        /> */}
+        />
       </button>
       <div className="px-3 text-lg">
         <div>{`${currentPage + 1} of ${pageCount}`}</div>
@@ -60,14 +58,13 @@ const Pagination = ({
         onClick={goToNextPage}
         disabled={disabled || !showNextButton}
       >
-        {">"}
-        {/* <Image
+        <Image
           src={ChevronRight}
           alt="Next"
           title="Next"
           width={11}
           height={16}
-        /> */}
+        />
       </button>
     </div>
   );
