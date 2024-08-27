@@ -49,7 +49,7 @@ const Pagination = ({
           height={16}
         />
       </button>
-      <div className="text px-3">
+      <div className="px-3 text-lg">
         <div>{`${currentPage + 1} of ${pageCount}`}</div>
       </div>
       <button
