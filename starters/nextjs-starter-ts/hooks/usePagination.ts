@@ -27,7 +27,7 @@ export function usePagination({ cursor, initialArticles, pageSize }: Props) {
         "/api/utils/paginate/?" +
           new URLSearchParams({
             pageSize: pageSize.toString(),
-            cursor: currentCursor,
+            cursor: currentCursor || "",
           }).toString(),
       );
       const { data, newCursor } = (await response.json()) as {

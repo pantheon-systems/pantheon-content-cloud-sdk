@@ -1,6 +1,16 @@
+import {
+  ArticleWithoutContent,
+  PaginatedArticle,
+} from "@pantheon-systems/pcc-sdk-core/types";
 import { useEffect, useState } from "react";
 
-export function usePagination({ cursor, initialArticles, pageSize }) {
+interface Props {
+  cursor?: string;
+  pageSize: number;
+  initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
+}
+
+export function usePagination({ cursor, initialArticles, pageSize }: Props) {
   const [currentCursor, setCurrentCursor] = useState(cursor);
   const [articlePages, setArticlePages] = useState(
     initialArticles ? [initialArticles] : [],
@@ -14,13 +24,16 @@ export function usePagination({ cursor, initialArticles, pageSize }) {
 
       setFetching(true);
       const response = await fetch(
-        "/api/utils/paginate/?" +
+        "/api/utils/paginate?" +
           new URLSearchParams({
             pageSize: pageSize.toString(),
             cursor: currentCursor || "",
           }).toString(),
       );
-      const { data, newCursor } = await response.json();
+      const { data, newCursor } = (await response.json()) as {
+        data: PaginatedArticle[];
+        newCursor: string;
+      };
       setFetching(false);
       setArticlePages((prev) => {
         const result = [...prev];
