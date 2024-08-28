@@ -15,6 +15,10 @@ interface Props {
   articles: PaginatedArticle[] | ArticleWithoutContent[];
   totalCount: number;
   cursor: string;
+  fetcher: (cursor: string) => Promise<{
+    data: PaginatedArticle[] | ArticleWithoutContent[];
+    newCursor: string;
+  }>;
   additionalHeader?: React.ReactNode;
 }
 
@@ -22,6 +26,7 @@ export default function ArticleList({
   articles,
   totalCount,
   cursor,
+  fetcher,
   additionalHeader = null,
 }: Props) {
   const {
@@ -32,7 +37,7 @@ export default function ArticleList({
   } = usePagination({
     cursor,
     initialArticles: articles,
-    pageSize: PAGE_SIZE,
+    fetcher,
   });
 
   return (

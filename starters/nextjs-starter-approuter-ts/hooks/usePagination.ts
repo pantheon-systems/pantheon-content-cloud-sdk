@@ -6,11 +6,14 @@ import { useEffect, useState } from "react";
 
 interface Props {
   cursor?: string;
-  pageSize: number;
   initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
+  fetcher: (cursor: string) => Promise<{
+    data: PaginatedArticle[] | ArticleWithoutContent[];
+    newCursor: string;
+  }>;
 }
 
-export function usePagination({ cursor, initialArticles, pageSize }: Props) {
+export function usePagination({ cursor, initialArticles, fetcher }: Props) {
   const [currentCursor, setCurrentCursor] = useState(cursor);
   const [articlePages, setArticlePages] = useState(
     initialArticles ? [initialArticles] : [],
@@ -23,17 +26,7 @@ export function usePagination({ cursor, initialArticles, pageSize }: Props) {
       if (articlePages[currentPage]) return;
 
       setFetching(true);
-      const response = await fetch(
-        "/api/utils/paginate?" +
-          new URLSearchParams({
-            pageSize: pageSize.toString(),
-            cursor: currentCursor || "",
-          }).toString(),
-      );
-      const { data, newCursor } = (await response.json()) as {
-        data: PaginatedArticle[];
-        newCursor: string;
-      };
+      const { data, newCursor } = await fetcher(currentCursor);
       setFetching(false);
       setArticlePages((prev) => {
         const result = [...prev];
