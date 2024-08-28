@@ -9,6 +9,19 @@ export const metadata: Metadata = {
   description: "Example of using SSG and ISR",
 };
 
+async function fetchNextPages(cursor: string) {
+  "use server";
+  const { data, cursor: newCursor } =
+    await PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      cursor,
+    });
+  return {
+    data,
+    newCursor,
+  };
+}
+
 export default async function SSGISRExampleTemplate() {
   const {
     data: articles,
@@ -24,6 +37,7 @@ export default async function SSGISRExampleTemplate() {
         articles={articles}
         totalCount={totalCount}
         cursor={cursor}
+        fetcher={fetchNextPages}
         additionalHeader={
           <div className="prose lg:prose-xl mx-auto mb-8 mt-8 max-w-lg lg:max-w-screen-lg">
             <p>
