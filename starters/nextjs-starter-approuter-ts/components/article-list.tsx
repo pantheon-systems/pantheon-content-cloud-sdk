@@ -15,9 +15,15 @@ interface Props {
   articles: PaginatedArticle[] | ArticleWithoutContent[];
   totalCount: number;
   cursor: string;
+  additionalHeader?: React.ReactNode;
 }
 
-export default function ArticleList({ articles, totalCount, cursor }: Props) {
+export default function ArticleList({
+  articles,
+  totalCount,
+  cursor,
+  additionalHeader = null,
+}: Props) {
   const {
     data: currentArticles,
     onPageChange,
@@ -32,6 +38,7 @@ export default function ArticleList({ articles, totalCount, cursor }: Props) {
   return (
     <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
       <PageHeader title="Articles" />
+      {additionalHeader}
       <ArticleGrid articles={currentArticles as ArticleWithoutContent[]} />
       <div className="mt-4 flex flex-row items-center justify-center">
         <Pagination
