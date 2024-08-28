@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const cursor = searchParams.get("cursor");
-  let pageSizeStr = searchParams.get("pageSize");
+  const pageSizeStr = searchParams.get("pageSize");
 
   let pageSize: number;
   try {
