@@ -1,10 +1,32 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
+import {
+  ArticleWithoutContent,
+  PCCConvenienceFunctions,
+} from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import PageHeader from "../../../components/page-header";
+import Pagination from "../../../components/pagination";
+import { usePagination } from "../../../hooks/usePagination";
 
-export default function SSGISRExampleTemplate({ articles }) {
+const PAGE_SIZE = 20;
+
+export default function SSGISRExampleTemplate({
+  articles,
+  totalCount,
+  cursor,
+}) {
+  const {
+    data: currentArticles,
+    onPageChange,
+    fetching,
+    currentPage,
+  } = usePagination({
+    cursor,
+    initialArticles: articles,
+    pageSize: PAGE_SIZE,
+  });
+
   return (
     <Layout>
       <NextSeo
@@ -24,18 +46,38 @@ export default function SSGISRExampleTemplate({ articles }) {
           </p>
         </div>
 
-        <ArticleGrid articles={articles} basePath={"/examples/ssg-isr"} />
+        <ArticleGrid
+          articles={currentArticles as ArticleWithoutContent[]}
+          basePath={"/examples/ssg-isr"}
+        />
+        <div className="mt-4 flex flex-row items-center justify-center">
+          <Pagination
+            totalCount={totalCount}
+            pageSize={PAGE_SIZE}
+            currentPage={currentPage}
+            onChange={onPageChange}
+            disabled={fetching}
+          />
+        </div>
       </section>
     </Layout>
   );
 }
 
 export async function getStaticProps() {
-  const articles = await PCCConvenienceFunctions.getAllArticles();
+  const {
+    data: articles,
+    totalCount,
+    cursor,
+  } = await PCCConvenienceFunctions.getPaginatedArticles({
+    pageSize: PAGE_SIZE,
+  });
 
   return {
     props: {
       articles,
+      cursor,
+      totalCount,
     },
     revalidate: 60,
   };
