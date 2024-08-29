@@ -41,14 +41,6 @@ export default function ArticlePage({
 
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
         <StaticArticleView article={article} />
-
-        <section>
-          <h3>Recommended Articles</h3>
-          <ArticleGrid
-            articles={recommendedArticles}
-            basePath={"/examples/ssg-isr"}
-          />
-        </section>
       </div>
     </Layout>
   );
