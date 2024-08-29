@@ -6,7 +6,7 @@ import PageHeader from "../../../components/page-header";
 import Pagination from "../../../components/pagination";
 import { usePagination } from "../../../hooks/usePagination";
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 20;
 
 export default function SSGISRExampleTemplate({
   articles,
