@@ -1,12 +1,10 @@
-import {
-  PCCConvenienceFunctions,
-  usePagination,
-} from "@pantheon-systems/pcc-react-sdk";
+import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { ArticleGrid } from "../../components/grid";
 import Layout from "../../components/layout";
 import PageHeader from "../../components/page-header";
 import Pagination from "../../components/pagination";
+import { usePagination } from "../../hooks/usePagination";
 
 const PAGE_SIZE = 20;
 

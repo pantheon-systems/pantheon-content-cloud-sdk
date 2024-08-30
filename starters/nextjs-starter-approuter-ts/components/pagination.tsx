@@ -1,7 +1,15 @@
 import Image from "next/image";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import ChevronLeft from "./../assets/icons/chevron-left.svg";
 import ChevronRight from "./../assets/icons/chevron-right.svg";
+
+interface Props {
+  totalCount: number;
+  pageSize: number;
+  currentPage: number;
+  onChange: (page: number) => void;
+  disabled?: boolean;
+}
 
 const Pagination = ({
   pageSize,
@@ -9,7 +17,7 @@ const Pagination = ({
   totalCount,
   onChange,
   disabled,
-}) => {
+}: Props) => {
   const pageCount = Math.ceil(totalCount / pageSize);
 
   const showPrevButton = currentPage > 0;
