@@ -34,6 +34,7 @@ export default async function SSGISRExampleTemplate() {
   return (
     <Layout>
       <ArticleList
+        headerText={"SSG and ISR Example"}
         articles={articles}
         totalCount={totalCount}
         cursor={cursor}

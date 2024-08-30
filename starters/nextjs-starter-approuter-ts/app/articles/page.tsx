@@ -28,6 +28,7 @@ export default async function ArticlesListTemplate() {
   return (
     <Layout>
       <ArticleList
+        headerText="Articles"
         articles={articles}
         cursor={cursor}
         totalCount={totalCount}
