@@ -23,7 +23,7 @@ const LeadCapture = ({
   };
 
   return (
-    <div className="not-prose w-full rounded-md p-8 outline outline-black/10">
+    <div className="not-prose w-full rounded-md p-8 shadow-[0px_3px_8px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.2)]">
       {submitted ? (
         <>
           <h1 className="mb-3 text-2xl font-bold">Thank you.</h1>
