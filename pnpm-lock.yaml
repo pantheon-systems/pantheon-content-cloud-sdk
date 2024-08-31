@@ -681,9 +681,6 @@ importers:
       '@pantheon-systems/pcc-react-sdk':
         specifier: workspace:*
         version: link:../../packages/react-sdk
-      '@pantheon-systems/pds-toolkit-react':
-        specifier: 1.0.0-dev.55
-        version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-popover':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -705,9 +702,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      jotai:
-        specifier: ^2.7.0
-        version: 2.7.0(@types/react@18.3.3)(react@18.3.1)
       markdown-to-txt:
         specifier: ^2.0.1
         version: 2.0.1
@@ -751,9 +745,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.17(postcss@8.4.35)
-      c8:
-        specifier: ^7.14.0
-        version: 7.14.0
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -805,18 +796,12 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
-      classnames:
-        specifier: ^2.5.1
-        version: 2.5.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      jotai:
-        specifier: ^2.7.0
-        version: 2.7.0(@types/react@18.3.3)(react@18.3.1)
       markdown-to-txt:
         specifier: ^2.0.1
         version: 2.0.1
@@ -899,12 +884,12 @@ importers:
       '@pantheon-systems/pcc-react-sdk':
         specifier: workspace:*
         version: link:../../packages/react-sdk
-      '@pantheon-systems/pds-toolkit-react':
-        specifier: 1.0.0-dev.55
-        version: 1.0.0-dev.55(prop-types@15.8.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-popover':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot':
+        specifier: ^1.1.0
+        version: 1.1.0(@types/react@18.3.3)(react@18.3.1)
       '@tailwindcss/typography':
         specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.1)
@@ -917,9 +902,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      jotai:
-        specifier: ^2.7.0
-        version: 2.7.0(@types/react@18.3.3)(react@18.3.1)
       markdown-to-txt:
         specifier: ^2.0.1
         version: 2.0.1
@@ -969,9 +951,6 @@ importers:
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.17(postcss@8.4.35)
-      c8:
-        specifier: ^7.14.0
-        version: 7.14.0
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -10147,18 +10126,6 @@ packages:
 
   joi@17.12.2:
     resolution: {integrity: sha512-RonXAIzCiHLc8ss3Ibuz45u28GOsWE1UpfDXLbN/9NKbL4tCJf8TWYVKsoYuuh+sAUt7fsSNpA+r2+TBA6Wjmw==}
-
-  jotai@2.7.0:
-    resolution: {integrity: sha512-4qsyFKu4MprI39rj2uoItyhu24NoCHzkOV7z70PQr65SpzV6CSyhQvVIfbNlNqOIOspNMdf5OK+kTXLvqe63Jw==}
-    engines: {node: '>=12.20.0'}
-    peerDependencies:
-      '@types/react': '>=17.0.0'
-      react: '>=17.0.0'
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      react:
-        optional: true
 
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
@@ -27487,11 +27454,6 @@ snapshots:
       '@sideway/address': 4.1.5
       '@sideway/formula': 3.0.1
       '@sideway/pinpoint': 2.0.0
-
-  jotai@2.7.0(@types/react@18.3.3)(react@18.3.1):
-    optionalDependencies:
-      '@types/react': 18.3.3
-      react: 18.3.1
 
   joycon@3.1.1: {}
 

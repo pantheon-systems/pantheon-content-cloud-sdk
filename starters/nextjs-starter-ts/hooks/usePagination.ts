@@ -1,7 +1,7 @@
 import {
   ArticleWithoutContent,
   PaginatedArticle,
-} from "@pantheon-systems/pcc-sdk-core/types";
+} from "@pantheon-systems/pcc-react-sdk";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 
