@@ -1,4 +1,4 @@
-declare type CliTemplateOptions = "nextjs" | "gatsby" | "vue";
+declare type CliTemplateOptions = "nextjs";
 
 declare type Article = {
   id: string;

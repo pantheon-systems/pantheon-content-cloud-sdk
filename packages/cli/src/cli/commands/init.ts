@@ -19,8 +19,6 @@ import { errorHandler } from "../exceptions";
 
 const TEMPLATE_FOLDER_MAP = {
   nextjs: "nextjs-starter",
-  gatsby: "gatsby-starter",
-  vue: "vue-starter",
 };
 
 const ESLINT_DEPENDENCIES = {
@@ -138,13 +136,8 @@ const init = async ({
 
   setupProj.succeed("Completed setting up project!");
 
-  // Create .env.local/.env.development
-  const localEnvFileName =
-    template === "gatsby"
-      ? ".env.development"
-      : template === "vue"
-        ? ".env"
-        : ".env.local";
+  // Create .env.local
+  const localEnvFileName = ".env.local";
 
   copyFileSync(
     path.join(absoluteProjectPath, ".env.example"),
@@ -249,7 +242,7 @@ const init = async ({
     logger.log(chalk.green(`   cd ${dirName}`));
   }
 
-  if (template === "nextjs" || template === "vue")
+  if (template === "nextjs")
     logger.log(chalk.green(`   ${packageManager} run dev`));
   else logger.log(chalk.green(`   ${packageManager} run start`));
 };
@@ -280,10 +273,6 @@ export const INIT_EXAMPLES = [
   {
     description: "Create project with nextjs template",
     command: "pcc init new_proj",
-  },
-  {
-    description: "Create project with gatsby template",
-    command: "pcc init new_proj --template=gatsby",
   },
   {
     description: "Create project using pnpm package manager",
