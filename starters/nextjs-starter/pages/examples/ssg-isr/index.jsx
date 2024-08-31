@@ -31,7 +31,7 @@ export default function SSGISRExampleTemplate({
       />
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
         <PageHeader title="SSG and ISR Example" />
-        <div className="prose lg:prose-xl mx-auto mb-8 mt-8 max-w-lg lg:max-w-screen-lg">
+        <div className="prose lg:prose-xl my-10 flex flex-col">
           <p>
             <em>
               By default, this starter kit is optimized for SSR and Edge Caching

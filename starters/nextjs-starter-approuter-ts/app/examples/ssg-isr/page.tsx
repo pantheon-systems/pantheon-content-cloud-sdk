@@ -16,6 +16,7 @@ async function fetchNextPages(cursor: string) {
       pageSize: PAGE_SIZE,
       cursor,
     });
+
   return {
     data,
     newCursor,
@@ -40,7 +41,7 @@ export default async function SSGISRExampleTemplate() {
         cursor={cursor}
         fetcher={fetchNextPages}
         additionalHeader={
-          <div className="prose lg:prose-xl mx-auto mb-8 mt-8 max-w-lg lg:max-w-screen-lg">
+          <div className="prose lg:prose-xl my-10 flex flex-col">
             <p>
               <em>
                 By default, this starter kit is optimized for SSR and Edge
@@ -56,7 +57,7 @@ export default async function SSGISRExampleTemplate() {
   );
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   // This function is empty because we're not generating any dynamic routes
   // It's included to demonstrate where you would put the logic for generating
   // static params if needed in the future

@@ -10,12 +10,14 @@ export default function ExamplesPageTemplate() {
 
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
         <PageHeader title="Examples" />
-        <section className="prose lg:prose-xl mx-auto mt-10 flex flex-col">
+        <section className="prose lg:prose-xl my-10 flex flex-col">
           <p>
-            This page outlines a growing list of common use cases that can be
-            used as a reference when building using this starter kit. If you
-            don&apos;t need them for your site, feel free to delete the
-            `pages/examples` directory in your codebase.
+            <em>
+              This page outlines a growing list of common use cases that can be
+              used as a reference when building using this starter kit. If you
+              don&apos;t need them for your site, feel free to delete the
+              `pages/examples` directory in your codebase.
+            </em>
           </p>
           <ul>
             <li>

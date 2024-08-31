@@ -1,9 +1,7 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
 import { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 import { notFound } from "next/navigation";
 import { StaticArticleView } from "../../../../components/article-view";
-import { ArticleGrid } from "../../../../components/grid";
 import Layout from "../../../../components/layout";
 import { getSeoMetadata } from "../../../../lib/utils";
 
