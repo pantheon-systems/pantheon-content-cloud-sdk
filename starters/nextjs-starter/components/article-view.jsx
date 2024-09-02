@@ -3,8 +3,15 @@ import {
   ArticleRenderer,
   useArticleTitle,
 } from "@pantheon-systems/pcc-react-sdk/components";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
+
+const removeElementStyles = (headerTag) => {
+  function resultFunc({ children, id, style: _, ...attrs }) {
+    return React.createElement(headerTag, { id, attrs }, children);
+  }
+  return resultFunc;
+};
 
 export default function ArticleView({ article, onlyContent }) {
   const { data } = useArticle(
@@ -48,6 +55,16 @@ export function StaticArticleView({ article, onlyContent }) {
       </div>
       <ArticleRenderer
         article={article}
+        componentMap={{
+          h1: removeElementStyles("h1"),
+          h2: removeElementStyles("h2"),
+          h3: removeElementStyles("h3"),
+          h4: removeElementStyles("h4"),
+          h5: removeElementStyles("h5"),
+          h6: removeElementStyles("h6"),
+          p: removeElementStyles("p"),
+          span: removeElementStyles("span"),
+        }}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           useUnintrusiveTitleRendering: true,

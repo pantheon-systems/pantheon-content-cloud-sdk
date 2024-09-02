@@ -6,7 +6,15 @@ import {
   ArticleRenderer,
   useArticleTitle,
 } from "@pantheon-systems/pcc-react-sdk/components";
+import React from "react";
 import { clientSmartComponentMap } from "./smart-components/client-components";
+
+const removeElementStyles = (headerTag: keyof HTMLElementTagNameMap) => {
+  function resultFunc({ children, id, style: _, ...attrs }: any) {
+    return React.createElement(headerTag, { id, attrs }, children);
+  }
+  return resultFunc;
+};
 
 type ArticleViewProps = {
   article: Article;
@@ -47,6 +55,16 @@ export default function ArticleView({
       </div>
       <ArticleRenderer
         article={hydratedArticle}
+        componentMap={{
+          h1: removeElementStyles("h1"),
+          h2: removeElementStyles("h2"),
+          h3: removeElementStyles("h3"),
+          h4: removeElementStyles("h4"),
+          h5: removeElementStyles("h5"),
+          h6: removeElementStyles("h6"),
+          p: removeElementStyles("p"),
+          span: removeElementStyles("span"),
+        }}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           disableAllStyles: !!onlyContent,
@@ -78,6 +96,16 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
       </div>
       <ArticleRenderer
         article={article}
+        componentMap={{
+          h1: removeElementStyles("h1"),
+          h2: removeElementStyles("h2"),
+          h3: removeElementStyles("h3"),
+          h4: removeElementStyles("h4"),
+          h5: removeElementStyles("h5"),
+          h6: removeElementStyles("h6"),
+          p: removeElementStyles("p"),
+          span: removeElementStyles("span"),
+        }}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
           disableAllStyles: !!onlyContent,
