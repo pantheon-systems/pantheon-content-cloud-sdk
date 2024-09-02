@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 import PantheonLogoBlack from "../../assets/logos/pantheon-fist-black.png";
 import { Button } from "../ui/button";
 import NavMenu, { NavItem } from "./nav";
@@ -29,7 +29,9 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <SearchBar />
+          <Suspense>
+            <SearchBar />
+          </Suspense>
 
           <nav className="hidden gap-3 lg:flex">
             {navItems.buttons.map((button) => (
