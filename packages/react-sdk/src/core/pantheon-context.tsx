@@ -1,4 +1,6 @@
 import { ApolloProvider } from "@apollo/client/react/context/ApolloProvider.js";
+import { ApolloClient } from "@apollo/client/core/ApolloClient.js";
+
 import { PantheonClient } from "@pantheon-systems/pcc-sdk-core";
 import React, { PropsWithChildren } from "react";
 
@@ -13,7 +15,7 @@ export const PantheonProvider = ({
   children,
 }: PantheonProviderProps) => (
   <PantheonContext.Provider value={client}>
-    <ApolloProvider client={client.apolloClient}>{children}</ApolloProvider>
+    <ApolloProvider client={client.apolloClient as unknown as ApolloClient<unknown>}>{children}</ApolloProvider>
   </PantheonContext.Provider>
 );
 
