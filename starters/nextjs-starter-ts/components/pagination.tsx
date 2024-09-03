@@ -1,5 +1,7 @@
-import { Button } from "@pantheon-systems/pds-toolkit-react";
+import Image from "next/image";
 import { useCallback } from "react";
+import ChevronLeft from "./../assets/icons/chevron-left.svg";
+import ChevronRight from "./../assets/icons/chevron-right.svg";
 
 interface Props {
   totalCount: number;
@@ -33,29 +35,37 @@ const Pagination = ({
 
   return (
     <div className="my-5 flex items-center">
-      {showPrevButton && (
-        <Button
-          style={{ border: "none" }}
-          variant="brand-secondary"
-          label="Previous"
-          onClick={goToPreviousPage}
-          displayType="icon-start"
-          iconName="arrowLeft"
-          disabled={disabled}
+      <button
+        aria-label="Previous"
+        className="h-12 rounded-lg px-4 text-neutral-900 hover:bg-neutral-400 disabled:cursor-not-allowed disabled:opacity-30"
+        onClick={goToPreviousPage}
+        disabled={disabled || !showPrevButton}
+      >
+        <Image
+          src={ChevronLeft}
+          alt="Previous"
+          title="Previous"
+          width={11}
+          height={16}
         />
-      )}
-      <div className="px-2">{`${currentPage + 1} of ${pageCount}`}</div>
-      {showNextButton && (
-        <Button
-          style={{ border: "none" }}
-          variant="brand-secondary"
-          label="Next"
-          onClick={goToNextPage}
-          displayType="icon-end"
-          iconName="arrowRight"
-          disabled={disabled}
+      </button>
+      <div className="px-3 text-lg">
+        <div>{`${currentPage + 1} of ${pageCount}`}</div>
+      </div>
+      <button
+        aria-label="Next"
+        className="h-12 rounded-lg px-4 text-neutral-900 hover:bg-neutral-400 disabled:cursor-not-allowed disabled:opacity-30"
+        onClick={goToNextPage}
+        disabled={disabled || !showNextButton}
+      >
+        <Image
+          src={ChevronRight}
+          alt="Next"
+          title="Next"
+          width={11}
+          height={16}
         />
-      )}
+      </button>
     </div>
   );
 };

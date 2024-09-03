@@ -1,26 +1,59 @@
-import { forwardRef } from "react";
+import React, { useState } from "react";
+import { Button } from "../ui/button";
 
 interface Props {
-  title: string;
-  body: string;
+  heading: string;
+  description: string;
+  inputLabel: string;
+  submitButtonText?: string;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void | Promise<void>;
 }
 
-const LeadCapture = ({ title, body }: Props) => {
+const LeadCapture = ({
+  heading,
+  description,
+  inputLabel,
+  submitButtonText,
+  onSubmit,
+}: Props) => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const defaultSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (onSubmit) {
+      await onSubmit(e);
+    } else {
+      alert("Form submitted successfully");
+    }
+
+    setSubmitted(true);
+  };
+
   return (
-    <div className="w-full p-1">
-      <div className="max-w-[300px] w-full outline outline-black/10 p-4 rounded-md">
-        <h1 className="font-medium">{title ?? "Title"}</h1>
-        <p className="my-4 text-sm">{body ?? "Body"}</p>
-        <div className="pt-2">
-          <input className="w-full p-2 border rounded-md border-black/10" />
-        </div>
-        <button className="px-4 py-2 mt-4 text-sm transition-opacity duration-200 rounded bg-[#FFDC28] hover:opacity-50">
-          Submit
-        </button>
-      </div>
+    <div className="not-prose w-full rounded-md p-8 shadow-[0px_3px_8px_0px_rgba(0,0,0,0.15),0px_1px_2px_0px_rgba(0,0,0,0.2)]">
+      {submitted ? (
+        <>
+          <h1 className="mb-3 text-2xl font-bold">Thank you.</h1>
+          <p>The form was submitted successfully.</p>
+        </>
+      ) : (
+        <form onSubmit={defaultSubmitHandler}>
+          <h1 className="mb-3 text-2xl font-bold">{heading}</h1>
+          <p className="mb-4">{description}</p>
+          <label className="mb-8 block">
+            <p className="mb-1 font-bold">{inputLabel}</p>
+
+            <input
+              className="w-full rounded-md border border-neutral-400 p-2"
+              required
+            />
+          </label>
+          <Button>{submitButtonText ?? "Submit"}</Button>
+        </form>
+      )}
     </div>
   );
 };
 
-LeadCapture.displayName = "LeadCapture";
 export default LeadCapture;
