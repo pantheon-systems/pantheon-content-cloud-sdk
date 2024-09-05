@@ -34,12 +34,20 @@ export default function SSGISRExampleTemplate({ articles }) {
 }
 
 export async function getStaticProps() {
-  const articles = await PCCConvenienceFunctions.getAllArticles();
+  try {
+    const articles = await PCCConvenienceFunctions.getAllArticles();
 
-  return {
-    props: {
-      articles,
-    },
-    revalidate: 60,
-  };
+    return {
+      props: {
+        articles,
+      },
+      revalidate: 60,
+    };
+  } catch (e) {
+    console.error(e);
+
+    return {
+      notFound: true,
+    };
+  }
 }

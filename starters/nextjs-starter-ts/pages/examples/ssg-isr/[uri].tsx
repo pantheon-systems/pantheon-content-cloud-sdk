@@ -62,61 +62,77 @@ export const getStaticProps: GetStaticProps<{}, { uri: string }> = async ({
     };
   }
 
-  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(uri);
+  try {
+    const article = await PCCConvenienceFunctions.getArticleBySlugOrId(uri);
 
-  if (!article) {
+    if (!article) {
+      return {
+        notFound: true,
+      };
+    }
+
+    const recommendedArticles =
+      await PCCConvenienceFunctions.getRecommendedArticles(article.id);
+
+    return {
+      props: {
+        article,
+        recommendedArticles,
+      },
+    };
+  } catch (e) {
+    console.error(e);
     return {
       notFound: true,
     };
   }
-
-  const recommendedArticles =
-    await PCCConvenienceFunctions.getRecommendedArticles(article.id);
-
-  return {
-    props: {
-      article,
-      recommendedArticles,
-    },
-  };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const publishedArticles = await PCCConvenienceFunctions.getAllArticles(
-    {
-      publishingLevel: "PRODUCTION",
-    },
-    {
-      publishStatus: "published",
-    },
-  );
-
-  const pagePaths = publishedArticles.map((article) => {
-    const id = article.id;
-    const slug = article.metadata.slug;
-
-    // Generate both slug and id paths for each article
-    const paths = [
+  try {
+    const publishedArticles = await PCCConvenienceFunctions.getAllArticles(
       {
-        params: {
-          uri: id,
-        },
+        publishingLevel: "PRODUCTION",
       },
-    ];
+      {
+        publishStatus: "published",
+      },
+    );
 
-    if (slug) {
-      paths.push({
-        params: {
-          uri: String(slug),
+    const pagePaths = publishedArticles.map((article) => {
+      const id = article.id;
+      const slug = article.metadata.slug;
+
+      // Generate both slug and id paths for each article
+      const paths = [
+        {
+          params: {
+            uri: id,
+          },
         },
-      });
-    }
+      ];
 
-    return paths;
-  });
+      if (slug) {
+        paths.push({
+          params: {
+            uri: String(slug),
+          },
+        });
+      }
 
-  return {
-    paths: pagePaths.flat(),
-    fallback: "blocking",
-  };
+      return paths;
+    });
+
+    return {
+      paths: pagePaths.flat(),
+      fallback: "blocking",
+    };
+  } catch (e) {
+    console.error(e);
+
+    return {
+      paths: [],
+      fallback: "blocking",
+    };
+  }
 };

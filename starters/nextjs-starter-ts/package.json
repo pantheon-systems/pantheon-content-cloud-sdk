@@ -22,6 +22,9 @@
     "update-snapshots": "vitest run --update --silent",
     "coverage": "vitest run --coverage"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@pantheon-systems/pcc-react-sdk": "~3.7.0",
     "@pantheon-systems/pds-toolkit-react": "1.0.0-dev.55",
