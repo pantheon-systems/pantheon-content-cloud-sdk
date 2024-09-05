@@ -1,5 +1,12 @@
-import Script from "next/script";
+import { Poppins } from "next/font/google";
+// import Script from "next/script";
+
 import "../styles/globals.css";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 function MyApp({ children }) {
   return (
@@ -23,7 +30,7 @@ function MyApp({ children }) {
         </>
       )} */}
       </head>
-      <body>{children}</body>
+      <body className={poppins.className}>{children}</body>
     </html>
   );
 }

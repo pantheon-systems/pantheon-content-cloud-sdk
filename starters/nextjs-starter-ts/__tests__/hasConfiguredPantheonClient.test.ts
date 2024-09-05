@@ -2,7 +2,7 @@ import { pantheonAPIOptions } from "../pages/api/pantheoncloud/[...command]";
 
 describe("hasConfiguredPantheonClient", () => {
   it("Pantheon API options have been filled out", () => {
-    expect(pantheonAPIOptions.smartComponentMap.LEAD_CAPTURE).toBeDefined();
+    expect(pantheonAPIOptions.smartComponentMap.MEDIA_PREVIEW).toBeDefined();
   });
 
   it("Resolve document by article id", () => {
