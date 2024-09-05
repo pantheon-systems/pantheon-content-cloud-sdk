@@ -8,8 +8,6 @@ export default async function SearchPage({ searchParams }) {
       publishingLevel: "PRODUCTION",
     },
     {
-      tagContains: searchParams.q,
-      titleContains: searchParams.q,
       bodyContains: searchParams.q,
     },
     true,
