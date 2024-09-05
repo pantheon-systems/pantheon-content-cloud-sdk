@@ -65,20 +65,28 @@ export default function SSGISRExampleTemplate({
 }
 
 export async function getStaticProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
-
-  return {
-    props: {
-      articles,
-      cursor,
+  try {
+    const {
+      data: articles,
       totalCount,
-    },
-    revalidate: 60,
-  };
+      cursor,
+    } = await PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    });
+
+    return {
+      props: {
+        articles,
+        cursor,
+        totalCount,
+      },
+      revalidate: 60,
+    };
+  } catch (e) {
+    console.error(e);
+
+    return {
+      notFound: true,
+    };
+  }
 }

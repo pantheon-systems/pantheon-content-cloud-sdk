@@ -13,7 +13,7 @@ export default function ExamplesPageTemplate() {
               This page outlines a growing list of common use cases that can be
               used as a reference when building using this starter kit. If you
               don&apos;t need them for your site, feel free to delete the
-              `pages/examples` directory in your codebase.
+              `app/examples` directory in your codebase.
             </em>
           </p>
           <ul>
