@@ -22,8 +22,6 @@ export default async function handler(
           publishingLevel: "PRODUCTION",
         },
         {
-          titleContains: q,
-          tagContains: q,
           bodyContains: q,
         },
         true,

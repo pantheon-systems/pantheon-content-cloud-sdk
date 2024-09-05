@@ -18,8 +18,6 @@ export default async function handler(req, res) {
           publishingLevel: "PRODUCTION",
         },
         {
-          titleContains: q,
-          tagContains: q,
           bodyContains: q,
         },
         true,

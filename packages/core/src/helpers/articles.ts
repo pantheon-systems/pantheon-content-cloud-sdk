@@ -30,6 +30,7 @@ export interface ArticleQueryArgs {
   sortBy?: keyof typeof ArticleSortField;
   sortOrder?: keyof typeof SortOrder;
   metadataFilters?: { [key: string]: unknown };
+  preamble?: string;
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -40,6 +41,7 @@ export interface ArticlePaginatedQueryArgs {
   metadataFilters?: { [key: string]: unknown };
   pageSize?: number;
   cursor?: string;
+  preamble?: string;
 }
 
 type FilterableFields = "body" | "tag" | "title";

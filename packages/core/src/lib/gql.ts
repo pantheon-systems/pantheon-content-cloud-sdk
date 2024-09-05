@@ -73,6 +73,7 @@ export function generateListArticlesGQL({
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
+    $premable: String
   ) {
     articlesv3(
       pageSize: $pageSize
@@ -83,6 +84,7 @@ export function generateListArticlesGQL({
       contentType: $contentType
       publishingLevel: $publishingLevel
       filter: $filter
+      preamble: $preamble
     ) {
       articles {
         id
