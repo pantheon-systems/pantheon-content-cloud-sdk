@@ -49,9 +49,10 @@ class AddOnApiHelper {
 
     // If auth details not found, try user logging in
     if (!authDetails) {
-      const prevOra = ora().stopAndPersist();
+      // Clears older spinner if any
+      ora().clear();
+
       await login(requiredScopes || []);
-      prevOra.start();
       authDetails = await getLocalAuthDetails(requiredScopes);
       if (!authDetails) throw new UserNotLoggedIn();
     }
