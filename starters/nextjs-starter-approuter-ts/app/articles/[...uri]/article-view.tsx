@@ -2,19 +2,13 @@ import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server"
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";
-import { Tags } from "../../../components/tags";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
 import { ClientsideArticleView } from "./clientside-articleview";
 
 export const ArticleView = async ({ params, searchParams }) => {
   const { article, grant } = await getServersideArticle(params, searchParams);
 
-  return (
-    <>
-      <ClientsideArticleView article={article} grant={grant} />
-      <Tags tags={article?.tags} />
-    </>
-  );
+  return <ClientsideArticleView article={article} grant={grant} />;
 };
 
 export async function getServersideArticle(params, searchParams) {

@@ -1,19 +1,39 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
+import ArticleList from "../../components/article-list";
 import Layout from "../../components/layout";
-import PageHeader from "../../components/page-header";
-import { Client } from "./client";
+import { PAGE_SIZE } from "../../constants";
+
+async function fetchNextPages(cursor: string) {
+  "use server";
+  const { data, cursor: newCursor } =
+    await PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      cursor,
+    });
+  return {
+    data,
+    newCursor,
+  };
+}
 
 export default async function ArticlesListTemplate() {
-  const articles = await PCCConvenienceFunctions.getAllArticles();
+  const {
+    data: articles,
+    cursor,
+    totalCount,
+  } = await PCCConvenienceFunctions.getPaginatedArticles({
+    pageSize: PAGE_SIZE,
+  });
 
   return (
     <Layout>
-      <div className="max-w-screen-lg mx-auto">
-        <section>
-          <PageHeader title="Articles" />
-          <Client articles={articles} />
-        </section>
-      </div>
+      <ArticleList
+        headerText="Articles"
+        articles={articles}
+        cursor={cursor}
+        totalCount={totalCount}
+        fetcher={fetchNextPages}
+      />
     </Layout>
   );
 }

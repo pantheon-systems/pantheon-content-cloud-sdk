@@ -1,4 +1,4 @@
-# Pantheon Decoupled Kit Next Pantheon Content Cloud Starter
+# Pantheon Content Cloud Next.js Starter
 
 ## Getting Started
 

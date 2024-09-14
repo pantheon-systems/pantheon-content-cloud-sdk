@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-cli
 
+## 3.8.0
+
+### Minor Changes
+
+- 94486dc: Importing posts from WordPress now supported.
+- bd39fb9: Added commands for managing collaborators and site visibility.
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.8.0
+
 ## 3.7.0
 
 ### Minor Changes

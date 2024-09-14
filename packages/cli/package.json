@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-cli",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud CLI",
-  "version": "3.7.0",
+  "version": "3.8.0",
   "type": "module",
   "license": "MIT",
   "keywords": [
@@ -38,19 +38,19 @@
   },
   "dependencies": {
     "@pantheon-systems/pcc-sdk-core": "workspace:*",
-    "axios": "^1.6.8",
+    "axios": "^1.7.4",
     "bluebird": "^3.7.2",
     "boxen": "^7.1.1",
     "chalk": "^5.3.0",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.12",
     "dom-parser": "^1.1.5",
     "fs-extra": "^11.2.0",
-    "get-port": "^7.0.0",
-    "google-auth-library": "^9.6.3",
+    "get-port": "^7.1.0",
+    "google-auth-library": "^9.13.0",
     "googleapis": "^129.0.0",
     "inquirer": "^8.2.6",
     "nunjucks": "^3.2.4",
-    "octokit": "^3.1.2",
+    "octokit": "^3.2.1",
     "open": "^9.1.0",
     "ora": "^6.3.1",
     "package-json": "^8.1.1",
@@ -60,7 +60,7 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.21.5",
+    "@babel/preset-env": "^7.25.3",
     "@types/bluebird": "^3.5.42",
     "@types/fs-extra": "^11.0.4",
     "@types/inquirer": "^9.0.7",
@@ -70,13 +70,13 @@
     "@types/server-destroy": "^1.0.3",
     "@types/showdown": "^2.0.6",
     "@types/tmp": "^0.2.6",
-    "@types/yargs": "^17.0.32",
+    "@types/yargs": "^17.0.33",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
     "jest": "29.5.0",
-    "tmp": "^0.2.2",
+    "tmp": "^0.2.3",
     "ts-jest": "29.1.0",
-    "tsup": "^7.2.0"
+    "tsup": "^8.2.4"
   }
 }

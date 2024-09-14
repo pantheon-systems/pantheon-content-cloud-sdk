@@ -4,8 +4,33 @@ import {
   ArticleRenderer,
   useArticleTitle,
 } from "@pantheon-systems/pcc-react-sdk/components";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { clientSmartComponentMap } from "./smart-components";
+
+const ELEMENT_STYLES_TO_OVERRIDE = [
+  /fontSize/,
+  /fontWeight/,
+  /padding(Left|Right|Top|Bottom)*/,
+  /margin(Left|Right|Top|Bottom)*/,
+  /lineHeight/,
+  /height/,
+];
+const overrideElementStyles = (tag: keyof HTMLElementTagNameMap) => {
+  function resultFunc({ children, id, style, ...attrs }: any) {
+    const newStyles = { ...style };
+    ELEMENT_STYLES_TO_OVERRIDE.forEach((s) => {
+      Object.keys(newStyles).forEach((key) => {
+        if (s.test(key)) delete newStyles[key];
+      });
+    });
+    return React.createElement(
+      tag,
+      { id, style: newStyles, ...attrs },
+      children,
+    );
+  }
+  return resultFunc;
+};
 
 type ArticleViewProps = {
   article: Article;
@@ -43,11 +68,10 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
   return (
     <>
       <div>
-        <div className="text-3xl font-bold md:text-4xl">{articleTitle}</div>
+        <div className="text-5xl font-bold">{articleTitle}</div>
 
         {article.updatedAt ? (
           <p className="py-2">
-            Last Updated:{" "}
             {new Date(article.updatedAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -55,10 +79,19 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             })}
           </p>
         ) : null}
-
-        <hr className="mt-6 mb-8" />
       </div>
       <ArticleRenderer
+        componentMap={{
+          h1: overrideElementStyles("h1"),
+          h2: overrideElementStyles("h2"),
+          h3: overrideElementStyles("h3"),
+          h4: overrideElementStyles("h4"),
+          h5: overrideElementStyles("h5"),
+          h6: overrideElementStyles("h6"),
+          p: overrideElementStyles("p"),
+          li: overrideElementStyles("li"),
+          span: overrideElementStyles("span"),
+        }}
         article={article}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{

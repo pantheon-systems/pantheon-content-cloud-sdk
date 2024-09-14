@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */
 import { setup, styled } from "goober";
-import React, { useState } from "react";
+import React, { ComponentProps, useState } from "react";
 import { Arrow, useLayer } from "react-laag";
 import { IconDot } from "../Icons/IconDot";
 import { IconInfo } from "../Icons/IconInfo";
@@ -68,7 +68,7 @@ export const LivePreviewIndicator = ({ isLive }: Props) => {
                 </span>
               </div>
               <Arrow
-                {...arrowProps}
+                {...(arrowProps as ComponentProps<typeof Arrow>)}
                 size={9}
                 roundness={0}
                 backgroundColor="#23232D"

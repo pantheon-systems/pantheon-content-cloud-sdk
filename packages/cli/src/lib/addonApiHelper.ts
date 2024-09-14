@@ -66,7 +66,6 @@ class AddOnApiHelper {
 
   static async getIdToken(
     requiredScopes?: string[],
-    withAuthToken?: true,
   ): Promise<{ idToken: string; oauthToken: string }>;
   static async getIdToken(requiredScopes?: string[], withAuthToken?: boolean) {
     let authDetails = (await getLocalAuthDetails(
@@ -86,9 +85,10 @@ class AddOnApiHelper {
       if (!authDetails) throw new UserNotLoggedIn();
     }
 
-    return withAuthToken
-      ? { idToken: authDetails.id_token, oauthToken: authDetails.access_token }
-      : authDetails.id_token;
+    return {
+      idToken: authDetails.id_token,
+      oauthToken: authDetails.access_token,
+    };
   }
 
   static async getDocument(
@@ -96,7 +96,7 @@ class AddOnApiHelper {
     insertIfMissing = false,
     title?: string,
   ): Promise<Article> {
-    const idToken = await this.getIdToken();
+    const { idToken, oauthToken } = await this.getIdToken();
 
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
@@ -109,9 +109,11 @@ class AddOnApiHelper {
         },
         headers: {
           Authorization: `Bearer ${idToken}`,
+          "oauth-token": oauthToken,
         },
       },
     );
+
     return resp.data as Article;
   }
 
@@ -152,7 +154,7 @@ class AddOnApiHelper {
 
     verbose?: boolean,
   ): Promise<Article> {
-    const idToken = await this.getIdToken();
+    const { idToken, oauthToken } = await this.getIdToken();
 
     if (verbose) {
       console.log("update document", {
@@ -177,6 +179,7 @@ class AddOnApiHelper {
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
+          "oauth-token": oauthToken,
           "Content-Type": "application/json",
         },
       },
@@ -186,10 +189,9 @@ class AddOnApiHelper {
   }
 
   static async publishDocument(documentId: string) {
-    const { idToken, oauthToken } = await this.getIdToken(
-      ["https://www.googleapis.com/auth/drive"],
-      true,
-    );
+    const { idToken, oauthToken } = await this.getIdToken([
+      "https://www.googleapis.com/auth/drive",
+    ]);
 
     if (!idToken || !oauthToken) {
       throw new UserNotLoggedIn();
@@ -228,10 +230,9 @@ class AddOnApiHelper {
       baseUrl?: string;
     },
   ): Promise<string> {
-    const { idToken, oauthToken } = await this.getIdToken(
-      ["https://www.googleapis.com/auth/drive"],
-      true,
-    );
+    const { idToken, oauthToken } = await this.getIdToken([
+      "https://www.googleapis.com/auth/drive",
+    ]);
 
     if (!idToken || !oauthToken) {
       throw new UserNotLoggedIn();
@@ -364,7 +365,7 @@ class AddOnApiHelper {
   }
 
   static async getSite(siteId: string): Promise<Site> {
-    const idToken = await this.getIdToken();
+    const { idToken } = await this.getIdToken();
 
     const resp = await axios.get(
       `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}`,
@@ -476,6 +477,53 @@ class AddOnApiHelper {
         email,
       },
     });
+  }
+
+  static async listCollaborators(id: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    return (
+      await axios.get(
+        `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
+      )
+    ).data;
+  }
+
+  static async addCollaborator(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.patch(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+      {
+        email,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    );
+  }
+
+  static async removeCollaborator(id: string, email: string): Promise<void> {
+    const idToken = await this.getIdToken();
+
+    await axios.delete(
+      `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+        data: {
+          email,
+        },
+      },
+    );
   }
 
   static async updateSiteConfig(

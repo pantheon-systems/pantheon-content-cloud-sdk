@@ -1,5 +1,11 @@
 # @pantheon-systems/vue-pcc-starter-ts
 
+## 1.1.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-vue-sdk@3.8.0
+
 ## 1.1.1
 
 ### Patch Changes
