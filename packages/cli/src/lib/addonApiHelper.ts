@@ -7,9 +7,8 @@ import login, { loginOAuth } from "../cli/commands/login";
 import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
 import { getApiConfig } from "./apiConfig";
 import {
-  CREDENTIAL_TYPE,
   getLocalAuthDetails,
-  NextJwtCredentials,
+  JwtCredentials,
 } from "./localStorage";
 import { toKebabCase } from "./utils";
 
@@ -45,10 +44,8 @@ class AddOnApiHelper {
     }
   }
 
-  static async getNextJwt(): Promise<string> {
-    let authDetails = (await getLocalAuthDetails(
-      CREDENTIAL_TYPE.NEXT_JWT,
-    )) as NextJwtCredentials | null;
+  static async getAuthTokens(requiredScopes?: string[]): Promise<JwtCredentials> {
+    let authDetails = (await getLocalAuthDetails()) as JwtCredentials | null;
 
     // If auth details not found, try user logging in
     if (!authDetails) {
@@ -56,39 +53,11 @@ class AddOnApiHelper {
       await login();
       prevOra.start();
       authDetails = (await getLocalAuthDetails(
-        CREDENTIAL_TYPE.NEXT_JWT,
-      )) as NextJwtCredentials | null;
+      )) as JwtCredentials | null;
       if (!authDetails) throw new UserNotLoggedIn();
     }
 
-    return authDetails?.token;
-  }
-
-  static async getIdToken(
-    requiredScopes?: string[],
-  ): Promise<{ idToken: string; oauthToken: string }>;
-  static async getIdToken(requiredScopes?: string[], withAuthToken?: boolean) {
-    let authDetails = (await getLocalAuthDetails(
-      CREDENTIAL_TYPE.OAUTH,
-      requiredScopes,
-    )) as Credentials | null;
-
-    // If auth details not found, try user logging in
-    if (!authDetails) {
-      const prevOra = ora().stopAndPersist();
-      await loginOAuth(requiredScopes || []);
-      prevOra.start();
-      authDetails = (await getLocalAuthDetails(
-        CREDENTIAL_TYPE.OAUTH,
-        requiredScopes,
-      )) as Credentials | null;
-      if (!authDetails) throw new UserNotLoggedIn();
-    }
-
-    return {
-      idToken: authDetails.id_token,
-      oauthToken: authDetails.access_token,
-    };
+    return authDetails;
   }
 
   static async getDocument(
@@ -96,7 +65,7 @@ class AddOnApiHelper {
     insertIfMissing = false,
     title?: string,
   ): Promise<Article> {
-    const { idToken, oauthToken } = await this.getIdToken();
+    const { idToken, oauthToken } = await this.getAuthTokens();
 
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
@@ -123,7 +92,7 @@ class AddOnApiHelper {
     fieldTitle: string,
     fieldType: string,
   ): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.post(
       `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/metadata`,
@@ -154,7 +123,7 @@ class AddOnApiHelper {
 
     verbose?: boolean,
   ): Promise<Article> {
-    const { idToken, oauthToken } = await this.getIdToken();
+    const { idToken, oauthToken } = await this.getAuthTokens();
 
     if (verbose) {
       console.log("update document", {
@@ -189,7 +158,7 @@ class AddOnApiHelper {
   }
 
   static async publishDocument(documentId: string) {
-    const { idToken, oauthToken } = await this.getIdToken([
+    const { idToken, oauthToken } = await this.getAuthTokens([
       "https://www.googleapis.com/auth/drive",
     ]);
 
@@ -230,7 +199,7 @@ class AddOnApiHelper {
       baseUrl?: string;
     },
   ): Promise<string> {
-    const { idToken, oauthToken } = await this.getIdToken([
+    const { idToken, oauthToken } = await this.getAuthTokens([
       "https://www.googleapis.com/auth/drive",
     ]);
 
@@ -260,7 +229,7 @@ class AddOnApiHelper {
   static async createApiKey({
     siteId,
   }: { siteId?: string } = {}): Promise<string> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.post(
       (await getApiConfig()).API_KEY_ENDPOINT,
@@ -277,7 +246,7 @@ class AddOnApiHelper {
   }
 
   static async listApiKeys(): Promise<ApiKey[]> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.get((await getApiConfig()).API_KEY_ENDPOINT, {
       headers: {
@@ -289,7 +258,7 @@ class AddOnApiHelper {
   }
 
   static async revokeApiKey(id: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     try {
       await axios.delete(`${(await getApiConfig()).API_KEY_ENDPOINT}/${id}`, {
@@ -307,7 +276,7 @@ class AddOnApiHelper {
   }
 
   static async createSite(url: string): Promise<string> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.post(
       (await getApiConfig()).SITE_ENDPOINT,
@@ -326,7 +295,7 @@ class AddOnApiHelper {
     transferToSiteId: string | null | undefined,
     force: boolean,
   ): Promise<string> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.delete(
       queryString.stringifyUrl({
@@ -350,7 +319,7 @@ class AddOnApiHelper {
   }: {
     withConnectionStatus?: boolean;
   }): Promise<Site[]> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.get((await getApiConfig()).SITE_ENDPOINT, {
       headers: {
@@ -365,7 +334,7 @@ class AddOnApiHelper {
   }
 
   static async getSite(siteId: string): Promise<Site> {
-    const { idToken } = await this.getIdToken();
+    const idToken = await this.getAuthTokens();
 
     const resp = await axios.get(
       `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}`,
@@ -380,7 +349,7 @@ class AddOnApiHelper {
   }
 
   static async updateSite(id: string, url: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.patch(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}`,
@@ -394,7 +363,7 @@ class AddOnApiHelper {
   }
 
   static async getServersideComponentSchema(id: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.get(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
@@ -410,7 +379,7 @@ class AddOnApiHelper {
     id: string,
     componentSchema: typeof SmartComponentMapZod,
   ): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.post(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
@@ -426,7 +395,7 @@ class AddOnApiHelper {
   }
 
   static async removeComponentSchema(id: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.delete(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/components`,
@@ -439,7 +408,7 @@ class AddOnApiHelper {
   }
 
   static async listAdmins(id: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     return (
       await axios.get(`${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`, {
@@ -451,7 +420,7 @@ class AddOnApiHelper {
   }
 
   static async addAdmin(id: string, email: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.patch(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`,
@@ -467,7 +436,7 @@ class AddOnApiHelper {
   }
 
   static async removeAdmin(id: string, email: string): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     await axios.delete(`${(await getApiConfig()).SITE_ENDPOINT}/${id}/admins`, {
       headers: {
@@ -480,7 +449,7 @@ class AddOnApiHelper {
   }
 
   static async listCollaborators(id: string): Promise<void> {
-    const idToken = await this.getIdToken();
+    const idToken = await this.getAuthTokens();
 
     return (
       await axios.get(
@@ -495,7 +464,7 @@ class AddOnApiHelper {
   }
 
   static async addCollaborator(id: string, email: string): Promise<void> {
-    const idToken = await this.getIdToken();
+    const idToken = await this.getAuthTokens();
 
     await axios.patch(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
@@ -511,7 +480,7 @@ class AddOnApiHelper {
   }
 
   static async removeCollaborator(id: string, email: string): Promise<void> {
-    const idToken = await this.getIdToken();
+    const idToken = await this.getAuthTokens();
 
     await axios.delete(
       `${(await getApiConfig()).SITE_ENDPOINT}/${id}/collaborators`,
@@ -540,7 +509,7 @@ class AddOnApiHelper {
       preferredEvents?: string[];
     },
   ): Promise<void> {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const configuredWebhook = webhookUrl || webhookSecret || preferredEvents;
 
@@ -574,7 +543,7 @@ class AddOnApiHelper {
       offset?: number;
     },
   ) {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.get(
       `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/webhookLogs`,
@@ -593,7 +562,7 @@ class AddOnApiHelper {
   }
 
   static async fetchAvailableWebhookEvents(siteId: string) {
-    const jwtToken = await this.getNextJwt();
+    const jwtToken = await this.getAuthTokens();
 
     const resp = await axios.get(
       `${(await getApiConfig()).SITE_ENDPOINT}/${siteId}/availableWebhookEvents`,

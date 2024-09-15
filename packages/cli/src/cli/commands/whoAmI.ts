@@ -4,7 +4,7 @@ import { Credentials } from "google-auth-library";
 import {
   CREDENTIAL_TYPE,
   getLocalAuthDetails,
-  NextJwtCredentials,
+  JwtCredentials,
 } from "../../lib/localStorage";
 import { errorHandler } from "../exceptions";
 
@@ -12,7 +12,7 @@ const printWhoAmI = async () => {
   try {
     const nextJwt = (await getLocalAuthDetails(
       CREDENTIAL_TYPE.NEXT_JWT,
-    )) as NextJwtCredentials | null;
+    )) as JwtCredentials | null;
     if (!nextJwt) {
       console.log("You aren't logged in.");
     } else {
