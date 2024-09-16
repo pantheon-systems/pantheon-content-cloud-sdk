@@ -73,7 +73,7 @@ export function generateListArticlesGQL({
     $contentType: ContentType
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
-    $premable: String
+    $preamble: String
   ) {
     articlesv3(
       pageSize: $pageSize
