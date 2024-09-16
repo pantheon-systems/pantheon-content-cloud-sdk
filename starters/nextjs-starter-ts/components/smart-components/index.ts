@@ -36,8 +36,9 @@ export const serverSmartComponentMap = {
   MEDIA_PREVIEW: {
     title: "Media Preview",
     iconUrl: null,
+    variants: ["standard", "racecar"],
     exampleImageUrl:
-      "https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png",
+      ["https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png", "https://www.frontsigns.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2022/11/race-car-branding.jpg.webp"],
     fields: {
       url: {
         displayName: "URL",
@@ -58,4 +59,3 @@ export const clientSmartComponentMap: SmartComponentMap = {
     reactComponent: withSmartComponentErrorBoundary(LeadCapture),
   },
 };
-
