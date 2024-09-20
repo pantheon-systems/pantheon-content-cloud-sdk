@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.8.1
+
+### Patch Changes
+
+- 61c7d15: Add 'preamble' property for searches with summary.
+- Fixed issue where sometimes the question input appeared to hang.
+
 ## 3.8.0
 
 ## 3.7.0
