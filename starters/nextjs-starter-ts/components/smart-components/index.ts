@@ -37,8 +37,10 @@ export const serverSmartComponentMap = {
     title: "Media Preview",
     iconUrl: null,
     variants: ["standard", "hero"],
-    exampleImageUrl:
-      ["https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png", "https://pantheon.io/sites/default/files/styles/inline_hero_image/public/2024-03/v1-hero-image%20%281%29_0.webp"],
+    exampleImageUrl: [
+      "https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png",
+      "https://pantheon.io/sites/default/files/styles/inline_hero_image/public/2024-03/v1-hero-image%20%281%29_0.webp",
+    ],
     fields: {
       url: {
         displayName: "URL",
