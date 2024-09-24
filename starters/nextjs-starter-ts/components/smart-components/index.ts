@@ -36,9 +36,9 @@ export const serverSmartComponentMap = {
   MEDIA_PREVIEW: {
     title: "Media Preview",
     iconUrl: null,
-    variants: ["standard", "racecar"],
+    variants: ["standard", "hero"],
     exampleImageUrl:
-      ["https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png", "https://www.frontsigns.com/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2022/11/race-car-branding.jpg.webp"],
+      ["https://storage.googleapis.com/pcc-prod-user-uploads/preview-media-preview.png", "https://pantheon.io/sites/default/files/styles/inline_hero_image/public/2024-03/v1-hero-image%20%281%29_0.webp"],
     fields: {
       url: {
         displayName: "URL",
