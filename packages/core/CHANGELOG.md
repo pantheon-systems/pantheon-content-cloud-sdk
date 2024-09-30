@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.9.0-beta.0
+
+### Minor Changes
+
+- 4267508: Component schema supports special 'variant' attribute.
+
 ## 3.8.1
 
 ### Patch Changes

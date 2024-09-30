@@ -1,6 +1,7 @@
 import { getPreviewComponentFromURL, SUPPORTED_PROVIDERS } from "./providers";
 
 interface Props {
+  _pcx_variant: string;
   url: string;
 }
 

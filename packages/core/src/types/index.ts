@@ -167,8 +167,13 @@ export const SmartComponentMapZod = z.record(
   z.string(),
   z.object({
     title: z.string(),
+    variants: z.array(z.string()).optional(),
     iconUrl: z.string().nullable().optional(),
-    exampleImageUrl: z.string().nullable().optional(),
+    exampleImageUrl: z
+      .string()
+      .nullable()
+      .optional()
+      .or(z.array(z.string()).optional()),
     fields: z.record(z.string(), fieldSchema),
   }),
 );
