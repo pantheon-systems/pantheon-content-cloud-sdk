@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.9.0-beta.0
+
+### Minor Changes
+
+- 4267508: Component schema supports special 'variant' attribute.
+
+### Patch Changes
+
+- Updated dependencies [4267508]
+  - @pantheon-systems/pcc-sdk-core@3.9.0-beta.0
+
 ## 3.8.1
 
 ### Patch Changes
