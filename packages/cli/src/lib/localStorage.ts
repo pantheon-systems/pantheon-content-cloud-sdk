@@ -4,51 +4,43 @@ import { ensureFile, remove } from "fs-extra";
 import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
 import { Config } from "../types/config";
-import AddOnApiHelper from "./addonApiHelper";
 
-export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
+export const AUTH_FOLDER_PATH = path.join(PCC_ROOT_DIR, "auth");
 export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
 
+function getAuthFile() {
+  return path.join(AUTH_FOLDER_PATH, "auth.json");
+}
+
+export interface JwtCredentials {
+  idToken: string;
+  oauthToken: string;
+  email: string;
+  expiration: string;
+}
+
 export const getLocalAuthDetails = async (
-  requiredScopes?: string[],
-): Promise<Credentials | null> => {
-  let credentials: Credentials;
-  try {
-    credentials = JSON.parse(
-      readFileSync(AUTH_FILE_PATH).toString(),
-    ) as Credentials;
-  } catch (_err) {
-    return null;
-  }
-
-  // Return null if required scope is not present
-  const grantedScopes = new Set(credentials.scope?.split(" ") || []);
-  if (
-    requiredScopes &&
-    requiredScopes.length > 0 &&
-    !requiredScopes.every((i) => grantedScopes.has(i))
-  ) {
-    return null;
-  }
-
-  // Check if token is expired
-  if (credentials.expiry_date) {
-    const currentTime = await AddOnApiHelper.getCurrentTime();
-
-    if (currentTime < credentials.expiry_date) {
-      return credentials;
-    }
-  }
+): Promise<Credentials | JwtCredentials | null> => {
+  let storedJSON;
 
   try {
-    const newCred = await AddOnApiHelper.refreshToken(
-      credentials.refresh_token as string,
+    storedJSON = JSON.parse(
+      readFileSync(getAuthFile()).toString(),
     );
-    persistAuthDetails(newCred);
-    return newCred;
   } catch (_err) {
     return null;
   }
+
+    const credentials: JwtCredentials = storedJSON as JwtCredentials;
+
+    // Check if token is expired
+    if (credentials.expiration) {
+      if (Date.now() >= Date.parse(credentials.expiration)) {
+        return null;
+      }
+    }
+
+    return credentials;
 };
 
 export const getLocalConfigDetails = async (): Promise<Config | null> => {
@@ -60,9 +52,9 @@ export const getLocalConfigDetails = async (): Promise<Config | null> => {
 };
 
 export const persistAuthDetails = async (
-  payload: Credentials,
+  payload: Credentials | JwtCredentials,
 ): Promise<void> => {
-  await persistDetailsToFile(payload, AUTH_FILE_PATH);
+  await persistDetailsToFile(payload, getAuthFile());
 };
 
 export const persistConfigDetails = async (payload: Config): Promise<void> => {
