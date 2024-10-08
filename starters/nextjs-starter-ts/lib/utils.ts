@@ -25,13 +25,11 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
 
 export function getSeoMetadata(article: ArticleWithoutContent) {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let authors = [];
   let publishedTime = null;
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
+    if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
 
@@ -42,11 +40,13 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     .filter((url): url is string => typeof url === "string")
     .map((url) => ({ url }));
 
+  const authorName = article.metadata.author?.name;
+
   return {
     title: article.title,
     description: "Article hosted using Pantheon Content Cloud",
     tags,
-    authors,
+    authors: authorName ? [authorName] : undefined,
     publishedTime,
     images: imageProperties,
   };
