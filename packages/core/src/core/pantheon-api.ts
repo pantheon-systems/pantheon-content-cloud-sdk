@@ -1,7 +1,7 @@
 import queryString from "query-string";
 import { getArticleBySlugOrId, PCCConvenienceFunctions } from "../helpers";
 import { parseJwt } from "../lib/jwt";
-import { Article, SmartComponentMap } from "../types";
+import { Article, MetadataGroup, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
 export interface ApiRequest {
@@ -85,6 +85,11 @@ export interface PantheonAPIOptions {
    * Map of smart component names to their schemas.
    */
   smartComponentMap?: SmartComponentMap;
+
+  /**
+   * Metadata groups, schemas, and how to retrieve their data.
+   */
+  metadataGroups?: MetadataGroup[];
 }
 
 const defaultOptions = {
@@ -236,6 +241,43 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         }
 
         return await res.redirect(302, options.notFoundPath);
+      }
+
+      case "metadata_group": {
+        const groupIdentifier = command[1];
+        const objectId = command[2];
+
+        if (options.metadataGroups == null) {
+          return res.json({
+            error: "This collection has no metadata groups defined.",
+          });
+        }
+
+        if (groupIdentifier == null) {
+          return res.json({
+            error: "Group identifier is required.",
+          });
+        }
+
+        const group = await options.metadataGroups.find(
+          (x) => x.groupIdentifier === groupIdentifier,
+        );
+
+        if (!group) {
+          return res.json({
+            error: "Could not find matching group by given identifier.",
+          });
+        }
+
+        if (!objectId) {
+          return res.json({
+            rows: await group.list(),
+          });
+        }
+
+        return res.json({
+          row: await group.get(objectId),
+        });
       }
 
       default: {
