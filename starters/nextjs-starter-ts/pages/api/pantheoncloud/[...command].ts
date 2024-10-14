@@ -29,7 +29,7 @@ export const pantheonAPIOptions: PantheonAPIOptions = {
       groupIdentifier: "AUTHOR",
       schema: {
         name: "string",
-        image: "image",
+        image: "file",
       },
       get: (id: string) => authors.find((x) => x.id?.toString() === id),
       list: () => authors,
