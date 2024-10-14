@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.10.0-beta.0
+
+### Minor Changes
+
+- 572fb97: Add support for metadata groups (like authors).
+
 ## 3.9.0
 
 ### Minor Changes
