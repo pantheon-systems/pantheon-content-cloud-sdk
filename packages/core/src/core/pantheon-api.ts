@@ -255,7 +255,17 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
 
         if (groupIdentifier == null) {
           return res.json({
-            error: "Group identifier is required.",
+            rows: await Promise.all(
+              options.metadataGroups.map(
+                async ({ label, groupIdentifier, schema, list }) => ({
+                  label,
+                  groupIdentifier,
+                  schema,
+                  values:
+                    restOfQuery.hydrate === "true" ? await list() : undefined,
+                }),
+              ),
+            ),
           });
         }
 
