@@ -19,6 +19,7 @@
     "@pantheon-systems/vue-pcc-starter-ts": "1.1.3"
   },
   "changesets": [
+    "seven-owls-poke",
     "sixty-moose-act"
   ]
 }

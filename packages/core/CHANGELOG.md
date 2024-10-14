@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.10.0-beta.1
+
+### Patch Changes
+
+- 400fc48: Allow caller to retrieve all metadata groups, optionally hydrated.
+
 ## 3.10.0-beta.0
 
 ### Minor Changes
