@@ -1,5 +1,6 @@
 import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
+import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,46 +16,46 @@ export function formatDate(input: string | number): string {
   });
 }
 
-interface DateInputObject {
-  msSinceEpoch: string;
-}
-
-function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
-  return (v as DateInputObject).msSinceEpoch != null;
-}
-
-export function getSeoMetadata(article: ArticleWithoutContent) {
-  const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let authors = [];
-  let publishedTime = null;
-
-  // Collecting data from metadata fields
-  Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
-      publishedTime = new Date(val.msSinceEpoch).toISOString();
-  });
-
+export function getSeoMetadata(article: ArticleWithoutContent): Metadata {
+  const tags: string[] =
+    article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
+    article.metadata?.image,
     article.metadata?.["Hero Image"],
     // Extend as needed
   ]
     .filter((url): url is string => typeof url === "string")
     .map((url) => ({ url }));
+  const description = article.metadata?.description
+    ? String(article.metadata?.description)
+    : "Article hosted using Pantheon Content Cloud";
 
-  const description = "Article hosted using Pantheon Content Publisher";
+  let authors: Metadata["authors"] = [];
+
+  // Collecting data from metadata fields
+  Object.entries(article.metadata || {}).forEach(([k, v]) => {
+    const key = k.toLowerCase().trim();
+
+    switch (key) {
+      case "author": {
+        if (typeof v === "string") {
+          authors = [{ name: v }];
+        }
+        break;
+      }
+    }
+  });
 
   return {
     title: article.title,
     description,
-    tags,
+    keywords: tags,
     authors,
-    publishedTime,
     openGraph: {
       type: "website",
       title: article.title,
-      description,
       images: imageProperties,
+      description,
     },
   };
 }

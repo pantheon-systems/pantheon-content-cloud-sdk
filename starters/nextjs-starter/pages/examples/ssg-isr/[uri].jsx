@@ -1,7 +1,6 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
-import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import { getSeoMetadata } from "../../../lib/utils";
 
@@ -13,18 +12,7 @@ export default function ArticlePage({ article, recommendedArticles }) {
       <NextSeo
         title={seoMetadata.title}
         description={seoMetadata.description}
-        openGraph={{
-          type: "website",
-          title: seoMetadata.title,
-          description: seoMetadata.description,
-          article: {
-            authors: seoMetadata.authors,
-            tags: seoMetadata.tags,
-            ...(seoMetadata.publishedTime && {
-              publishedTime: seoMetadata.publishedTime,
-            }),
-          },
-        }}
+        openGraph={seoMetadata.openGraph}
       />
 
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
