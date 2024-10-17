@@ -42,7 +42,7 @@ export function getSeoMetadata(article) {
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors = [v];
+          authors.push(v);
         }
         break;
       }
@@ -58,7 +58,7 @@ export function getSeoMetadata(article) {
           const authorName = getAuthorById(v)?.name;
 
           if (authorName) {
-            authors.push({ name: v });
+            authors.push(v);
           }
         }
         break;
