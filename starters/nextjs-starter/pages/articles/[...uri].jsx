@@ -29,7 +29,7 @@ export default function ArticlePage({ article, grant }) {
             description: seoMetadata.description,
             images: seoMetadata.images,
             article: {
-              authors: seoMetadata.authors,
+              authors: seoMetadata.authors?.map((x) => x.name),
               tags: seoMetadata.tags,
               ...(seoMetadata.publishedTime && {
                 publishedTime: seoMetadata.publishedTime,

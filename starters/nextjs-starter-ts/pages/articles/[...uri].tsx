@@ -33,9 +33,9 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
             type: "website",
             title: seoMetadata.title,
             description: seoMetadata.description,
-            images: seoMetadata.images,
+            images: seoMetadata.openGraph.images,
             article: {
-              authors: seoMetadata.authors,
+              authors: seoMetadata.authors?.map((x) => x.name),
               tags: seoMetadata.tags,
               ...(seoMetadata.publishedTime && {
                 publishedTime: seoMetadata.publishedTime,

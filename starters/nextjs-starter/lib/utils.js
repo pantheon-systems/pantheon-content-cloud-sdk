@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { getAuthorById } from "./pcc-metadata-groups";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -20,15 +21,16 @@ function isDateInputObject(v) {
 
 export function getSeoMetadata(article) {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let authors = [];
   let publishedTime = null;
 
-  // Collecting data from metadata fields
+  // Collecting data from metadata fields. Identifies the key in a case in-sensitive way.
   Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
+    if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
       publishedTime = new Date(val.msSinceEpoch).toISOString();
   });
+
+  const authorId = article.metadata.author;
+  const authorName = authorId ? getAuthorById(authorId)?.name : undefined;
 
   const imageProperties = [
     article.metadata?.["Hero Image"],
@@ -37,12 +39,25 @@ export function getSeoMetadata(article) {
     .filter((url) => typeof url === "string")
     .map((url) => ({ url }));
 
+  const description = "Article hosted using Pantheon Content Publisher";
+
   return {
     title: article.title,
-    description: "Article hosted using Pantheon Content Cloud",
+    description,
     tags,
-    authors,
+    authors: authorName
+      ? [
+          {
+            name: authorName,
+          },
+        ]
+      : null,
     publishedTime,
-    images: imageProperties,
+    openGraph: {
+      type: "website",
+      title: article.title,
+      description,
+      images: imageProperties,
+    },
   };
 }
