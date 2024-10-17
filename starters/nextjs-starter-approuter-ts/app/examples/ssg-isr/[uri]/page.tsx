@@ -21,9 +21,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     return notFound();
   }
 
-  const recommendedArticles =
-    await PCCConvenienceFunctions.getRecommendedArticles(article.id);
-
   return (
     <Layout>
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">

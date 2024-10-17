@@ -1,5 +1,6 @@
 import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
+import { OpenGraph } from "next-seo/lib/types";
 import { twMerge } from "tailwind-merge";
 import { getAuthorById } from "./pcc-metadata-groups";
 
@@ -25,44 +26,68 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
 }
 
 export function getSeoMetadata(article: ArticleWithoutContent) {
-  const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let publishedTime = null;
-
-  // Collecting data from metadata fields. Identifies the key in a case in-sensitive way.
-  Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
-      publishedTime = new Date(val.msSinceEpoch).toISOString();
-  });
-
-  const authorId = article.metadata.author as string | undefined;
-  const authorName = authorId ? getAuthorById(authorId)?.name : undefined;
-
+  const tags: string[] =
+    article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
+    article.metadata?.image,
     article.metadata?.["Hero Image"],
     // Extend as needed
   ]
     .filter((url): url is string => typeof url === "string")
     .map((url) => ({ url }));
+  const description = article.metadata?.description
+    ? String(article.metadata?.description)
+    : "Article hosted using Pantheon Content Cloud";
 
-  const description = "Article hosted using Pantheon Content Publisher";
+  const authors: string[] = [];
+  let publishedTime: number | null = article.publishedDate;
+
+  // Collecting data from metadata fields
+  Object.entries(article.metadata || {}).forEach(([k, v]) => {
+    const key = k.toLowerCase().trim();
+
+    switch (key) {
+      case "author": {
+        if (typeof v === "string") {
+          authors.push(v);
+        }
+        break;
+      }
+      case "complex-author": {
+        if (typeof v === "string") {
+          const authorName = getAuthorById(v)?.name;
+
+          if (authorName) {
+            authors.push(v);
+          }
+        }
+        break;
+      }
+      case "date": {
+        if (isDateInputObject(v)) {
+          // Prefer the date from the metadata, if it exists
+          publishedTime = parseInt(v.msSinceEpoch);
+        }
+        break;
+      }
+    }
+  });
 
   return {
     title: article.title,
     description,
-    tags,
-    authors: authorName
-      ? [
-          {
-            name: authorName,
-          },
-        ]
-      : null,
-    publishedTime,
     openGraph: {
       type: "website",
       title: article.title,
-      description,
       images: imageProperties,
-    },
+      description,
+      article: {
+        authors: authors,
+        tags: tags,
+        ...(publishedTime && {
+          publishedTime: new Date(publishedTime).toISOString(),
+        }),
+      },
+    } satisfies OpenGraph,
   };
 }

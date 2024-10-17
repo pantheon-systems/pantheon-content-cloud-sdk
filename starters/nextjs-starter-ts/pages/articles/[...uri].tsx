@@ -29,19 +29,7 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
         <NextSeo
           title={seoMetadata.title}
           description={seoMetadata.description}
-          openGraph={{
-            type: "website",
-            title: seoMetadata.title,
-            description: seoMetadata.description,
-            images: seoMetadata.openGraph.images,
-            article: {
-              authors: seoMetadata.authors?.map((x) => x.name),
-              tags: seoMetadata.tags,
-              ...(seoMetadata.publishedTime && {
-                publishedTime: seoMetadata.publishedTime,
-              }),
-            },
-          }}
+          openGraph={seoMetadata.openGraph}
         />
 
         <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
