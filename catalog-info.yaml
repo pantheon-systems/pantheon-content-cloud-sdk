@@ -7,7 +7,7 @@ metadata:
   name: pantheon content cloud sdk
   description: An SDK to provide a comprehensive set of APIs and tools to facilitate the development of a pantheon site using various supported starters
   annotations:
-    backstage.io/techdocs-ref: dir:docs/
+    pantheon.io/service-catalog/subdir: /
     github.com/project-slug: @pantheon-systems/pantheon-content-cloud-sdk
     github.com/team-slug: @pantheon-systems/pcc
 tags:
