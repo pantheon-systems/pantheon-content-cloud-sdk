@@ -1,0 +1,21 @@
+# https://backstage.io/docs/features/software-catalog/
+# https://backstage.io/docs/features/software-catalog/descriptor-format
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: pantheon content cloud sdk
+  description: An SDK to provide a comprehensive set of APIs and tools to facilitate the development of a pantheon site using various supported starters
+  annotations:
+    backstage.io/techdocs-ref: dir:docs/
+    github.com/project-slug: @pantheon-systems/pantheon-content-cloud-sdk
+    github.com/team-slug: @pantheon-systems/pcc
+tags:
+    - typescript
+      nextjs
+      vue
+      react 
+spec:
+  type: library
+  lifecycle: Introduction
+  owner: content-cloud
