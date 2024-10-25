@@ -4,7 +4,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: pantheon content cloud sdk
+  name: pantheon-content-cloud-sdk
   description: An SDK to provide a comprehensive set of APIs and tools to facilitate the development of a pantheon site using various supported starters
   annotations:
     pantheon.io/service-catalog/subdir: /
