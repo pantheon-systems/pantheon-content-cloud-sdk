@@ -1,6 +1,6 @@
 import { getLocalConfigDetails } from "./localStorage";
 
-enum TargetEnvironment {
+export enum TargetEnvironment {
   production = "production",
   staging = "staging",
   test = "test",
