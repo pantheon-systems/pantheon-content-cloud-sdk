@@ -103,12 +103,8 @@
   "dependencies": {
     "@apollo/client": "^3.10.3",
     "@pantheon-systems/pcc-sdk-core": "workspace:*",
-    "framer-motion": "^10.18.0",
-    "goober": "^2.1.14",
     "graphql": "^16.8.1",
     "lodash": "^4.17.21",
-    "query-string": "^8.2.0",
-    "react-laag": "^2.0.5",
     "react-markdown": "^8.0.7",
     "rehype-raw": "^6.1.1",
     "remark-heading-id": "^1.0.1",
