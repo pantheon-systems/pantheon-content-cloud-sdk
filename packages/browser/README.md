@@ -1,3 +1,5 @@
+# Browser
+
 <div align="center">
 	<h1>Pantheon Content Cloud SDK for Browsers</h1>
 	<p>

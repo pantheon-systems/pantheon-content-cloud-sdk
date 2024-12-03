@@ -1,3 +1,5 @@
+# React Sample Lib
+
 <div align="center">
 	<h1>Pantheon Content Cloud Sample Smart Component Library for React</h1>
 	<p>
