@@ -23,7 +23,10 @@ export async function downloadTemplateDirectory(
   printVerbose?: boolean,
 ) {
   try {
-    const files = await fetchFiles(directory, printVerbose);
+    // Fetch files but ignore certain ones.
+    const files = (await fetchFiles(directory, printVerbose)).filter(
+      (file) => !["turbo.json"].includes(file.path),
+    );
 
     await Promise.all(files.map((file) => output(file, outputDirectory)));
 
