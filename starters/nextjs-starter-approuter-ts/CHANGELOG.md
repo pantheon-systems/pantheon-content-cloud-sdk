@@ -1,5 +1,14 @@
 # @pantheon-systems/next-pcc-starter
 
+## 1.1.9-beta.1
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [b89c5ee]
+  - @pantheon-systems/pcc-react-sdk@3.10.0-beta.2
+
 ## 1.1.9-beta.0
 
 ### Patch Changes

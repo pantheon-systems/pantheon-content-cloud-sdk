@@ -1,5 +1,18 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.10.0-beta.2
+
+### Minor Changes
+
+- b89c5ee: The injected preview bar is deprecated in favor of the integrated preview bar in
+  the dashboard preview interface
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+  - @pantheon-systems/pcc-sdk-core@3.10.0-beta.2
+
 ## 3.10.0-beta.1
 
 ### Patch Changes

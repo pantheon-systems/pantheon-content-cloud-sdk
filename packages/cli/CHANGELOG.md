@@ -1,5 +1,20 @@
 # @pantheon-systems/pcc-cli
 
+## 3.10.0-beta.2
+
+### Minor Changes
+
+- 0b3ee7b: No longer download turbo.json when initializing a new project from the starter
+  kit.
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- 39b7604: Added a warning message when CLI build is pointing to non-production
+  environment.
+- Updated dependencies [67bc79b]
+  - @pantheon-systems/pcc-sdk-core@3.10.0-beta.2
+
 ## 3.10.0-beta.1
 
 ### Patch Changes
