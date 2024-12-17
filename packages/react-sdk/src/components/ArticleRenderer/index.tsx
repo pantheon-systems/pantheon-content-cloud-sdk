@@ -6,9 +6,7 @@ import {
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
 import React, { useEffect } from "react";
-import { createPortal } from "react-dom";
 import { getTextContent } from "../../utils/react-element";
-import { PreviewBar, PreviewBarExternalProps } from "../Preview/Preview";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
@@ -52,7 +50,6 @@ interface Props {
     content: string,
   ) => React.ReactNode;
   smartComponentMap?: SmartComponentMap;
-  previewBarProps?: PreviewBarExternalProps;
   componentMap?: ComponentMap;
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
   __experimentalFlags?: {
@@ -63,22 +60,6 @@ interface Props {
   };
 }
 
-function getOrCreatePortalTarget(
-  targetOverride: globalThis.Element | null | undefined,
-) {
-  const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
-  let portalTarget =
-    targetOverride || document.getElementById(pccGeneratedPortalTargetKey);
-
-  if (!portalTarget) {
-    portalTarget = document.createElement("div");
-    portalTarget.id = pccGeneratedPortalTargetKey;
-    document.body.prepend(portalTarget);
-  }
-
-  return portalTarget;
-}
-
 const ArticleRenderer = ({
   article,
   bodyClassName,
@@ -86,13 +67,10 @@ const ArticleRenderer = ({
   headerClassName,
   renderTitle,
   smartComponentMap,
-  previewBarProps,
   componentMap,
   renderBody,
   __experimentalFlags,
 }: Props) => {
-  const [renderCSR, setRenderCSR] = React.useState(false);
-
   useEffect(() => {
     if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
       console.warn(
@@ -101,33 +79,15 @@ const ArticleRenderer = ({
     }
   }, [__experimentalFlags]);
 
-  useEffect(() => {
-    setRenderCSR(true);
-  }, []);
-
   if (!article?.content) {
     return null;
   }
 
-  const portalTarget =
-    renderCSR && typeof document !== "undefined"
-      ? getOrCreatePortalTarget(previewBarProps?.portalTarget)
-      : null;
   const contentType = article?.contentType;
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {renderCSR &&
-        article != null &&
-        portalTarget != null &&
-        article.publishingLevel === "REALTIME"
-          ? createPortal(
-              <PreviewBar {...previewBarProps} article={article} />,
-              portalTarget,
-            )
-          : null}
-
         {article?.content ? (
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
@@ -202,16 +162,6 @@ const ArticleRenderer = ({
 
   return (
     <div className={containerClassName}>
-      {renderCSR &&
-      article != null &&
-      portalTarget != null &&
-      article.publishingLevel === "REALTIME"
-        ? createPortal(
-            <PreviewBar {...previewBarProps} article={article} />,
-            portalTarget,
-          )
-        : null}
-
       {titleElement != null ? (
         <div className={headerClassName}>
           {renderTitle
