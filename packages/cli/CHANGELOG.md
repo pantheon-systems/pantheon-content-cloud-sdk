@@ -4,8 +4,8 @@
 
 ### Minor Changes
 
-- 0b3ee7b: No longer download turbo.json when initializing a new project from the starter
-  kit.
+- 0b3ee7b: No longer download turbo.json when initializing a new project from
+  the starter kit.
 
 ### Patch Changes
 
