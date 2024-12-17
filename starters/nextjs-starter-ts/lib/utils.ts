@@ -55,7 +55,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
       }
       case "complex-author": {
         if (typeof v === "string") {
-          const authorName = getAuthorById(v)?.name;
+          const authorName = getAuthorById(v)?.label;
 
           if (authorName) {
             authors.push(v);

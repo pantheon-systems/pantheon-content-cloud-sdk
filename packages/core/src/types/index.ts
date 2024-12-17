@@ -114,6 +114,10 @@ export interface PantheonTree {
   children: PantheonTreeNode[];
 }
 
+interface MetadataGroupRowEssentials {
+  label: string;
+}
+
 export interface MetadataGroup {
   label: string;
   groupIdentifier: string;
@@ -123,10 +127,14 @@ export interface MetadataGroup {
   >;
   get: (
     id: string,
-  ) => Promise<unknown | null | undefined> | unknown | null | undefined;
+  ) =>
+    | Promise<(unknown & MetadataGroupRowEssentials) | null | undefined>
+    | (unknown & MetadataGroupRowEssentials)
+    | null
+    | undefined;
   list: () =>
-    | Promise<unknown[] | null | undefined>
-    | unknown[]
+    | Promise<(unknown & MetadataGroupRowEssentials)[] | null | undefined>
+    | (unknown & MetadataGroupRowEssentials)[]
     | null
     | undefined;
 }
