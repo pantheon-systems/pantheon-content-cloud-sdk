@@ -1,5 +1,23 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.10.0-beta.2
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+
+## 3.10.0-beta.1
+
+### Patch Changes
+
+- 400fc48: Allow caller to retrieve all metadata groups, optionally hydrated.
+
+## 3.10.0-beta.0
+
+### Minor Changes
+
+- 572fb97: Add support for metadata groups (like authors).
+
 ## 3.9.0
 
 ### Minor Changes
