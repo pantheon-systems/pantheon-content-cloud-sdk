@@ -53,7 +53,7 @@ export function getSeoMetadata(article) {
         }
         break;
       }
-      case "complex-author": {
+      case "complex-author":
         if (typeof v === "string") {
           const authorName = getAuthorById(v)?.label;
 
@@ -62,7 +62,6 @@ export function getSeoMetadata(article) {
           }
         }
         break;
-      }
     }
   });
 
