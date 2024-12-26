@@ -92,7 +92,7 @@ yargs(hideBin(process.argv))
         .option("template", {
           describe: "Template from which files should be copied.",
           type: "string",
-          choices: ["nextjs", "gatsby", "vue"],
+          choices: ["nextjs"],
           default: "nextjs",
           demandOption: true,
         })

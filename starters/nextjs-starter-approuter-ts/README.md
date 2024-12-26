@@ -1,4 +1,4 @@
-# Pantheon Content Cloud Next.js Starter
+# Pantheon Content Cloud Next.js Starter TS
 
 ## Getting Started
 

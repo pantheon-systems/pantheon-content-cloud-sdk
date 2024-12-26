@@ -1,3 +1,5 @@
+# Gatsby Starter
+
 ### IMPORTANT NOTE
 
 This starter kit has been **deprecated**, but remains here in case there is a
