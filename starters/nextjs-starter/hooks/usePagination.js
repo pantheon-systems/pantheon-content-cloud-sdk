@@ -1,7 +1,8 @@
+import queryString from "query-string";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 
-export function usePagination({ cursor, initialArticles, pageSize }) {
+export function usePagination({ cursor, initialArticles, pageSize, author }) {
   const [articlePages, setArticlePages] = useState(
     initialArticles ? [initialArticles] : [],
   );
@@ -13,12 +14,19 @@ export function usePagination({ cursor, initialArticles, pageSize }) {
       const pageNumber = Number(key);
       if (articlePages[pageNumber]) return null;
 
-      const response = await fetch(
-        `/api/utils/paginate?pageSize=${pageSize}&cursor=${currentCursor}`,
-      );
+      const url = queryString.stringifyUrl({
+        url: "/api/utils/paginate",
+        query: {
+          pageSize,
+          cursor: currentCursor,
+          author,
+        },
+      });
+
+      const response = await fetch(url);
       return await response.json();
     },
-    [currentCursor, pageSize, articlePages],
+    [currentCursor, pageSize, articlePages, author],
   );
 
   const { data: newResponse, isLoading } = useSWR(
