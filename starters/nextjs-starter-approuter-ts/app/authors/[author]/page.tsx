@@ -66,7 +66,7 @@ export default async function ArticlesListTemplate({ params }) {
         totalCount={totalCount}
         fetcher={fetchNextPages(author)}
         additionalHeader={
-          <div className="border-base-300 mb-14 border-b-[1px] pb-7">
+          <div className="border-base-300 mb-14 border-b-[1px] pb-7" data-testid="author-header">
             <div className="flex flex-row gap-x-6">
               <div>
                 <Image

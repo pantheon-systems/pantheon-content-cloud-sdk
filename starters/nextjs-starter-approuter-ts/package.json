@@ -9,7 +9,7 @@
   "bugs": "https://github.com/pantheon-systems/pantheon-content-cloud-sdk/issues",
   "author": "@pantheon-systems",
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev -p 3002",
     "build": "next build && cp -r .next/static .next/standalone/.next && cp -r public .next/standalone",
     "start": "node .next/standalone/server.js",
     "build:mono": "next build",
@@ -19,6 +19,7 @@
     "prettier:fix": "prettier \"**/*.{js,jsx,,md}\" --write --ignore-path .prettierignore",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:playwright": "pnpm exec playwright test",
     "update-snapshots": "vitest run --update --silent",
     "coverage": "vitest run --coverage"
   },
@@ -47,6 +48,7 @@
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.1",
     "@testing-library/react": "13.4.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.17",

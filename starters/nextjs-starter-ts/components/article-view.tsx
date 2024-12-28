@@ -48,6 +48,7 @@ const ArticleHeader = ({ article, articleTitle, seoMetadata }) => {
         {seoMetadata.openGraph.article.authors?.[0] ? (
           <>
             <Link
+              data-testid="author"
               className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
               href={`/authors/${seoMetadata.openGraph.article.authors?.[0]}`}
             >

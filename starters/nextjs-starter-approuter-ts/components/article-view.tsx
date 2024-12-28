@@ -75,6 +75,7 @@ const ArticleHeader = ({
           <>
             <div>
               <Link
+                data-testid="author"
                 className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
                 href={`/authors/${seoMetadata.authors?.[0]?.name}`}
               >

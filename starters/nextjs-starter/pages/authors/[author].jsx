@@ -39,7 +39,10 @@ export default function ArticlesListTemplate({
       <NextSeo title="Articles" description="Articles" />
 
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
-        <div className="border-base-300 mb-14 border-b-[1px] pb-7">
+        <div
+          className="border-base-300 mb-14 border-b-[1px] pb-7"
+          data-testid="author-header"
+        >
           <div className="flex flex-row gap-x-6">
             <div>
               <Image
