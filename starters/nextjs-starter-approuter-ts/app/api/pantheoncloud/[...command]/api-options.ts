@@ -3,7 +3,7 @@ import { serverSmartComponentMap } from "../../../../components/smart-components
 
 export const pantheonAPIOptions: PantheonAPIOptions = {
   resolvePath: (article) => `/articles/${article.slug || article.id}`,
-  getSiteId: () => process.env.PCC_SITE_ID,
+  getSiteId: () => process.env.PCC_SITE_ID as string,
   smartComponentMap: serverSmartComponentMap,
   componentPreviewPath: (componentName) =>
     `/component-preview/${componentName}`,

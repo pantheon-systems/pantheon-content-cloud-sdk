@@ -2,13 +2,15 @@ import { Poppins } from "next/font/google";
 // import Script from "next/script";
 
 import "../styles/globals.css";
+import { AppProps } from "next/app";
+import React from "react";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div className={poppins.className}>
       {/* Google Analytics: Replace XXXXXXXXXX with your google analytics id and uncomment the following code. */}

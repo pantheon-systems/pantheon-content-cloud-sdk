@@ -15,11 +15,11 @@ updateConfig({
 });
 
 export const ClientsideArticleView = ({
-  grant,
   article,
+  grant,
 }: {
-  grant: string;
   article: Article;
+  grant?: string | undefined;
 }) => {
   return (
     <PantheonProvider
