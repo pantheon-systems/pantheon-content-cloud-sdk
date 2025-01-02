@@ -1,4 +1,5 @@
 import {
+  Article,
   ArticleWithoutContent,
   PCCConvenienceFunctions,
 } from "@pantheon-systems/pcc-react-sdk";
@@ -24,6 +25,11 @@ export default function ArticlesListTemplate({
   totalCount,
   cursor,
   author,
+}: {
+  articles: Article[];
+  totalCount: number;
+  cursor: string;
+  author?: string;
 }) {
   const {
     data: currentArticles,
@@ -93,7 +99,11 @@ export default function ArticlesListTemplate({
   );
 }
 
-export async function getServerSideProps({ query: { author } }) {
+export async function getServerSideProps({
+  query: { author },
+}: {
+  query: { author: string };
+}) {
   const {
     data: articles,
     totalCount,

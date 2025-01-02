@@ -18,7 +18,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   return (
     <Layout>
       <NextSeo
-        title={seoMetadata.title}
+        title={seoMetadata.title || undefined}
         description={seoMetadata.description}
         openGraph={seoMetadata.openGraph}
       />
@@ -30,17 +30,17 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps<{}, { uri: string }> = async ({
-  params: { uri },
-}) => {
-  if (!uri) {
+export const getStaticProps: GetStaticProps<{}> = async ({ params }) => {
+  if (!params?.uri) {
     return {
       notFound: true,
     };
   }
 
   try {
-    const article = await PCCConvenienceFunctions.getArticleBySlugOrId(uri);
+    const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
+      params?.uri?.toString(),
+    );
 
     if (!article) {
       return {
@@ -74,7 +74,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     const pagePaths = publishedArticles.map((article) => {
       const id = article.id;
-      const slug = article.metadata.slug;
+      const slug = article.metadata?.slug;
 
       // Generate both slug and id paths for each article
       const paths = [

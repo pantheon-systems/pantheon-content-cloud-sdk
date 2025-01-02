@@ -67,17 +67,21 @@ const ArticleHeader = ({
   articleTitle: string;
   seoMetadata: Metadata;
 }) => {
+  const author = Array.isArray(seoMetadata.authors)
+    ? seoMetadata.authors[0]
+    : seoMetadata.authors;
+
   return (
     <div>
       <div className="text-5xl font-bold">{articleTitle}</div>
       <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
-        {seoMetadata.authors?.[0]?.name ? (
+        {author?.name ? (
           <>
             <div>
               <Link
                 data-testid="author"
                 className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
-                href={`/authors/${seoMetadata.authors?.[0]?.name}`}
+                href={`/authors/${author?.name}`}
               >
                 <div>
                   <Image
@@ -85,12 +89,10 @@ const ArticleHeader = ({
                     src="/images/no-avatar.png"
                     width={24}
                     height={24}
-                    alt={`Avatar of ${seoMetadata.authors?.[0]?.name}`}
+                    alt={`Avatar of ${author?.name}`}
                   />
                 </div>
-                <div className="underline">
-                  {seoMetadata.authors?.[0]?.name}
-                </div>
+                <div className="underline">{author?.name}</div>
               </Link>
             </div>
             <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
@@ -118,7 +120,7 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
     <>
       <ArticleHeader
         article={article}
-        articleTitle={articleTitle}
+        articleTitle={articleTitle || ""}
         seoMetadata={seoMetadata}
       />
       <ArticleRenderer

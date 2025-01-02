@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  let cursor: string;
+  let cursor: string | undefined;
   if (Array.isArray(req.query.cursor)) cursor = req.query.cursor[0];
   else cursor = req.query.cursor;
 
@@ -16,7 +16,7 @@ export default async function handler(
     return res.status(400).json("Invalid pageSize");
   }
 
-  let author: string;
+  let author: string | null | undefined;
   if (Array.isArray(req.query.author)) author = req.query.author[0];
   else author = req.query.author;
 

@@ -61,14 +61,15 @@ export default function Search() {
               {isLoading ? (
                 <Skeleton count={5} />
               ) : (
-                <Markdown>{data.summary}</Markdown>
+                <Markdown>{data?.summary || ""}</Markdown>
               )}
             </div>
           </section>
         ) : null}
 
         <div className="my-16 max-w-[707px]">
-          {isLoading || data?.searchResults?.length > 0 ? (
+          {isLoading ||
+          (data?.searchResults != null && data.searchResults.length > 0) ? (
             (data?.searchResults ?? Array.from({ length: 5 })).map(
               (result, index) => (
                 <Fragment key={result?.id || index}>
@@ -87,11 +88,11 @@ export default function Search() {
                     <p className="my-2 line-clamp-4 whitespace-pre-wrap">
                       {isLoading ? (
                         <Skeleton count={4} />
-                      ) : (
+                      ) : result.snippet ? (
                         markdownToTxt(
                           result.snippet.replaceAll(/{#h\..*}\n/g, "\n"),
                         )
-                      )}
+                      ) : null}
                     </p>
                   </div>
 

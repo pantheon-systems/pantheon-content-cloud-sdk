@@ -11,8 +11,11 @@ export default function SmartComponentPreview() {
       ? JSON.parse(Buffer.from(attrs, "base64").toString())
       : {};
 
-  const SmartComponent =
-    clientSmartComponentMap[id?.toString()]?.reactComponent;
+  const SmartComponent = id
+    ? clientSmartComponentMap[
+        id.toString() as keyof typeof clientSmartComponentMap
+      ]?.reactComponent
+    : null;
 
   return (
     <div>

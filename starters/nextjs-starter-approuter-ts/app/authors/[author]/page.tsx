@@ -12,8 +12,8 @@ import ArticleList from "../../../components/article-list";
 import Layout from "../../../components/layout";
 import { PAGE_SIZE } from "../../../constants";
 
-function fetchNextPages(author?: string) {
-  return async (cursor: string) => {
+function fetchNextPages(author?: string | null | undefined) {
+  return async (cursor?: string | null | undefined) => {
     "use server";
     const { data, cursor: newCursor } =
       await PCCConvenienceFunctions.getPaginatedArticles({
@@ -24,7 +24,7 @@ function fetchNextPages(author?: string) {
             : {
                 author,
               },
-        cursor,
+        cursor: cursor || undefined,
       });
 
     return {
@@ -34,7 +34,11 @@ function fetchNextPages(author?: string) {
   };
 }
 
-export default async function ArticlesListTemplate({ params }) {
+export default async function ArticlesListTemplate({
+  params,
+}: {
+  params: { author: string };
+}) {
   const author = params.author ? decodeURIComponent(params.author) : undefined;
 
   const {
@@ -66,7 +70,10 @@ export default async function ArticlesListTemplate({ params }) {
         totalCount={totalCount}
         fetcher={fetchNextPages(author)}
         additionalHeader={
-          <div className="border-base-300 mb-14 border-b-[1px] pb-7" data-testid="author-header">
+          <div
+            className="border-base-300 mb-14 border-b-[1px] pb-7"
+            data-testid="author-header"
+          >
             <div className="flex flex-row gap-x-6">
               <div>
                 <Image

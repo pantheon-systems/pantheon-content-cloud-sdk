@@ -16,7 +16,7 @@ interface Props {
   articles: PaginatedArticle[] | ArticleWithoutContent[];
   totalCount: number;
   cursor: string;
-  fetcher: (cursor: string) => Promise<{
+  fetcher: (cursor?: string | null | undefined) => Promise<{
     data: PaginatedArticle[] | ArticleWithoutContent[];
     newCursor: string;
   }>;

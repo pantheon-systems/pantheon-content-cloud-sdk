@@ -40,7 +40,15 @@ type ArticleViewProps = {
   onlyContent?: boolean;
 };
 
-const ArticleHeader = ({ article, articleTitle, seoMetadata }) => {
+const ArticleHeader = ({
+  article,
+  articleTitle,
+  seoMetadata,
+}: {
+  article: Article;
+  articleTitle: string | null;
+  seoMetadata: ReturnType<typeof getSeoMetadata>;
+}) => {
   return (
     <div>
       <div className="text-5xl font-bold">{articleTitle}</div>
