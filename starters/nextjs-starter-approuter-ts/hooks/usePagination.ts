@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 interface Props {
   cursor?: string;
   initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
-  fetcher: (cursor: string) => Promise<{
+  fetcher: (cursor: string | null | undefined) => Promise<{
     data: PaginatedArticle[] | ArticleWithoutContent[];
     newCursor: string;
   }>;

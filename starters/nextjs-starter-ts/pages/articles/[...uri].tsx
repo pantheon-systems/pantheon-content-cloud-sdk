@@ -27,7 +27,7 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
     >
       <Layout>
         <NextSeo
-          title={seoMetadata.title}
+          title={seoMetadata.title || undefined}
           description={seoMetadata.description}
           openGraph={seoMetadata.openGraph}
         />
@@ -43,13 +43,24 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
 export async function getServerSideProps({
   req: { cookies },
   query: { uri, publishingLevel, pccGrant, ...query },
+}: {
+  req: {
+    cookies: Record<string, unknown>;
+  };
+  query: {
+    uri: string;
+    publishingLevel: "PRODUCTION" | "REALTIME" | undefined;
+    pccGrant: string;
+  };
 }) {
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     slugOrId,
-    publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
+    publishingLevel
+      ? (publishingLevel.toString().toUpperCase() as "PRODUCTION" | "REALTIME")
+      : "PRODUCTION",
   );
 
   if (!article) {
@@ -60,7 +71,8 @@ export async function getServerSideProps({
 
   if (
     article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
+    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase() &&
+    pantheonAPIOptions.resolvePath != null
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).

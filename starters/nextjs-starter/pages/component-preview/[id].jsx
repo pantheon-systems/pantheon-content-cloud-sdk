@@ -3,7 +3,6 @@ import { clientSmartComponentMap } from "../../components/smart-components";
 
 export default function SmartComponentPreview() {
   const router = useRouter();
-
   const { id, attrs } = router.query;
 
   const decodedAttrs =
@@ -11,8 +10,9 @@ export default function SmartComponentPreview() {
       ? JSON.parse(Buffer.from(attrs, "base64").toString())
       : {};
 
-  const SmartComponent =
-    clientSmartComponentMap[id?.toString()]?.reactComponent;
+  const SmartComponent = id
+    ? clientSmartComponentMap[id.toString()]?.reactComponent
+    : null;
 
   return (
     <div>

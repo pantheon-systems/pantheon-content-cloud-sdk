@@ -3,12 +3,12 @@ import ArticleList from "../../components/article-list";
 import Layout from "../../components/layout";
 import { PAGE_SIZE } from "../../constants";
 
-async function fetchNextPages(cursor: string) {
+async function fetchNextPages(cursor?: string | null | string) {
   "use server";
   const { data, cursor: newCursor } =
     await PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: PAGE_SIZE,
-      cursor,
+      cursor: cursor || undefined,
     });
   return {
     data,
