@@ -41,7 +41,7 @@ export default function SearchResults({
       ) : null}
 
       <div className="my-16 max-w-[707px]">
-        {isLoading || (searchResults && searchResults?.length > 0) ? (
+        {isLoading || (searchResults && searchResults.length > 0) ? (
           (searchResults ?? Array.from({ length: 5 })).map((result, index) => (
             <Fragment key={result?.id || index}>
               <div>
