@@ -5,7 +5,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  let cursor: string;
+  let cursor: string | undefined;
   if (Array.isArray(req.query.cursor)) cursor = req.query.cursor[0];
   else cursor = req.query.cursor;
 

@@ -5,13 +5,30 @@ import queryString from "query-string";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
 import { ClientsideArticleView } from "./clientside-articleview";
 
-export const ArticleView = async ({ params, searchParams }) => {
-  const { article, grant } = await getServersideArticle(params, searchParams);
+export interface ArticleViewProps {
+  params: { uri: string };
+  searchParams: {
+    publishingLevel: "PRODUCTION" | "REALTIME";
+    pccGrant: string | undefined;
+  };
+}
 
-  return <ClientsideArticleView article={article} grant={grant} />;
+export const ArticleView = async ({
+  params,
+  searchParams,
+}: ArticleViewProps) => {
+  const { article, grant } = await getServersideArticle({
+    params,
+    searchParams,
+  });
+
+  return <ClientsideArticleView article={article} grant={grant || undefined} />;
 };
 
-export async function getServersideArticle(params, searchParams) {
+export async function getServersideArticle({
+  params,
+  searchParams,
+}: ArticleViewProps) {
   const { uri } = params;
   const { publishingLevel, pccGrant, ...query } = searchParams;
 
@@ -20,7 +37,8 @@ export async function getServersideArticle(params, searchParams) {
 
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     slugOrId,
-    publishingLevel?.toString().toUpperCase() || "PRODUCTION",
+    (publishingLevel?.toString().toUpperCase() as "PRODUCTION" | "REALTIME") ||
+      "PRODUCTION",
   );
 
   if (!article) {
@@ -29,7 +47,8 @@ export async function getServersideArticle(params, searchParams) {
 
   if (
     article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
+    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase() &&
+    pantheonAPIOptions.resolvePath != null
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
