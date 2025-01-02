@@ -53,7 +53,7 @@ export async function generateStaticParams() {
 
   return publishedArticles.flatMap((article) => {
     const params = [{ uri: article.id }];
-    if (article.metadata.slug) {
+    if (article.metadata?.slug) {
       params.push({ uri: String(article.metadata.slug) });
     }
     return params;

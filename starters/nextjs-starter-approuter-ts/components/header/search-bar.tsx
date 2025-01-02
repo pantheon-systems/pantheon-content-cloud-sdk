@@ -77,7 +77,7 @@ export default function SearchBar() {
 function SearchBarForm({
   defaultSearchQuery,
 }: {
-  defaultSearchQuery?: string;
+  defaultSearchQuery?: string | null | undefined;
 }) {
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -96,7 +96,7 @@ function SearchBarForm({
     >
       <input
         placeholder="Search"
-        defaultValue={defaultSearchQuery}
+        defaultValue={defaultSearchQuery || ""}
         className="h-full w-full border-r border-inherit bg-transparent px-4 outline-none sm:min-w-[291px]"
         required
         name="search"

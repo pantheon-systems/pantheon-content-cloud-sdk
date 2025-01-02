@@ -78,7 +78,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     description,
     openGraph: {
       type: "website",
-      title: article.title,
+      title: article.title || undefined,
       images: imageProperties,
       description,
       article: {

@@ -17,7 +17,17 @@ export function formatDate(input: string | number): string {
   });
 }
 
-export function getSeoMetadata(article: ArticleWithoutContent): Metadata {
+export function getSeoMetadata(
+  article: ArticleWithoutContent | null,
+): Metadata {
+  if (article == null) {
+    return {
+      openGraph: {
+        type: "website",
+      },
+    };
+  }
+
   const tags: string[] =
     article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
@@ -64,7 +74,7 @@ export function getSeoMetadata(article: ArticleWithoutContent): Metadata {
     authors,
     openGraph: {
       type: "website",
-      title: article.title,
+      title: article.title || undefined,
       images: imageProperties,
       description,
     },
