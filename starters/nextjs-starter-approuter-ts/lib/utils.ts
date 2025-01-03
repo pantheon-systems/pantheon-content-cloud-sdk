@@ -2,6 +2,7 @@ import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
+import { getAuthorById } from "./pcc-metadata-groups";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,7 +41,7 @@ export function getSeoMetadata(
     ? String(article.metadata?.description)
     : "Article hosted using Pantheon Content Cloud";
 
-  let authors: Metadata["authors"] = [];
+  const authors: Metadata["authors"] = [];
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([k, v]) => {
@@ -49,7 +50,17 @@ export function getSeoMetadata(
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors = [{ name: v }];
+          authors.push({ name: v });
+        }
+        break;
+      }
+      case "complex-author": {
+        if (typeof v === "string") {
+          const authorName = getAuthorById(v)?.label;
+
+          if (authorName) {
+            authors.push({ name: v });
+          }
         }
         break;
       }

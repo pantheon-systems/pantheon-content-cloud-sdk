@@ -108,9 +108,35 @@ export interface PantheonTreeNode<T extends "component" | string = string> {
   id?: string;
   type?: string;
 }
+
 export interface PantheonTree {
   version: string;
   children: PantheonTreeNode[];
+}
+
+interface MetadataGroupRowEssentials {
+  label: string;
+}
+
+export interface MetadataGroup {
+  label: string;
+  groupIdentifier: string;
+  schema?: Record<
+    string,
+    "string" | "textarea" | "number" | "boolean" | "date" | "file"
+  >;
+  get: (
+    id: string,
+  ) =>
+    | Promise<(unknown & MetadataGroupRowEssentials) | null | undefined>
+    | (unknown & MetadataGroupRowEssentials)
+    | null
+    | undefined;
+  list: () =>
+    | Promise<(unknown & MetadataGroupRowEssentials)[] | null | undefined>
+    | (unknown & MetadataGroupRowEssentials)[]
+    | null
+    | undefined;
 }
 
 const fieldTypes = z.enum([
