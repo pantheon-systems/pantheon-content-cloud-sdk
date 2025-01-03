@@ -19,6 +19,7 @@
     "prettier:fix": "prettier \"**/*.{js,jsx,,md}\" --write --ignore-path .prettierignore",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:playwright": "pnpm exec playwright test",
     "update-snapshots": "vitest run --update --silent",
     "coverage": "vitest run --coverage"
   },
@@ -26,6 +27,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@playwright/test": "^1.49.1",
     "@pantheon-systems/pcc-react-sdk": "~3.10.0-beta.2",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
@@ -34,6 +36,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
+    "react-icons": "^5.4.0",
     "markdown-to-txt": "^2.0.1",
     "next": "^14.2.15",
     "next-seo": "^5.15.0",

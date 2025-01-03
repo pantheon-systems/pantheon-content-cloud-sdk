@@ -16,6 +16,10 @@ export default async function handler(
     return res.status(400).json("Invalid pageSize");
   }
 
+  let author: string | null | undefined;
+  if (Array.isArray(req.query.author)) author = req.query.author[0];
+  else author = req.query.author;
+
   if (!pageSize || !cursor)
     return res.status(400).json("Invalid pageSize or cursor");
 
@@ -23,6 +27,7 @@ export default async function handler(
     await PCCConvenienceFunctions.getPaginatedArticles({
       pageSize,
       ...(cursor && { cursor }),
+      ...(author && { metadataFilters: { author } }),
     });
 
   return res.status(200).json({ data, newCursor });
