@@ -1,5 +1,27 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 3.10.0-beta.2
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+  - @pantheon-systems/pcc-sdk-core@3.10.0-beta.2
+
+## 3.10.0-beta.1
+
+### Patch Changes
+
+- Updated dependencies [400fc48]
+  - @pantheon-systems/pcc-sdk-core@3.10.0-beta.1
+
+## 3.10.0-beta.0
+
+### Patch Changes
+
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-sdk-core@3.10.0-beta.0
+
 ## 3.9.0
 
 ### Patch Changes
