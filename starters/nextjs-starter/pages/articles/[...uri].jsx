@@ -6,7 +6,7 @@ import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
-import { getSeoMetadata } from "../../lib/utils";
+import { getSeoMetadata, getArticlePathFromContentStructure } from "../../lib/utils";
 import { getPanthonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 export default function ArticlePage({ article, grant }) {
@@ -57,11 +57,17 @@ export async function getServerSideProps({
     };
   }
 
+  // Get the article path from the content structure
+  const articlePath = getArticlePathFromContentStructure(article, site);
+
   if (
-    article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
+    (article.slug?.trim().length &&
+    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()) ||
+    articlePath.length !== (uri.length - 1) ||
+    articlePath.join("/") !== uri.slice(0, -1).join("/")
   ) {
-    // If the article was accessed by the id rather than the slug - then redirect to the canonical
+    // If the article was accessed by the id rather than the slug 
+    // or the article path is not the same as the uri - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
     return {
       redirect: {

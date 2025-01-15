@@ -1,7 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { getAuthorById } from "./pcc-metadata-groups";
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
