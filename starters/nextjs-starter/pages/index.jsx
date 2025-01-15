@@ -6,7 +6,7 @@ import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
 
-export default function Home({ articles }) {
+export default function Home({ articles, site }) {
   return (
     <Layout>
       <NextSeo
@@ -51,22 +51,27 @@ export default function Home({ articles }) {
       </section>
 
       <section className="max-w-screen-3xl mx-auto mt-32 flex justify-center px-4 sm:px-6 lg:px-0">
-        <HomepageArticleGrid articles={articles} />
+        <HomepageArticleGrid articles={articles} site={site} />
       </section>
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
-    {
+  // Fetch the articles and site in parallel
+  const [{
+    data: articles,
+  }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: 3,
-    },
-  );
+    }),
+    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+  ]);
 
   return {
     props: {
       articles,
+      site,
     },
   };
 }

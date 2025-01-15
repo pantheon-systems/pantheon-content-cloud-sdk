@@ -7,7 +7,7 @@ import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
 import { getSeoMetadata } from "../../lib/utils";
-import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
+import { getPanthonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 export default function ArticlePage({ article, grant }) {
   const seoMetadata = getSeoMetadata(article);
@@ -41,11 +41,16 @@ export async function getServerSideProps({
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
-  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
-    slugOrId,
-    publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
-  );
+  // Fetch the article and site in parallel
+  const [article, site] = await Promise.all([
+    PCCConvenienceFunctions.getArticleBySlugOrId(
+      slugOrId,
+      publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
+    ),
+    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+  ]);
 
+  // If the article is not found, return a 404
   if (!article) {
     return {
       notFound: true,
@@ -61,7 +66,7 @@ export async function getServerSideProps({
     return {
       redirect: {
         destination: queryString.stringifyUrl({
-          url: pantheonAPIOptions.resolvePath(article),
+          url: getPanthonAPIOptions(site).resolvePath(article),
           query: { publishingLevel, ...query },
         }),
         permanent: false,

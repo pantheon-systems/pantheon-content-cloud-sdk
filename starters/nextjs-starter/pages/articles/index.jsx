@@ -8,7 +8,7 @@ import { usePagination } from "../../hooks/usePagination";
 
 const PAGE_SIZE = 20;
 
-export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
+export default function ArticlesListTemplate({ articles, totalCount, cursor, site }) {
   const {
     data: currentArticles,
     onPageChange,
@@ -27,7 +27,7 @@ export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
         <PageHeader title="Articles" />
 
-        <ArticleGrid articles={currentArticles} />
+        <ArticleGrid articles={currentArticles} site={site}/>
 
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -44,19 +44,24 @@ export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
 }
 
 export async function getServerSideProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the site and articles in parallel
+  const [site, {
+      data: articles,
+      totalCount,
+      cursor,
+    }] = await Promise.all([
+    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+  ]);
 
   return {
     props: {
       articles,
       totalCount,
       cursor,
+      site,
     },
   };
 }
