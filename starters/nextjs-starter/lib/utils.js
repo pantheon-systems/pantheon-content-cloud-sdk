@@ -177,5 +177,8 @@ export function getArticleURLFromSite(article, site, basePath = "/articles") {
 // Get the article path
 const articlePath = getArticlePathFromContentStructure(article, site);
 // Add the basePath before the articlePath and the article slug or id after the articlePath
-return `${basePath}/${articlePath.join("/")}/${article.slug || article.id}`;
+if (articlePath.length > 0) {
+  return `${basePath}/${articlePath.join("/")}/${article.slug || article.id}`;
+}
+return `${basePath}/${article.slug || article.id}`;
 }
