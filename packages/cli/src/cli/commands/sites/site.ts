@@ -65,7 +65,7 @@ const connectGoogleAccount = async (googleAccount: string): Promise<void> => {
               const code = qs.get("code");
               const currDir = dirname(fileURLToPath(import.meta.url));
               const content = readFileSync(
-                join(currDir, "../templates/loginSuccess.html"),
+                join(currDir, "../templates/accountConnectSuccess.html"),
               );
               const credentials = await AddOnApiHelper.getGoogleToken(
                 code as string,

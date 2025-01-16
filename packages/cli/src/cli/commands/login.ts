@@ -36,7 +36,7 @@ function login(extraScopes: string[]): Promise<void> {
           ) {
             const tokenPayload = parseJwt(authData.access_token as string);
             spinner.succeed(
-              `You are already logged in as ${tokenPayload.user_email}.`,
+              `You are already logged in as ${tokenPayload["pcc/email"]}.`,
             );
             return resolve();
           }
@@ -79,7 +79,7 @@ function login(extraScopes: string[]): Promise<void> {
               server.destroy();
 
               spinner.succeed(
-                `You are successfully logged in as ${tokenPayload.user_email}`,
+                `You are successfully logged in as ${tokenPayload["pcc/email"]}`,
               );
               resolve();
             }
