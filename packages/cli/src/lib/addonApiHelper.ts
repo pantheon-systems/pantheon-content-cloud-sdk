@@ -8,31 +8,36 @@ import { getApiConfig } from "./apiConfig";
 import { getLocalAuthDetails } from "./localStorage";
 import { toKebabCase } from "./utils";
 
-interface Credentials {
+export interface PersistedTokens {
   id_token: string;
   refresh_token: string;
   access_token: string;
   scope: string;
+  expires_in: number;
 }
 
 class AddOnApiHelper {
-  static async getToken(code: string): Promise<Credentials> {
+  static async getToken(code: string): Promise<PersistedTokens> {
     const resp = await axios.post(
       `${(await getApiConfig()).AUTH0_ENDPOINT}/token`,
       {
         code: code,
       },
     );
-    return resp.data as Credentials;
+    return resp.data as PersistedTokens;
   }
-  static async refreshToken(refreshToken: string): Promise<Credentials> {
-    const resp = await axios.post(
-      `${(await getApiConfig()).AUTH0_ENDPOINT}/refresh`,
-      {
-        refreshToken,
-      },
-    );
-    return resp.data as Credentials;
+  static async refreshToken(refreshToken: string): Promise<PersistedTokens> {
+    const apiConfig = await getApiConfig();
+    const url = `${apiConfig.auth0Issuer}/oauth/token`;
+    const response = await axios.post(url, {
+      grant_type: "refresh_token",
+      client_id: apiConfig.auth0ClientId,
+      refresh_token: refreshToken,
+    });
+    return {
+      refresh_token: refreshToken,
+      ...response.data,
+    } as PersistedTokens;
   }
 
   static async getCurrentTime(): Promise<number> {

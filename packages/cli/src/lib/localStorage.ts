@@ -2,22 +2,21 @@ import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { ensureFile, remove } from "fs-extra";
-import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
 import { Config } from "../types/config";
-import AddOnApiHelper from "./addonApiHelper";
+import AddOnApiHelper, { PersistedTokens } from "./addonApiHelper";
 
 export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
 export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
 
 export const getLocalAuthDetails = async (
   requiredScopes?: string[],
-): Promise<Credentials | null> => {
-  let credentials: Credentials;
+): Promise<PersistedTokens | null> => {
+  let credentials: PersistedTokens;
   try {
     credentials = JSON.parse(
       readFileSync(AUTH_FILE_PATH).toString(),
-    ) as Credentials;
+    ) as PersistedTokens;
   } catch (_err) {
     return null;
   }
@@ -62,7 +61,7 @@ export const getLocalConfigDetails = async (): Promise<Config | null> => {
 };
 
 export const persistAuthDetails = async (
-  payload: Credentials,
+  payload: PersistedTokens,
 ): Promise<void> => {
   await persistDetailsToFile(payload, AUTH_FILE_PATH);
 };
