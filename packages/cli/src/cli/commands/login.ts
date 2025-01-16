@@ -3,10 +3,10 @@ import http from "http";
 import { dirname, join } from "path";
 import url, { fileURLToPath } from "url";
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
-import { OAuth2Client } from "google-auth-library";
 import nunjucks from "nunjucks";
 import open from "open";
 import ora from "ora";
+import queryString from "query-string";
 import destroyer from "server-destroy";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { getApiConfig } from "../../lib/apiConfig";
@@ -18,7 +18,7 @@ import { errorHandler } from "../exceptions";
 
 nunjucks.configure({ autoescape: true });
 
-const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
+const AUTH0_SCOPES = "openid profile article:read offline_access";
 
 function login(extraScopes: string[]): Promise<void> {
   return new Promise(
@@ -34,25 +34,24 @@ function login(extraScopes: string[]): Promise<void> {
             !extraScopes?.length ||
             extraScopes.find((x) => scopes?.includes(x))
           ) {
-            const jwtPayload = parseJwt(authData.id_token as string);
+            const tokenPayload = parseJwt(authData.access_token as string);
             spinner.succeed(
-              `You are already logged in as ${jwtPayload.email}.`,
+              `You are already logged in as ${tokenPayload.user_email}.`,
             );
             return resolve();
           }
         }
 
         const apiConfig = await getApiConfig();
-        const oAuth2Client = new OAuth2Client({
-          clientId: apiConfig.googleClientId,
-          redirectUri: apiConfig.googleRedirectUri,
-        });
-
-        // Generate the url that will be used for the consent dialog.
-        const authorizeUrl = oAuth2Client.generateAuthUrl({
-          access_type: "offline",
-          scope: [...OAUTH_SCOPES, ...extraScopes],
-        });
+        const authorizeUrl = `${apiConfig.auth0Issuer}/authorize?${queryString.stringify(
+          {
+            response_type: "code",
+            client_id: apiConfig.auth0ClientId,
+            redirect_uri: apiConfig.auth0RedirectUri,
+            scope: AUTH0_SCOPES,
+            audience: apiConfig.auth0Audience,
+          },
+        )}`;
 
         const server = http.createServer(async (req, res) => {
           try {
@@ -69,18 +68,18 @@ function login(extraScopes: string[]): Promise<void> {
                 join(currDir, "../templates/loginSuccess.html"),
               );
               const credentials = await AddOnApiHelper.getToken(code as string);
-              const jwtPayload = parseJwt(credentials.id_token as string);
+              const tokenPayload = parseJwt(credentials.access_token as string);
               await persistAuthDetails(credentials);
 
               res.end(
                 nunjucks.renderString(content.toString(), {
-                  email: jwtPayload.email,
+                  email: tokenPayload.email,
                 }),
               );
               server.destroy();
 
               spinner.succeed(
-                `You are successfully logged in as ${jwtPayload.email}`,
+                `You are successfully logged in as ${tokenPayload.user_email}`,
               );
               resolve();
             }

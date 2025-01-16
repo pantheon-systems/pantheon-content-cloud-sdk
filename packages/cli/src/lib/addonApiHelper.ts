@@ -1,6 +1,5 @@
 import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
-import { Credentials } from "google-auth-library";
 import ora from "ora";
 import queryString from "query-string";
 import login from "../cli/commands/login";
@@ -9,10 +8,17 @@ import { getApiConfig } from "./apiConfig";
 import { getLocalAuthDetails } from "./localStorage";
 import { toKebabCase } from "./utils";
 
+interface Credentials {
+  id_token: string;
+  refresh_token: string;
+  access_token: string;
+  scope: string;
+}
+
 class AddOnApiHelper {
   static async getToken(code: string): Promise<Credentials> {
     const resp = await axios.post(
-      `${(await getApiConfig()).OAUTH_ENDPOINT}/token`,
+      `${(await getApiConfig()).AUTH0_ENDPOINT}/token`,
       {
         code: code,
       },
@@ -21,7 +27,7 @@ class AddOnApiHelper {
   }
   static async refreshToken(refreshToken: string): Promise<Credentials> {
     const resp = await axios.post(
-      `${(await getApiConfig()).OAUTH_ENDPOINT}/refresh`,
+      `${(await getApiConfig()).AUTH0_ENDPOINT}/refresh`,
       {
         refreshToken,
       },
@@ -58,7 +64,7 @@ class AddOnApiHelper {
     }
 
     return {
-      idToken: authDetails.id_token,
+      idToken: authDetails.access_token,
       oauthToken: authDetails.access_token,
     };
   }

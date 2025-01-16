@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import { ensureFile, remove } from "fs-extra";
 import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
@@ -31,11 +32,12 @@ export const getLocalAuthDetails = async (
     return null;
   }
 
+  const tokenPayload = parseJwt(credentials.access_token as string);
   // Check if token is expired
-  if (credentials.expiry_date) {
+  if (tokenPayload.exp) {
     const currentTime = await AddOnApiHelper.getCurrentTime();
 
-    if (currentTime < credentials.expiry_date) {
+    if (currentTime < tokenPayload.exp * 1000) {
       return credentials;
     }
   }
