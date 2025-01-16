@@ -1,22 +1,141 @@
+import { readFileSync } from "fs";
+import http from "http";
+import { dirname, join } from "path";
+import url, { fileURLToPath } from "url";
+import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import chalk from "chalk";
 import dayjs from "dayjs";
+import { OAuth2Client } from "google-auth-library";
+import nunjucks from "nunjucks";
+import open from "open";
 import ora from "ora";
+import queryString from "query-string";
+import destroyer from "server-destroy";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
+import { getApiConfig } from "../../../lib/apiConfig";
 import { printTable } from "../../../lib/cliDisplay";
+import {
+  getGoogleAuthDetails,
+  persistGoogleAuthDetails,
+} from "../../../lib/localStorage";
 import { errorHandler } from "../../exceptions";
 
-export const createSite = errorHandler<string>(async (url: string) => {
-  const spinner = ora("Creating site...").start();
-  try {
-    const siteId = await AddOnApiHelper.createSite(url);
-    spinner.succeed(
-      `Successfully created the site with given details. Id: ${siteId}`,
-    );
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
+const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
+
+const connectGoogleAccount = async (googleAccount: string): Promise<void> => {
+  return new Promise(
+    // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
+    async (resolve, reject) => {
+      const spinner = ora("Connecting Google account...").start();
+      try {
+        const accounts = await getGoogleAuthDetails();
+        const googleAuth = (accounts || []).find((acc) => {
+          const payload = parseJwt(acc.id_token as string);
+          return payload.email === googleAccount;
+        });
+        if (googleAuth) {
+          const tokenPayload = parseJwt(googleAuth.id_token as string);
+          spinner.succeed(
+            `Google account(${tokenPayload.email}) is connected.`,
+          );
+          return resolve();
+        }
+
+        const apiConfig = await getApiConfig();
+        const oAuth2Client = new OAuth2Client({
+          clientId: apiConfig.googleClientId,
+          redirectUri: apiConfig.googleRedirectUri,
+        });
+
+        // Generate the url that will be used for the consent dialog.
+        const authorizeUrl = oAuth2Client.generateAuthUrl({
+          access_type: "offline",
+          scope: OAUTH_SCOPES,
+        });
+
+        const server = http.createServer(async (req, res) => {
+          try {
+            if (!req.url) {
+              throw new Error("No URL path provided");
+            }
+
+            if (req.url.indexOf("/oauth-redirect") > -1) {
+              const qs = new url.URL(req.url, "http://localhost:3030")
+                .searchParams;
+              const code = qs.get("code");
+              const currDir = dirname(fileURLToPath(import.meta.url));
+              const content = readFileSync(
+                join(currDir, "../templates/loginSuccess.html"),
+              );
+              const credentials = await AddOnApiHelper.getGoogleToken(
+                code as string,
+              );
+              const jwtPayload = parseJwt(credentials.id_token as string);
+
+              res.end(
+                nunjucks.renderString(content.toString(), {
+                  email: jwtPayload.email,
+                }),
+              );
+              server.destroy();
+
+              if (jwtPayload.email !== googleAccount) {
+                spinner.fail(
+                  "Selected account doesn't match with provided email address.",
+                );
+                return reject();
+              }
+
+              await persistGoogleAuthDetails(credentials);
+              spinner.succeed(
+                `You have successfully connected the Google account: ${jwtPayload.email}`,
+              );
+              resolve();
+            }
+          } catch (e) {
+            spinner.fail();
+            reject(e);
+          }
+        });
+
+        destroyer(server);
+
+        server.listen(3030, () => {
+          open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
+        });
+      } catch (e) {
+        spinner.fail();
+        reject(e);
+      }
+    },
+  );
+};
+
+export const createSite = errorHandler<{ url: string; googleAccount: string }>(
+  async ({ url, googleAccount }) => {
+    const spinner = ora("Creating site...").start();
+    if (!googleAccount) {
+      spinner.fail("You must provide Google workspace account");
+      return;
+    }
+
+    try {
+      await connectGoogleAccount(googleAccount);
+    } catch {
+      return;
+    }
+
+    try {
+      const siteId = await AddOnApiHelper.createSite(url);
+      spinner.succeed(
+        `Successfully created the site with given details. Id: ${siteId}`,
+      );
+    } catch (e) {
+      spinner.fail();
+      throw e;
+    }
+  },
+);
 
 export const deleteSite = errorHandler<{
   id: string;

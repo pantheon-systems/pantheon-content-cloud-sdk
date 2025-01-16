@@ -26,6 +26,15 @@ class AddOnApiHelper {
     );
     return resp.data as PersistedTokens;
   }
+  static async getGoogleToken(code: string): Promise<PersistedTokens> {
+    const resp = await axios.post(
+      `${(await getApiConfig()).OAUTH_ENDPOINT}/token`,
+      {
+        code: code,
+      },
+    );
+    return resp.data as PersistedTokens;
+  }
   static async refreshToken(refreshToken: string): Promise<PersistedTokens> {
     const apiConfig = await getApiConfig();
     const url = `${apiConfig.auth0Issuer}/oauth/token`;
@@ -56,6 +65,27 @@ class AddOnApiHelper {
     requiredScopes?: string[],
   ): Promise<{ idToken: string; oauthToken: string }>;
   static async getIdToken(requiredScopes?: string[]) {
+    let authDetails = await getLocalAuthDetails(requiredScopes);
+
+    // If auth details not found, try user logging in
+    if (!authDetails) {
+      // Clears older spinner if any
+      ora().clear();
+
+      await login(requiredScopes || []);
+      authDetails = await getLocalAuthDetails(requiredScopes);
+      if (!authDetails) throw new UserNotLoggedIn();
+    }
+
+    return {
+      idToken: authDetails.access_token,
+      oauthToken: authDetails.access_token,
+    };
+  }
+  static async getGoogleIdToken(
+    requiredScopes?: string[],
+  ): Promise<{ idToken: string; oauthToken: string }>;
+  static async getGoogleIdToken(requiredScopes?: string[]) {
     let authDetails = await getLocalAuthDetails(requiredScopes);
 
     // If auth details not found, try user logging in

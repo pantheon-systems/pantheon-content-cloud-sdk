@@ -12,6 +12,8 @@ type ApiConfig = {
   auth0RedirectUri: string;
   auth0Audience: string;
   auth0Issuer: string;
+  googleClientId: string;
+  googleRedirectUri: string;
   playgroundUrl: string;
 };
 
@@ -24,6 +26,9 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
+    googleClientId:
+      "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
+    googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.staging]: {
@@ -32,6 +37,9 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
+    googleClientId:
+      "142470191541-bmomms4luuhoc68g903rscgr9qa3150b.apps.googleusercontent.com",
+    googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://multi-staging-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.test]: {
@@ -40,6 +48,8 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
+    googleClientId: "test-google-com",
+    googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://test-playground.site",
   },
 };
@@ -60,5 +70,6 @@ export const getApiConfig = async () => {
     SITE_ENDPOINT: `${apiConfig.addOnApiEndpoint}/sites`,
     DOCUMENT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/articles`,
     AUTH0_ENDPOINT: `${apiConfig.addOnApiEndpoint}/auth0/`,
+    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth/`,
   };
 };

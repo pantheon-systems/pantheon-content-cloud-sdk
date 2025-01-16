@@ -394,8 +394,17 @@ yargs(hideBin(process.argv))
               type: "string",
               demandOption: true,
             });
+            yargs.option("googleAccount", {
+              describe: "Google workspace account email",
+              type: "string",
+              demandOption: false,
+            });
           },
-          async (args) => await createSite(args.url as string),
+          async (args) =>
+            await createSite({
+              url: args.url as string,
+              googleAccount: args.googleAccount as string,
+            }),
         )
         .command(
           "delete [options]",
