@@ -7,8 +7,11 @@ import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
-import { getSeoMetadata } from "../../lib/utils";
-import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
+import {
+  getArticlePathFromContentStrucuture,
+  getSeoMetadata,
+} from "../../lib/utils";
+import { getPantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
@@ -48,7 +51,7 @@ export async function getServerSideProps({
     cookies: Record<string, unknown>;
   };
   query: {
-    uri: string;
+    uri: string[];
     publishingLevel: "PRODUCTION" | "REALTIME" | undefined;
     pccGrant: string;
   };
@@ -56,30 +59,41 @@ export async function getServerSideProps({
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
-  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
-    slugOrId,
-    publishingLevel
-      ? (publishingLevel.toString().toUpperCase() as "PRODUCTION" | "REALTIME")
-      : "PRODUCTION",
-  );
+  // Fetch the article and the site in parallel
+  const [article, site] = await Promise.all([
+    PCCConvenienceFunctions.getArticleBySlugOrId(
+      slugOrId,
+      publishingLevel
+        ? (publishingLevel.toString().toUpperCase() as
+            | "PRODUCTION"
+            | "REALTIME")
+        : "PRODUCTION",
+    ),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
+  // If the article is not found, return a 404
   if (!article) {
     return {
       notFound: true,
     };
   }
 
+  // Get the article path from the content structure
+  const articlePath = getArticlePathFromContentStrucuture(article, site);
+
   if (
-    article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase() &&
-    pantheonAPIOptions.resolvePath != null
+    (article.slug?.trim().length &&
+      article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()) ||
+    articlePath.length !== uri.length - 1 ||
+    articlePath.join("/") !== uri.slice(0, -1).join("/")
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
     return {
       redirect: {
         destination: queryString.stringifyUrl({
-          url: pantheonAPIOptions.resolvePath(article),
+          url: getPantheonAPIOptions(site).resolvePath(article),
           query: { publishingLevel, ...query },
         }),
         permanent: false,
