@@ -41,16 +41,19 @@ export default async function ArticlesListTemplate({
 }) {
   const author = params.author ? decodeURIComponent(params.author) : undefined;
 
-  const {
+  const [site, {
     data: articles,
     cursor,
     totalCount,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-    metadataFilters: {
-      author,
-    },
-  });
+  }] = await Promise.all([
+    PCCConvenienceFunctions.getSite(),
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      metadataFilters: {
+        author,
+      },
+    }),
+  ]);
 
   if (totalCount === 0) {
     return (
@@ -69,6 +72,7 @@ export default async function ArticlesListTemplate({
         cursor={cursor}
         totalCount={totalCount}
         fetcher={fetchNextPages(author)}
+        site={site}
         additionalHeader={
           <div
             className="border-base-300 mb-14 border-b-[1px] pb-7"

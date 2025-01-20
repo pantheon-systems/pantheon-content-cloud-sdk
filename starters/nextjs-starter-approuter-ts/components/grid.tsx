@@ -1,12 +1,14 @@
-import type { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+import type { ArticleWithoutContent, Site } from "@pantheon-systems/pcc-react-sdk";
 import Link from "next/link";
-import { cn } from "../lib/utils";
+import { cn, getArticleURLFromSite } from "../lib/utils";
 import { Button } from "./ui/button";
 
 export function HomepageArticleGrid({
   articles,
+  site,
 }: {
   articles: ArticleWithoutContent[];
+  site: Site;
 }) {
   return (
     <div
@@ -19,6 +21,7 @@ export function HomepageArticleGrid({
           key={article.id}
           article={article}
           isWide={articles.length === 1 || (articles.length > 2 && index === 2)}
+          site={site}
         />
       ))}
     </div>
@@ -28,9 +31,11 @@ export function HomepageArticleGrid({
 export function ArticleGrid({
   articles,
   basePath = "/articles",
+  site,
 }: {
   articles: ArticleWithoutContent[];
   basePath?: string;
+  site: Site;
 }) {
   return (
     <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
@@ -39,6 +44,7 @@ export function ArticleGrid({
           key={article.id}
           article={article}
           basePath={basePath}
+          site={site}
         />
       ))}
     </div>
@@ -50,6 +56,7 @@ interface ArticleGridCardProps {
   basePath?: string;
   imageAltText?: string;
   isWide?: boolean;
+  site: Site;
 }
 
 export function ArticleGridCard({
@@ -57,8 +64,9 @@ export function ArticleGridCard({
   basePath = "/articles",
   imageAltText,
   isWide = false,
+  site,
 }: ArticleGridCardProps) {
-  const targetHref = `${basePath}/${article.metadata?.slug || article.id}`;
+  const targetHref = getArticleURLFromSite(article, site, basePath);
   const imageSrc = (article.metadata?.["Hero Image"] as string) || null;
 
   return (
