@@ -90,6 +90,8 @@ export async function getServerSideProps({
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
+    // Also if the article was just accessed by slug rather than the path with the content structure
+    // then redirect to the canonical link.
     return {
       redirect: {
         destination: queryString.stringifyUrl({
