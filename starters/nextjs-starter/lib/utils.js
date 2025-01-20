@@ -87,7 +87,6 @@ export function getSeoMetadata(article) {
 function doesChildContainArticle(child, article) {
   let categoryTree = [];
   let contains = false;
-
   // If the child is an article, check if it matches the article
   if (child.type === "article") {
     if (child.id === article.id) {
@@ -96,7 +95,6 @@ function doesChildContainArticle(child, article) {
     // If the child is an article, but it doesn't match the article, return false
     return { contains, categoryTree };
   }
-
   // Iterate over the category and its children
   for (const childOfChild of child.children) {
     // If the child is another category, we need to iterate over its children
@@ -122,7 +120,6 @@ function doesChildContainArticle(child, article) {
       }
     }
   }
-  // codacy-disable-next-line unnecessary-block
   return { contains, categoryTree };
 }
 
