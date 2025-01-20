@@ -72,7 +72,7 @@ export async function getStaticProps() {
     PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: PAGE_SIZE,
     }),
-    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+    PCCConvenienceFunctions.getSite(),
   ]);
 
   return {

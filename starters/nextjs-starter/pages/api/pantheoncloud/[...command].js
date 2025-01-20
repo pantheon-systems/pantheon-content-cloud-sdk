@@ -28,7 +28,7 @@ export function getPanthonAPIOptions(site) {
 
 export default async function apiHandler(req, res) {
   // Fetch the site
-  const site = await PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID);
+  const site = await PCCConvenienceFunctions.getSite();
   // Create the options for the PantheonAPI
   const options = getPanthonAPIOptions(site);
   // Create the handler for the PantheonAPI

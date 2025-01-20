@@ -50,7 +50,7 @@ export async function getServerSideProps() {
       totalCount,
       cursor,
     }] = await Promise.all([
-    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+    PCCConvenienceFunctions.getSite(),
     PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: PAGE_SIZE,
     }),

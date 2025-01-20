@@ -47,7 +47,7 @@ export async function getServerSideProps({
       slugOrId,
       publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
     ),
-    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+    PCCConvenienceFunctions.getSite(),
   ]);
 
   // If the article is not found, return a 404

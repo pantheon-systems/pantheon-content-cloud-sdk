@@ -65,7 +65,7 @@ export async function getServerSideProps() {
     PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: 3,
     }),
-    PCCConvenienceFunctions.getSite(process.env.PCC_SITE_ID),
+    PCCConvenienceFunctions.getSite(),
   ]);
 
   return {

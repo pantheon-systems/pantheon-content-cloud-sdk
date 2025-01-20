@@ -149,7 +149,7 @@ export function getArticlePathFromContentStructure(article, site) {
   // type will be one of the following: "category" or "article"
   // We need to find the article object that contains the articleId
   const active = site.contentStructure.active;
-  if (!active || typeof active !== "object" || !Array.isArray(active) || active.length === 0) {
+  if (typeof active !== "object" || !Array.isArray(active) || active.length === 0) {
     return defaultPath;
   }
   // Iterate over the active array
