@@ -122,7 +122,6 @@ function doesChildContainArticle(child, article) {
       }
     }
   }
-
   // codacy-disable-next-line unnecessary-block
   return { contains, categoryTree };
 }

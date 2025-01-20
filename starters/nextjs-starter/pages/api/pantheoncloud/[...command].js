@@ -6,8 +6,7 @@ import { serverSmartComponentMap } from "../../../components/smart-components";
 import { getAuthorById, listAuthors } from "../../../lib/pcc-metadata-groups";
 import { getArticleURLFromSite } from "../../../lib/utils";
 
-export function getPanthonAPIOptions(site) {
-  // codacy-disable-next-line unnecessary-block
+function getPanthonAPIOptions(site) {
   return {
     resolvePath: (article) => getArticleURLFromSite(article, site),
     smartComponentMap: serverSmartComponentMap,
@@ -27,6 +26,8 @@ export function getPanthonAPIOptions(site) {
     ],
   };
 }
+
+export { getPanthonAPIOptions };
 
 export default async function apiHandler(req, res) {
   // Fetch the site
