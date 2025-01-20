@@ -124,7 +124,7 @@ function doesChildContainArticle(child, article) {
     }
   }
 
-  return {contains: contains, categoryTree: categoryTree};
+  return {contains, categoryTree};
 }
 
 export function getArticlePathFromContentStructure(article, site) {
