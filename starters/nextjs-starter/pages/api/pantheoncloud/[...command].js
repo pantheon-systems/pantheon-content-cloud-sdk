@@ -1,8 +1,10 @@
-import { PantheonAPI } from "@pantheon-systems/pcc-react-sdk";
+import {
+  PantheonAPI,
+  PCCConvenienceFunctions,
+} from "@pantheon-systems/pcc-react-sdk";
 import { serverSmartComponentMap } from "../../../components/smart-components";
 import { getAuthorById, listAuthors } from "../../../lib/pcc-metadata-groups";
 import { getArticleURLFromSite } from "../../../lib/utils";
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 
 export function getPanthonAPIOptions(site) {
   return {
@@ -24,7 +26,6 @@ export function getPanthonAPIOptions(site) {
     ],
   };
 }
-
 
 export default async function apiHandler(req, res) {
   // Fetch the site

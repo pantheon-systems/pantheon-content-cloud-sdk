@@ -84,7 +84,6 @@ export function getSeoMetadata(article) {
   };
 }
 
-
 function doesChildContainArticle(child, article) {
   let categoryTree = [];
   let contains = false;
@@ -95,7 +94,7 @@ function doesChildContainArticle(child, article) {
       contains = true;
     }
     // If the child is an article, but it doesn't match the article, return false
-    return {contains: contains, categoryTree: categoryTree};
+    return { contains, categoryTree };
   }
 
   // Iterate over the category and its children
@@ -124,7 +123,7 @@ function doesChildContainArticle(child, article) {
     }
   }
 
-  return {contains, categoryTree};
+  return { contains, categoryTree };
 }
 
 export function getArticlePathFromContentStructure(article, site) {
@@ -149,21 +148,33 @@ export function getArticlePathFromContentStructure(article, site) {
   // type will be one of the following: "category" or "article"
   // We need to find the article object that contains the articleId
   const active = site.contentStructure.active;
-  if (typeof active !== "object" || !Array.isArray(active) || active.length === 0) {
+  if (
+    typeof active !== "object" ||
+    !Array.isArray(active) ||
+    active.length === 0
+  ) {
     return defaultPath;
   }
   // Iterate over the active array
   for (const category of active) {
     // The categories can be nested, so we need to find the relevant list of categories that contain the articleId
     // We need to iterate over all the categories, do the same for all its children. Keep doing this until we find the articleId
-    const {contains, categoryTree} = doesChildContainArticle(category, article);
+    const { contains, categoryTree } = doesChildContainArticle(
+      category,
+      article,
+    );
     if (!contains) {
       continue;
     }
     // If the item is found, return the path as /articles/normalised-relevantCategory-name/articleId
     if (categoryTree && categoryTree.length > 0) {
       // normalise the name of each category in the categoryTree
-      const normalisedCategoryTree = categoryTree.map((category) => category.replace(/ /g, "-").replace(/[^a-zA-Z0-9-]/g, "").toLowerCase());
+      const normalisedCategoryTree = categoryTree.map((category) =>
+        category
+          .replace(/ /g, "-")
+          .replace(/[^a-zA-Z0-9-]/g, "")
+          .toLowerCase(),
+      );
       // Join the normalised category names with a "/"
       return normalisedCategoryTree;
     }
@@ -174,11 +185,11 @@ export function getArticlePathFromContentStructure(article, site) {
 }
 
 export function getArticleURLFromSite(article, site, basePath = "/articles") {
-// Get the article path
-const articlePath = getArticlePathFromContentStructure(article, site);
-// Add the basePath before the articlePath and the article slug or id after the articlePath
-if (articlePath.length > 0) {
-  return `${basePath}/${articlePath.join("/")}/${article.slug || article.id}`;
-}
-return `${basePath}/${article.slug || article.id}`;
+  // Get the article path
+  const articlePath = getArticlePathFromContentStructure(article, site);
+  // Add the basePath before the articlePath and the article slug or id after the articlePath
+  if (articlePath.length > 0) {
+    return `${basePath}/${articlePath.join("/")}/${article.slug || article.id}`;
+  }
+  return `${basePath}/${article.slug || article.id}`;
 }
