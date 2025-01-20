@@ -67,8 +67,9 @@ export function ArticleGridCard({
   isWide = false,
   site,
 }: ArticleGridCardProps) {
+
   const targetHref = getArticleURLFromSite(article, site, basePath);
-  const imageSrc = (article.metadata?.["Hero Image"] as string) || null;
+  const imageSrc = (article.metadata?.["image"] as string) || null;
 
   return (
     <div

@@ -23,7 +23,7 @@ export function getSeoMetadata(article) {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
     article.metadata?.image,
-    article.metadata?.["Hero Image"],
+    article.metadata?.["image"],
     // Extend as needed
   ]
     .filter((url) => typeof url === "string")
