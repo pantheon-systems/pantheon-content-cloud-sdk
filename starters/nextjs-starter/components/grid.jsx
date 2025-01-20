@@ -41,7 +41,7 @@ export function ArticleGridCard({
   isWide = false,
 }) {
   const targetHref = `${basePath}/${article.slug || article.id}`;
-  const imageSrc = article.metadata?.["Hero Image"] || null;
+  const imageSrc = article.metadata?.["image"] || null;
 
   return (
     <div
