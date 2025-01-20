@@ -29,8 +29,6 @@ export function getPantheonAPIOptions(site: Site) {
   };
 }
 
-//(req: NextRequest, res: AppRouterParams): Promise<void | Response>;
-
 export default async function apiHandler(req: NextRequest, res: any) {
   // Get the site
   const site = await PCCConvenienceFunctions.getSite();
