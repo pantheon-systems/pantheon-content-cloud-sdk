@@ -6,8 +6,8 @@ import { serverSmartComponentMap } from "../../../components/smart-components";
 import { getAuthorById, listAuthors } from "../../../lib/pcc-metadata-groups";
 import { getArticleURLFromSite } from "../../../lib/utils";
 
-// codacy-disable-next-line unnecessary-block
 export function getPanthonAPIOptions(site) {
+  // codacy-disable-next-line unnecessary-block
   return {
     resolvePath: (article) => getArticleURLFromSite(article, site),
     smartComponentMap: serverSmartComponentMap,

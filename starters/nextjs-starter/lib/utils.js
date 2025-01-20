@@ -84,7 +84,6 @@ export function getSeoMetadata(article) {
   };
 }
 
-// codacy-disable-next-line unnecessary-block
 function doesChildContainArticle(child, article) {
   let categoryTree = [];
   let contains = false;
@@ -124,6 +123,7 @@ function doesChildContainArticle(child, article) {
     }
   }
 
+  // codacy-disable-next-line unnecessary-block
   return { contains, categoryTree };
 }
 
