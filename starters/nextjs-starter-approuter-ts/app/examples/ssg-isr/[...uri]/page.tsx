@@ -1,9 +1,12 @@
-import { getArticleBySlugOrId, PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk/server";
+import { 
+  PCCConvenienceFunctions,
+  getArticlePathComponentsFromContentStrucuture
+ } from "@pantheon-systems/pcc-react-sdk/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { StaticArticleView } from "../../../../components/article-view";
 import Layout from "../../../../components/layout";
-import { getArticlePathFromContentStrucuture, getSeoMetadata } from "../../../../lib/utils";
+import { getSeoMetadata } from "../../../../lib/utils";
 
 interface ArticlePageProps {
   params: { uri: string[] };
@@ -59,7 +62,10 @@ export async function generateStaticParams() {
 
   return publishedArticles.flatMap((article) => {
     // Generate the article path from the contnet structure
-    const articlePath  = getArticlePathFromContentStrucuture(article, site)
+    const articlePath = getArticlePathComponentsFromContentStrucuture(
+      article,
+      site,
+    );
 
     const id = article.id
 

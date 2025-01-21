@@ -1,4 +1,5 @@
-import apiHandler from "./api-options";
+import { PantheonAPI } from "@pantheon-systems/pcc-react-sdk/server";
+import { pantheonAPIOptions } from "./api-options";
 
-export { apiHandler as GET, apiHandler as POST };
-    
+const handler = PantheonAPI(pantheonAPIOptions);
+export { handler as GET, handler as POST };

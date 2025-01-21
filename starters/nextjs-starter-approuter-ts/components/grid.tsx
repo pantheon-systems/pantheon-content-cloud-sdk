@@ -1,6 +1,10 @@
-import type { ArticleWithoutContent, Site } from "@pantheon-systems/pcc-react-sdk";
+import type { 
+  ArticleWithoutContent,
+  Site,
+} from "@pantheon-systems/pcc-react-sdk";
+import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 import Link from "next/link";
-import { cn, getArticleURLFromSite } from "../lib/utils";
+import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
 export function HomepageArticleGrid({

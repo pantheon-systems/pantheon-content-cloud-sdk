@@ -1,13 +1,12 @@
-import { PCCConvenienceFunctions, Site } from "@pantheon-systems/pcc-react-sdk/server";
+import { 
+  PCCConvenienceFunctions,
+  getArticlePathComponentsFromContentStrucuture
+ } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";
-import { getPantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
+import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
 import { ClientsideArticleView } from "./clientside-articleview";
-import {
-  getArticlePathFromContentStrucuture,
-  getSeoMetadata,
-} from "../../../lib/utils";
 
 
 export interface ArticleViewProps {
@@ -63,10 +62,10 @@ export async function getServersideArticle({
   }
 
     // Get the article path from the content structure
-    const articlePath = getArticlePathFromContentStrucuture(article, site);
-
-    // Get the pantheonAPIOptions
-    const pantheonAPIOptions = getPantheonAPIOptions(site);
+  const articlePath = getArticlePathComponentsFromContentStrucuture(
+    article,
+    site,
+  );
 
   if (
     ((article.slug?.trim().length &&
@@ -81,7 +80,7 @@ export async function getServersideArticle({
     // then redirect to the canonical link.
     redirect(
       queryString.stringifyUrl({
-        url: pantheonAPIOptions.resolvePath(article),
+        url: pantheonAPIOptions.resolvePath(article, site),
         query: { publishingLevel, ...query },
       }),
       RedirectType.replace,
