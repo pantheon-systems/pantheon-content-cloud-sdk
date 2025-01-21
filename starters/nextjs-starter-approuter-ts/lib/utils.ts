@@ -81,7 +81,7 @@ export function getSeoMetadata(
   };
 }
 
-function doesCHildContainArticle(
+function doesChildContainArticle(
   child: any,
   article: Partial<Article> & Pick<Article, "id">,
 ) {
@@ -101,7 +101,7 @@ function doesCHildContainArticle(
   for (const childOfChild of child.children) {
     // If the child is another category, we need to iterate over its children
     if (childOfChild.type === "category") {
-      const result = doesCHildContainArticle(childOfChild, article);
+      const result = doesChildContainArticle(childOfChild, article);
       if (result.contains) {
         // Add the current category name to the category tree
         categoryTree.push(child.name);
@@ -158,7 +158,7 @@ export function getArticlePathFromContentStrucuture(
   for (const category of active) {
     // The categories can be nested, so we need to find the relevant list of categories that contain the articleId
     // We need to iterate over all the categories, do the same for all its children. Keep doing this until we find the articleId
-    const { contains, categoryTree } = doesCHildContainArticle(
+    const { contains, categoryTree } = doesChildContainArticle(
       category,
       article,
     );
