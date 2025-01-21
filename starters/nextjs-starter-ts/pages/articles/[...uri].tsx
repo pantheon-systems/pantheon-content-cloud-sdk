@@ -3,15 +3,13 @@ import {
   PCCConvenienceFunctions,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
+import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
-import {
-  getArticlePathFromContentStrucuture,
-  getSeoMetadata,
-} from "../../lib/utils";
-import { getPantheonAPIOptions } from "../api/pantheoncloud/[...command]";
+import { getSeoMetadata } from "../../lib/utils";
+import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
 interface ArticlePageProps {
   article: Article;
@@ -80,13 +78,17 @@ export async function getServerSideProps({
   }
 
   // Get the article path from the content structure
-  const articlePath = getArticlePathFromContentStrucuture(article, site);
+  const articlePath = getArticlePathComponentsFromContentStrucuture(
+    article,
+    site,
+  );
 
   if (
-    (article.slug?.trim().length &&
+    ((article.slug?.trim().length &&
       article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()) ||
-    articlePath.length !== uri.length - 1 ||
-    articlePath.join("/") !== uri.slice(0, -1).join("/")
+      articlePath.length !== uri.length - 1 ||
+      articlePath.join("/") !== uri.slice(0, -1).join("/")) &&
+    pantheonAPIOptions.resolvePath
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
@@ -95,7 +97,7 @@ export async function getServerSideProps({
     return {
       redirect: {
         destination: queryString.stringifyUrl({
-          url: getPantheonAPIOptions(site).resolvePath(article),
+          url: pantheonAPIOptions.resolvePath(article, site),
           query: { publishingLevel, ...query },
         }),
         permanent: false,
