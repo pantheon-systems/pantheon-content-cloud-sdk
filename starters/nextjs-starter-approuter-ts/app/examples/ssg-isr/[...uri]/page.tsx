@@ -9,7 +9,9 @@ interface ArticlePageProps {
   params: { uri: string[] };
 }
 
-export const revalidate = 21600; // revalidate every 6 hours
+const revalidateSeconds = 21600; // revalidate every 6 hours
+
+export { revalidateSeconds as revalidate };
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
