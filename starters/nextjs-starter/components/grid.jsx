@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
-import { getArticleURLFromSite } from "../lib/utils";
+import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 
 export function HomepageArticleGrid({ articles, site }) {
   return (

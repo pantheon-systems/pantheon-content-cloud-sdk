@@ -6,8 +6,9 @@ import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
-import { getSeoMetadata, getArticlePathFromContentStructure } from "../../lib/utils";
-import { getPanthonAPIOptions } from "../api/pantheoncloud/[...command]";
+import { getSeoMetadata } from "../../lib/utils";
+import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
+import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
 
 export default function ArticlePage({ article, grant }) {
   const seoMetadata = getSeoMetadata(article);
@@ -58,7 +59,10 @@ export async function getServerSideProps({
   }
 
   // Get the article path from the content structure
-  const articlePath = getArticlePathFromContentStructure(article, site);
+  const articlePath = getArticlePathComponentsFromContentStrucuture(
+    article,
+    site,
+  );
 
   if (
     (article.slug?.trim().length &&
@@ -72,7 +76,7 @@ export async function getServerSideProps({
     return {
       redirect: {
         destination: queryString.stringifyUrl({
-          url: getPanthonAPIOptions(site).resolvePath(article),
+          url: pantheonAPIOptions.resolvePath(article, site),
           query: { publishingLevel, ...query },
         }),
         permanent: false,

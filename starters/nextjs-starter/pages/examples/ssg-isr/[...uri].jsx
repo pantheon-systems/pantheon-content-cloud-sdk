@@ -2,7 +2,8 @@ import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
 import Layout from "../../../components/layout";
-import { getSeoMetadata, getArticlePathFromContentStructure } from "../../../lib/utils";
+import { getSeoMetadata } from "../../../lib/utils";
+import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
 
 export default function ArticlePage({ article, recommendedArticles }) {
   const seoMetadata = getSeoMetadata(article);
@@ -64,7 +65,7 @@ export const getStaticPaths = async (uri) => {
 
   const pagePaths = publishedArticles.map((article) => {
     // Generate the article path
-    const articlePath = getArticlePathFromContentStructure(article, site);
+    const articlePath = getArticlePathComponentsFromContentStrucuture(article, site);
 
     const id = article.id;
     const slug = article.metadata.slug;
