@@ -18,7 +18,7 @@ import { errorHandler } from "../exceptions";
 
 nunjucks.configure({ autoescape: true });
 
-const AUTH0_SCOPES = "openid profile article:read offline_access";
+const AUTH0_SCOPES = "openid profile create:session offline_access";
 
 function login(extraScopes: string[]): Promise<void> {
   return new Promise(
