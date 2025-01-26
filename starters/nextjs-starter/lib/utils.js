@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { getAuthorById } from "./pcc-metadata-groups";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -22,7 +23,7 @@ export function getSeoMetadata(article) {
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
     article.metadata?.image,
-    article.metadata?.["Hero Image"],
+    article.metadata?.["image"],
     // Extend as needed
   ]
     .filter((url) => typeof url === "string")
@@ -31,7 +32,7 @@ export function getSeoMetadata(article) {
     ? String(article.metadata?.description)
     : "Article hosted using Pantheon Content Cloud";
 
-  let authors = [];
+  const authors = [];
   let publishedTime = article.publishedDate;
 
   // Collecting data from metadata fields
@@ -41,7 +42,7 @@ export function getSeoMetadata(article) {
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors = [v];
+          authors.push(v);
         }
         break;
       }
@@ -52,6 +53,15 @@ export function getSeoMetadata(article) {
         }
         break;
       }
+      case "complex-author":
+        if (typeof v === "string") {
+          const authorName = getAuthorById(v)?.label;
+
+          if (authorName) {
+            authors.push(v);
+          }
+        }
+        break;
     }
   });
 

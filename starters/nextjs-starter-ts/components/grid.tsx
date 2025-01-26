@@ -59,7 +59,7 @@ export function ArticleGridCard({
   isWide = false,
 }: ArticleGridCardProps) {
   const targetHref = `${basePath}/${article.slug || article.id}`;
-  const imageSrc = article.metadata?.["Hero Image"] || null;
+  const imageSrc = (article.metadata?.["image"] as string) || null;
 
   return (
     <div
@@ -93,11 +93,11 @@ export function ArticleGridCard({
           <h1 className="mb-3 text-xl font-semibold leading-7">
             {article.title}
           </h1>
-          {article.metadata?.["Description"] && (
+          {article.metadata?.["Description"] ? (
             <p className="line-clamp-3 min-h-[4.5rem] text-gray-600">
               {article.metadata?.["Description"]?.toString() || ""}
             </p>
-          )}
+          ) : null}
         </div>
         <Link href={targetHref} className="mt-8">
           <Button size="large">View</Button>
@@ -107,7 +107,13 @@ export function ArticleGridCard({
   );
 }
 
-function GridItemCoverImage({ imageSrc, imageAltText }) {
+function GridItemCoverImage({
+  imageSrc,
+  imageAltText,
+}: {
+  imageSrc: string | null | undefined;
+  imageAltText?: string | undefined;
+}) {
   return imageSrc != null ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img

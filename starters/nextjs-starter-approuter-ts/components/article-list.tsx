@@ -12,11 +12,11 @@ import PageHeader from "./page-header";
 import Pagination from "./pagination";
 
 interface Props {
-  headerText: string;
+  headerText?: string | null | undefined;
   articles: PaginatedArticle[] | ArticleWithoutContent[];
   totalCount: number;
   cursor: string;
-  fetcher: (cursor: string) => Promise<{
+  fetcher: (cursor?: string | null | undefined) => Promise<{
     data: PaginatedArticle[] | ArticleWithoutContent[];
     newCursor: string;
   }>;
@@ -44,7 +44,7 @@ export default function ArticleList({
 
   return (
     <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
-      <PageHeader title={headerText} />
+      {headerText ? <PageHeader title={headerText} /> : null}
       {additionalHeader}
       <ArticleGrid articles={currentArticles as ArticleWithoutContent[]} />
       <div className="mt-4 flex flex-row items-center justify-center">

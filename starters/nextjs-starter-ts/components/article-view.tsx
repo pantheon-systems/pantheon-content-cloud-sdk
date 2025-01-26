@@ -4,7 +4,10 @@ import {
   ArticleRenderer,
   useArticleTitle,
 } from "@pantheon-systems/pcc-react-sdk/components";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useMemo } from "react";
+import { getSeoMetadata } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components";
 
 const ELEMENT_STYLES_TO_OVERRIDE = [
@@ -37,6 +40,56 @@ type ArticleViewProps = {
   onlyContent?: boolean;
 };
 
+const ArticleHeader = ({
+  article,
+  articleTitle,
+  seoMetadata,
+}: {
+  article: Article;
+  articleTitle: string | null;
+  seoMetadata: ReturnType<typeof getSeoMetadata>;
+}) => {
+  return (
+    <div>
+      <div className="text-5xl font-bold">{articleTitle}</div>
+      <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
+        {seoMetadata.openGraph.article.authors?.[0] ? (
+          <>
+            <Link
+              data-testid="author"
+              className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
+              href={`/authors/${seoMetadata.openGraph.article.authors?.[0]}`}
+            >
+              <div>
+                <Image
+                  className="m-0 rounded-full"
+                  src="/images/no-avatar.png"
+                  width={24}
+                  height={24}
+                  alt={`Avatar of ${seoMetadata.openGraph.article.authors?.[0]}`}
+                />
+              </div>
+              <div className="underline">
+                {seoMetadata.openGraph.article.authors?.[0]}
+              </div>
+            </Link>
+            <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
+          </>
+        ) : null}
+        {article.updatedAt ? (
+          <span>
+            {new Date(article.updatedAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  );
+};
+
 export default function ArticleView({
   article,
   onlyContent,
@@ -64,22 +117,15 @@ export default function ArticleView({
 
 export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
   const articleTitle = useArticleTitle(article);
+  const seoMetadata = getSeoMetadata(article);
 
   return (
     <>
-      <div>
-        <div className="text-5xl font-bold">{articleTitle}</div>
-
-        {article.updatedAt ? (
-          <p className="py-2">
-            {new Date(article.updatedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
-        ) : null}
-      </div>
+      <ArticleHeader
+        article={article}
+        articleTitle={articleTitle}
+        seoMetadata={seoMetadata}
+      />
       <ArticleRenderer
         componentMap={{
           h1: overrideElementStyles("h1"),
@@ -100,6 +146,19 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
           useUnintrusiveTitleRendering: true,
         }}
       />
+
+      <div className="border-base-300 mt-16 flex w-full gap-x-3 border-t-[1px] pt-7 lg:mt-32">
+        {seoMetadata.openGraph.article.tags?.length > 0
+          ? seoMetadata.openGraph.article.tags.map((x, i) => (
+              <div
+                key={i}
+                className="text-bold text-neutral-content rounded-full border-[1px] border-[#d4d4d4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+              >
+                {x}
+              </div>
+            ))
+          : null}
+      </div>
     </>
   );
 }

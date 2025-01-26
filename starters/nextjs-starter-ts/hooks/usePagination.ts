@@ -2,6 +2,7 @@ import {
   ArticleWithoutContent,
   PaginatedArticle,
 } from "@pantheon-systems/pcc-react-sdk";
+import queryString from "query-string";
 import { useCallback, useEffect, useState } from "react";
 import useSWR from "swr";
 
@@ -9,9 +10,15 @@ interface Props {
   cursor?: string;
   pageSize: number;
   initialArticles?: PaginatedArticle[] | ArticleWithoutContent[];
+  author?: string;
 }
 
-export function usePagination({ cursor, initialArticles, pageSize }: Props) {
+export function usePagination({
+  cursor,
+  initialArticles,
+  pageSize,
+  author,
+}: Props) {
   const [articlePages, setArticlePages] = useState(
     initialArticles ? [initialArticles] : [],
   );
@@ -23,12 +30,19 @@ export function usePagination({ cursor, initialArticles, pageSize }: Props) {
       const pageNumber = Number(key);
       if (articlePages[pageNumber]) return null;
 
-      const response = await fetch(
-        `/api/utils/paginate?pageSize=${pageSize}&cursor=${currentCursor}`,
-      );
+      const url = queryString.stringifyUrl({
+        url: "/api/utils/paginate",
+        query: {
+          pageSize,
+          cursor: currentCursor,
+          author,
+        },
+      });
+
+      const response = await fetch(url);
       return await response.json();
     },
-    [currentCursor, pageSize, articlePages],
+    [currentCursor, pageSize, articlePages, author],
   );
 
   const { data: newResponse, isLoading } = useSWR(

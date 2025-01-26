@@ -2,13 +2,14 @@ import { Poppins } from "next/font/google";
 // import Script from "next/script";
 
 import "../styles/globals.css";
+import { PropsWithChildren } from "react";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
 
-function MyApp({ children }) {
+function MyApp({ children }: PropsWithChildren) {
   return (
     <html>
       <head>
