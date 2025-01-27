@@ -3,29 +3,13 @@ import path from "path";
 import { ensureFile, remove } from "fs-extra";
 import { PCC_ROOT_DIR } from "../constants";
 import { Config } from "../types/config";
+import { PersistedTokens } from "./auth";
 
-export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
-export const GOOGLE_AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "google.json");
-export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
+const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
+const GOOGLE_AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "google.json");
+const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
 
-export const getLocalConfigDetails = async (): Promise<Config | null> => {
-  try {
-    return JSON.parse(readFileSync(CONFIG_FILE_PATH).toString());
-  } catch (_err) {
-    return null;
-  }
-};
-
-export const persistConfigDetails = async (payload: Config): Promise<void> => {
-  await persistDetailsToFile(payload, CONFIG_FILE_PATH);
-};
-
-export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
-
-export const persistDetailsToFile = async (
-  payload: unknown,
-  filePath: string,
-) => {
+const persistDetailsToFile = async (payload: unknown, filePath: string) => {
   await new Promise<void>((resolve, reject) =>
     ensureFile(filePath, (err: unknown) => {
       if (err) {
@@ -37,4 +21,41 @@ export const persistDetailsToFile = async (
   );
 
   writeFileSync(filePath, JSON.stringify(payload, null, 2));
+};
+const readFile = async <T>(path: string): Promise<T | null> => {
+  try {
+    return JSON.parse(readFileSync(path).toString()) as T;
+  } catch (_err) {
+    return null;
+  }
+};
+
+export const getConfigDetails = async (): Promise<Config | null> => {
+  return readFile<Config>(CONFIG_FILE_PATH);
+};
+
+export const persistConfigDetails = async (payload: Config): Promise<void> => {
+  await persistDetailsToFile(payload, CONFIG_FILE_PATH);
+};
+
+export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
+
+export const getAuthDetails = async (): Promise<PersistedTokens | null> => {
+  return readFile<PersistedTokens>(AUTH_FILE_PATH);
+};
+export const persistAuthDetails = async (
+  payload: PersistedTokens,
+): Promise<void> => {
+  await persistDetailsToFile(payload, AUTH_FILE_PATH);
+};
+
+export const getGoogleAuthDetails = async (): Promise<
+  PersistedTokens[] | null
+> => {
+  return readFile<PersistedTokens[]>(GOOGLE_AUTH_FILE_PATH);
+};
+export const persistGoogleAuthDetails = async (
+  payload: PersistedTokens[],
+): Promise<void> => {
+  await persistDetailsToFile(payload, GOOGLE_AUTH_FILE_PATH);
 };

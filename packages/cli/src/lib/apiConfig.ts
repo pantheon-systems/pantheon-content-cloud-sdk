@@ -1,4 +1,4 @@
-import { getLocalConfigDetails } from "./localStorage";
+import { getConfigDetails } from "./localStorage";
 
 export enum TargetEnvironment {
   production = "production",
@@ -55,7 +55,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
 };
 
 export const getApiConfig = async () => {
-  const config = await getLocalConfigDetails();
+  const config = await getConfigDetails();
   const apiConfig =
     apiConfigMap[
       config?.targetEnvironment ||

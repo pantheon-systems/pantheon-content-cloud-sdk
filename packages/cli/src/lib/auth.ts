@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import http from "http";
-import path, { dirname, join } from "path";
+import { dirname, join } from "path";
 import url, { fileURLToPath } from "url";
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import axios from "axios";
@@ -11,10 +11,9 @@ import ora from "ora";
 import queryString from "query-string";
 import destroyer from "server-destroy";
 import { IncorrectAccount } from "../cli/exceptions";
-import { PCC_ROOT_DIR } from "../constants";
 import AddOnApiHelper from "./addonApiHelper";
 import { getApiConfig } from "./apiConfig";
-import { persistDetailsToFile } from "./localStorage";
+import * as LocalStorage from "./localStorage";
 
 const DEFAULT_AUTH0_SCOPES = [
   "openid",
@@ -25,10 +24,6 @@ const DEFAULT_AUTH0_SCOPES = [
 const DEFAULT_GOOGLE_SCOPES = [
   "https://www.googleapis.com/auth/userinfo.email",
 ];
-
-export const AUTH0_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
-export const GOOGLE_AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "google.json");
-export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
 
 export interface PersistedTokens {
   id_token: string;
@@ -48,8 +43,6 @@ abstract class BaseAuthProvider {
   abstract generateToken(code: string): Promise<PersistedTokens>;
   abstract refreshToken(refreshToken: string): Promise<PersistedTokens>;
   abstract getTokens(): Promise<PersistedTokens | null>;
-  abstract readFile(): Promise<PersistedTokens | PersistedTokens[] | null>;
-  abstract persist(cred: PersistedTokens | PersistedTokens[]): Promise<void>;
   abstract login(): Promise<void>;
 }
 
@@ -83,18 +76,8 @@ export class Auth0Provider extends BaseAuthProvider {
     } as PersistedTokens;
   }
 
-  async readFile(): Promise<PersistedTokens | null> {
-    try {
-      return JSON.parse(
-        readFileSync(AUTH0_FILE_PATH).toString(),
-      ) as PersistedTokens;
-    } catch (_err) {
-      return null;
-    }
-  }
-
   async getTokens(): Promise<PersistedTokens | null> {
-    const credentials = await this.readFile();
+    const credentials = await LocalStorage.getAuthDetails();
     if (!credentials) return null;
 
     // Return null if required scope is not present
@@ -117,15 +100,11 @@ export class Auth0Provider extends BaseAuthProvider {
       const newCred = await this.refreshToken(
         credentials.refresh_token as string,
       );
-      this.persist(newCred);
+      await LocalStorage.persistAuthDetails(newCred);
       return newCred;
     } catch (_err) {
       return null;
     }
-  }
-
-  async persist(cred: PersistedTokens) {
-    await persistDetailsToFile(cred, AUTH0_FILE_PATH);
   }
 
   async login(): Promise<void> {
@@ -172,7 +151,7 @@ export class Auth0Provider extends BaseAuthProvider {
                 const tokenPayload = parseJwt(
                   credentials.access_token as string,
                 );
-                await this.persist(credentials);
+                await LocalStorage.persistAuthDetails(credentials);
 
                 res.end(
                   nunjucks.renderString(content.toString(), {
@@ -231,18 +210,9 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     );
     return resp.data as PersistedTokens;
   }
-  async readFile(): Promise<PersistedTokens[] | null> {
-    try {
-      return JSON.parse(
-        readFileSync(GOOGLE_AUTH_FILE_PATH).toString(),
-      ) as PersistedTokens[];
-    } catch (_err) {
-      return null;
-    }
-  }
 
   async getTokens(): Promise<PersistedTokens | null> {
-    const credentialArr = await this.readFile();
+    const credentialArr = await LocalStorage.getGoogleAuthDetails();
     if (!credentialArr) return null;
 
     // Return null if required given email
@@ -278,15 +248,11 @@ export class GoogleAuthProvider extends BaseAuthProvider {
         credentials.refresh_token as string,
       );
       credentialArr[credIndex] = newCred;
-      this.persist(credentialArr);
+      await LocalStorage.persistGoogleAuthDetails(credentialArr);
       return newCred;
     } catch (_err) {
       return null;
     }
-  }
-
-  async persist(cred: PersistedTokens[]) {
-    await persistDetailsToFile(cred, GOOGLE_AUTH_FILE_PATH);
   }
 
   login(): Promise<void> {
@@ -316,7 +282,8 @@ export class GoogleAuthProvider extends BaseAuthProvider {
             scope: this.scopes,
           });
 
-          const existingCredentials = (await this.readFile()) || [];
+          const existingCredentials =
+            (await LocalStorage.getGoogleAuthDetails()) || [];
 
           const server = http.createServer(async (req, res) => {
             try {
@@ -335,7 +302,9 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                 const credentials = await this.generateToken(code as string);
                 const tokenPayload = parseJwt(credentials.id_token as string);
                 existingCredentials.push(credentials);
-                await this.persist(existingCredentials);
+                await LocalStorage.persistGoogleAuthDetails(
+                  existingCredentials,
+                );
 
                 res.end(
                   nunjucks.renderString(content.toString(), {
