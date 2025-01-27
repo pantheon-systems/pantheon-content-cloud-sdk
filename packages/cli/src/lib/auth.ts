@@ -259,13 +259,13 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     return new Promise(
       // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
       async (resolve, reject) => {
-        const spinner = ora("Logging you in...").start();
+        const spinner = ora("Connecting Google account...").start();
         try {
           const authData = await this.getTokens();
           if (authData) {
             const tokenPayload = parseJwt(authData.id_token as string);
             spinner.succeed(
-              `You are already logged in as ${tokenPayload.email}.`,
+              `"${tokenPayload.email}" Google account is already connected.`,
             );
             return resolve();
           }
@@ -317,7 +317,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                 }
 
                 spinner.succeed(
-                  `You are successfully logged in as ${tokenPayload["pcc/email"]}`,
+                  `Successfully connected "${tokenPayload.email}" Google account.`,
                 );
                 resolve();
               }

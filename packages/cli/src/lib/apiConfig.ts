@@ -32,6 +32,8 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.staging]: {
+    // addOnApiEndpoint:
+    //   "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
     addOnApiEndpoint: "http://localhost:8080",
     auth0ClientId: "RAHxEbc251zD529hByapcv6Dcp3pmv4P",
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",

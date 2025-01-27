@@ -18,7 +18,7 @@ export class UserNotLoggedIn extends Error {
 
 export class IncorrectAccount extends Error {
   constructor() {
-    super("Selected account doesn't match with account provided in the CLI.");
+    super("Selected account is not valid");
     this.name = this.constructor.name;
   }
 }

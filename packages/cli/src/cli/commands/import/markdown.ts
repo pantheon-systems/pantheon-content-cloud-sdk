@@ -38,17 +38,9 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     const content = fs.readFileSync(filePath).toString();
 
     // Check user has required permission to create drive file
-    await AddOnApiHelper.getGoogleTokens([
+    const tokens = await AddOnApiHelper.getGoogleTokens([
       "https://www.googleapis.com/auth/drive.file",
     ]);
-    const provider = new GoogleAuthProvider([
-      "https://www.googleapis.com/auth/drive.file",
-    ]);
-    const tokens = await provider.getTokens();
-    if (!tokens) {
-      logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
-      exit(1);
-    }
 
     // Create Google Doc
     const spinner = ora("Creating document on the Google Drive...").start();
