@@ -4,7 +4,7 @@ import type { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { getLocalAuthDetails } from "../../../lib/localStorage";
+import { GoogleAuthProvider } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
 
 export function preprocessBaseURL(originalBaseURL: string) {
@@ -33,19 +33,22 @@ export function preprocessBaseURL(originalBaseURL: string) {
 }
 
 export async function getAuthedDrive(logger: Logger) {
-  await AddOnApiHelper.getIdToken([
+  await AddOnApiHelper.getGoogleTokens([
     "https://www.googleapis.com/auth/drive.file",
   ]);
 
-  const authDetails = await getLocalAuthDetails();
-
-  if (!authDetails) {
+  // TODO: Add domain
+  const provider = new GoogleAuthProvider([
+    "https://www.googleapis.com/auth/drive.file",
+  ]);
+  const tokens = await provider.getTokens();
+  if (!tokens) {
     logger.error(chalk.red(`ERROR: Failed to retrieve login details. `));
     exit(1);
   }
 
   const oauth2Client = new OAuth2Client();
-  oauth2Client.setCredentials(authDetails);
+  oauth2Client.setCredentials(tokens);
   return google.drive({
     version: "v3",
     auth: oauth2Client,

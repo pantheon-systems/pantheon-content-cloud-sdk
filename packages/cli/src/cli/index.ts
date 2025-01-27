@@ -896,7 +896,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login([]),
+    async () => await login({ authType: "auth0" }),
   )
   .command(
     "logout",
