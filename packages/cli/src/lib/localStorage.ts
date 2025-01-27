@@ -59,3 +59,7 @@ export const persistGoogleAuthDetails = async (
 ): Promise<void> => {
   await persistDetailsToFile(payload, GOOGLE_AUTH_FILE_PATH);
 };
+
+export const deleteAuthDetails = async () => remove(AUTH_FILE_PATH);
+export const deleteGoogleAuthDetails = async () =>
+  remove(GOOGLE_AUTH_FILE_PATH);

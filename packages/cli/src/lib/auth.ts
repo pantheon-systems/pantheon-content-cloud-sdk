@@ -218,7 +218,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     // Return null if required given email
     const credIndex = (credentialArr || []).findIndex((acc) => {
       const payload = parseJwt(acc.id_token as string);
-      return (payload.email.split("@")[1] || "").toLowerCase() === this.email;
+      return payload.email === this.email;
     });
     if (credIndex === -1) return null;
     const credentials = credentialArr[credIndex];

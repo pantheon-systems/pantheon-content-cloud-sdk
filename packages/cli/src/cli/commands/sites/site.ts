@@ -21,7 +21,7 @@ export const createSite = errorHandler<{ url: string; googleAccount: string }>(
     } catch (e) {
       if (e instanceof IncorrectAccount) {
         spinner.fail(
-          "Selected account doesn't match with account provided in the CLI.",
+          "Selected account doesn't match with the account provided in the CLI.",
         );
         return;
       }

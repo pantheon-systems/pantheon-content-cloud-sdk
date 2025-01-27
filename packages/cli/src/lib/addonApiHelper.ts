@@ -265,19 +265,19 @@ class AddOnApiHelper {
   }
 
   static async createSite(url: string, googleAccount: string): Promise<string> {
-    // Add domain
-    const { id_token: idToken } = await this.getGoogleTokens(
+    const { access_token: googleAccessToken } = await this.getGoogleTokens(
       undefined,
       googleAccount,
     );
+    const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
 
     const resp = await axios.post(
       (await getApiConfig()).SITE_ENDPOINT,
       { name: "", url, emailList: "" },
-      // Add domain
       {
         headers: {
-          Authorization: `Bearer ${idToken}`,
+          Authorization: `Bearer ${auth0AccessToken}`,
+          "oauth-token": googleAccessToken,
         },
       },
     );
