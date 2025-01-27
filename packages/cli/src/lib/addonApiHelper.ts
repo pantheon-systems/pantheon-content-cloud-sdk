@@ -53,6 +53,7 @@ class AddOnApiHelper {
     title?: string,
   ): Promise<Article> {
     // TODO: Add required scopes and domain
+    // Use Auth0 tokens as Authorization and accessToken from Google
     const { id_token: idToken, access_token: oauthToken } =
       await this.getGoogleTokens();
 
