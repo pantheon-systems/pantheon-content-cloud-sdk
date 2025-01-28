@@ -11,6 +11,7 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { GoogleAuthProvider } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
 import { errorHandler } from "../../exceptions";
+import { getAuthedDrive } from "./utils";
 
 const HEADING_TAGS = ["h1", "h2", "h3", "title"];
 
@@ -37,19 +38,20 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
 
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
     // Check user has required permission to create drive file
-    const tokens = await AddOnApiHelper.getGoogleTokens([
-      "https://www.googleapis.com/auth/drive.file",
-    ]);
+    const tokens = await AddOnApiHelper.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive.file"],
+      domain: site.domain,
+    });
 
     // Create Google Doc
     const spinner = ora("Creating document on the Google Drive...").start();
-    const oauth2Client = new OAuth2Client();
-    oauth2Client.setCredentials(tokens);
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client,
-    });
+
+    const drive = getAuthedDrive(tokens);
+
     const converter = new showdown.Converter();
     const html = converter.makeHtml(content);
     const dom = parseFromString(html);
@@ -84,22 +86,15 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create PCC document
-    await AddOnApiHelper.getDocument(fileId, true, title);
+    await AddOnApiHelper.getDocument(fileId, true, site.domain, title);
     // Cannot set metadataFields(title,slug) in the same request since we reset metadataFields
     //  when changing the siteId.
-    await AddOnApiHelper.updateDocument(
-      fileId,
-      siteId,
-      title,
-      [],
-      null,
-      verbose,
-    );
-    await AddOnApiHelper.getDocument(fileId, false, title);
+    await AddOnApiHelper.updateDocument(fileId, site, title, [], null, verbose);
+    await AddOnApiHelper.getDocument(fileId, false, site.domain, title);
 
     // Publish PCC document
     if (publish) {
-      await AddOnApiHelper.publishDocument(fileId);
+      await AddOnApiHelper.publishDocument(fileId, site.domain);
     }
     spinner.succeed(
       `Successfully created document at below path${

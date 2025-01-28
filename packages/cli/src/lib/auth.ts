@@ -47,11 +47,6 @@ abstract class BaseAuthProvider {
 }
 
 export class Auth0Provider extends BaseAuthProvider {
-  constructor(scopes?: string[], email?: string) {
-    super();
-    this.scopes = scopes || DEFAULT_AUTH0_SCOPES;
-    this.email = email;
-  }
   async generateToken(code: string): Promise<PersistedTokens> {
     const resp = await axios.post(
       `${(await getApiConfig()).AUTH0_ENDPOINT}/token`,
@@ -186,10 +181,15 @@ export class Auth0Provider extends BaseAuthProvider {
 }
 
 export class GoogleAuthProvider extends BaseAuthProvider {
-  constructor(scopes?: string[], email?: string) {
+  private domain: string | undefined;
+  constructor(scopes?: string[], email?: string, domain?: string) {
+    if (!email && !domain)
+      throw new Error("Either email or domain should be provided");
+
     super();
-    this.scopes = scopes || DEFAULT_GOOGLE_SCOPES;
+    this.scopes = [...DEFAULT_GOOGLE_SCOPES, ...(scopes || [])];
     this.email = email;
+    this.domain = domain;
   }
   async generateToken(code: string): Promise<PersistedTokens> {
     const resp = await axios.post(
@@ -218,8 +218,10 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     // Return null if required given email
     const credIndex = (credentialArr || []).findIndex((acc) => {
       const payload = parseJwt(acc.id_token as string);
-      return payload.email === this.email;
+      if (this.email) return payload.email === this.email;
+      else return (payload.email.split("@")[1] || "") === this.domain;
     });
+
     if (credIndex === -1) return null;
     const credentials = credentialArr[credIndex];
 
@@ -312,9 +314,13 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                   }),
                 );
                 server.destroy();
-                if (this.email && this.email !== tokenPayload.email) {
+
+                if (
+                  (this.email && this.email !== tokenPayload.email) ||
+                  (this.domain &&
+                    this.domain !== tokenPayload.email.split("@")[1])
+                )
                   throw new IncorrectAccount();
-                }
 
                 spinner.succeed(
                   `Successfully connected "${tokenPayload.email}" Google account.`,

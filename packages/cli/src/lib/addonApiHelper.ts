@@ -31,11 +31,13 @@ class AddOnApiHelper {
 
     throw new UserNotLoggedIn();
   }
-  static async getGoogleTokens(
-    scopes?: string[],
-    email?: string,
-  ): Promise<PersistedTokens> {
-    const provider = new GoogleAuthProvider(scopes, email);
+  static async getGoogleTokens(args?: {
+    scopes?: string[];
+    email?: string | undefined;
+    domain?: string | undefined;
+  }): Promise<PersistedTokens> {
+    const { scopes, email, domain } = args || {};
+    const provider = new GoogleAuthProvider(scopes, email, domain);
     let tokens = await provider.getTokens();
     if (tokens) return tokens;
 
@@ -50,12 +52,13 @@ class AddOnApiHelper {
   static async getDocument(
     documentId: string,
     insertIfMissing = false,
+    domain: string,
     title?: string,
   ): Promise<Article> {
-    // TODO: Add required scopes and domain
-    // Use Auth0 tokens as Authorization and accessToken from Google
     const { id_token: idToken, access_token: oauthToken } =
-      await this.getGoogleTokens();
+      await this.getGoogleTokens({
+        domain,
+      });
 
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
@@ -104,7 +107,7 @@ class AddOnApiHelper {
 
   static async updateDocument(
     documentId: string,
-    siteId: string,
+    site: Site,
     title: string,
     tags: string[],
     metadataFields: {
@@ -113,12 +116,15 @@ class AddOnApiHelper {
 
     verbose?: boolean,
   ): Promise<Article> {
-    const { access_token: accessToken } = await this.getAuth0Tokens();
+    const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
+    const { access_token: googleAccessToken } = await this.getGoogleTokens({
+      domain: site.domain,
+    });
 
     if (verbose) {
       console.log("update document", {
         documentId,
-        siteId,
+        siteId: site.id,
         title,
         tags,
         metadataFields,
@@ -128,7 +134,7 @@ class AddOnApiHelper {
     const resp = await axios.patch(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
       {
-        siteId,
+        siteId: site.id,
         tags,
         title,
         ...(metadataFields && {
@@ -137,7 +143,8 @@ class AddOnApiHelper {
       },
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${auth0AccessToken}`,
+          "oauth-token": googleAccessToken,
           "Content-Type": "application/json",
         },
       },
@@ -146,10 +153,12 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async publishDocument(documentId: string) {
-    // TODO: Add domain
+  static async publishDocument(documentId: string, domain: string) {
     const { id_token: idToken, access_token: oauthToken } =
-      await this.getGoogleTokens(["https://www.googleapis.com/auth/drive"]);
+      await this.getGoogleTokens({
+        scopes: ["https://www.googleapis.com/auth/drive.file"],
+        domain,
+      });
 
     if (!idToken || !oauthToken) {
       throw new UserNotLoggedIn();
@@ -157,7 +166,7 @@ class AddOnApiHelper {
 
     const resp = await axios.post<{ url: string }>(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}/publish`,
-      null,
+      {},
       {
         headers: {
           Authorization: `Bearer ${idToken}`,
@@ -190,7 +199,9 @@ class AddOnApiHelper {
   ): Promise<string> {
     // TODO: Add domain
     const { id_token: idToken, access_token: oauthToken } =
-      await this.getGoogleTokens(["https://www.googleapis.com/auth/drive"]);
+      await this.getGoogleTokens({
+        scopes: ["https://www.googleapis.com/auth/drive"],
+      });
 
     if (!idToken || !oauthToken) {
       throw new UserNotLoggedIn();
@@ -265,10 +276,9 @@ class AddOnApiHelper {
   }
 
   static async createSite(url: string, googleAccount: string): Promise<string> {
-    const { access_token: googleAccessToken } = await this.getGoogleTokens(
-      undefined,
-      googleAccount,
-    );
+    const { access_token: googleAccessToken } = await this.getGoogleTokens({
+      email: googleAccount,
+    });
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
 
     const resp = await axios.post(

@@ -18,7 +18,7 @@ export class UserNotLoggedIn extends Error {
 
 export class IncorrectAccount extends Error {
   constructor() {
-    super("Selected account is not");
+    super("Selected account is not valid");
     this.name = this.constructor.name;
   }
 }

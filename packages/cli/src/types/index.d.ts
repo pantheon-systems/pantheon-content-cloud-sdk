@@ -15,6 +15,7 @@ declare type ApiKey = {
 declare type Site = {
   id: string;
   url: string;
+  domain: string;
   created?: number;
   __isPlayground: boolean;
   connectionStatus?: {

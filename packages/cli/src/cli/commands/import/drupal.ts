@@ -85,7 +85,16 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       exit(1);
     }
 
-    const drive = await getAuthedDrive(logger);
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
+    const tokens = await AddOnApiHelper.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive.file"],
+      domain: site.domain,
+    });
+
+    const drive = getAuthedDrive(tokens);
+
     const folder = await createFolder(
       drive,
       `PCC Import from Drupal on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
@@ -166,12 +175,12 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocument(fileId, true, site.domain);
 
         try {
           await AddOnApiHelper.updateDocument(
             fileId,
-            siteId,
+            site,
             post.attributes.title,
             post.relationships.field_topics?.data
               ?.map(
@@ -188,7 +197,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
           );
 
           if (publish) {
-            await AddOnApiHelper.publishDocument(fileId);
+            await AddOnApiHelper.publishDocument(fileId, site.domain);
           }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);

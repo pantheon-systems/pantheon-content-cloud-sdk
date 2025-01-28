@@ -128,7 +128,14 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
       exit(1);
     }
 
-    const drive = await getAuthedDrive(logger);
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
+    const tokens = await AddOnApiHelper.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive.file"],
+      domain: site.domain,
+    });
+    const drive = getAuthedDrive(tokens);
     const folder = await createFolder(
       drive,
       `PCC Import from WordPress on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
@@ -204,12 +211,12 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocument(fileId, true, site.domain);
 
         try {
           await AddOnApiHelper.updateDocument(
             fileId,
-            siteId,
+            site,
             post.title.rendered,
             (await getTagInfo(processedBaseURL, post.tags)).map((x) => x.name),
             {
@@ -220,7 +227,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
           );
 
           if (publish) {
-            await AddOnApiHelper.publishDocument(fileId);
+            await AddOnApiHelper.publishDocument(fileId, site.domain);
           }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
