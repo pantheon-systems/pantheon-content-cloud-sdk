@@ -191,21 +191,18 @@ class AddOnApiHelper {
 
   static async previewFile(
     docId: string,
+    domain: string,
     {
       baseUrl,
     }: {
       baseUrl?: string;
     },
   ): Promise<string> {
-    // TODO: Add domain
-    const { id_token: idToken, access_token: oauthToken } =
-      await this.getGoogleTokens({
-        scopes: ["https://www.googleapis.com/auth/drive"],
-      });
-
-    if (!idToken || !oauthToken) {
-      throw new UserNotLoggedIn();
-    }
+    const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
+    const { access_token: googleAccessToken } = await this.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive"],
+      domain,
+    });
 
     const resp = await axios.post<{ url: string }>(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${docId}/preview`,
@@ -214,9 +211,9 @@ class AddOnApiHelper {
       },
       {
         headers: {
-          Authorization: `Bearer ${idToken}`,
+          Authorization: `Bearer ${auth0AccessToken}`,
           "Content-Type": "application/json",
-          "oauth-token": oauthToken,
+          "oauth-token": googleAccessToken,
         },
       },
     );

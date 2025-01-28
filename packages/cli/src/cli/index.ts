@@ -742,12 +742,18 @@ yargs(hideBin(process.argv))
                 describe: "Base URL for the generated preview link.",
                 type: "string",
                 demandOption: false,
+              })
+              .option("domain", {
+                describe: "Domain of the document's site",
+                type: "string",
+                demandOption: true,
               });
           },
           async (args) =>
             await generatePreviewLink({
               documentId: args.id as string,
               baseUrl: args.baseUrl as string,
+              domain: args.domain as string,
             }),
         )
         .example(formatExamples(DOCUMENT_EXAMPLES));
