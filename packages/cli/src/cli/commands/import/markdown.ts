@@ -45,7 +45,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     let tokens: PersistedTokens;
     try {
       tokens = await AddOnApiHelper.getGoogleTokens({
-        scopes: ["https://www.googleapis.com/auth/drive.file"],
+        scopes: ["https://www.googleapis.com/auth/drive"],
         domain: site.domain,
       });
     } catch (e) {

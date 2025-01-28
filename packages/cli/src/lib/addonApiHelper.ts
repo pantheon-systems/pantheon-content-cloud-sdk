@@ -55,10 +55,10 @@ class AddOnApiHelper {
     domain: string,
     title?: string,
   ): Promise<Article> {
-    const { id_token: idToken, access_token: oauthToken } =
-      await this.getGoogleTokens({
-        domain,
-      });
+    const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
+    const { access_token: googleAccessToken } = await this.getGoogleTokens({
+      domain,
+    });
 
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
@@ -70,8 +70,8 @@ class AddOnApiHelper {
           }),
         },
         headers: {
-          Authorization: `Bearer ${idToken}`,
-          "oauth-token": oauthToken,
+          Authorization: `Bearer ${auth0AccessToken}`,
+          "oauth-token": googleAccessToken,
         },
       },
     );
