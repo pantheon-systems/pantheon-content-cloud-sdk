@@ -389,16 +389,16 @@ yargs(hideBin(process.argv))
               type: "string",
               demandOption: true,
             });
-            yargs.option("googleAccount", {
-              describe: "Google workspace account email",
+            yargs.option("domain", {
+              describe: "Domain of the site",
               type: "string",
-              demandOption: false,
+              demandOption: true,
             });
           },
           async (args) =>
             await createSite({
               url: args.url as string,
-              googleAccount: args.googleAccount as string,
+              domain: args.domain as string,
             }),
         )
         .command(

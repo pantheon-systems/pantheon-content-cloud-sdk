@@ -5,16 +5,12 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { printTable } from "../../../lib/cliDisplay";
 import { errorHandler, IncorrectAccount } from "../../exceptions";
 
-export const createSite = errorHandler<{ url: string; googleAccount: string }>(
-  async ({ url, googleAccount }) => {
+export const createSite = errorHandler<{ url: string; domain: string }>(
+  async ({ url, domain }) => {
     const spinner = ora("Creating site...").start();
-    if (!googleAccount) {
-      spinner.fail("You must provide Google workspace account");
-      return;
-    }
 
     try {
-      const siteId = await AddOnApiHelper.createSite(url, googleAccount);
+      const siteId = await AddOnApiHelper.createSite(url, domain);
       spinner.succeed(
         `Successfully created the site with given details. Id: ${siteId}`,
       );

@@ -272,9 +272,9 @@ class AddOnApiHelper {
     }
   }
 
-  static async createSite(url: string, googleAccount: string): Promise<string> {
+  static async createSite(url: string, domain: string): Promise<string> {
     const { access_token: googleAccessToken } = await this.getGoogleTokens({
-      email: googleAccount,
+      domain,
     });
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
 
