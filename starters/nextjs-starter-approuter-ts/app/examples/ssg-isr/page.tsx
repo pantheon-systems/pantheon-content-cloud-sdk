@@ -24,13 +24,13 @@ async function fetchNextPages(cursor?: string | null | undefined) {
 }
 
 export default async function SSGISRExampleTemplate() {
-  const {
-    data: articles,
-    cursor,
-    totalCount,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the articles and site in parallel
+  const [{ data: articles, cursor, totalCount }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return (
     <Layout>
@@ -40,6 +40,7 @@ export default async function SSGISRExampleTemplate() {
         totalCount={totalCount}
         cursor={cursor}
         fetcher={fetchNextPages}
+        site={site}
         additionalHeader={
           <div className="prose lg:prose-xl my-10 flex flex-col">
             <p>

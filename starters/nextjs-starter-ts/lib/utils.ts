@@ -1,4 +1,5 @@
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+import { ArticleWithoutContent, Site } from "@pantheon-systems/pcc-react-sdk";
+import { Article } from "@pantheon-systems/pcc-react-sdk/dist/types";
 import { clsx, type ClassValue } from "clsx";
 import { OpenGraph } from "next-seo/lib/types";
 import { twMerge } from "tailwind-merge";

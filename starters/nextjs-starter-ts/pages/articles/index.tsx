@@ -2,6 +2,7 @@ import {
   Article,
   ArticleWithoutContent,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { ArticleGrid } from "../../components/grid";
@@ -16,12 +17,14 @@ interface Props {
   articles: Article[];
   totalCount: number;
   cursor: string;
+  site: Site;
 }
 
 export default function ArticlesListTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }: Props) {
   const {
     data: currentArticles,
@@ -41,7 +44,10 @@ export default function ArticlesListTemplate({
       <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
         <PageHeader title="Articles" />
 
-        <ArticleGrid articles={currentArticles as ArticleWithoutContent[]} />
+        <ArticleGrid
+          articles={currentArticles as ArticleWithoutContent[]}
+          site={site}
+        />
 
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -58,19 +64,20 @@ export default function ArticlesListTemplate({
 }
 
 export async function getServerSideProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the site and articles in parallel
+  const [site, { data: articles, totalCount, cursor }] = await Promise.all([
+    PCCConvenienceFunctions.getSite(),
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+  ]);
 
   return {
     props: {
       articles,
       cursor,
       totalCount,
+      site,
     },
   };
 }

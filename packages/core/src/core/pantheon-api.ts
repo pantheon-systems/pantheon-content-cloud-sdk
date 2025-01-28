@@ -1,7 +1,11 @@
 import queryString from "query-string";
-import { getArticleBySlugOrId, PCCConvenienceFunctions } from "../helpers";
+import {
+  getArticleBySlugOrId,
+  getArticleURLFromSite,
+  PCCConvenienceFunctions,
+} from "../helpers";
 import { parseJwt } from "../lib/jwt";
-import { Article, MetadataGroup, SmartComponentMap } from "../types";
+import { Article, MetadataGroup, Site, SmartComponentMap } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
 export interface ApiRequest {
@@ -45,7 +49,7 @@ type HeaderValue = string | string[] | number | undefined;
 
 export interface PantheonAPIOptions {
   /**
-   * A function that takes a PCC article ID and returns the path on your site
+   * A function that takes a PCC article ID (or and the site) and returns the path on your site
    * where the article is hosted.
    *
    * @example
@@ -55,8 +59,10 @@ export interface PantheonAPIOptions {
    * @default (article) => `/articles/${article.id}` (if not provided)
    *
    */
-  resolvePath?: (article: Partial<Article> & Pick<Article, "id">) => string;
-
+  resolvePath?: (
+    article: Partial<Article> & Pick<Article, "id">,
+    site: Site,
+  ) => string;
   /**
    * A function which returns the PCC site id currently in use.
    */
@@ -98,8 +104,7 @@ const defaultOptions = {
       isClientSide: false,
       ...props,
     }),
-  resolvePath: (article: Partial<Article> & Pick<Article, "id">) =>
-    `/articles/${article.id}`,
+  resolvePath: getArticleURLFromSite,
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   getSiteId: () => process.env.PCC_SITE_ID as string,
   notFoundPath: "/404",
@@ -197,7 +202,10 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           return res.redirect(302, options.notFoundPath);
         }
 
-        const resolvedPath = options.resolvePath(article);
+        // Fetch the site
+        const site = await PCCConvenienceFunctions.getSite();
+        // Define the resolved path
+        const resolvedPath = options.resolvePath(article, site);
 
         return await res.redirect(
           302,

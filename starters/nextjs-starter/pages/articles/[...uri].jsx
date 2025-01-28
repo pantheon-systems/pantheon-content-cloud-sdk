@@ -8,6 +8,7 @@ import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
 import { getSeoMetadata } from "../../lib/utils";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
+import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
 
 export default function ArticlePage({ article, grant }) {
   const seoMetadata = getSeoMetadata(article);
@@ -41,27 +42,41 @@ export async function getServerSideProps({
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
 
-  const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
-    slugOrId,
-    publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
-  );
+  // Fetch the article and site in parallel
+  const [article, site] = await Promise.all([
+    PCCConvenienceFunctions.getArticleBySlugOrId(
+      slugOrId,
+      publishingLevel ? publishingLevel.toString().toUpperCase() : "PRODUCTION",
+    ),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
+  // If the article is not found, return a 404
   if (!article) {
     return {
       notFound: true,
     };
   }
 
+  // Get the article path from the content structure
+  const articlePath = getArticlePathComponentsFromContentStrucuture(
+    article,
+    site,
+  );
+
   if (
-    article.slug?.trim().length &&
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()
+    (article.slug?.trim().length &&
+    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()) ||
+    articlePath.length !== (uri.length - 1) ||
+    articlePath.join("/") !== uri.slice(0, -1).join("/")
   ) {
-    // If the article was accessed by the id rather than the slug - then redirect to the canonical
+    // If the article was accessed by the id rather than the slug 
+    // or the article path is not the same as the uri - then redirect to the canonical
     // link (mostly for SEO purposes than anything else).
     return {
       redirect: {
         destination: queryString.stringifyUrl({
-          url: pantheonAPIOptions.resolvePath(article),
+          url: pantheonAPIOptions.resolvePath(article, site),
           query: { publishingLevel, ...query },
         }),
         permanent: false,

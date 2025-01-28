@@ -2,6 +2,7 @@ import {
   Article,
   ArticleWithoutContent,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import { ArticleGrid } from "../../../components/grid";
@@ -16,12 +17,14 @@ interface Props {
   articles: Article[];
   totalCount: number;
   cursor: string;
+  site: Site;
 }
 
 export default function SSGISRExampleTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }: Props) {
   const {
     data: currentArticles,
@@ -56,6 +59,7 @@ export default function SSGISRExampleTemplate({
         <ArticleGrid
           articles={currentArticles as ArticleWithoutContent[]}
           basePath={"/examples/ssg-isr"}
+          site={site}
         />
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -73,19 +77,20 @@ export default function SSGISRExampleTemplate({
 
 export async function getStaticProps() {
   try {
-    const {
-      data: articles,
-      totalCount,
-      cursor,
-    } = await PCCConvenienceFunctions.getPaginatedArticles({
-      pageSize: PAGE_SIZE,
-    });
+    // Fetch the articles and site in parallel
+    const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
+      PCCConvenienceFunctions.getPaginatedArticles({
+        pageSize: PAGE_SIZE,
+      }),
+      PCCConvenienceFunctions.getSite(),
+    ]);
 
     return {
       props: {
         articles,
         cursor,
         totalCount,
+        site,
       },
       revalidate: 60,
     };

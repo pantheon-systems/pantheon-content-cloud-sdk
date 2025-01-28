@@ -12,6 +12,7 @@ export default function SSGISRExampleTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }) {
   const {
     data: currentArticles,
@@ -45,6 +46,7 @@ export default function SSGISRExampleTemplate({
         <ArticleGrid
           articles={currentArticles}
           basePath={"/examples/ssg-isr"}
+          site={site}
         />
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -61,19 +63,24 @@ export default function SSGISRExampleTemplate({
 }
 
 export async function getStaticProps() {
-  const {
+  // Fetch the articles and site in parallel
+  const [{
     data: articles,
     totalCount,
     cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
       articles,
       totalCount,
       cursor,
+      site,
     },
     revalidate: 60,
   };
