@@ -49,4 +49,3 @@ allow you to quickly get up and running with Pantheon Content Cloud.
    ```sh
    node packages/cli/dist/index.js sites list
    ```
-
