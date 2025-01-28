@@ -738,15 +738,15 @@ yargs(hideBin(process.argv))
                 demandOption: true,
                 type: "string",
               })
-              .option("baseUrl", {
-                describe: "Base URL for the generated preview link.",
-                type: "string",
-                demandOption: false,
-              })
               .option("domain", {
                 describe: "Domain of the document's site",
                 type: "string",
                 demandOption: true,
+              })
+              .option("baseUrl", {
+                describe: "Base URL for the generated preview link.",
+                type: "string",
+                demandOption: false,
               });
           },
           async (args) =>
