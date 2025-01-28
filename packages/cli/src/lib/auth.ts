@@ -303,7 +303,22 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                 );
                 const credentials = await this.generateToken(code as string);
                 const tokenPayload = parseJwt(credentials.id_token as string);
-                existingCredentials.push(credentials);
+
+                if (
+                  (this.email && this.email !== tokenPayload.email) ||
+                  (this.domain &&
+                    this.domain !== tokenPayload.email.split("@")[1])
+                )
+                  throw new IncorrectAccount();
+
+                const matchIndex = existingCredentials.findIndex((acc) => {
+                  const currentPayload = parseJwt(acc.id_token);
+                  return currentPayload.email === tokenPayload.email;
+                });
+                if (matchIndex !== -1)
+                  existingCredentials[matchIndex] = credentials;
+                else existingCredentials.push(credentials);
+
                 await LocalStorage.persistGoogleAuthDetails(
                   existingCredentials,
                 );
@@ -314,13 +329,6 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                   }),
                 );
                 server.destroy();
-
-                if (
-                  (this.email && this.email !== tokenPayload.email) ||
-                  (this.domain &&
-                    this.domain !== tokenPayload.email.split("@")[1])
-                )
-                  throw new IncorrectAccount();
 
                 spinner.succeed(
                   `Successfully connected "${tokenPayload.email}" Google account.`,

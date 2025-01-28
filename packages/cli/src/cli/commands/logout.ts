@@ -8,8 +8,8 @@ import { errorHandler } from "../exceptions";
 const logout = async () => {
   const spinner = ora("Logging you out...").start();
   try {
-    deleteAuthDetails();
-    deleteGoogleAuthDetails();
+    await deleteAuthDetails();
+    await deleteGoogleAuthDetails();
     spinner.succeed("Successfully logged you out from PPC client!");
   } catch (e) {
     spinner.fail();
