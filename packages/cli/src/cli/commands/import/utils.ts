@@ -1,11 +1,7 @@
-import { exit } from "process";
-import chalk from "chalk";
 import type { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
-import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { GoogleAuthProvider, PersistedTokens } from "../../../lib/auth";
-import { Logger } from "../../../lib/logger";
+import { PersistedTokens } from "../../../lib/auth";
 
 export function preprocessBaseURL(originalBaseURL: string) {
   let baseURL: string | null = originalBaseURL;
