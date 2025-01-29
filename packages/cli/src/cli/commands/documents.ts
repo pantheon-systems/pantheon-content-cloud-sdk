@@ -2,18 +2,19 @@ import { exit } from "process";
 import chalk from "chalk";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { Logger, SpinnerLogger } from "../../lib/logger";
-import { errorHandler } from "../exceptions";
+import { errorHandler, IncorrectAccount } from "../exceptions";
 
 type GeneratePreviewParam = {
   documentId: string;
   baseUrl: string;
+  domain: string;
 };
 
 const GDOCS_URL_REGEX =
   /^(https|http):\/\/(www.)?docs.google.com\/document\/d\/(?<id>[^/]+).*$/;
 
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
-  async ({ documentId, baseUrl }: GeneratePreviewParam) => {
+  async ({ documentId, baseUrl, domain }: GeneratePreviewParam) => {
     const logger = new Logger();
 
     let cleanedId = documentId.trim();
@@ -45,9 +46,21 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     const generateLinkLogger = new SpinnerLogger("Generating preview link");
     generateLinkLogger.start();
 
-    const previewLink = await AddOnApiHelper.previewFile(cleanedId, {
-      baseUrl,
-    });
+    let previewLink: string;
+    try {
+      // TODO: Check if we can derive domain from the document
+      previewLink = await AddOnApiHelper.previewFile(cleanedId, domain, {
+        baseUrl,
+      });
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        generateLinkLogger.fail(
+          "Selected account doesn't belong to domain of the site.",
+        );
+        return;
+      }
+      throw e;
+    }
 
     generateLinkLogger.succeed(
       "Successfully generated preview link. Please copy it below:",

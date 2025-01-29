@@ -316,75 +316,70 @@ yargs(hideBin(process.argv))
       yargs
         .strictCommands()
         .demandCommand()
-        .command(
-          "admins [options]",
-          "CRUD admins for a site",
-          (yargs) => {
-            yargs
-              .strictCommands()
-              .demandCommand()
-              .command(
-                "list [options]",
-                "List admins for a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await listAdminsSchema({
-                    siteId: args.siteId as string,
-                  }),
-              )
-              .command(
-                "remove [options]",
-                "Remove admin for a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
+        .command("admins [options]", "CRUD admins for a site", (yargs) => {
+          yargs
+            .strictCommands()
+            .demandCommand()
+            .command(
+              "list [options]",
+              "List admins for a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await listAdminsSchema({
+                  siteId: args.siteId as string,
+                }),
+            )
+            .command(
+              "remove [options]",
+              "Remove admin for a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
 
-                  yargs.option("email", {
-                    describe: "Email of admin to remove",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await removeAdminSchema({
-                    siteId: args.siteId as string,
-                    email: args.email as string,
-                  }),
-              )
-              .command(
-                "add [options]",
-                "Add admin to a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
+                yargs.option("email", {
+                  describe: "Email of admin to remove",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await removeAdminSchema({
+                  siteId: args.siteId as string,
+                  email: args.email as string,
+                }),
+            )
+            .command(
+              "add [options]",
+              "Add admin to a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
 
-                  yargs.option("email", {
-                    describe: "Email of admin to add",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await addAdminSchema({
-                    siteId: args.siteId as string,
-                    email: args.email as string,
-                  }),
-              );
-          },
-          async (args) => await createSite(args.url as string),
-        )
+                yargs.option("email", {
+                  describe: "Email of admin to add",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await addAdminSchema({
+                  siteId: args.siteId as string,
+                  email: args.email as string,
+                }),
+            );
+        })
         .command(
           "create [options]",
           "Creates new site.",
@@ -394,8 +389,17 @@ yargs(hideBin(process.argv))
               type: "string",
               demandOption: true,
             });
+            yargs.option("domain", {
+              describe: "Domain of the site",
+              type: "string",
+              demandOption: true,
+            });
           },
-          async (args) => await createSite(args.url as string),
+          async (args) =>
+            await createSite({
+              url: args.url as string,
+              domain: args.domain as string,
+            }),
         )
         .command(
           "delete [options]",
@@ -709,7 +713,6 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
-          async (args) => await createSite(args.url as string),
         )
         .example(formatExamples(SITE_EXAMPLES));
     },
@@ -735,6 +738,11 @@ yargs(hideBin(process.argv))
                 demandOption: true,
                 type: "string",
               })
+              .option("domain", {
+                describe: "Domain of the document's site",
+                type: "string",
+                demandOption: true,
+              })
               .option("baseUrl", {
                 describe: "Base URL for the generated preview link.",
                 type: "string",
@@ -745,6 +753,7 @@ yargs(hideBin(process.argv))
             await generatePreviewLink({
               documentId: args.id as string,
               baseUrl: args.baseUrl as string,
+              domain: args.domain as string,
             }),
         )
         .example(formatExamples(DOCUMENT_EXAMPLES));
@@ -887,7 +896,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login([]),
+    async () => await login(),
   )
   .command(
     "logout",

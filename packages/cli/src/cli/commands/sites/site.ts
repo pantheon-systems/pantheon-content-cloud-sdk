@@ -3,20 +3,28 @@ import dayjs from "dayjs";
 import ora from "ora";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { printTable } from "../../../lib/cliDisplay";
-import { errorHandler } from "../../exceptions";
+import { errorHandler, IncorrectAccount } from "../../exceptions";
 
-export const createSite = errorHandler<string>(async (url: string) => {
-  const spinner = ora("Creating site...").start();
-  try {
-    const siteId = await AddOnApiHelper.createSite(url);
-    spinner.succeed(
-      `Successfully created the site with given details. Id: ${siteId}`,
-    );
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
+export const createSite = errorHandler<{ url: string; domain: string }>(
+  async ({ url, domain }) => {
+    const spinner = ora("Creating site...").start();
+
+    try {
+      const siteId = await AddOnApiHelper.createSite(url, domain);
+      spinner.succeed(
+        `Successfully created the site with given details. Id: ${siteId}`,
+      );
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        spinner.fail(
+          "Selected account doesn't match with the account provided in the CLI.",
+        );
+        return;
+      }
+      throw e;
+    }
+  },
+);
 
 export const deleteSite = errorHandler<{
   id: string;

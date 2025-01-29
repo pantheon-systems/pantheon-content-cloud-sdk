@@ -1,11 +1,7 @@
 import nunjucks from "nunjucks";
 import ora from "ora";
 import { getApiConfig } from "../../lib/apiConfig";
-import {
-  deleteConfigDetails,
-  getLocalConfigDetails,
-  persistConfigDetails,
-} from "../../lib/localStorage";
+import * as LocalStorage from "../../lib/localStorage";
 import { errorHandler } from "../exceptions";
 
 nunjucks.configure({ autoescape: true });
@@ -17,7 +13,7 @@ export const setTargetEnvironment = errorHandler<"production" | "staging">(
       async (resolve, reject) => {
         const spinner = ora("Updating config file").start();
         try {
-          await persistConfigDetails({
+          await LocalStorage.persistConfigDetails({
             targetEnvironment: target,
           });
 
@@ -38,7 +34,7 @@ export const resetTargetEnvironment = errorHandler<void>((): Promise<void> => {
     async (resolve, reject) => {
       const spinner = ora("Deleting config file").start();
       try {
-        await deleteConfigDetails();
+        await LocalStorage.deleteConfigDetails();
         spinner.succeed(`Successfully deleted config file`);
         resolve();
       } catch (e) {
@@ -56,7 +52,7 @@ export const printConfigurationData = errorHandler<void>(
       async (resolve, reject) => {
         const spinner = ora("Retrieving configuration data").start();
         try {
-          const localConfig = await getLocalConfigDetails();
+          const localConfig = await LocalStorage.getConfigDetails();
           const apiConfig = await getApiConfig();
           console.log(JSON.stringify({ localConfig, apiConfig }, null, 4));
           spinner.succeed(`Successfully retrieved configuration data`);

@@ -1,11 +1,7 @@
-import { exit } from "process";
-import chalk from "chalk";
 import type { GaxiosResponse } from "gaxios";
 import { OAuth2Client } from "google-auth-library";
 import { drive_v3, google } from "googleapis";
-import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { getLocalAuthDetails } from "../../../lib/localStorage";
-import { Logger } from "../../../lib/logger";
+import { PersistedTokens } from "../../../lib/auth";
 
 export function preprocessBaseURL(originalBaseURL: string) {
   let baseURL: string | null = originalBaseURL;
@@ -32,20 +28,9 @@ export function preprocessBaseURL(originalBaseURL: string) {
   }
 }
 
-export async function getAuthedDrive(logger: Logger) {
-  await AddOnApiHelper.getIdToken([
-    "https://www.googleapis.com/auth/drive.file",
-  ]);
-
-  const authDetails = await getLocalAuthDetails();
-
-  if (!authDetails) {
-    logger.error(chalk.red(`ERROR: Failed to retrieve login details. `));
-    exit(1);
-  }
-
+export function getAuthedDrive(tokens: PersistedTokens) {
   const oauth2Client = new OAuth2Client();
-  oauth2Client.setCredentials(authDetails);
+  oauth2Client.setCredentials(tokens);
   return google.drive({
     version: "v3",
     auth: oauth2Client,
