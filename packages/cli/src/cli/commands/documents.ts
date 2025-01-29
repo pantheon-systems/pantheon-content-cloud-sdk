@@ -48,6 +48,7 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
 
     let previewLink: string;
     try {
+      // TODO: Check if we can derive domain from the document
       previewLink = await AddOnApiHelper.previewFile(cleanedId, domain, {
         baseUrl,
       });

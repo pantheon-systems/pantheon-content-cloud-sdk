@@ -33,26 +33,22 @@ const readFile = async <T>(path: string): Promise<T | null> => {
 export const getConfigDetails = async (): Promise<Config | null> => {
   return readFile<Config>(CONFIG_FILE_PATH);
 };
+export const getAuthDetails = async (): Promise<PersistedTokens | null> => {
+  return readFile<PersistedTokens>(AUTH_FILE_PATH);
+};
+export const getGoogleAuthDetails = async (): Promise<
+  PersistedTokens[] | null
+> => {
+  return readFile<PersistedTokens[]>(GOOGLE_AUTH_FILE_PATH);
+};
 
 export const persistConfigDetails = async (payload: Config): Promise<void> => {
   await persistDetailsToFile(payload, CONFIG_FILE_PATH);
-};
-
-export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
-
-export const getAuthDetails = async (): Promise<PersistedTokens | null> => {
-  return readFile<PersistedTokens>(AUTH_FILE_PATH);
 };
 export const persistAuthDetails = async (
   payload: PersistedTokens,
 ): Promise<void> => {
   await persistDetailsToFile(payload, AUTH_FILE_PATH);
-};
-
-export const getGoogleAuthDetails = async (): Promise<
-  PersistedTokens[] | null
-> => {
-  return readFile<PersistedTokens[]>(GOOGLE_AUTH_FILE_PATH);
 };
 export const persistGoogleAuthDetails = async (
   payload: PersistedTokens[],
@@ -60,6 +56,7 @@ export const persistGoogleAuthDetails = async (
   await persistDetailsToFile(payload, GOOGLE_AUTH_FILE_PATH);
 };
 
+export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
 export const deleteAuthDetails = async () => remove(AUTH_FILE_PATH);
 export const deleteGoogleAuthDetails = async () =>
   remove(GOOGLE_AUTH_FILE_PATH);

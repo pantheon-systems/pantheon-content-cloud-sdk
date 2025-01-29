@@ -21,6 +21,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.production]: {
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
+    // TODO: Update with the Auth0 prod tenant
     auth0ClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",
@@ -32,9 +33,11 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.staging]: {
+    // TODO: Uncomment the correct one
     // addOnApiEndpoint:
     //   "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
     addOnApiEndpoint: "http://localhost:8080",
+    // TODO: Update with the Auth0 staging tenant
     auth0ClientId: "RAHxEbc251zD529hByapcv6Dcp3pmv4P",
     auth0RedirectUri: "http://localhost:3030/oauth-redirect",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
