@@ -8,8 +8,7 @@
       "@pantheon-systems/pcc-cli",
       "@pantheon-systems/pcc-sdk-core",
       "@pantheon-systems/pcc-react-sample-library",
-      "@pantheon-systems/pcc-react-sdk",
-      "@pantheon-systems/pcc-vue-sdk"
+      "@pantheon-systems/pcc-react-sdk"
     ]
   ],
   "linked": [],
@@ -20,6 +19,10 @@
     "gatsby-pcc-starter",
     "gatsby-pcc-starter-ts",
     "@pantheon-systems/next-pcc-starter",
-    "@pantheon-systems/next-pcc-starter-ts"
+    "@pantheon-systems/next-pcc-starter-ts",
+    "@pantheon-systems/next-approuter-pcc-starter-ts",
+    "@pantheon-systems/pcc-vue-sdk",
+    "@pantheon-systems/vue-pcc-starter",
+    "@pantheon-systems/vue-pcc-starter-ts"
   ]
 }
