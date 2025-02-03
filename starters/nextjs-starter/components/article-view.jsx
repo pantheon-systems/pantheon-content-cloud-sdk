@@ -91,7 +91,7 @@ const ArticleHeader = ({ article, articleTitle, seoMetadata }) => {
   );
 };
 
-export function StaticArticleView({ article, onlyContent }) {
+export function StaticArticleView({ article }) {
   const articleTitle = useArticleTitle(article);
   const seoMetadata = getSeoMetadata(article);
 
@@ -107,7 +107,6 @@ export function StaticArticleView({ article, onlyContent }) {
         componentMap={componentOverrideMap}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
-          disableAllStyles: !!onlyContent,
           preserveImageStyles: true,
           useUnintrusiveTitleRendering: true,
         }}
@@ -129,7 +128,7 @@ export function StaticArticleView({ article, onlyContent }) {
   );
 }
 
-export default function ArticleView({ article, onlyContent }) {
+export default function ArticleView({ article }) {
   const { data } = useArticle(
     article.id,
     {
@@ -143,7 +142,5 @@ export default function ArticleView({ article, onlyContent }) {
 
   const hydratedArticle = data?.article ?? article;
 
-  return (
-    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
-  );
+  return <StaticArticleView article={hydratedArticle} />;
 }
