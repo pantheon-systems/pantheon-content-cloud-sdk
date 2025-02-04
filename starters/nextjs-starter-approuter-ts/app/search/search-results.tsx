@@ -33,15 +33,15 @@ export default function SearchResults({
           <div className="w-full whitespace-pre-wrap break-words py-4">
             {isLoading ? (
               <Skeleton count={5} />
-            ) : (
+            ) : summary ? (
               <Markdown>{summary}</Markdown>
-            )}
+            ) : null}
           </div>
         </section>
       ) : null}
 
       <div className="my-16 max-w-[707px]">
-        {isLoading || searchResults?.length > 0 ? (
+        {isLoading || (searchResults && searchResults.length > 0) ? (
           (searchResults ?? Array.from({ length: 5 })).map((result, index) => (
             <Fragment key={result?.id || index}>
               <div>
@@ -59,11 +59,11 @@ export default function SearchResults({
                 <p className="my-2 line-clamp-4 whitespace-pre-wrap">
                   {isLoading ? (
                     <Skeleton count={4} />
-                  ) : (
+                  ) : result.snippet ? (
                     markdownToTxt(
                       result.snippet.replaceAll(/{#h\..*}\n/g, "\n"),
                     )
-                  )}
+                  ) : null}
                 </p>
               </div>
 

@@ -21,9 +21,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     return notFound();
   }
 
-  const recommendedArticles =
-    await PCCConvenienceFunctions.getRecommendedArticles(article.id);
-
   return (
     <Layout>
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
@@ -56,7 +53,7 @@ export async function generateStaticParams() {
 
   return publishedArticles.flatMap((article) => {
     const params = [{ uri: article.id }];
-    if (article.metadata.slug) {
+    if (article.metadata?.slug) {
       params.push({ uri: String(article.metadata.slug) });
     }
     return params;

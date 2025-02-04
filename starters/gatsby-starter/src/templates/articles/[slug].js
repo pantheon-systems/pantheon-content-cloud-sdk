@@ -22,7 +22,7 @@ const getSeoMetadata = (article) => {
   });
 
   const images = [
-    article.metadata?.["Hero Image"],
+    article.metadata?.["image"],
     // Extend as needed
   ].filter((url) => typeof url === "string");
 

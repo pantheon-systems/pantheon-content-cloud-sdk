@@ -2,6 +2,7 @@
 import ora from "ora";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
+import { checkEnvironment } from "../lib/checkEnvironment";
 import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import {
@@ -68,6 +69,7 @@ yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
   .middleware(configureMiddleware(checkUpdate))
+  .middleware(configureMiddleware(checkEnvironment))
   .strictCommands()
   .demandCommand()
   .version(false)
@@ -90,7 +92,7 @@ yargs(hideBin(process.argv))
         .option("template", {
           describe: "Template from which files should be copied.",
           type: "string",
-          choices: ["nextjs", "gatsby", "vue"],
+          choices: ["nextjs"],
           default: "nextjs",
           demandOption: true,
         })

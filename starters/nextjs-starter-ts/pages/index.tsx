@@ -1,4 +1,7 @@
-import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
+import {
+  Article,
+  PCCConvenienceFunctions,
+} from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,7 +9,7 @@ import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
 
-export default function Home({ articles }) {
+export default function Home({ articles }: { articles: Article[] }) {
   return (
     <Layout>
       <NextSeo

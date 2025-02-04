@@ -1,6 +1,8 @@
 import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
+import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
+import { getAuthorById } from "./pcc-metadata-groups";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,46 +17,66 @@ export function formatDate(input: string | number): string {
   });
 }
 
-interface DateInputObject {
-  msSinceEpoch: string;
-}
+export function getSeoMetadata(
+  article: ArticleWithoutContent | null,
+): Metadata {
+  if (article == null) {
+    return {
+      openGraph: {
+        type: "website",
+      },
+    };
+  }
 
-function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
-  return (v as DateInputObject).msSinceEpoch != null;
-}
-
-export function getSeoMetadata(article: ArticleWithoutContent) {
-  const tags = article.tags && article.tags.length > 0 ? article.tags : [];
-  let authors = [];
-  let publishedTime = null;
-
-  // Collecting data from metadata fields
-  Object.entries(article.metadata || {}).forEach(([key, val]) => {
-    if (key.toLowerCase().trim() === "author" && val) authors = [val];
-    else if (key.toLowerCase().trim() === "date" && isDateInputObject(val))
-      publishedTime = new Date(val.msSinceEpoch).toISOString();
-  });
-
+  const tags: string[] =
+    article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
-    article.metadata?.["Hero Image"],
+    article.metadata?.image,
+    article.metadata?.["image"],
     // Extend as needed
   ]
     .filter((url): url is string => typeof url === "string")
     .map((url) => ({ url }));
+  const description = article.metadata?.description
+    ? String(article.metadata?.description)
+    : "Article hosted using Pantheon Content Cloud";
 
-  const description = "Article hosted using Pantheon Content Publisher";
+  const authors: Metadata["authors"] = [];
+
+  // Collecting data from metadata fields
+  Object.entries(article.metadata || {}).forEach(([k, v]) => {
+    const key = k.toLowerCase().trim();
+
+    switch (key) {
+      case "author": {
+        if (typeof v === "string") {
+          authors.push({ name: v });
+        }
+        break;
+      }
+      case "complex-author": {
+        if (typeof v === "string") {
+          const authorName = getAuthorById(v)?.label;
+
+          if (authorName) {
+            authors.push({ name: v });
+          }
+        }
+        break;
+      }
+    }
+  });
 
   return {
     title: article.title,
     description,
-    tags,
+    keywords: tags,
     authors,
-    publishedTime,
     openGraph: {
       type: "website",
-      title: article.title,
-      description,
+      title: article.title || undefined,
       images: imageProperties,
+      description,
     },
   };
 }

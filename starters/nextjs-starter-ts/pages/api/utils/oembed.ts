@@ -9,7 +9,7 @@ const oembedURLs = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const url = req.query.url;
   let type = req.query.type;
@@ -20,7 +20,7 @@ export default async function handler(
 
   if (Array.isArray(type)) type = type[0];
 
-  const oembedUrl = oembedURLs[type];
+  const oembedUrl = oembedURLs[type as keyof typeof oembedURLs];
 
   if (!oembedUrl) {
     res.status(404).json({ error: "Not found" });
@@ -29,7 +29,7 @@ export default async function handler(
   const queryParams = { url };
 
   const response = await fetch(
-    `${oembedUrl}?${queryString.stringify(queryParams)}`
+    `${oembedUrl}?${queryString.stringify(queryParams)}`,
   );
 
   if (response.ok) {

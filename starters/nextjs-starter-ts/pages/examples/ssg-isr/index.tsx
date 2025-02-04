@@ -1,4 +1,5 @@
 import {
+  Article,
   ArticleWithoutContent,
   PCCConvenienceFunctions,
 } from "@pantheon-systems/pcc-react-sdk";
@@ -11,11 +12,17 @@ import { usePagination } from "../../../hooks/usePagination";
 
 const PAGE_SIZE = 20;
 
+interface Props {
+  articles: Article[];
+  totalCount: number;
+  cursor: string;
+}
+
 export default function SSGISRExampleTemplate({
   articles,
   totalCount,
   cursor,
-}) {
+}: Props) {
   const {
     data: currentArticles,
     onPageChange,
