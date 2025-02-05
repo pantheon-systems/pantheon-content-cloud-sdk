@@ -1,5 +1,6 @@
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
-import { markdownToTxt } from "markdown-to-txt";
+"use client";
+
+import { ArticleWithoutContent, markdownToText } from "@pantheon-systems/pcc-react-sdk";
 import Link from "next/link";
 import { Fragment } from "react";
 import Skeleton from "react-loading-skeleton";
@@ -60,9 +61,7 @@ export default function SearchResults({
                   {isLoading ? (
                     <Skeleton count={4} />
                   ) : result.snippet ? (
-                    markdownToTxt(
-                      result.snippet.replaceAll(/{#h\..*}\n/g, "\n"),
-                    )
+                    markdownToText(result.snippet)
                   ) : null}
                 </p>
               </div>
