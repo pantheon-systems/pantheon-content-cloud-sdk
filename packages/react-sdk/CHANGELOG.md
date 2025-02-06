@@ -4,8 +4,8 @@
 
 ### Minor Changes
 
-- b89c5ee: The injected preview bar is deprecated in favor of the integrated preview bar in
-  the dashboard preview interface
+- b89c5ee: The injected preview bar is deprecated in favor of the integrated
+  preview bar in the dashboard preview interface
 
 ### Patch Changes
 
