@@ -3,7 +3,7 @@ import {
   PCCConvenienceFunctions,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
-import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
+import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
 import ArticleView from "../../components/article-view";
@@ -78,7 +78,7 @@ export async function getServerSideProps({
   }
 
   // Get the article path from the content structure
-  const articlePath = getArticlePathComponentsFromContentStrucuture(
+  const articlePath = getArticlePathComponentsFromContentStructure(
     article,
     site,
   );

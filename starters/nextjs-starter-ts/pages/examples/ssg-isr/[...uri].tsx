@@ -2,7 +2,7 @@ import {
   PCCConvenienceFunctions,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
-import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
+import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
@@ -79,7 +79,7 @@ export const getStaticPaths: GetStaticPaths = async (uri) => {
 
     const pagePaths = publishedArticles.map((article) => {
       // Generate the article path from the content structure
-      const articlePath = getArticlePathComponentsFromContentStrucuture(
+      const articlePath = getArticlePathComponentsFromContentStructure(
         article,
         site,
       );

@@ -12,7 +12,7 @@ export {
   getAllTags,
   getArticleBySlugOrId,
   PCCConvenienceFunctions,
-  getArticlePathComponentsFromContentStrucuture,
+  getArticlePathComponentsFromContentStructure,
   getArticleURLFromSite,
   getArticleURLFromSiteWithOptions,
   updateConfig,

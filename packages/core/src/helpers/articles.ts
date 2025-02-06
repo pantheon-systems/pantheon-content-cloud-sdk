@@ -385,7 +385,7 @@ function doesChildContainArticle(
  * @param site - The site being used
  * @returns The path components for the article
  */
-export function getArticlePathComponentsFromContentStrucuture(
+export function getArticlePathComponentsFromContentStructure(
   article: Partial<Article> & Pick<Article, "id">,
   site: Site,
 ) {
@@ -468,7 +468,7 @@ export function getArticleURLFromSite(
   maxDepth = -1,
 ) {
   // Get the article path
-  const articlePath = getArticlePathComponentsFromContentStrucuture(
+  const articlePath = getArticlePathComponentsFromContentStructure(
     article,
     site,
   );

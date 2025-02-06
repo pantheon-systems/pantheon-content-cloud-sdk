@@ -1,6 +1,6 @@
 import { 
   PCCConvenienceFunctions,
-  getArticlePathComponentsFromContentStrucuture
+  getArticlePathComponentsFromContentStructure
  } from "@pantheon-systems/pcc-react-sdk/server";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -60,7 +60,7 @@ export async function generateStaticParams() {
 
   return publishedArticles.flatMap((article) => {
     // Generate the article path from the contnet structure
-    const articlePath = getArticlePathComponentsFromContentStrucuture(
+    const articlePath = getArticlePathComponentsFromContentStructure(
       article,
       site,
     );

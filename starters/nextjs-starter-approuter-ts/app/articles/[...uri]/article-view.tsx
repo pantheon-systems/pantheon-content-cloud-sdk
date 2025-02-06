@@ -1,6 +1,6 @@
 import { 
   PCCConvenienceFunctions,
-  getArticlePathComponentsFromContentStrucuture
+  getArticlePathComponentsFromContentStructure
  } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
@@ -62,7 +62,7 @@ export async function getServersideArticle({
   }
 
     // Get the article path from the content structure
-  const articlePath = getArticlePathComponentsFromContentStrucuture(
+  const articlePath = getArticlePathComponentsFromContentStructure(
     article,
     site,
   );

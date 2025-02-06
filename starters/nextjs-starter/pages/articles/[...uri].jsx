@@ -8,7 +8,7 @@ import ArticleView from "../../components/article-view";
 import Layout from "../../components/layout";
 import { getSeoMetadata } from "../../lib/utils";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
-import { getArticlePathComponentsFromContentStrucuture } from "@pantheon-systems/pcc-react-sdk/server";
+import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 
 export default function ArticlePage({ article, grant }) {
   const seoMetadata = getSeoMetadata(article);
@@ -59,7 +59,7 @@ export async function getServerSideProps({
   }
 
   // Get the article path from the content structure
-  const articlePath = getArticlePathComponentsFromContentStrucuture(
+  const articlePath = getArticlePathComponentsFromContentStructure(
     article,
     site,
   );
