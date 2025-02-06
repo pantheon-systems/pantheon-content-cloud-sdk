@@ -68,10 +68,15 @@ export async function getServersideArticle({
   );
 
   if (
+    // Check if the article has a slug
     ((article.slug?.trim().length &&
+    // Check if the slug is not the same as the slugOrId
     article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase())||
+    // Check if the article path is not the same as the uri
     articlePath.length !== uri.length - 1 ||
+    // Check if the article path (with all the components together) is not the same as the uri
     articlePath.join("/") !== uri.slice(0, -1).join("/")) &&
+    // Check if resolvePath in pantheon API options is not null
     pantheonAPIOptions.resolvePath != null
   ) {
     // If the article was accessed by the id rather than the slug - then redirect to the canonical
