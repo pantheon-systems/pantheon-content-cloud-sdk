@@ -59,7 +59,7 @@ const PantheonTreeRenderer = defineComponent({
     }
 
     if (element.tag === "style") {
-      if (__experimentalFlags?.disableAllStyles === true) return null;
+      if (__experimentalFlags?.preserveStyles !== true) return null;
 
       return h("style", {
         innerHTML: element.data,
@@ -70,7 +70,7 @@ const PantheonTreeRenderer = defineComponent({
     const convertedTagName = element.tag === "title" ? "h1" : element.tag;
     const componentOverride = componentMap?.[element.tag as "div"];
     const shouldPruneStyles =
-      __experimentalFlags?.disableAllStyles === true &&
+      __experimentalFlags?.preserveStyles !== true &&
       (element.tag !== "img" || !__experimentalFlags?.preserveImageStyles) &&
       (typeof componentOverride === "string" || componentOverride == null);
 

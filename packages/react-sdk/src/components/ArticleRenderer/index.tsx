@@ -53,7 +53,7 @@ interface Props {
   componentMap?: ComponentMap;
   renderBody?: (bodyElement: React.ReactElement) => React.ReactNode;
   __experimentalFlags?: {
-    disableAllStyles?: boolean;
+    preserveStyles?: boolean;
     preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
@@ -135,7 +135,7 @@ const ArticleRenderer = ({
       element: titleContent,
       componentMap,
       smartComponentMap,
-      disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+      preserveStyles: __experimentalFlags?.preserveStyles === true,
       preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
@@ -151,7 +151,7 @@ const ArticleRenderer = ({
           element,
           smartComponentMap,
           componentMap,
-          disableAllStyles: !!__experimentalFlags?.disableAllStyles,
+          preserveStyles: __experimentalFlags?.preserveStyles === true,
           preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
           disableDefaultErrorBoundaries:
             !!__experimentalFlags?.disableDefaultErrorBoundaries,
