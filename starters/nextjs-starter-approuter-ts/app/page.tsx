@@ -6,11 +6,13 @@ import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
 
 export default async function Home() {
-  const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
-    {
+  // Fetch the articles and site in parallel
+  const [{ data: articles }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: 3,
-    },
-  );
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return (
     <Layout>
@@ -51,7 +53,7 @@ export default async function Home() {
       </section>
 
       <section className="max-w-screen-3xl mx-auto mt-32 flex justify-center px-4 sm:px-6 lg:px-0">
-        <HomepageArticleGrid articles={articles} />
+        <HomepageArticleGrid articles={articles} site={site} />
       </section>
     </Layout>
   );
