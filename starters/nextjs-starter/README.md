@@ -8,9 +8,16 @@ package based on [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can
 be found [here](https://www.npmjs.com/package/@pantheon-systems/pcc) on our docs
 site.
 
-## Deploy your own
-
+##  ☁ Open in the Cloud 
+[![Open in VS Code](https://img.shields.io/badge/Open%20in-VS%20Code-blue?logo=visualstudiocode)](https://vscode.dev/github/pantheon-systems/pantheon-content-cloud-sdk)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/pantheon-systems/pantheon-content-cloud-sdk)
+[![Open in CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/embed/react-markdown-preview-co1mj?fontsize=14&hidenavigation=1&theme=dark)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/pantheon-systems/pantheon-content-cloud-sdk)
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/nextjs-starter)
+[![Open in Repl.it](https://replit.com/badge/github/withastro/astro)](https://replit.com/github/pantheon-systems/pantheon-content-cloud-sdk)
+[![Open in Glitch](https://img.shields.io/badge/Open%20in-Glitch-blue?logo=glitch)](https://glitch.com/edit/#!/import/github/pantheon-systems/pantheon-content-cloud-sdk)
+[![Open in Codeanywhere](https://codeanywhere.com/img/open-in-codeanywhere-btn.svg)](https://app.codeanywhere.com/#https://github.com/pantheon-systems/pantheon-content-cloud-sdk)
+
 
 For a quick start on your local machine, follow the instructions below:
 
