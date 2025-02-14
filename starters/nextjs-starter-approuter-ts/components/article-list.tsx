@@ -3,6 +3,7 @@
 import {
   ArticleWithoutContent,
   PaginatedArticle,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import React from "react";
 import { PAGE_SIZE } from "../constants";
@@ -21,6 +22,7 @@ interface Props {
     newCursor: string;
   }>;
   additionalHeader?: React.ReactNode;
+  site: Site;
 }
 
 export default function ArticleList({
@@ -30,6 +32,7 @@ export default function ArticleList({
   cursor,
   fetcher,
   additionalHeader = null,
+  site,
 }: Props) {
   const {
     data: currentArticles,
@@ -46,7 +49,7 @@ export default function ArticleList({
     <section className="max-w-screen-3xl mx-auto px-4 pt-16 sm:w-4/5 md:w-3/4 lg:w-4/5 2xl:w-3/4">
       {headerText ? <PageHeader title={headerText} /> : null}
       {additionalHeader}
-      <ArticleGrid articles={currentArticles as ArticleWithoutContent[]} />
+      <ArticleGrid articles={currentArticles as ArticleWithoutContent[]} site={site} />
       <div className="mt-4 flex flex-row items-center justify-center">
         <Pagination
           totalCount={totalCount}
