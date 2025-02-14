@@ -1,4 +1,4 @@
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+import { Article, ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";

@@ -17,13 +17,13 @@ async function fetchNextPages(cursor?: string | null | undefined) {
 }
 
 export default async function ArticlesListTemplate() {
-  const {
-    data: articles,
-    cursor,
-    totalCount,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the articles and site in parallel
+  const [{ data: articles, cursor, totalCount }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return (
     <Layout>
@@ -33,6 +33,7 @@ export default async function ArticlesListTemplate() {
         cursor={cursor}
         totalCount={totalCount}
         fetcher={fetchNextPages}
+        site={site}
       />
     </Layout>
   );
