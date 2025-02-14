@@ -9,7 +9,7 @@ interface Props {
   element: PantheonTreeNode;
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
-  disableAllStyles?: boolean;
+  preserveStyles?: boolean;
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
 }
@@ -18,7 +18,7 @@ const PantheonTreeRenderer = ({
   element,
   smartComponentMap,
   componentMap,
-  disableAllStyles,
+  preserveStyles,
   preserveImageStyles,
   disableDefaultErrorBoundaries,
 }: Props): React.ReactElement | null => {
@@ -29,7 +29,7 @@ const PantheonTreeRenderer = ({
         element: child,
         smartComponentMap,
         componentMap,
-        disableAllStyles,
+        preserveStyles,
         preserveImageStyles,
         disableDefaultErrorBoundaries,
       }),
@@ -66,7 +66,7 @@ const PantheonTreeRenderer = ({
   }
 
   if (element.tag === "style") {
-    if (disableAllStyles) return null;
+    if (!preserveStyles) return null;
 
     // `renderToStaticMarkup` will escape the HTML entities in the style tag
     // https://github.com/facebook/react/issues/13838#issuecomment-470294454
@@ -81,7 +81,7 @@ const PantheonTreeRenderer = ({
   const convertedTagName = element.tag === "title" ? "h1" : element.tag;
   const componentOverride = componentMap?.[element.tag as "div"];
   const shouldPruneStyles =
-    disableAllStyles === true &&
+    preserveStyles !== true &&
     (element.tag !== "img" || !preserveImageStyles) &&
     (typeof componentOverride === "string" || componentOverride == null);
 

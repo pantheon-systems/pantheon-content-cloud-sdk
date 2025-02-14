@@ -37,7 +37,6 @@ const overrideElementStyles = (tag: keyof HTMLElementTagNameMap) => {
 
 type ArticleViewProps = {
   article: Article;
-  onlyContent?: boolean;
 };
 
 const ArticleHeader = ({
@@ -90,10 +89,7 @@ const ArticleHeader = ({
   );
 };
 
-export default function ArticleView({
-  article,
-  onlyContent,
-}: ArticleViewProps) {
+export default function ArticleView({ article }: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
@@ -110,12 +106,10 @@ export default function ArticleView({
     [data, article],
   );
 
-  return (
-    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
-  );
+  return <StaticArticleView article={hydratedArticle} />;
 }
 
-export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+export function StaticArticleView({ article }: ArticleViewProps) {
   const articleTitle = useArticleTitle(article);
   const seoMetadata = getSeoMetadata(article);
 
@@ -141,7 +135,6 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
         article={article}
         smartComponentMap={clientSmartComponentMap}
         __experimentalFlags={{
-          disableAllStyles: !!onlyContent,
           preserveImageStyles: true,
           useUnintrusiveTitleRendering: true,
         }}
