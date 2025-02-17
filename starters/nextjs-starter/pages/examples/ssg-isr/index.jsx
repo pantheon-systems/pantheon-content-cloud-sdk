@@ -6,7 +6,22 @@ import PageHeader from "../../../components/page-header";
 import Pagination from "../../../components/pagination";
 import { usePagination } from "../../../hooks/usePagination";
 
-const PAGE_SIZE = 20;
+async function fetchNextPages(cursor) {
+  const url = queryString.stringifyUrl({
+    url: "/api/utils/paginate",
+    query: {
+      pageSize: PAGE_SIZE,
+      cursor: cursor,
+    },
+  });
+
+  const response = await fetch(url);
+  const { data, cursor: newCursor } = await response.json();
+  return {
+    data,
+    newCursor,
+  };
+}
 
 export default function SSGISRExampleTemplate({
   articles,

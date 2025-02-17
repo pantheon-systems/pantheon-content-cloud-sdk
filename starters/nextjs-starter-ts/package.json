@@ -47,6 +47,8 @@
     "react-markdown": "^8.0.7",
     "react-remove-scroll": "^2.5.10",
     "swr": "^2.2.5",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-responsive": "^10.0.0",
     "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
