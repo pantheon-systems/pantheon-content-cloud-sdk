@@ -21,6 +21,7 @@ export default function ArticlesListTemplate({
   totalCount,
   cursor,
   author,
+  site,
 }) {
   const {
     data: currentArticles,
@@ -73,7 +74,7 @@ export default function ArticlesListTemplate({
             finding inspiration in everyday moments.
           </div>
         </div>
-        <ArticleGrid articles={currentArticles} />
+        <ArticleGrid articles={currentArticles} site={site} />
 
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -90,16 +91,20 @@ export default function ArticlesListTemplate({
 }
 
 export async function getServerSideProps({ query: { author } }) {
-  const {
+  // Fetch the articles and site in parallel
+  const [{
     data: articles,
     totalCount,
     cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-    metadataFilters: {
-      author,
-    },
-  });
+  }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      metadataFilters: {
+        author,
+      },
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
@@ -107,6 +112,7 @@ export async function getServerSideProps({ query: { author } }) {
       cursor,
       totalCount,
       author,
+      site,
     },
   };
 }

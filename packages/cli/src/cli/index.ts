@@ -296,8 +296,9 @@ yargs(hideBin(process.argv))
           "Set the target environment.",
           (yargs) => {
             yargs.positional("<target>", {
-              describe: "Target environment: either 'production' or 'staging'.",
+              describe: "Target environment.",
               demandOption: true,
+              choices: ["production", "staging"],
               type: "string",
             });
           },

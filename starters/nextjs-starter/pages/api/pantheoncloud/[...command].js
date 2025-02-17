@@ -1,9 +1,16 @@
 import { PantheonAPI } from "@pantheon-systems/pcc-react-sdk";
 import { serverSmartComponentMap } from "../../../components/smart-components";
 import { getAuthorById, listAuthors } from "../../../lib/pcc-metadata-groups";
+import { getArticleURLFromSiteWithOptions } from "@pantheon-systems/pcc-react-sdk/server";
+
 
 export const pantheonAPIOptions = {
-  resolvePath: (article) => `/articles/${article.slug || article.id}`,
+  resolvePath: getArticleURLFromSiteWithOptions({
+    // The base path to use for the URL.
+    basePath: "/articles",
+    // Maximum depth to include in the URL. If it is -1, it will include all the categories. If it is 0, it will only include the article. If it is 1, it will include the article's slug or id and its immediate parent category and so on.
+    maxDepth: -1,
+  }),
   smartComponentMap: serverSmartComponentMap,
   componentPreviewPath: (componentName) =>
     `/component-preview/${componentName}`,
