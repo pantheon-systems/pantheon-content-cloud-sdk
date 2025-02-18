@@ -207,14 +207,14 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         // Define the resolved path
         const resolvedPath = options.resolvePath(article, site);
 
+        const queryParams = {
+          pccGrant: pccGrant?.toString(),
+          publishingLevel: publishingLevel?.toString().toUpperCase(),
+        };
+
         return await res.redirect(
           302,
-          resolvedPath +
-            (publishingLevel && typeof publishingLevel === "string"
-              ? `?publishingLevel=${encodeURIComponent(
-                  publishingLevel,
-                ).toUpperCase()}`
-              : ""),
+          queryString.stringifyUrl({ url: resolvedPath, query: queryParams }),
         );
       }
 
