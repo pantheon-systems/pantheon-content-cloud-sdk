@@ -37,7 +37,10 @@
       "@pantheon-systems/pcc-react-sdk>yaml": ">=2.2.2",
       "@pantheon-systems/pcc-react-sdk>prettier": "^3.0.0",
       "webpack-dev-middleware": "^7.2.1",
-      "@pantheon-systems/pcc-vue-sdk>ufo": "1.5.3"
+      "@pantheon-systems/pcc-vue-sdk>ufo": "1.5.3",
+      "next": "14.2.23",
+      "@babel/core": "7.26.0",
+      "path-to-regexp": "0.1.12"
     }
   }
 }

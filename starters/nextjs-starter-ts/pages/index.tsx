@@ -1,6 +1,7 @@
 import {
   Article,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -9,7 +10,13 @@ import { HomepageArticleGrid } from "../components/grid";
 import Layout from "../components/layout";
 import { Button } from "../components/ui/button";
 
-export default function Home({ articles }: { articles: Article[] }) {
+export default function Home({
+  articles,
+  site,
+}: {
+  articles: Article[];
+  site: Site;
+}) {
   return (
     <Layout>
       <NextSeo
@@ -54,22 +61,25 @@ export default function Home({ articles }: { articles: Article[] }) {
       </section>
 
       <section className="max-w-screen-3xl mx-auto mt-32 flex justify-center px-4 sm:px-6 lg:px-0">
-        <HomepageArticleGrid articles={articles} />
+        <HomepageArticleGrid articles={articles} site={site} />
       </section>
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const { data: articles } = await PCCConvenienceFunctions.getPaginatedArticles(
-    {
+  // Fetch the articles and site in parallel
+  const [{ data: articles }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: 3,
-    },
-  );
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
       articles,
+      site,
     },
   };
 }
