@@ -17,7 +17,7 @@ overrides:
   '@babel/core': 7.26.0
   path-to-regexp: 0.1.12
 
-pnpmfileChecksum: fxjsw7uvrtjknx3cbmatfizpni
+pnpmfileChecksum: sha256-t9dusmDQsMoCRZp5GizeEDPKJ3yDfjZdv3/x7UiMQOE=
 
 importers:
 
@@ -263,7 +263,7 @@ importers:
         version: 0.2.3
       ts-jest:
         specifier: 29.1.0
-        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3)
+        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.2)(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3)
       tsup:
         specifier: ^8.2.4
         version: 8.3.5(jiti@2.4.2)(postcss@8.5.1)(typescript@5.7.3)(yaml@2.7.0)
@@ -485,7 +485,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       ts-jest:
         specifier: 29.1.0
-        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3)
+        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.2)(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3)
       tsup:
         specifier: ^8.2.4
         version: 8.3.5(jiti@2.4.2)(postcss@8.5.1)(typescript@5.7.3)(yaml@2.7.0)
@@ -27888,7 +27888,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  ts-jest@29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3):
+  ts-jest@29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.24.2)(jest@29.5.0(@types/node@20.17.14)(babel-plugin-macros@3.1.0))(typescript@5.7.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
@@ -27904,6 +27904,7 @@ snapshots:
       '@babel/core': 7.26.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.26.0)
+      esbuild: 0.24.2
 
   ts-pnp@1.2.0(typescript@5.7.3):
     optionalDependencies:
