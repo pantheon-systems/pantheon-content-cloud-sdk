@@ -25,9 +25,7 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
   return (v as DateInputObject).msSinceEpoch != null;
 }
 
-export function getSeoMetadata(
-  article: ArticleWithoutContent | null,
-): Metadata {
+export function getSeoMetadata(article: ArticleWithoutContent | null) {
   if (article == null) {
     return {
       openGraph: {
