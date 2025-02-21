@@ -435,6 +435,9 @@ importers:
       '@types/jest':
         specifier: 29.5.1
         version: 29.5.1
+      '@types/lodash':
+        specifier: ^4.17.15
+        version: 4.17.15
       '@types/node':
         specifier: ^20.11.21
         version: 20.17.14
