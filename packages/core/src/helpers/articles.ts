@@ -45,20 +45,19 @@ export interface ArticlePaginatedQueryArgs {
   preamble?: string;
 }
 
-type FilterableFields = "body" | "tag" | "title";
-
 type PublishStatus = "published" | "unpublished";
 
 export type ArticleSearchArgs = {
   bodyContains?: string;
-  tagContains?: string;
   titleContains?: string;
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
 type ConvertedArticleSearchArgs = {
-  [key in FilterableFields]: { contains: string } | undefined;
-} & {
+  body?: { contains: string };
+  title?: { contains: string };
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
@@ -73,11 +72,7 @@ export function convertSearchParamsToGQL(
           contains: searchParams.bodyContains,
         }
       : undefined,
-    tag: searchParams.tagContains
-      ? {
-          contains: searchParams.tagContains,
-        }
-      : undefined,
+    tags: searchParams.tags || [],
     title: searchParams.titleContains
       ? {
           contains: searchParams.titleContains,
