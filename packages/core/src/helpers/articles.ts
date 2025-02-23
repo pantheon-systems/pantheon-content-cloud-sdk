@@ -72,7 +72,7 @@ export function convertSearchParamsToGQL(
           contains: searchParams.bodyContains,
         }
       : undefined,
-    tags: searchParams.tags || [],
+    tags: searchParams.tags,
     title: searchParams.titleContains
       ? {
           contains: searchParams.titleContains,
