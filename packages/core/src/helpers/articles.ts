@@ -467,6 +467,10 @@ export function getArticleURLFromSite(
   basePath = "/articles",
   maxDepth = -1,
 ) {
+  if (site.id === "") {
+    // If the site is undefined, return the base path - basePath/<slug-or-id>
+    return `${basePath}/${article.slug || article.id}`;
+  }
   // Get the article path
   const articlePath = getArticlePathComponentsFromContentStructure(
     article,

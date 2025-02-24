@@ -61,6 +61,7 @@ export class PantheonClient {
   public apiKey: string | undefined;
   public logger: Logger;
   public apolloClient: ApolloClient<NormalizedCacheObject>;
+  public isPCCGrantUsed: boolean;
 
   private debug: boolean;
   private wsHost: string;
@@ -79,6 +80,7 @@ export class PantheonClient {
     this.siteId = config.siteId;
     this.debug = !!config.debug;
     this.logger = this.debug ? DefaultLogger : NoopLogger;
+    this.isPCCGrantUsed = false;
 
     this.apiKey = undefined;
     if (config.pccGrant) {
@@ -87,6 +89,8 @@ export class PantheonClient {
       } else {
         this.apiKey = `pcc_grant ${config.pccGrant}`;
       }
+      // This is used to determine if the PCC Grant was used to authenticate the request.
+      this.isPCCGrantUsed = true;
     } else if (config.token) {
       this.apiKey = config.token;
     } else if (config.apiKey) {
