@@ -3,7 +3,7 @@ import {
   PantheonClient,
   PantheonClientConfig,
 } from "..";
-import type { Article, PaginatedArticle, Site } from "../types";
+import type { Article, PaginatedArticle } from "../types";
 import {
   getArticleBySlugOrId as _getArticleBySlugOrId,
   getPaginatedArticles as _getPaginatedArticles,
@@ -144,25 +144,8 @@ async function getRecommendedArticles(id: number | string) {
 
 async function getSite() {
   const client = buildPantheonClient({ isClientSide: false });
-  // If the PCC Grant is used to authenticate the request, return an empty site object.
-  if (client.isPCCGrantUsed) {
-    return {
-      id: "",
-      name: "",
-      url: "",
-      domain: "",
-      tags: [],
-      contentStructure: {
-        active: [],
-        draft: [],
-      },
-      metadataFields: {},
-    } as Site;
-  }
-
   const site = await _getSite(client, client.siteId);
 
-  // If the PCC Grant was used to authenticate the request, return the site.
   return site;
 }
 

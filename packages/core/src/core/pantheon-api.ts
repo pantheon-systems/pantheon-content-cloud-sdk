@@ -61,7 +61,7 @@ export interface PantheonAPIOptions {
    */
   resolvePath?: (
     article: Partial<Article> & Pick<Article, "id">,
-    site: Site,
+    site: Site | undefined,
   ) => string;
   /**
    * A function which returns the PCC site id currently in use.
@@ -202,8 +202,12 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           return res.redirect(302, options.notFoundPath);
         }
 
-        // Fetch the site
-        const site = await PCCConvenienceFunctions.getSite();
+        // Define site
+        let site: Site | undefined;
+        // Fetch the site if we dont use a pccGrant
+        if (!pccGrant) {
+          site = await PCCConvenienceFunctions.getSite();
+        }
         // Define the resolved path
         const resolvedPath = options.resolvePath(article, site);
 

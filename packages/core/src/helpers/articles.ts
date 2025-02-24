@@ -463,11 +463,11 @@ function getRelevantCategoriesForPath(articlePath: string[], maxDepth: number) {
  */
 export function getArticleURLFromSite(
   article: Partial<Article> & Pick<Article, "id">,
-  site: Site,
+  site: Site | undefined,
   basePath = "/articles",
   maxDepth = -1,
 ) {
-  if (site.id === "") {
+  if (!site) {
     // If the site is undefined, return the base path - basePath/<slug-or-id>
     return `${basePath}/${article.slug || article.id}`;
   }
