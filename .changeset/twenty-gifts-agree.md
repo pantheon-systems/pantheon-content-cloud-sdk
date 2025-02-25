@@ -7,4 +7,4 @@
 - If the client is not defined or if pcc grant is used to initialize the client,
   we dont fetch the site.
 - If the site is not fetched, the path computed for an article is just
-  basepath/<slug-or-id>
+  basepath/slug-or-id
