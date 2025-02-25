@@ -4,7 +4,10 @@ import { expect, test } from "@playwright/test";
 test("basic navigation", async ({ page }) => {
   await page.goto("http://localhost:3002");
 
-  (await page.$("section .group button")).click();
+  const button = await page.$("section .group button");
+  if (button) {
+    await button.click();
+  }
   await page.waitForURL("**/articles/**", {
     waitUntil: "networkidle",
   });

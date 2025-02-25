@@ -1,7 +1,6 @@
 import { ArticleWithoutContent, Site } from "@pantheon-systems/pcc-react-sdk";
-import { Article } from "@pantheon-systems/pcc-react-sdk/dist/types";
 import { clsx, type ClassValue } from "clsx";
-import { OpenGraph } from "next-seo/lib/types";
+import type { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 import { getAuthorById } from "./pcc-metadata-groups";
 
@@ -26,7 +25,15 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
   return (v as DateInputObject).msSinceEpoch != null;
 }
 
-export function getSeoMetadata(article: ArticleWithoutContent) {
+export function getSeoMetadata(article: ArticleWithoutContent | null) {
+  if (article == null) {
+    return {
+      openGraph: {
+        type: "website",
+      },
+    };
+  }
+
   const tags: string[] =
     article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
@@ -40,8 +47,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     ? String(article.metadata?.description)
     : "Article hosted using Pantheon Content Cloud";
 
-  const authors: string[] = [];
-  let publishedTime: number | null = article.publishedDate;
+  const authors: Metadata["authors"] = [];
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([k, v]) => {
@@ -50,7 +56,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors.push(v);
+          authors.push({ name: v });
         }
         break;
       }
@@ -59,15 +65,8 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
           const authorName = getAuthorById(v)?.label;
 
           if (authorName) {
-            authors.push(v);
+            authors.push({ name: v });
           }
-        }
-        break;
-      }
-      case "date": {
-        if (isDateInputObject(v)) {
-          // Prefer the date from the metadata, if it exists
-          publishedTime = parseInt(v.msSinceEpoch);
         }
         break;
       }
@@ -77,18 +76,13 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
   return {
     title: article.title,
     description,
+    keywords: tags,
+    authors,
     openGraph: {
       type: "website",
       title: article.title || undefined,
       images: imageProperties,
       description,
-      article: {
-        authors: authors,
-        tags: tags,
-        ...(publishedTime && {
-          publishedTime: new Date(publishedTime).toISOString(),
-        }),
-      },
-    } satisfies OpenGraph,
+    },
   };
 }
