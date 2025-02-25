@@ -2,6 +2,7 @@ import queryString from "query-string";
 import {
   getArticleBySlugOrId,
   getArticleURLFromSite,
+  getSite,
   PCCConvenienceFunctions,
 } from "../helpers";
 import { parseJwt } from "../lib/jwt";
@@ -181,32 +182,28 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
       case "document": {
         const parsedArticleId = command[1];
 
-        const article: (Partial<Article> & Pick<Article, "id">) | null =
-          parsedArticleId == null
-            ? null
-            : await getArticleBySlugOrId(
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                options.getPantheonClient({
-                  pccGrant: pccGrant ? pccGrant.toString() : undefined,
-                }),
-                parsedArticleId,
-                // We will let downstream validate the publishingLevel param.
-                {
-                  publishingLevel: publishingLevel
-                    ?.toString()
-                    .toUpperCase() as AllowablePublishingLevels,
-                },
-              );
+        // const article: (Partial<Article> & Pick<Article, "id">) | null =
+        //   parsedArticleId == null
+        //     ? null
+        //     : await getArticleBySlugOrId(
+        //         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        //         options.getPantheonClient({
+        //           pccGrant: pccGrant ? pccGrant.toString() : undefined,
+        //         }),
+        //         parsedArticleId,
+        //         // We will let downstream validate the publishingLevel param.
+        //         {
+        //           publishingLevel: publishingLevel
+        //             ?.toString()
+        //             .toUpperCase() as AllowablePublishingLevels,
+        //         },
+        //       );
 
-        if (article == null) {
-          return res.redirect(302, options.notFoundPath);
-        }
-
-        // Define site
-        let site: Site | undefined;
+        // // Define site
+        // let site: Site | undefined;
         // Fetch the site if we dont use a pccGrant
-        if (!pccGrant) {
-            const client = options.getPantheonClient({
+        // if (!pccGrant) {
+        const client = options.getPantheonClient({
           pccGrant: pccGrant ? pccGrant.toString() : undefined,
         });
 
@@ -226,9 +223,13 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
           !client.apiKey?.startsWith("pcc_grant")
             ? // Fetching the site is not available when the client is using a PCC grant.
               getSite(client, client.siteId)
-            : null,
+            : undefined,
         ]);
+
+        if (article == null) {
+          return res.redirect(302, options.notFoundPath);
         }
+        // }
         // Define the resolved path
         const resolvedPath = options.resolvePath(article, site);
 
