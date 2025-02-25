@@ -48,8 +48,6 @@ workspaceConfig.packages.forEach((pattern) => {
   }
 });
 
-console.log(Object.fromEntries(workspacePackages));
-
 module.exports = {
   hooks: {
     // This runs after package.json is parsed but before versions are resolved
