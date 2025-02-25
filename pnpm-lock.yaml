@@ -16,6 +16,7 @@ overrides:
   next: 14.2.23
   '@babel/core': 7.26.0
   path-to-regexp: 0.1.12
+  serialize-javascript: ^6.0.2
 
 pnpmfileChecksum: sha256-t9dusmDQsMoCRZp5GizeEDPKJ3yDfjZdv3/x7UiMQOE=
 
@@ -404,6 +405,9 @@ importers:
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
+      markdown-to-txt:
+        specifier: ^2.0.1
+        version: 2.0.1
       react-markdown:
         specifier: ^8.0.7
         version: 8.0.7(@types/react@18.3.18)(react@18.3.1)
@@ -696,9 +700,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
-      markdown-to-txt:
-        specifier: ^2.0.1
-        version: 2.0.1
       next:
         specifier: 14.2.23
         version: 14.2.23(@babel/core@7.26.0)(@playwright/test@1.49.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.83.4)
@@ -805,9 +806,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
-      markdown-to-txt:
-        specifier: ^2.0.1
-        version: 2.0.1
       next:
         specifier: 14.2.23
         version: 14.2.23(@babel/core@7.26.0)(@playwright/test@1.49.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.83.4)
@@ -917,9 +915,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
-      markdown-to-txt:
-        specifier: ^2.0.1
-        version: 2.0.1
       next:
         specifier: 14.2.23
         version: 14.2.23(@babel/core@7.26.0)(@playwright/test@1.49.1)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.83.4)
@@ -11408,9 +11403,6 @@ packages:
   sentence-case@3.0.4:
     resolution: {integrity: sha512-8LS0JInaQMCRoQ7YUytAo/xUu5W2XnQxV2HI/6uM6U7CITS1RqPElr30V6uIqyMKM9lJGRVFy5/4CuzcixNYSg==}
 
-  serialize-javascript@5.0.1:
-    resolution: {integrity: sha512-SaaNal9imEO737H2c05Og0/8LUXG7EnsZyMa8MzkmuHoELfT6txuj0cMqRj6zfPKnmQ1yasR4PCJc8x+M4JSPA==}
-
   serialize-javascript@6.0.2:
     resolution: {integrity: sha512-Saa1xPByTTq2gdeFZYLLo+RFE35NHZkAbqZeWNd3BpzppeVisAqpDjcp8dyf6uIvEqJRd46jemmyA4iFIeVk8g==}
 
@@ -19654,7 +19646,7 @@ snapshots:
       p-limit: 3.1.0
       postcss: 8.5.1
       schema-utils: 3.3.0
-      serialize-javascript: 5.0.1
+      serialize-javascript: 6.0.2
       source-map: 0.6.1
       webpack: 5.97.1
 
@@ -26995,10 +26987,6 @@ snapshots:
       no-case: 3.0.4
       tslib: 2.8.1
       upper-case-first: 2.0.2
-
-  serialize-javascript@5.0.1:
-    dependencies:
-      randombytes: 2.1.0
 
   serialize-javascript@6.0.2:
     dependencies:

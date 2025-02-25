@@ -45,20 +45,19 @@ export interface ArticlePaginatedQueryArgs {
   preamble?: string;
 }
 
-type FilterableFields = "body" | "tag" | "title";
-
 type PublishStatus = "published" | "unpublished";
 
 export type ArticleSearchArgs = {
   bodyContains?: string;
-  tagContains?: string;
   titleContains?: string;
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
 type ConvertedArticleSearchArgs = {
-  [key in FilterableFields]: { contains: string } | undefined;
-} & {
+  body?: { contains: string };
+  title?: { contains: string };
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
@@ -73,11 +72,7 @@ export function convertSearchParamsToGQL(
           contains: searchParams.bodyContains,
         }
       : undefined,
-    tag: searchParams.tagContains
-      ? {
-          contains: searchParams.tagContains,
-        }
-      : undefined,
+    tags: searchParams.tags,
     title: searchParams.titleContains
       ? {
           contains: searchParams.titleContains,
@@ -463,10 +458,14 @@ function getRelevantCategoriesForPath(articlePath: string[], maxDepth: number) {
  */
 export function getArticleURLFromSite(
   article: Partial<Article> & Pick<Article, "id">,
-  site: Site,
+  site: Site | undefined,
   basePath = "/articles",
   maxDepth = -1,
 ) {
+  if (!site) {
+    // If the site is undefined, return the base path - basePath/<slug-or-id>
+    return `${basePath}/${article.slug || article.id}`;
+  }
   // Get the article path
   const articlePath = getArticlePathComponentsFromContentStructure(
     article,
@@ -491,6 +490,8 @@ export function getArticleURLFromSiteWithOptions(options: {
   // Maximum depth to include in the URL. If it is -1, it will include all the categories. If it is 0, it will only include the article. If it is 1, it will include the article's slug or id and its immediate parent category and so on.
   maxDepth: number;
 }) {
-  return (article: Partial<Article> & Pick<Article, "id">, site: Site) =>
-    getArticleURLFromSite(article, site, options.basePath, options.maxDepth);
+  return (
+    article: Partial<Article> & Pick<Article, "id">,
+    site: Site | undefined,
+  ) => getArticleURLFromSite(article, site, options.basePath, options.maxDepth);
 }
