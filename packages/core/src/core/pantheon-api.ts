@@ -206,7 +206,28 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         let site: Site | undefined;
         // Fetch the site if we dont use a pccGrant
         if (!pccGrant) {
-          site = await PCCConvenienceFunctions.getSite();
+            const client = options.getPantheonClient({
+          pccGrant: pccGrant ? pccGrant.toString() : undefined,
+        });
+
+        const [article, site] = await Promise.all([
+          parsedArticleId == null
+            ? null
+            : await getArticleBySlugOrId(
+                client,
+                parsedArticleId,
+                // We will let downstream validate the publishingLevel param.
+                {
+                  publishingLevel: publishingLevel
+                    ?.toString()
+                    .toUpperCase() as AllowablePublishingLevels,
+                },
+              ),
+          !client.apiKey?.startsWith("pcc_grant")
+            ? // Fetching the site is not available when the client is using a PCC grant.
+              getSite(client, client.siteId)
+            : null,
+        ]);
         }
         // Define the resolved path
         const resolvedPath = options.resolvePath(article, site);
