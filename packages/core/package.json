@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.21",
-    "@vitest/coverage-v8": "^1.6.0",
+    "@vitest/coverage-v8": "^1.6.1",
     "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
     "tsup": "^8.2.4",
