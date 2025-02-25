@@ -13,28 +13,20 @@ import {
 import { getAllTags } from "./metadata";
 import { getSite as _getSite } from "./site";
 
-const config = {
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  pccHost:
-    typeof process === "undefined"
-      ? undefined
-      : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        ((process.env.PCC_HOST || process.env.NEXT_PUBLIC_PCC_HOST) as string),
-  siteId:
-    typeof process === "undefined"
-      ? ""
-      : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        ((process.env.PCC_SITE_ID ||
-          // eslint-disable-next-line turbo/no-undeclared-env-vars
-          process.env.NEXT_PUBLIC_PCC_SITE_ID) as string),
-  token:
-    typeof process === "undefined"
-      ? ""
-      : // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_TOKEN as string) ||
-        // eslint-disable-next-line turbo/no-undeclared-env-vars
-        (process.env.PCC_API_KEY as string),
-};
+/* eslint-disable turbo/no-undeclared-env-vars */
+const config =
+  typeof process === "undefined"
+    ? { pccHost: undefined, siteId: "", token: "" }
+    : {
+        pccHost: (process.env.PCC_HOST ||
+          process.env.NEXT_PUBLIC_PCC_HOST) as string,
+        siteId: (process.env.PCC_SITE_ID ||
+          process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
+        token:
+          (process.env.PCC_TOKEN as string) ||
+          (process.env.PCC_API_KEY as string),
+      };
+/* eslint-enable turbo/no-undeclared-env-vars */
 
 export const updateConfig = ({
   pccHost,
