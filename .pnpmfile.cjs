@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const yaml = require("js-yaml");
 
 /**
  * This pnpm install hook links all packages in the monorepo to their local versions.
@@ -7,28 +8,47 @@ const path = require("path");
  * depending on the local version of the package when inside the monorepo.
  */
 const monorepoRoot = findMonorepoRoot(process.cwd());
-const workspacePackageDirectories = [
-  "packages",
-  "starters",
-  "configs",
-  "local_testing",
-];
 const workspacePackages = new Map();
 
-workspacePackageDirectories.forEach((workspacePackageDir) => {
-  const allDirs = fs.readdirSync(path.join(monorepoRoot, workspacePackageDir));
-  allDirs
-    .filter((dir) => {
-      return fs
-        .statSync(path.join(monorepoRoot, workspacePackageDir, dir))
-        .isDirectory();
-    })
-    .forEach((dir) => {
-      const pkgPath = path.join(monorepoRoot, workspacePackageDir, dir);
-      const pkgName = require(path.join(pkgPath, "package.json")).name;
-      workspacePackages.set(pkgName, pkgPath);
-    });
+// Read the workspace configuration from pnpm-workspace.yaml
+const workspaceConfig = yaml.load(
+  fs.readFileSync(path.join(monorepoRoot, "pnpm-workspace.yaml"), "utf8"),
+);
+
+// Process each workspace pattern
+workspaceConfig.packages.forEach((pattern) => {
+  if (pattern.endsWith("/*")) {
+    // Handle wildcard patterns like "packages/*"
+    const dirPath = pattern.slice(0, -2); // Remove the "/*"
+    const allDirs = fs.readdirSync(path.join(monorepoRoot, dirPath));
+    allDirs
+      .filter((dir) => {
+        return fs.statSync(path.join(monorepoRoot, dirPath, dir)).isDirectory();
+      })
+      .forEach((dir) => {
+        const pkgPath = path.join(monorepoRoot, dirPath, dir);
+        try {
+          const pkgName = require(path.join(pkgPath, "package.json")).name;
+          workspacePackages.set(pkgName, pkgPath);
+        } catch (err) {
+          // Skip directories without a package.json
+        }
+      });
+  } else {
+    // Handle specific paths like "starters/nextjs-starter"
+    const pkgPath = path.join(monorepoRoot, pattern);
+    try {
+      if (fs.existsSync(pkgPath) && fs.statSync(pkgPath).isDirectory()) {
+        const pkgName = require(path.join(pkgPath, "package.json")).name;
+        workspacePackages.set(pkgName, pkgPath);
+      }
+    } catch (err) {
+      // Skip directories without a package.json
+    }
+  }
 });
+
+console.log(Object.fromEntries(workspacePackages));
 
 module.exports = {
   hooks: {

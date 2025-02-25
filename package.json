@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "license": "MIT",
-  "packageManager": "pnpm@9.1.1",
+  "packageManager": "pnpm@9.15.6",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "pre-commit": "pnpm install && pnpm lint && pnpm build && pnpm build:starters",
@@ -26,6 +26,7 @@
     "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
     "husky": "^9.0.11",
+    "js-yaml": "^4.1.0",
     "turbo": "^1.12.4"
   },
   "pnpm": {
