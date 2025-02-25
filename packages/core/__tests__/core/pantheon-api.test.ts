@@ -26,10 +26,10 @@ const mockRequest = {
 vi.mock("../../src/helpers/", () => ({
   PCCConvenienceFunctions: {
     buildPantheonClient: vi.fn(),
-    getSite: vi.fn(),
   },
   getArticleBySlugOrId: vi.fn(),
   getArticleURLFromSite: vi.fn(),
+  getSite: vi.fn(),
 }));
 
 vi.mock("../../src/lib/jwt", () => ({
