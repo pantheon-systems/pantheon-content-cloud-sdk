@@ -1,5 +1,38 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.11.0
+
+### Minor Changes
+
+- a407141: - Added functionality in the pcc-sdk-core to compute the path of an
+  article from the site's content structure. This will be the path at which the
+  article will be visible.
+  - If someone tries to access the article without the full path, it will be
+    redirected to the full path.
+  - Developers can use the default functionality as is and also customise the
+    path generation to only include the id or slug and a configurable number of
+    parents.
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Minor Changes
+
+- b89c5ee: The injected preview bar is deprecated in favor of the integrated
+  preview bar in the dashboard preview interface
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.10.0-beta.2
 
 ### Minor Changes

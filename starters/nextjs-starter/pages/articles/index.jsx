@@ -39,19 +39,20 @@ export default function ArticlesListTemplate({ articles, totalCount, cursor }) {
 }
 
 export async function getServerSideProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the site and articles in parallel
+  const [site, { data: articles, totalCount, cursor }] = await Promise.all([
+    PCCConvenienceFunctions.getSite(),
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+  ]);
 
   return {
     props: {
       articles,
       totalCount,
       cursor,
+      site,
     },
   };
 }

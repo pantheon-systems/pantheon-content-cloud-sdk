@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-vue-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Vue SDK",
-  "version": "3.9.0",
+  "version": "3.11.0",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -62,7 +62,7 @@
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "unplugin-vue": "^4.5.2",
-    "vite": "^5.2.14",
+    "vite": "^6.1.1",
     "vue": "3.4.27",
     "vue-3": "npm:vue@^3.4.27"
   },

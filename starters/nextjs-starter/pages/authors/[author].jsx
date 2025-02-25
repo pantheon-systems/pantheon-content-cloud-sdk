@@ -9,9 +9,9 @@ import {
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { PiMediumLogoFill } from "react-icons/pi";
-import ArticleList from "../../../components/article-list";
-import { PAGE_SIZE } from "../../../constants";
+import ArticleList from "../../components/article-list";
 import Layout from "../../components/layout";
+import { PAGE_SIZE } from "../../constants";
 
 function fetchNextPages() {
   return async (cursor) => {
@@ -38,6 +38,7 @@ export default function ArticlesListTemplate({
   totalCount,
   cursor,
   author,
+  site,
 }) {
   return (
     <Layout>
@@ -90,16 +91,16 @@ export default function ArticlesListTemplate({
 }
 
 export async function getServerSideProps({ query: { author } }) {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-    metadataFilters: {
-      author,
-    },
-  });
+  // Fetch the articles and site in parallel
+  const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      metadataFilters: {
+        author,
+      },
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
@@ -107,6 +108,7 @@ export async function getServerSideProps({ query: { author } }) {
       cursor,
       totalCount,
       author,
+      site,
     },
   };
 }

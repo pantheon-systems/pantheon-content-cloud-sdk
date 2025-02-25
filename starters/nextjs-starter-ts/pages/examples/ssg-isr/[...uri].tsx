@@ -2,6 +2,7 @@ import {
   PCCConvenienceFunctions,
   type Article,
 } from "@pantheon-systems/pcc-react-sdk";
+import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
 import { StaticArticleView } from "../../../components/article-view";
@@ -31,7 +32,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
 }
 
 export const getStaticProps: GetStaticProps<{}> = async ({ params }) => {
-  if (!params?.uri) {
+  if (!params?.uri || !Array.isArray(params?.uri) || params?.uri.length === 0) {
     return {
       notFound: true,
     };
@@ -39,7 +40,7 @@ export const getStaticProps: GetStaticProps<{}> = async ({ params }) => {
 
   try {
     const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
-      params?.uri?.toString(),
+      params?.uri[params?.uri.length - 1],
     );
 
     if (!article) {
@@ -61,34 +62,51 @@ export const getStaticProps: GetStaticProps<{}> = async ({ params }) => {
   }
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async (uri) => {
   try {
-    const publishedArticles = await PCCConvenienceFunctions.getAllArticles(
-      {
-        publishingLevel: "PRODUCTION",
-      },
-      {
-        publishStatus: "published",
-      },
-    );
+    // Get all the published articles and sites in parallel
+    const [publishedArticles, site] = await Promise.all([
+      PCCConvenienceFunctions.getAllArticles(
+        {
+          publishingLevel: "PRODUCTION",
+        },
+        {
+          publishStatus: "published",
+        },
+      ),
+      PCCConvenienceFunctions.getSite(),
+    ]);
 
     const pagePaths = publishedArticles.map((article) => {
+      // Generate the article path from the content structure
+      const articlePath = getArticlePathComponentsFromContentStructure(
+        article,
+        site,
+      );
+
       const id = article.id;
       const slug = article.metadata?.slug;
+
+      // Add the ID to the article path
+      articlePath.push(id);
 
       // Generate both slug and id paths for each article
       const paths = [
         {
           params: {
-            uri: id,
+            // Add a copy of the articlePath to the uri as we will add the slug to the end of the uri
+            uri: articlePath.slice(),
           },
         },
       ];
 
       if (slug) {
+        // Change the id to the slug
+        articlePath[articlePath.length - 1] = String(slug);
+        // Add the slug to the uri
         paths.push({
           params: {
-            uri: String(slug),
+            uri: articlePath,
           },
         });
       }

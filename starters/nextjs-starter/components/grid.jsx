@@ -2,8 +2,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
+import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 
-export function HomepageArticleGrid({ articles }) {
+export function HomepageArticleGrid({ articles, site }) {
   return (
     <div
       className={cn(
@@ -15,13 +16,14 @@ export function HomepageArticleGrid({ articles }) {
           key={article.id}
           article={article}
           isWide={articles.length === 1 || (articles.length > 2 && index === 2)}
+          site={site}
         />
       ))}
     </div>
   );
 }
 
-export function ArticleGrid({ articles, basePath = "/articles" }) {
+export function ArticleGrid({ articles, site, basePath = "/articles" }) {
   return (
     <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
       {articles.map((article) => (
@@ -29,6 +31,7 @@ export function ArticleGrid({ articles, basePath = "/articles" }) {
           key={article.id}
           article={article}
           basePath={basePath}
+          site={site}
         />
       ))}
     </div>
@@ -37,11 +40,12 @@ export function ArticleGrid({ articles, basePath = "/articles" }) {
 
 export function ArticleGridCard({
   article,
-  basePath = "/articles",
   imageAltText,
   isWide = false,
+  basePath = "/articles",
+  site,
 }) {
-  const targetHref = `${basePath}/${article.slug || article.id}`;
+  const targetHref = getArticleURLFromSite(article, site, basePath);
   const imageSrc = article.metadata?.["image"] || null;
 
   return (

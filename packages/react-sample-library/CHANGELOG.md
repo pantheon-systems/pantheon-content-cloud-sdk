@@ -1,5 +1,25 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.11.0
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-react-sdk@3.11.0
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [b89c5ee]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-react-sdk@3.10.0
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.10.0-beta.2
 
 ### Patch Changes

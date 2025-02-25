@@ -1,6 +1,7 @@
 import {
   Article,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
@@ -29,12 +30,14 @@ interface Props {
   articles: Article[];
   totalCount: number;
   cursor: string;
+  site: Site;
 }
 
 export default function ArticlesListTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }: Props) {
   return (
     <Layout>
@@ -46,25 +49,27 @@ export default function ArticlesListTemplate({
         cursor={cursor}
         totalCount={totalCount}
         fetcher={fetchNextPages}
+        site={site}
       />
     </Layout>
   );
 }
 
 export async function getServerSideProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the site and articles in parallel
+  const [site, { data: articles, totalCount, cursor }] = await Promise.all([
+    PCCConvenienceFunctions.getSite(),
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+  ]);
 
   return {
     props: {
       articles,
       cursor,
       totalCount,
+      site,
     },
   };
 }

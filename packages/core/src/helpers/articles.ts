@@ -20,6 +20,7 @@ import {
   PageInfo,
   PaginatedArticle,
   PublishingLevel,
+  Site,
   SortOrder,
 } from "../types";
 import { handleApolloError } from "./errors";
@@ -44,20 +45,19 @@ export interface ArticlePaginatedQueryArgs {
   preamble?: string;
 }
 
-type FilterableFields = "body" | "tag" | "title";
-
 type PublishStatus = "published" | "unpublished";
 
 export type ArticleSearchArgs = {
   bodyContains?: string;
-  tagContains?: string;
   titleContains?: string;
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
 type ConvertedArticleSearchArgs = {
-  [key in FilterableFields]: { contains: string } | undefined;
-} & {
+  body?: { contains: string };
+  title?: { contains: string };
+  tags?: string[];
   publishStatus?: PublishStatus;
 };
 
@@ -72,11 +72,7 @@ export function convertSearchParamsToGQL(
           contains: searchParams.bodyContains,
         }
       : undefined,
-    tag: searchParams.tagContains
-      ? {
-          contains: searchParams.tagContains,
-        }
-      : undefined,
+    tags: searchParams.tags,
     title: searchParams.titleContains
       ? {
           contains: searchParams.titleContains,
@@ -324,4 +320,178 @@ export async function getRecommendedArticles(
   } catch (e) {
     handleApolloError(e);
   }
+}
+
+interface ContentStructureChild {
+  id: string;
+  name: string;
+  type: "category" | "article";
+  children?: ContentStructureChild[];
+}
+
+function doesChildContainArticle(
+  child: ContentStructureChild,
+  article: Partial<Article> & Pick<Article, "id">,
+) {
+  const categoryTree: string[] = [];
+  let contains = false;
+
+  // If the child is an article, check if it matches the article id
+  if (child.type === "article") {
+    if (child.id === article.id) {
+      contains = true;
+    }
+
+    return { contains, categoryTree };
+  }
+
+  // Iterate over the category and its children
+  for (const childOfChild of child.children || []) {
+    // If the child is another category, we need to iterate over its children
+    if (childOfChild.type === "category") {
+      const result = doesChildContainArticle(childOfChild, article);
+      if (result.contains) {
+        // Add the current category name to the category tree
+        categoryTree.push(child.name);
+        // Append the result of the recursive call
+        categoryTree.push(...result.categoryTree);
+        contains = true;
+        // Break out of the loop
+        break;
+      }
+    } else {
+      // If the child is an article, check if it matches the article id
+      if (childOfChild.id === article.id) {
+        contains = true;
+        // If it does, append the result's category tree to the current category tree
+        categoryTree.push(child.name);
+        // Break out of the loop
+        break;
+      }
+    }
+  }
+
+  return { contains, categoryTree };
+}
+
+/**
+ * Get the path components for an article from the site's content structure
+ * @param article - The article to get the path for
+ * @param site - The site being used
+ * @returns The path components for the article
+ */
+export function getArticlePathComponentsFromContentStructure(
+  article: Partial<Article> & Pick<Article, "id">,
+  site: Site,
+) {
+  const defaultPath: string[] = [];
+  // If the site is not defined or the content structure is not defined or if the active key is not defined, return the default path
+  if (!site || !site.contentStructure || !site.contentStructure.active) {
+    return defaultPath;
+  }
+  // If the active key is present, it will be an array of objects. Its structure is as follows:
+  // {
+  //   "id": "string",
+  //   "name": "string",
+  //   "type": "string"
+  //   "children": [
+  //     {
+  //       "id": "string",
+  //       "name": "string",
+  //       "type": "string"
+  //     }
+  //   ]
+  // }
+  // type will be one of the following: "category" or "article"
+  // We need to find the article object that contains the articleId
+  const active = site.contentStructure.active;
+  if (typeof active !== "object" || !Array.isArray(active) || !active.length) {
+    return defaultPath;
+  }
+  // Iterate over the active array
+  for (const category of active) {
+    // The categories can be nested, so we need to find the relevant list of categories that contain the articleId
+    // We need to iterate over all the categories, do the same for all its children. Keep doing this until we find the articleId
+    const { contains, categoryTree } = doesChildContainArticle(
+      category,
+      article,
+    );
+    if (!contains) {
+      continue;
+    }
+    // If the item is found, return the path as a normalized path
+    if (categoryTree && categoryTree.length > 0) {
+      // normalise the name of each category in the categoryTree
+      const normalisedCategoryTree = categoryTree.map((category) =>
+        category
+          .replace(/ /g, "-")
+          .replace(/[^a-zA-Z0-9-]/g, "")
+          .toLowerCase(),
+      );
+      // Return it
+      return normalisedCategoryTree;
+    }
+  }
+
+  return defaultPath;
+}
+
+function getRelevantCategoriesForPath(articlePath: string[], maxDepth: number) {
+  if (maxDepth === 0) {
+    return [];
+  }
+  // If the maxDepth is -1, return all the categories
+  if (maxDepth === -1) {
+    return articlePath;
+  }
+  // If not, return the last maxDepth categories or all the categories if there are less than maxDepth
+  return articlePath.slice(-maxDepth);
+}
+
+/**
+ * Get the URL for an article from the site's content structure
+ * @param article - The article to get the URL for
+ * @param site - The site being used
+ * @param basePath - The base path to use for the URL
+ * @param maxDepth - The maximum depth to include in the URL. If it is -1, it will include all the categories. If it is 0, it will only include the article. If it is 1, it will include the article's slug or id and its immediate parent category and so on.
+ * @returns The URL for the article
+ */
+export function getArticleURLFromSite(
+  article: Partial<Article> & Pick<Article, "id">,
+  site: Site | undefined,
+  basePath = "/articles",
+  maxDepth = -1,
+) {
+  if (!site) {
+    // If the site is undefined, return the base path - basePath/<slug-or-id>
+    return `${basePath}/${article.slug || article.id}`;
+  }
+  // Get the article path
+  const articlePath = getArticlePathComponentsFromContentStructure(
+    article,
+    site,
+  );
+  // Get the relevant categories for the path
+  const relevantArticlePath = getRelevantCategoriesForPath(
+    articlePath,
+    maxDepth,
+  );
+  // Add the basePath before the articlePath and the article slug or id at the end
+  if (relevantArticlePath.length > 0) {
+    return `${basePath}/${relevantArticlePath.join("/")}/${article.slug || article.id}`;
+  }
+  // If the maxDepth is 0 or the articlePath is empty, return the article's slug or id
+  return `${basePath}/${article.slug || article.id}`;
+}
+
+export function getArticleURLFromSiteWithOptions(options: {
+  // Base path to use for the URL. So if the base path is /articles, the URL for a doc will be /articles/<content-structure-path>/<slug-or-id>
+  basePath: string;
+  // Maximum depth to include in the URL. If it is -1, it will include all the categories. If it is 0, it will only include the article. If it is 1, it will include the article's slug or id and its immediate parent category and so on.
+  maxDepth: number;
+}) {
+  return (
+    article: Partial<Article> & Pick<Article, "id">,
+    site: Site | undefined,
+  ) => getArticleURLFromSite(article, site, options.basePath, options.maxDepth);
 }

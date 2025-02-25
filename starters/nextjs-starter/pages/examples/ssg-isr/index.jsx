@@ -4,29 +4,14 @@ import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import PageHeader from "../../../components/page-header";
 import Pagination from "../../../components/pagination";
+import { PAGE_SIZE } from "../../../constants";
 import { usePagination } from "../../../hooks/usePagination";
-
-async function fetchNextPages(cursor) {
-  const url = queryString.stringifyUrl({
-    url: "/api/utils/paginate",
-    query: {
-      pageSize: PAGE_SIZE,
-      cursor: cursor,
-    },
-  });
-
-  const response = await fetch(url);
-  const { data, cursor: newCursor } = await response.json();
-  return {
-    data,
-    newCursor,
-  };
-}
 
 export default function SSGISRExampleTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }) {
   const {
     data: currentArticles,
@@ -60,6 +45,7 @@ export default function SSGISRExampleTemplate({
         <ArticleGrid
           articles={currentArticles}
           basePath={"/examples/ssg-isr"}
+          site={site}
         />
         <div className="mt-4 flex flex-row items-center justify-center">
           <Pagination
@@ -76,19 +62,20 @@ export default function SSGISRExampleTemplate({
 }
 
 export async function getStaticProps() {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-  });
+  // Fetch the articles and site in parallel
+  const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
       articles,
       totalCount,
       cursor,
+      site,
     },
     revalidate: 60,
   };

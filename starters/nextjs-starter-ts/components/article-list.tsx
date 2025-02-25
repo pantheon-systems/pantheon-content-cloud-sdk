@@ -3,6 +3,7 @@
 import {
   ArticleWithoutContent,
   PaginatedArticle,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import React, { useMemo, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -20,6 +21,7 @@ interface Props {
     newCursor: string;
   }>;
   additionalHeader?: React.ReactNode;
+  site: Site;
 }
 
 export default function ArticleList({
@@ -29,6 +31,7 @@ export default function ArticleList({
   cursor,
   fetcher,
   additionalHeader = null,
+  site,
 }: Props) {
   const [allArticles, setAllArticles] = useState(articles);
   const [thecursor, setThecursor] = useState(cursor);
@@ -118,6 +121,7 @@ export default function ArticleList({
               key={article.id}
               article={article}
               basePath={"/articles"}
+              site={site}
             />
           ))}
           {skeletonCards.map((x, i) => (

@@ -1,6 +1,7 @@
 import {
   Article,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import queryString from "query-string";
@@ -30,12 +31,14 @@ interface Props {
   articles: Article[];
   totalCount: number;
   cursor: string;
+  site: Site;
 }
 
 export default function SSGISRExampleTemplate({
   articles,
   totalCount,
   cursor,
+  site,
 }: Props) {
   const {
     data: currentArticles,
@@ -60,6 +63,7 @@ export default function SSGISRExampleTemplate({
         totalCount={totalCount}
         cursor={cursor}
         fetcher={fetchNextPages}
+        site={site}
         additionalHeader={
           <div className="prose lg:prose-xl my-10 flex flex-col">
             <p>
@@ -79,19 +83,20 @@ export default function SSGISRExampleTemplate({
 
 export async function getStaticProps() {
   try {
-    const {
-      data: articles,
-      totalCount,
-      cursor,
-    } = await PCCConvenienceFunctions.getPaginatedArticles({
-      pageSize: PAGE_SIZE,
-    });
+    // Fetch the articles and site in parallel
+    const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
+      PCCConvenienceFunctions.getPaginatedArticles({
+        pageSize: PAGE_SIZE,
+      }),
+      PCCConvenienceFunctions.getSite(),
+    ]);
 
     return {
       props: {
         articles,
         cursor,
         totalCount,
+        site,
       },
       revalidate: 60,
     };

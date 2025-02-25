@@ -1,5 +1,29 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.11.0
+
+### Minor Changes
+
+- a407141: - Added functionality in the pcc-sdk-core to compute the path of an
+  article from the site's content structure. This will be the path at which the
+  article will be visible.
+  - If someone tries to access the article without the full path, it will be
+    redirected to the full path.
+  - Developers can use the default functionality as is and also customise the
+    path generation to only include the id or slug and a configurable number of
+    parents.
+
+## 3.10.0
+
+### Minor Changes
+
+- 572fb97: Add support for metadata groups (like authors).
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- 400fc48: Allow caller to retrieve all metadata groups, optionally hydrated.
+
 ## 3.10.0-beta.2
 
 ### Patch Changes

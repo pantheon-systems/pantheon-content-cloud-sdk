@@ -1,6 +1,7 @@
 import {
   Article,
   PCCConvenienceFunctions,
+  Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
@@ -42,11 +43,13 @@ export default function ArticlesListTemplate({
   totalCount,
   cursor,
   author,
+  site,
 }: {
   articles: Article[];
   totalCount: number;
   cursor: string;
   author?: string;
+  site: Site;
 }) {
   return (
     <Layout>
@@ -57,6 +60,7 @@ export default function ArticlesListTemplate({
         cursor={cursor}
         totalCount={totalCount}
         fetcher={fetchNextPages(author)}
+        site={site}
         additionalHeader={
           <div
             className="border-base-300 mb-14 border-b-[1px] pb-7"
@@ -103,16 +107,16 @@ export async function getServerSideProps({
 }: {
   query: { author: string };
 }) {
-  const {
-    data: articles,
-    totalCount,
-    cursor,
-  } = await PCCConvenienceFunctions.getPaginatedArticles({
-    pageSize: PAGE_SIZE,
-    metadataFilters: {
-      author,
-    },
-  });
+  // Fetch the articles and site in parallel
+  const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
+    PCCConvenienceFunctions.getPaginatedArticles({
+      pageSize: PAGE_SIZE,
+      metadataFilters: {
+        author,
+      },
+    }),
+    PCCConvenienceFunctions.getSite(),
+  ]);
 
   return {
     props: {
@@ -120,6 +124,7 @@ export async function getServerSideProps({
       cursor,
       totalCount,
       author,
+      site,
     },
   };
 }
