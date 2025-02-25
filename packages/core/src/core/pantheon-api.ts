@@ -199,7 +199,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
                     .toUpperCase() as AllowablePublishingLevels,
                 },
               ),
-          !client.apiKey?.startsWith("pcc_grant")
+          client && !client.apiKey?.startsWith("pcc_grant")
             ? // Fetching the site is not available when the client is using a PCC grant.
               getSite(client, client.siteId)
             : undefined,
