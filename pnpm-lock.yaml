@@ -18,7 +18,7 @@ overrides:
   path-to-regexp: 0.1.12
   serialize-javascript: ^6.0.2
 
-pnpmfileChecksum: glcvhvkvzueg7zi63lfnmt4adq
+pnpmfileChecksum: j5pzaze5v6lhqecv4o33vwwq7i
 
 importers:
 
@@ -39,9 +39,6 @@ importers:
       husky:
         specifier: ^9.0.11
         version: 9.1.7
-      js-yaml:
-        specifier: ^4.1.0
-        version: 4.1.0
       turbo:
         specifier: ^1.12.4
         version: 1.13.4

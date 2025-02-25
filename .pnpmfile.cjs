@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const yaml = require("js-yaml");
 
 /**
  * This pnpm install hook links all packages in the monorepo to their local versions.
@@ -11,12 +10,41 @@ const monorepoRoot = findMonorepoRoot(process.cwd());
 const workspacePackages = new Map();
 
 // Read the workspace configuration from pnpm-workspace.yaml
-const workspaceConfig = yaml.load(
-  fs.readFileSync(path.join(monorepoRoot, "pnpm-workspace.yaml"), "utf8"),
+const workspaceYamlContent = fs.readFileSync(
+  path.join(monorepoRoot, "pnpm-workspace.yaml"),
+  "utf8",
 );
 
+// Simple parsing of the YAML file to extract package patterns
+const packagePatterns = [];
+const lines = workspaceYamlContent.split("\n");
+let inPackagesSection = false;
+
+for (const line of lines) {
+  if (line.trim().startsWith("packages:")) {
+    inPackagesSection = true;
+    continue;
+  }
+
+  if (inPackagesSection && line.trim().startsWith("-")) {
+    // Extract the pattern, removing the dash and spaces
+    const pattern = line.trim().substring(1).trim();
+    if (pattern) {
+      packagePatterns.push(pattern);
+    }
+  } else if (
+    inPackagesSection &&
+    !line.trim().startsWith("#") &&
+    line.trim() !== ""
+  ) {
+    // If we hit a non-comment, non-empty line that doesn't start with a dash,
+    // we're out of the packages section
+    inPackagesSection = false;
+  }
+}
+
 // Process each workspace pattern
-workspaceConfig.packages.forEach((pattern) => {
+packagePatterns.forEach((pattern) => {
   if (pattern.endsWith("/*")) {
     // Handle wildcard patterns like "packages/*"
     const dirPath = pattern.slice(0, -2); // Remove the "/*"
