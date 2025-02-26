@@ -18,7 +18,7 @@ overrides:
   path-to-regexp: 0.1.12
   serialize-javascript: ^6.0.2
 
-pnpmfileChecksum: j5pzaze5v6lhqecv4o33vwwq7i
+pnpmfileChecksum: dwsml3ncnigkmiwvwlkoqsfuki
 
 importers:
 
@@ -436,6 +436,9 @@ importers:
       '@types/jest':
         specifier: 29.5.1
         version: 29.5.1
+      '@types/lodash':
+        specifier: ^4.17.15
+        version: 4.17.15
       '@types/node':
         specifier: ^20.11.21
         version: 20.17.14
@@ -3561,6 +3564,9 @@ packages:
 
   '@types/linkify-it@3.0.5':
     resolution: {integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==}
+
+  '@types/lodash@4.17.15':
+    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
 
   '@types/markdown-it@13.0.9':
     resolution: {integrity: sha512-1XPwR0+MgXLWfTn9gCsZ55AHOKW1WN+P9vr0PaQh5aerR9LLQXUbjfEAFhjmEmyoYFWAyuN2Mqkn40MZ4ukjBw==}
@@ -12290,6 +12296,8 @@ snapshots:
       '@types/node': 20.17.14
 
   '@types/linkify-it@3.0.5': {}
+
+  '@types/lodash@4.17.15': {}
 
   '@types/markdown-it@13.0.9':
     dependencies:
