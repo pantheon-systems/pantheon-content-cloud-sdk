@@ -1,5 +1,4 @@
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
-import { markdownToTxt } from "markdown-to-txt";
+import { ArticleWithoutContent, markdownToText } from "@pantheon-systems/pcc-react-sdk";
 import { NextSeo } from "next-seo";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -89,9 +88,7 @@ export default function Search() {
                       {isLoading ? (
                         <Skeleton count={4} />
                       ) : result.snippet ? (
-                        markdownToTxt(
-                          result.snippet.replaceAll(/{#h\..*}\n/g, "\n"),
-                        )
+                        markdownToText(result.snippet)
                       ) : null}
                     </p>
                   </div>

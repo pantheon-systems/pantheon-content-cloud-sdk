@@ -1,6 +1,6 @@
 {
   "name": "@pantheon-systems/next-approuter-pcc-starter-ts",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "private": true,
   "license": "GPL-3.0-or-later",
   "description": "A starter for building a Pantheon Content Cloud (PCC) powered site with Next.js App Router and TypeScript",
@@ -27,7 +27,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.10.0",
+    "@pantheon-systems/pcc-react-sdk": "~3.11.0",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/typography": "0.5.10",
@@ -35,7 +35,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
-    "markdown-to-txt": "^2.0.1",
     "next": "^14.2.15",
     "query-string": "^8.2.0",
     "react": "18.3.1",
@@ -61,8 +60,8 @@
     "tailwindcss": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.5.4",
-    "vite": "^5.2.14",
-    "vitest": "^1.3.1",
+    "vite": "^6.1.1",
+    "vitest": "^1.6.1",
     "vitest-fetch-mock": "^0.2.2"
   }
 }

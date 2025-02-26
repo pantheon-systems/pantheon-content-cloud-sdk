@@ -26,10 +26,10 @@ const mockRequest = {
 vi.mock("../../src/helpers/", () => ({
   PCCConvenienceFunctions: {
     buildPantheonClient: vi.fn(),
-    getSite: vi.fn(),
   },
   getArticleBySlugOrId: vi.fn(),
   getArticleURLFromSite: vi.fn(),
+  getSite: vi.fn(),
 }));
 
 vi.mock("../../src/lib/jwt", () => ({
@@ -308,9 +308,15 @@ describe("Command Handling", () => {
         },
       );
 
+      // Validate cookie is set
+      expect(mockResponse.setHeader).toHaveBeenCalledWith("Set-Cookie", [
+        "PCC-GRANT=pcc_grant ABC-DEF; Path=/; SameSite=None;Secure;",
+      ]);
+
+      // Validate redirect URL is correct
       expect(mockResponse.redirect).toHaveBeenCalledWith(
         302,
-        "/test-articles-path/test-article-id",
+        "/test-articles-path/test-article-id?pccGrant=pcc_grant%20ABC-DEF",
       );
     });
 
