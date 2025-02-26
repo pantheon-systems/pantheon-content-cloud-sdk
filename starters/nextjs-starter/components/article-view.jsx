@@ -1,8 +1,5 @@
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
-import {
-  ArticleRenderer,
-  useArticleTitle,
-} from "@pantheon-systems/pcc-react-sdk/components";
+import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -49,59 +46,55 @@ const componentOverrideMap = {
   span: overrideElementStyles("span"),
 };
 
-const ArticleHeader = ({ article, articleTitle, seoMetadata }) => {
+const ArticleHeader = ({ article, seoMetadata }) => {
+  const author = Array.isArray(seoMetadata.authors)
+    ? seoMetadata.authors[0]
+    : seoMetadata.authors;
+
+  if (!author?.name && !article.updatedAt) return null;
+
   return (
-    <div>
-      <div className="text-5xl font-bold">{articleTitle}</div>
-      <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
-        {seoMetadata.openGraph.article.authors?.[0] ? (
-          <>
-            <Link
-              data-testid="author"
-              className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
-              href={`/authors/${seoMetadata.openGraph.article.authors?.[0]}`}
-            >
-              <div>
-                <Image
-                  className="m-0 rounded-full"
-                  src="/images/no-avatar.png"
-                  width={24}
-                  height={24}
-                  alt={`Avatar of ${seoMetadata.openGraph.article.authors?.[0]}`}
-                />
-              </div>
-              <div className="underline">
-                {seoMetadata.openGraph.article.authors?.[0]}
-              </div>
-            </Link>
-            <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
-          </>
-        ) : null}
-        {article.updatedAt ? (
-          <span>
-            {new Date(article.updatedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
-        ) : null}
-      </div>
+    <div className="border-b-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-b-[1px] py-4">
+      {author?.name ? (
+        <>
+          <Link
+            data-testid="author"
+            className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
+            href={`/authors/${author?.name}`}
+          >
+            <div>
+              <Image
+                className="m-0 rounded-full"
+                src="/images/no-avatar.png"
+                width={24}
+                height={24}
+                alt={`Avatar of ${author?.name}`}
+              />
+            </div>
+            <div className="underline">{author?.name}</div>
+          </Link>
+          <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
+        </>
+      ) : null}
+      {article.updatedAt ? (
+        <span>
+          {new Date(article.updatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </span>
+      ) : null}
     </div>
   );
 };
 
 export function StaticArticleView({ article, onlyContent }) {
-  const articleTitle = useArticleTitle(article);
   const seoMetadata = getSeoMetadata(article);
 
   return (
-    <>
-      <ArticleHeader
-        article={article}
-        articleTitle={articleTitle}
-        seoMetadata={seoMetadata}
-      />
+    <div className="px-8 lg:px-4">
+      <ArticleHeader article={article} seoMetadata={seoMetadata} />
       <ArticleRenderer
         article={article}
         componentMap={componentOverrideMap}
@@ -114,8 +107,8 @@ export function StaticArticleView({ article, onlyContent }) {
       />
 
       <div className="border-base-300 mt-16 flex w-full gap-x-3 border-t-[1px] pt-7 lg:mt-32">
-        {seoMetadata.openGraph.article.tags?.length > 0
-          ? seoMetadata.openGraph.article.tags.map((x, i) => (
+        {seoMetadata.keywords && Array.isArray(seoMetadata.keywords)
+          ? seoMetadata.keywords.map((x, i) => (
               <div
                 key={i}
                 className="text-bold text-neutral-content rounded-full border-[1px] border-[#d4d4d4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
@@ -125,7 +118,7 @@ export function StaticArticleView({ article, onlyContent }) {
             ))
           : null}
       </div>
-    </>
+    </div>
   );
 }
 

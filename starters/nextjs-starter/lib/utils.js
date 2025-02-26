@@ -20,6 +20,14 @@ function isDateInputObject(v) {
 }
 
 export function getSeoMetadata(article) {
+  if (article == null) {
+    return {
+      openGraph: {
+        type: "website",
+      },
+    };
+  }
+
   const tags = article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
     article.metadata?.image,
@@ -33,7 +41,6 @@ export function getSeoMetadata(article) {
     : "Article hosted using Pantheon Content Cloud";
 
   const authors = [];
-  let publishedTime = article.publishedDate;
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([k, v]) => {
@@ -42,14 +49,7 @@ export function getSeoMetadata(article) {
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors.push(v);
-        }
-        break;
-      }
-      case "date": {
-        if (isDateInputObject(v)) {
-          // Prefer the date from the metadata, if it exists
-          publishedTime = parseInt(v.msSinceEpoch);
+          authors.push({ name: v });
         }
         break;
       }
@@ -68,18 +68,13 @@ export function getSeoMetadata(article) {
   return {
     title: article.title,
     description,
+    keywords: tags,
+    authors,
     openGraph: {
       type: "website",
-      title: article.title,
+      title: article.title || undefined,
       images: imageProperties,
       description,
-      article: {
-        authors: authors,
-        tags: tags,
-        ...(publishedTime && {
-          publishedTime: new Date(publishedTime).toISOString(),
-        }),
-      },
     },
   };
 }
