@@ -3,9 +3,10 @@ import {
   SmartComponentMap,
 } from "@pantheon-systems/pcc-react-sdk/components";
 import { withSmartComponentErrorBoundary } from "./error-boundary";
+import InfoCard from "./info-card";
 import LeadCapture from "./lead-capture";
 import MediaPreview from "./media-preview";
-import InfoCard from "./info-card";
+import TileNavigation from "./tile-navigation";
 
 export const serverSmartComponentMap = {
   LEAD_CAPTURE: {
@@ -80,6 +81,25 @@ export const serverSmartComponentMap = {
       },
     },
   },
+  TILE_NAVIGATION: {
+    title: "Tile Navigation",
+    iconUrl: null,
+    fields: {
+      documentIds: {
+        displayName: "Document IDs",
+        required: true,
+        type: "object",
+        multiple: true,
+        fields: {
+          item: {
+            type: "string",
+            displayName: "Document ID",
+            required: true,
+          },
+        },
+      },
+    },
+  },
 } satisfies ServersideSmartComponentMap;
 
 export const clientSmartComponentMap: SmartComponentMap = {
@@ -94,5 +114,9 @@ export const clientSmartComponentMap: SmartComponentMap = {
   INFO_CARD: {
     ...serverSmartComponentMap.INFO_CARD,
     reactComponent: withSmartComponentErrorBoundary(InfoCard),
+  },
+  TILE_NAVIGATION: {
+    ...serverSmartComponentMap.TILE_NAVIGATION,
+    reactComponent: withSmartComponentErrorBoundary(TileNavigation),
   },
 };
