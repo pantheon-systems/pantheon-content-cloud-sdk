@@ -4,7 +4,7 @@ import {
   PantheonTreeNode,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
-import _ from "lodash";
+import { flatMapDeep } from "lodash";
 import { useMemo } from "react";
 
 export function getArticleTitle(article: Article | undefined): string | null {
@@ -32,7 +32,7 @@ export function getArticleTitle(article: Article | undefined): string | null {
 
   if (titleContent != null) {
     const flatMap = titleContent.children
-      ? _.flatMapDeep(
+      ? flatMapDeep(
           titleContent.children,
           (x: PantheonTreeNode | TreePantheonContent) => x.data,
         )

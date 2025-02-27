@@ -48,30 +48,60 @@ packagePatterns.forEach((pattern) => {
   if (pattern.endsWith("/*")) {
     // Handle wildcard patterns like "packages/*"
     const dirPath = pattern.slice(0, -2); // Remove the "/*"
-    const allDirs = fs.readdirSync(path.join(monorepoRoot, dirPath));
-    allDirs
-      .filter((dir) => {
-        return fs.statSync(path.join(monorepoRoot, dirPath, dir)).isDirectory();
-      })
-      .forEach((dir) => {
-        const pkgPath = path.join(monorepoRoot, dirPath, dir);
-        try {
-          const pkgName = require(path.join(pkgPath, "package.json")).name;
-          workspacePackages.set(pkgName, pkgPath);
-        } catch (err) {
-          // Skip directories without a package.json
-        }
-      });
+    const fullDirPath = path.join(monorepoRoot, dirPath);
+
+    // Check if directory exists before trying to read it
+    if (!fs.existsSync(fullDirPath)) {
+      console.warn(`Warning: Directory not found: ${fullDirPath}`);
+      return;
+    }
+
+    try {
+      const allDirs = fs.readdirSync(fullDirPath);
+      allDirs
+        .filter((dir) => {
+          try {
+            return fs.statSync(path.join(fullDirPath, dir)).isDirectory();
+          } catch (err) {
+            return false;
+          }
+        })
+        .forEach((dir) => {
+          const pkgPath = path.join(fullDirPath, dir);
+          try {
+            const pkgName = require(path.join(pkgPath, "package.json")).name;
+            workspacePackages.set(pkgName, pkgPath);
+          } catch (err) {
+            // Skip directories without a package.json
+          }
+        });
+    } catch (err) {
+      console.warn(
+        `Warning: Error processing directory pattern ${pattern}: ${err.message}`,
+      );
+    }
   } else {
     // Handle specific paths like "starters/nextjs-starter"
     const pkgPath = path.join(monorepoRoot, pattern);
+
+    // Check if directory exists before trying to access it
+    if (!fs.existsSync(pkgPath)) {
+      console.warn(`Warning: Package path not found: ${pkgPath}`);
+      return;
+    }
+
     try {
-      if (fs.existsSync(pkgPath) && fs.statSync(pkgPath).isDirectory()) {
-        const pkgName = require(path.join(pkgPath, "package.json")).name;
-        workspacePackages.set(pkgName, pkgPath);
+      if (fs.statSync(pkgPath).isDirectory()) {
+        const pkgJsonPath = path.join(pkgPath, "package.json");
+        if (fs.existsSync(pkgJsonPath)) {
+          const pkgName = require(pkgJsonPath).name;
+          workspacePackages.set(pkgName, pkgPath);
+        }
       }
     } catch (err) {
-      // Skip directories without a package.json
+      console.warn(
+        `Warning: Error processing package path ${pattern}: ${err.message}`,
+      );
     }
   }
 });
