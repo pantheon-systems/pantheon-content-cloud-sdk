@@ -22,7 +22,6 @@ interface ArticleTileData {
   image: string | null;
   title: string;
   slug: string | null;
-  description: string | null;
 }
 
 type NavigationTileProps = {
@@ -65,11 +64,6 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
           <h1 className="mb-3 text-xl font-semibold leading-7">
             {article.title}
           </h1>
-          {article.description ? (
-            <p className="line-clamp-3 text-gray-600">
-              {article.description}
-            </p>
-          ) : null}
         </div>
         <Link
           href={targetHref}
@@ -183,22 +177,15 @@ const TileNavigation = ({ documentIds }: Props) => {
     },
   );
 
+  // If there are no document IDs, return nothing
   if (validDocIds.length < 1) {
-    return (
-      <div className="p-4">
-        Error: TileNavigation requires at least 1 document ID
-      </div>
-    );
+    return null;
   }
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {validDocIds.map((id) => (
-          <div key={id} className="rounded-xl border p-4 shadow-md">
-            Loading article...
-          </div>
-        ))}
+      <div className="flex h-40 w-full items-center justify-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"></div>
       </div>
     );
   }
