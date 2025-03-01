@@ -39,17 +39,15 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
     <div
       className={cn(
         "group flex h-full flex-col overflow-clip rounded-xl shadow-lg ring-1 ring-gray-300/50",
-        isWide
-          ? "sm:col-span-2 sm:flex-row 2xl:col-span-1 2xl:flex-col 2xl:only:col-span-2 2xl:only:flex-row"
-          : "",
+        isWide ? "sm:flex-row" : "",
       )}
     >
       <div
         className={cn(
-          "aspect-video w-full flex-shrink-0 overflow-hidden sm:h-[196px]",
+          "aspect-video w-full flex-shrink-0 overflow-hidden",
           isWide
-            ? "sm:h-full sm:max-w-[49%] 2xl:h-[196px] 2xl:max-w-[100%] 2xl:group-only:h-full 2xl:group-only:max-w-[49%]"
-            : "max-w-[100%]",
+            ? "sm:h-full sm:w-[200px] sm:max-w-[200px]"
+            : "",
         )}
       >
         <TileCoverImage
@@ -59,8 +57,8 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
       </div>
       <div
         className={cn(
-          "flex flex-grow flex-col justify-between p-8",
-          isWide && "sm:py-24 2xl:py-8 2xl:group-only:py-24",
+          "flex flex-grow flex-col justify-between p-6",
+          isWide && "sm:p-6",
         )}
       >
         <div>
@@ -68,14 +66,14 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
             {article.title}
           </h1>
           {article.description ? (
-            <p className="line-clamp-3 min-h-[4.5rem] text-gray-600">
+            <p className="line-clamp-3 text-gray-600">
               {article.description}
             </p>
           ) : null}
         </div>
         <Link
           href={targetHref}
-          className="mt-8 font-medium text-blue-600 hover:text-blue-800"
+          className="mt-4 font-medium text-blue-600 hover:text-blue-800"
         >
           Read more →
         </Link>
@@ -195,7 +193,7 @@ const TileNavigation = ({ documentIds }: Props) => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {validDocIds.map((id) => (
           <div key={id} className="rounded-xl border p-4 shadow-md">
             Loading article...
@@ -213,7 +211,7 @@ const TileNavigation = ({ documentIds }: Props) => {
     );
   }
 
-  // Add 3 copies of the first article to the end of the array
+  // Add copies of the first article to the end of the array if needed
   const extendedData = [
     ...data?.data,
     ...data?.data,
@@ -221,10 +219,21 @@ const TileNavigation = ({ documentIds }: Props) => {
     // ...data?.data,
   ];
 
+  // If there's only one article, make it take up the full width with horizontal layout
+  if (extendedData?.length === 1) {
+    return (
+      <div className="w-full">
+        <NavigationTile article={extendedData[0]} isWide={true} />
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
       {extendedData?.map((article: ArticleTileData) => (
-        <NavigationTile key={article.id} article={article} />
+        <div key={article.id}>
+          <NavigationTile article={article} isWide={false} />
+        </div>
       ))}
     </div>
   );
