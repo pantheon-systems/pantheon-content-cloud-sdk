@@ -21,7 +21,7 @@ interface ArticleTileData {
   id: string;
   image: string | null;
   title: string;
-  slug: string | null;
+  url: string;
 }
 
 type NavigationTileProps = {
@@ -31,9 +31,6 @@ type NavigationTileProps = {
 
 // Component to display a single article tile
 function NavigationTile({ article, isWide = true }: NavigationTileProps) {
-  // Use the article id to construct a simple URL
-  const targetHref = `/articles/${article.slug ? article.slug : article.id}`;
-
   return (
     <div
       className={cn(
@@ -44,9 +41,7 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
       <div
         className={cn(
           "aspect-video w-full flex-shrink-0 overflow-hidden",
-          isWide
-            ? "sm:h-full sm:w-[200px] sm:max-w-[200px]"
-            : "",
+          isWide ? "sm:h-full sm:w-[200px] sm:max-w-[200px]" : "",
         )}
       >
         <TileCoverImage
@@ -66,7 +61,7 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
           </h1>
         </div>
         <Link
-          href={targetHref}
+          href={article.url}
           className="mt-4 font-medium text-blue-600 hover:text-blue-800"
         >
           Read more →
@@ -158,7 +153,6 @@ const fetcher = async (url: string, ids: string[]) => {
 };
 
 const TileNavigation = ({ documentIds }: Props) => {
-  console.log("documentIds", documentIds);
   // Safely extract document IDs, handling different possible formats
   const docIds = getDocIDsFromPros(documentIds);
 
@@ -216,7 +210,7 @@ const TileNavigation = ({ documentIds }: Props) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+    <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
       {extendedData?.map((article: ArticleTileData) => (
         <div key={article.id}>
           <NavigationTile article={article} isWide={false} />
