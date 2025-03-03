@@ -86,6 +86,9 @@ class PCCArticle extends HTMLElement {
     this.previousArticleFingerprint = (
       await fingerprintArticleData(article)
     )?.toString();
+    console.log({
+      previousArticleFingerprint: this.previousArticleFingerprint,
+    });
 
     if (!article) {
       throw new Error("Article not found");
@@ -123,6 +126,7 @@ If you did not mean to preview this document, set the 'publishing-level' attribu
           const article = update.data.article;
           fingerprintArticleData(article)
             .then((newFingerprint) => {
+              console.log({ newFingerprint });
               if (newFingerprint === this.previousArticleFingerprint) {
                 return;
               }
