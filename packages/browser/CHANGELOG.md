@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- d8f826f: Do not re-render articles from Browser SDK if the article data hasn't changed
+  since previous GQL subscription update.
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+
 ## 3.11.0
 
 ### Patch Changes

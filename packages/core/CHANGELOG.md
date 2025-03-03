@@ -1,5 +1,17 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- 548a31f: - Tries to fetch the site info from pantheon client rather than
+  convenience functions in pantheon-api.ts
+  - If the client is not defined or if pcc grant is used to initialize the
+    client, we dont fetch the site.
+  - If the site is not fetched, the path computed for an article is just
+    basepath/slug-or-id
+
 ## 3.11.0
 
 ### Minor Changes
