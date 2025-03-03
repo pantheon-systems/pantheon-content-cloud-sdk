@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- c553b94: Fix a bug with the new article data fingerprint hash.
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+
 ## 3.11.1-beta.0
 
 ### Patch Changes
