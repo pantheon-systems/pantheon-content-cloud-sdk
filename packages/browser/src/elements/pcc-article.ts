@@ -5,8 +5,25 @@ import {
   PublishingLevel,
 } from "@pantheon-systems/pcc-sdk-core";
 import { RendererConfig, renderArticleToElement } from "./renderer";
+import { digestMessage } from "../crypto";
+
+async function fingerprintArticleData(article: Article | null) {
+  if (article == null) return null;
+
+  return (
+    await digestMessage(
+      JSON.stringify({
+        ...article,
+        previewActiveUntil: null,
+        updatedAt: null,
+      }),
+    )
+  ).toString();
+}
 
 class PCCArticle extends HTMLElement {
+  private previousArticleFingerprint: string | null | undefined;
+
   constructor() {
     super();
   }
@@ -66,6 +83,10 @@ class PCCArticle extends HTMLElement {
       },
     );
 
+    this.previousArticleFingerprint = (
+      await fingerprintArticleData(article)
+    )?.toString();
+
     if (!article) {
       throw new Error("Article not found");
     }
@@ -100,7 +121,16 @@ If you did not mean to preview this document, set the 'publishing-level' attribu
           if (!update.data) return;
 
           const article = update.data.article;
-          renderArticleToElement(article, this, config);
+          fingerprintArticleData(article)
+            .then((newFingerprint) => {
+              if (newFingerprint === this.previousArticleFingerprint) {
+                return;
+              }
+
+              this.previousArticleFingerprint = newFingerprint;
+              renderArticleToElement(article, this, config);
+            })
+            .catch(console.error);
         },
       });
     }
