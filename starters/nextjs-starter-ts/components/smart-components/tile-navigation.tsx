@@ -62,7 +62,7 @@ function NavigationTile({ article, isWide = true }: NavigationTileProps) {
         </div>
         <Link
           href={article.url}
-          className="mt-4 font-medium text-blue-600 hover:text-blue-800"
+          className="mt-4 font-medium text-black hover:text-gray-600"
         >
           Read more →
         </Link>
@@ -170,8 +170,8 @@ const TileNavigation = ({ documentIds }: Props) => {
   // Safely extract document IDs, handling different possible formats
   const docIds = getDocIDsFromProps(documentIds);
 
-  // Validate documentIds (min 1, max 5)
-  const validDocIds = docIds.slice(0, 5);
+  // Validate documentIds (min 1, max 10)
+  const validDocIds = docIds.slice(0, 10);
 
   // Use SWR to fetch article data - moved before conditional returns
   const { data, error, isLoading } = useSWR(
@@ -217,8 +217,8 @@ const TileNavigation = ({ documentIds }: Props) => {
 
   return (
     <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
-      {data?.data?.map((article: ArticleTileData) => (
-        <div key={article.id}>
+      {data?.data?.map((article: ArticleTileData, index: number) => (
+        <div key={`article-${article.id}-${index}`}>
           <NavigationTile article={article} isWide={false} />
         </div>
       ))}
