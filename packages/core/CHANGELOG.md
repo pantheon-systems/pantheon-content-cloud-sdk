@@ -1,5 +1,7 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.11.1-beta.2
+
 ## 3.11.1-beta.1
 
 ## 3.11.1-beta.0

@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-react-sdk@3.11.1-beta.2
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
 ## 3.11.1-beta.1
 
 ### Patch Changes

@@ -1,23 +1,24 @@
 {
-  "mode": "exit",
+  "mode": "pre",
   "tag": "beta",
   "initialVersions": {
     "eslint-config-pcc-custom": "1.0.0",
     "testpages": "0.1.0",
-    "@pantheon-systems/pcc-browser-sdk": "3.11.0",
-    "@pantheon-systems/pcc-cli": "3.11.0",
-    "@pantheon-systems/pcc-sdk-core": "3.11.0",
-    "@pantheon-systems/pcc-react-sample-library": "3.11.0",
-    "@pantheon-systems/pcc-react-sdk": "3.11.0",
-    "@pantheon-systems/pcc-vue-sdk": "3.11.0",
+    "@pantheon-systems/pcc-browser-sdk": "3.11.1-beta.1",
+    "@pantheon-systems/pcc-cli": "3.11.1-beta.1",
+    "@pantheon-systems/pcc-sdk-core": "3.11.1-beta.1",
+    "@pantheon-systems/pcc-react-sample-library": "3.11.1-beta.1",
+    "@pantheon-systems/pcc-react-sdk": "3.11.1-beta.1",
+    "@pantheon-systems/pcc-vue-sdk": "3.11.1-beta.1",
     "@pantheon-systems/next-pcc-starter": "1.0.0",
-    "@pantheon-systems/next-approuter-pcc-starter-ts": "1.2.0",
+    "@pantheon-systems/next-approuter-pcc-starter-ts": "1.2.1-beta.0",
     "@pantheon-systems/next-pcc-starter-ts": "1.0.0"
   },
   "changesets": [
     "modern-hounds-joke",
     "ripe-socks-fetch",
     "salty-cups-mate",
+    "tall-things-repair",
     "twenty-gifts-agree"
   ]
 }
