@@ -91,13 +91,13 @@ function TileCoverImage({
   );
 }
 
-function getDocIDsFromPros(documentIds: Props["documentIds"]): string[] {
-  // Safely extract document IDs, handling different possible formats
-  let docIds: string[] = [];
+function getDocIDsFromProps(documentIds: Props["documentIds"]): string[] {
+  // Safely extract document links or IDs, handling different possible formats
+  let docLinksOrIDs: string[] = [];
 
   if (Array.isArray(documentIds)) {
     // If documentIds is already an array
-    docIds = documentIds
+    docLinksOrIDs = documentIds
       .map((doc) => {
         if (typeof doc === "string") return doc;
         if (doc && typeof doc === "object" && "item" in doc)
@@ -109,12 +109,12 @@ function getDocIDsFromPros(documentIds: Props["documentIds"]): string[] {
     // If documentIds is an object (but not array)
     if ("item" in documentIds) {
       // If it's a single item object
-      docIds = [String(documentIds.item)];
+      docLinksOrIDs = [String(documentIds.item)];
     } else {
       // Try to convert object to array if possible
       try {
         const values = Object.values(documentIds);
-        docIds = values
+        docLinksOrIDs = values
           .map((val) => {
             if (typeof val === "string") return val;
             if (val && typeof val === "object" && "item" in val)
@@ -128,8 +128,22 @@ function getDocIDsFromPros(documentIds: Props["documentIds"]): string[] {
     }
   } else if (typeof documentIds === "string") {
     // If it's a single string
-    docIds = [documentIds];
+    docLinksOrIDs = [documentIds];
   }
+
+  // The docLinks contains the GDoc links of the docs.
+  // So if it has the strucutre of https://docs.google.com/document/d/<docId>/*
+  // We need to extract the <docId> and use that to fetch the article data.
+  const docIds = docLinksOrIDs
+    .map((linkOrDocID) => {
+      const match = linkOrDocID.match(
+        /https:\/\/docs\.google\.com\/document\/d\/(.*)\//,
+      );
+      // If there is a match, return the <docId>
+      // Otherwise, return the linkOrDocID, with the assumption that it is already the <docId>
+      return match ? match[1] : linkOrDocID;
+    })
+    .filter(Boolean);
 
   return docIds;
 }
@@ -154,7 +168,7 @@ const fetcher = async (url: string, ids: string[]) => {
 
 const TileNavigation = ({ documentIds }: Props) => {
   // Safely extract document IDs, handling different possible formats
-  const docIds = getDocIDsFromPros(documentIds);
+  const docIds = getDocIDsFromProps(documentIds);
 
   // Validate documentIds (min 1, max 5)
   const validDocIds = docIds.slice(0, 5);
@@ -192,26 +206,18 @@ const TileNavigation = ({ documentIds }: Props) => {
     );
   }
 
-  // Add copies of the first article to the end of the array if needed
-  const extendedData = [
-    ...data?.data,
-    ...data?.data,
-    // ...data?.data,
-    // ...data?.data,
-  ];
-
   // If there's only one article, make it take up the full width with horizontal layout
-  if (extendedData?.length === 1) {
+  if (data?.data?.length === 1) {
     return (
       <div className="w-full">
-        <NavigationTile article={extendedData[0]} isWide={true} />
+        <NavigationTile article={data?.data[0]} isWide={true} />
       </div>
     );
   }
 
   return (
     <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
-      {extendedData?.map((article: ArticleTileData) => (
+      {data?.data?.map((article: ArticleTileData) => (
         <div key={article.id}>
           <NavigationTile article={article} isWide={false} />
         </div>

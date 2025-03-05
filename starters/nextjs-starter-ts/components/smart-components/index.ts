@@ -86,17 +86,10 @@ export const serverSmartComponentMap = {
     iconUrl: null,
     fields: {
       documentIds: {
-        displayName: "Document IDs",
+        displayName: "Document Links or IDs",
         required: true,
-        type: "object",
+        type: "string",
         multiple: true,
-        fields: {
-          item: {
-            type: "string",
-            displayName: "Document ID",
-            required: true,
-          },
-        },
       },
     },
   },
