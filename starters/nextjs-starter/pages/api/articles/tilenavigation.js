@@ -57,7 +57,11 @@ export default async function handler(req, res) {
               "PRODUCTION",
             );
           } catch (error) {
-            console.error(`Error fetching article with ID ${id}:`, error);
+            const sanitizedId = id.replace(/\n|\r/g, "");
+            console.error(
+              `Error fetching article with ID ${sanitizedId}:`,
+              error,
+            );
             return null;
           }
         }),

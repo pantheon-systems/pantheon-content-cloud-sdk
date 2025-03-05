@@ -51,7 +51,11 @@ export async function GET(request: NextRequest) {
           try {
             return await PCCConvenienceFunctions.getArticleBySlugOrId(id, "PRODUCTION");
           } catch (error) {
-            console.error(`Error fetching article with ID ${id}:`, error);
+            const sanitizedId = id.replace(/\n|\r/g, "");
+            console.error(
+              `Error fetching article with ID ${sanitizedId}:`,
+              error,
+            );
             return null;
           }
         }),
