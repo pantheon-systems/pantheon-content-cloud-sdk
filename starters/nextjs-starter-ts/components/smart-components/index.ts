@@ -3,7 +3,6 @@ import {
   SmartComponentMap,
 } from "@pantheon-systems/pcc-react-sdk/components";
 import { withSmartComponentErrorBoundary } from "./error-boundary";
-import InfoCard from "./info-card";
 import LeadCapture from "./lead-capture";
 import MediaPreview from "./media-preview";
 import TileNavigation from "./tile-navigation";
@@ -51,36 +50,6 @@ export const serverSmartComponentMap = {
       },
     },
   },
-  INFO_CARD: {
-    title: "Info Card",
-    iconUrl: null,
-    fields: {
-      title: {
-        displayName: "Title",
-        required: true,
-        type: "string",
-      },
-      body: {
-        displayName: "Body Text",
-        required: true,
-        type: "string",
-      },
-      icon: {
-        displayName: "Icon",
-        required: false,
-        type: "enum",
-        options: ["info", "warning", "success", "error", "tip"],
-        defaultValue: "info",
-      },
-      theme: {
-        displayName: "Theme",
-        required: false,
-        type: "enum",
-        options: ["primary", "secondary", "info", "warning"],
-        defaultValue: "primary",
-      },
-    },
-  },
   TILE_NAVIGATION: {
     title: "Tile Navigation",
     iconUrl: null,
@@ -103,10 +72,6 @@ export const clientSmartComponentMap: SmartComponentMap = {
   LEAD_CAPTURE: {
     ...serverSmartComponentMap.LEAD_CAPTURE,
     reactComponent: withSmartComponentErrorBoundary(LeadCapture),
-  },
-  INFO_CARD: {
-    ...serverSmartComponentMap.INFO_CARD,
-    reactComponent: withSmartComponentErrorBoundary(InfoCard),
   },
   TILE_NAVIGATION: {
     ...serverSmartComponentMap.TILE_NAVIGATION,
