@@ -53,7 +53,8 @@ export async function GET(request: NextRequest) {
           } catch (error) {
             const sanitizedId = id.replace(/\n|\r/g, "");
             console.error(
-              `Error fetching article with ID ${sanitizedId}:`,
+              "Error fetching article with ID %s:",
+              sanitizedId,
               error,
             );
             return null;
