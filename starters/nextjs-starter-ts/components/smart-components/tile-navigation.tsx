@@ -209,19 +209,23 @@ const TileNavigation = ({ documentIds }: Props) => {
   // If there's only one article, make it take up the full width with horizontal layout
   if (data?.data?.length === 1) {
     return (
-      <div className="w-full">
+      <div className="w-4/5 mx-auto">
         <NavigationTile article={data?.data[0]} isWide={true} />
       </div>
     );
   }
 
   return (
-    <div className="grid w-full grid-cols-1 gap-8 md:grid-cols-2">
-      {data?.data?.map((article: ArticleTileData, index: number) => (
-        <div key={`article-${article.id}-${index}`}>
-          <NavigationTile article={article} isWide={false} />
-        </div>
-      ))}
+    <div className="container mx-auto">
+      <div className="grid w-4/5 grid-cols-1 gap-8 mx-auto md:grid-cols-2">
+        {data?.data?.map((article: ArticleTileData, index: number) => (
+            <NavigationTile
+              key={`article-${article.id}-${index}`}
+              article={article}
+              isWide={false}
+            />
+        ))}
+      </div>
     </div>
   );
 };
