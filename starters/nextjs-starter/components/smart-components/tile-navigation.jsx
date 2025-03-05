@@ -1,99 +1,12 @@
-import { Article } from "@pantheon-systems/pcc-react-sdk/*";
 import Link from "next/link";
 import useSWR from "swr";
 import { cn } from "../../lib/utils";
 
 // Interface to match the structure defined in smart component map
-interface DocumentIdItem {
-  item: string;
-}
-
-interface Props {
-  documentIds:
-    | DocumentIdItem[]
-    | DocumentIdItem
-    | Record<string, DocumentIdItem | string>
-    | string[]
-    | string;
-}
-
-interface ArticleTileData {
-  id: string;
-  image: string | null;
-  title: string;
-  url: string;
-}
-
-type NavigationTileProps = {
-  article: ArticleTileData;
-  isWide?: boolean;
-};
-
-// Component to display a single article tile
-function NavigationTile({ article, isWide = true }: NavigationTileProps) {
-  return (
-    <div
-      className={cn(
-        "group flex h-full flex-col overflow-clip rounded-xl shadow-lg ring-1 ring-gray-300/50",
-        isWide ? "sm:flex-row" : "",
-      )}
-    >
-      <div
-        className={cn(
-          "aspect-video w-full flex-shrink-0 overflow-hidden",
-          isWide ? "sm:h-full sm:w-[200px] sm:max-w-[200px]" : "",
-        )}
-      >
-        <TileCoverImage
-          imageSrc={article.image}
-          imageAltText={`Cover image for ${article.title}`}
-        />
-      </div>
-      <div
-        className={cn(
-          "flex flex-grow flex-col justify-between p-6",
-          isWide && "sm:p-6",
-        )}
-      >
-        <div>
-          <h1 className="mb-3 text-xl font-semibold leading-7">
-            {article.title}
-          </h1>
-        </div>
-        <Link
-          href={article.url}
-          className="mt-4 font-medium text-black hover:text-gray-600"
-        >
-          Read more →
-        </Link>
-      </div>
-    </div>
-  );
-}
-
-// Simple component for placeholder images
-function TileCoverImage({
-  imageSrc,
-  imageAltText,
-}: {
-  imageSrc: string | null | undefined;
-  imageAltText?: string | undefined;
-}) {
-  return imageSrc != null ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={imageSrc}
-      alt={imageAltText}
-      className="h-full w-full object-cover"
-    />
-  ) : (
-    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
-  );
-}
-
-function getDocIDsFromProps(documentIds: Props["documentIds"]): string[] {
+// When using for items
+const getDocIDsFromProps = (documentIds) => {
   // Safely extract document links or IDs, handling different possible formats
-  let docLinksOrIDs: string[] = [];
+  let docLinksOrIDs = [];
 
   if (Array.isArray(documentIds)) {
     // If documentIds is already an array
@@ -146,10 +59,69 @@ function getDocIDsFromProps(documentIds: Props["documentIds"]): string[] {
     .filter(Boolean);
 
   return docIds;
+};
+
+// Component to display a single article tile
+function NavigationTile({ article, isWide = true }) {
+  return (
+    <div
+      className={cn(
+        "group flex h-full flex-col overflow-clip rounded-xl shadow-lg ring-1 ring-gray-300/50",
+        isWide ? "sm:flex-row" : "",
+      )}
+    >
+      <div
+        className={cn(
+          "aspect-video w-full flex-shrink-0 overflow-hidden",
+          isWide ? "sm:h-full sm:w-[200px] sm:max-w-[200px]" : "",
+        )}
+      >
+        <TileCoverImage
+          imageSrc={article.image}
+          imageAltText={`Cover image for ${article.title}`}
+        />
+      </div>
+      <div
+        className={cn(
+          "flex flex-grow flex-col justify-between p-6",
+          isWide && "sm:p-6",
+        )}
+      >
+        <div>
+          <h1 className="mb-3 text-xl font-semibold leading-7">
+            {article.title}
+          </h1>
+        </div>
+        <Link
+          href={article.url}
+          className="mt-4 font-medium text-black hover:text-gray-600"
+        >
+          Read more →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// Simple component for placeholder images
+function TileCoverImage({
+  imageSrc,
+  imageAltText,
+}) {
+  return imageSrc != null ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={imageSrc}
+      alt={imageAltText}
+      className="h-full w-full object-cover"
+    />
+  ) : (
+    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+  );
 }
 
 // Fetcher function for SWR
-const fetcher = async (url: string, ids: string[]) => {
+const fetcher = async (url, ids) => {
   // Add the document IDs to the URL as query parameters
   const queryParams = new URLSearchParams();
   queryParams.append("documentIds", ids.join(","));
@@ -166,7 +138,7 @@ const fetcher = async (url: string, ids: string[]) => {
   return response.json();
 };
 
-const TileNavigation = ({ documentIds }: Props) => {
+const TileNavigation = ({ documentIds }) => {
   // Safely extract document IDs, handling different possible formats
   const docIds = getDocIDsFromProps(documentIds);
 
@@ -218,7 +190,7 @@ const TileNavigation = ({ documentIds }: Props) => {
   return (
     <div className="container mx-auto">
       <div className="grid w-4/5 grid-cols-1 gap-8 mx-auto md:grid-cols-2">
-        {data?.data?.map((article: ArticleTileData, index: number) => (
+        {data?.data?.map((article, index) => (
             <NavigationTile
               key={`article-${article.id}-${index}`}
               article={article}
