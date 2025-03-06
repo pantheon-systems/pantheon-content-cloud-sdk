@@ -17,8 +17,6 @@
   "baseBranch": "main",
   "ignore": [
     "testpages",
-    "gatsby-pcc-starter",
-    "gatsby-pcc-starter-ts",
     "@pantheon-systems/next-pcc-starter",
     "@pantheon-systems/next-pcc-starter-ts"
   ]
