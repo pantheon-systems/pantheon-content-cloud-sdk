@@ -1,5 +1,35 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.11.1
+
+### Patch Changes
+
+- b75afed: Fix lodash import.
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1
+
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- Fix lodash import.
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+
 ## 3.11.0
 
 ### Minor Changes
