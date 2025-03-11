@@ -1,5 +1,13 @@
 # @pantheon-systems/next-pcc-starter
 
+## 1.2.2
+
+### Patch Changes
+
+- b8be0ac: Have the option to accept multiple values for any smart-component
+  field values
+  - @pantheon-systems/pcc-react-sdk@3.11.2
+
 ## 1.2.1
 
 ### Patch Changes

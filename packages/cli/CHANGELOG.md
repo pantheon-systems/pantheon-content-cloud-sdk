@@ -1,5 +1,14 @@
 # @pantheon-systems/pcc-cli
 
+## 3.11.2
+
+### Patch Changes
+
+- b8be0ac: Have the option to accept multiple values for any smart-component
+  field values
+- Updated dependencies [b8be0ac]
+  - @pantheon-systems/pcc-sdk-core@3.11.2
+
 ## 3.11.1
 
 ### Patch Changes
