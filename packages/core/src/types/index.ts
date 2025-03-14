@@ -152,7 +152,17 @@ const baseFieldSchema = z.object({
   type: fieldTypes,
   displayName: z.string(),
   required: z.boolean(),
-  defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional(),
+  defaultValue: z
+    .union([
+      z.string(),
+      z.number(),
+      z.boolean(),
+      z.array(z.string()),
+      z.array(z.number()),
+      z.array(z.boolean()),
+    ])
+    .optional(),
+  multiple: z.boolean().optional(),
 });
 
 const optionsSchema = z.array(
@@ -175,7 +185,6 @@ const enumFieldSchema = baseFieldSchema.merge(
 const objectFieldSchema = baseFieldSchema.merge(
   z.object({
     type: z.literal("object"),
-    multiple: z.boolean().optional(),
     fields: z.union([
       z.record(z.string(), baseFieldSchema),
       z.record(z.string(), baseFieldSchema).readonly(),
