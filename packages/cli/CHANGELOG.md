@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-cli
 
+## 3.11.3
+
+### Patch Changes
+
+- Update staging oauth client id
+  - @pantheon-systems/pcc-sdk-core@3.11.3
+
 ## 3.11.2
 
 ### Patch Changes
