@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@playwright/test": "^1.49.1",
-    "@pantheon-systems/pcc-react-sdk": "~3.11.0",
+    "@pantheon-systems/pcc-react-sdk": "~3.11.2",
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/typography": "0.5.10",
