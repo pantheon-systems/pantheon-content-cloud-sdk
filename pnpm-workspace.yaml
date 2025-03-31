@@ -1,5 +1,7 @@
 packages:
   - packages/*
-  - starters/*
   - configs/*
   - local_testing/*
+  - starters/nextjs-starter
+  - starters/nextjs-starter-ts
+  - starters/nextjs-starter-approuter-ts

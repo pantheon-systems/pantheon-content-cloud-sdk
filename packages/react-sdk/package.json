@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "3.11.0",
+  "version": "3.11.3",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -67,6 +67,7 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@types/jest": "29.5.1",
+    "@types/lodash": "^4.17.15",
     "@types/node": "^20.11.21",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

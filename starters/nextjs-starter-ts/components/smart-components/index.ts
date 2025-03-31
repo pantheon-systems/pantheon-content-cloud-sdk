@@ -5,6 +5,7 @@ import {
 import { withSmartComponentErrorBoundary } from "./error-boundary";
 import LeadCapture from "./lead-capture";
 import MediaPreview from "./media-preview";
+import TileNavigation from "./tile-navigation";
 
 export const serverSmartComponentMap = {
   LEAD_CAPTURE: {
@@ -49,6 +50,18 @@ export const serverSmartComponentMap = {
       },
     },
   },
+  TILE_NAVIGATION: {
+    title: "Tile Navigation",
+    iconUrl: null,
+    fields: {
+      documentIds: {
+        displayName: "Document Links or IDs",
+        required: true,
+        type: "string",
+        multiple: true,
+      },
+    },
+  },
 } satisfies ServersideSmartComponentMap;
 
 export const clientSmartComponentMap: SmartComponentMap = {
@@ -59,5 +72,9 @@ export const clientSmartComponentMap: SmartComponentMap = {
   LEAD_CAPTURE: {
     ...serverSmartComponentMap.LEAD_CAPTURE,
     reactComponent: withSmartComponentErrorBoundary(LeadCapture),
+  },
+  TILE_NAVIGATION: {
+    ...serverSmartComponentMap.TILE_NAVIGATION,
+    reactComponent: withSmartComponentErrorBoundary(TileNavigation),
   },
 };

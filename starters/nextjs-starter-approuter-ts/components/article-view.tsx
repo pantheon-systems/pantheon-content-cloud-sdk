@@ -2,11 +2,7 @@
 
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
-import {
-  ArticleRenderer,
-  useArticleTitle,
-} from "@pantheon-systems/pcc-react-sdk/components";
-import { Metadata } from "next";
+import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -60,69 +56,61 @@ type ArticleViewProps = {
 
 const ArticleHeader = ({
   article,
-  articleTitle,
   seoMetadata,
 }: {
   article: Article;
-  articleTitle: string;
-  seoMetadata: Metadata;
+  seoMetadata: ReturnType<typeof getSeoMetadata>;
 }) => {
   const author = Array.isArray(seoMetadata.authors)
     ? seoMetadata.authors[0]
     : seoMetadata.authors;
 
+  if (!author?.name && !article.updatedAt) return null;
+
   return (
-    <div>
-      <div className="text-5xl font-bold">{articleTitle}</div>
-      <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
-        {author?.name ? (
-          <>
-            <div>
-              <Link
-                data-testid="author"
-                className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
-                href={`/authors/${author?.name}`}
-              >
-                <div>
-                  <Image
-                    className="m-0 rounded-full"
-                    src="/images/no-avatar.png"
-                    width={24}
-                    height={24}
-                    alt={`Avatar of ${author?.name}`}
-                  />
-                </div>
-                <div className="underline">{author?.name}</div>
-              </Link>
-            </div>
-            <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
-          </>
-        ) : null}
-        {article.updatedAt ? (
-          <span>
-            {new Date(article.updatedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
-        ) : null}
-      </div>
+    <div className="border-b-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-b-[1px] py-4">
+      {author?.name ? (
+        <>
+          <div>
+            <Link
+              data-testid="author"
+              className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
+              href={`/authors/${author?.name}`}
+            >
+              <div>
+                <Image
+                  className="m-0 rounded-full"
+                  src="/images/no-avatar.png"
+                  width={24}
+                  height={24}
+                  alt={`Avatar of ${author?.name}`}
+                />
+              </div>
+              <div className="underline">{author?.name}</div>
+            </Link>
+          </div>
+          <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
+        </>
+      ) : null}
+      {article.updatedAt ? (
+        <span>
+          {new Date(article.updatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </span>
+      ) : null}
     </div>
   );
 };
 
 export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
-  const articleTitle = useArticleTitle(article);
   const seoMetadata = getSeoMetadata(article);
 
   return (
-    <>
-      <ArticleHeader
-        article={article}
-        articleTitle={articleTitle || ""}
-        seoMetadata={seoMetadata}
-      />
+    <div className="px-8 lg:px-4">
+      <ArticleHeader article={article} seoMetadata={seoMetadata} />
       <ArticleRenderer
         article={article}
         componentMap={componentOverrideMap}
@@ -149,7 +137,7 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             ))
           : null}
       </div>
-    </>
+    </div>
   );
 }
 
