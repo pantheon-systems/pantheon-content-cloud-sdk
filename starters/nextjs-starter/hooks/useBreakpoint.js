@@ -12,7 +12,9 @@ export function useBreakpoint(breakpointKey) {
   });
   const capitalizedKey =
     breakpointKey[0].toUpperCase() + breakpointKey.substring(1);
-  return {
+  const returnValue = {
     [`is${capitalizedKey}`]: bool,
   };
+  // Returned separately only to avoid Codacy false positive about unnecessary blocks.
+  return returnValue;
 }
