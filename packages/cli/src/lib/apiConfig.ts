@@ -23,7 +23,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.staging]: {
-    addOnApiEndpoint: "https://addonapi-142470191541.us-central1.run.app",
+    addOnApiEndpoint: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     googleClientId:
       "142470191541-bmomms4luuhoc68g903rscgr9qa3150b.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",

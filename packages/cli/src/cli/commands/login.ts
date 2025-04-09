@@ -18,7 +18,10 @@ import { errorHandler } from "../exceptions";
 
 nunjucks.configure({ autoescape: true });
 
-const OAUTH_SCOPES = ["https://www.googleapis.com/auth/userinfo.email"];
+const OAUTH_SCOPES = [
+  "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/drive.file",
+];
 
 function login(extraScopes: string[]): Promise<void> {
   return new Promise(
