@@ -34,7 +34,7 @@ export default function ArticleList({
   site,
 }: Props) {
   const [allArticles, setAllArticles] = useState(articles);
-  const [thecursor, setThecursor] = useState(cursor);
+  const [pageCursor, setPageCursor] = useState(cursor);
   const [isLoading, setIsLoading] = useState(false);
 
   const { isLg } = useBreakpoint("lg");
@@ -71,12 +71,14 @@ export default function ArticleList({
       <InfiniteScroll
         dataLength={allArticles.length}
         next={() => {
-          console.log("start loading");
           setIsLoading(true);
-          fetcher(thecursor)
+          fetcher(pageCursor)
             .then(({ data, newCursor }) => {
-              setAllArticles((v) => [...v, ...data] as any[]);
-              setThecursor(newCursor);
+              if (data?.length) {
+                setAllArticles((v) => [...v, ...data] as any[]);
+              }
+
+              setPageCursor(newCursor);
             })
             .catch(console.error)
             .finally(() => {
