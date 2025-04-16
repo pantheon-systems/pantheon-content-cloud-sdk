@@ -26,6 +26,12 @@ export default function ExamplesPageTemplate() {
               Pantheon. This example is provided for cases where Next.js static
               generation options would be beneficial.
             </li>
+            <li>
+              <Link href="/examples/pagination">Pagination</Link> - by default,
+              this starter kit uses infinite scrolling. This example is provided
+              for cases where you want to show more traditional pagination
+              controls.
+            </li>
             <li tabIndex={-1} className="pointer-events-none opacity-30">
               <Link href="/examples/auth-api">API Authorization</Link> -
               confirms that Next.js is able to make authenticated requests to
