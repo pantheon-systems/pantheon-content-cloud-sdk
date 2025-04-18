@@ -1,9 +1,12 @@
-import type { 
+"use client";
+
+import type {
   ArticleWithoutContent,
   Site,
 } from "@pantheon-systems/pcc-react-sdk";
 import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 import Link from "next/link";
+import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
@@ -71,7 +74,7 @@ export function ArticleGridCard({
   site,
 }: ArticleGridCardProps) {
   const targetHref = getArticleURLFromSite(article, site, basePath);
-   const imageSrc = (article.metadata?.["image"] as string) || null;
+  const imageSrc = (article.metadata?.["image"] as string) || null;
 
   return (
     <div
@@ -126,14 +129,26 @@ function GridItemCoverImage({
   imageSrc: string | null;
   imageAltText?: string | null | undefined;
 }) {
-  return imageSrc != null ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={imageSrc}
-      alt={imageAltText || undefined}
-      className="h-full w-full object-cover"
-    />
-  ) : (
-    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  return (
+    <>
+      {imageSrc != null ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageSrc}
+          alt={imageAltText || undefined}
+          onLoad={() => setHasLoaded(true)}
+          className={cn("h-full w-full object-cover", {
+            block: hasLoaded,
+            hidden: !hasLoaded,
+          })}
+        />
+      ) : null}
+
+      {imageSrc == null || !hasLoaded ? (
+        <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+      ) : null}
+    </>
   );
 }
