@@ -8,8 +8,7 @@
       "@pantheon-systems/pcc-cli",
       "@pantheon-systems/pcc-sdk-core",
       "@pantheon-systems/pcc-react-sample-library",
-      "@pantheon-systems/pcc-react-sdk",
-      "@pantheon-systems/pcc-vue-sdk"
+      "@pantheon-systems/pcc-react-sdk"
     ]
   ],
   "linked": [],
@@ -18,6 +17,8 @@
   "ignore": [
     "testpages",
     "@pantheon-systems/next-pcc-starter",
-    "@pantheon-systems/next-pcc-starter-ts"
+    "@pantheon-systems/next-pcc-starter-ts",
+    "@pantheon-systems/next-approuter-pcc-starter-ts",
+    "@pantheon-systems/pcc-vue-sdk"
   ]
 }
