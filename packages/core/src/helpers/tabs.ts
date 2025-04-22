@@ -1,4 +1,4 @@
-import { PantheonTree, PantheonTreeNode, TabTree } from "../server";
+import { PantheonTree, PantheonTreeNode, TabTree } from "../types";
 
 export function findTab<T>(
   tree: TabTree<T> | TabTree<T>[],

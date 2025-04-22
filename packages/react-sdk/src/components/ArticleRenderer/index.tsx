@@ -7,7 +7,7 @@ import {
 import { Element } from "hast";
 import React, { useEffect } from "react";
 import { getTextContent } from "../../utils/react-element";
-import { findTab } from "../../utils/tabs";
+import { findTab } from "@pantheon-systems/pcc-sdk-core/src/helpers/tabs";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 

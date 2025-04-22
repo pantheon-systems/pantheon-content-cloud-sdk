@@ -1,9 +1,14 @@
-import { type Article } from "@pantheon-systems/pcc-sdk-core";
+import {
+  flattenDocumentTabs,
+  type Article,
+} from "@pantheon-systems/pcc-sdk-core";
 import {
   PantheonTree,
   PantheonTreeNode,
+  TabTree,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
+import _ from "lodash";
 
 export type RendererConfig = {
   disableStyles?: boolean;
@@ -21,36 +26,25 @@ export function renderArticleToElement(
     );
   }
 
-  if (
-    article.contentType !== "TREE_PANTHEON" &&
-    article.contentType !== "TREE_PANTHEON_V2"
-  ) {
+  if (article.contentType !== "TREE_PANTHEON_V2") {
     throw new Error(
-      `Unsupported content type: ${article.contentType}. PCC Article only supports TREE_PANTHEON and TREE_PANTHEON_V2`,
+      `Unsupported content type: ${article.contentType}. PCC Article only supports TREE_PANTHEON_V2`,
     );
   }
 
-  // TODO: FIX THIS.
-  const content = JSON.parse(article.resolvedContent) as
+  const jsonContent = JSON.parse(article.resolvedContent) as
     | PantheonTree
-    | TreePantheonContent[];
+    | TabTree<PantheonTree>[];
 
-  // V1 content is array of TreePantheonContent
-  if (Array.isArray(content)) {
-    console.warn(
-      "Outdated content format detected. Your content may not render correctly. Please republish your article.",
-    );
-  }
-
-  const contentNodes = Array.isArray(content)
-    ? content
-    : content.children || [];
+  const content: Array<PantheonTreeNode> = Array.isArray(jsonContent)
+    ? _.flatMap(jsonContent, flattenDocumentTabs)
+    : jsonContent.children;
 
   // Parent node to be added to the DOM
   const documentNode = document.createElement("div");
 
   // Add PCC content to the document node
-  contentNodes.forEach((node) => {
+  content.forEach((node) => {
     const contentNode = renderContentNode(node, config);
     contentNode && documentNode.appendChild(contentNode);
   });

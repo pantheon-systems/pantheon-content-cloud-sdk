@@ -18,8 +18,9 @@ export {
   updateConfig,
   GQL,
   getSite,
+  findTab,
+  flattenDocumentTabs,
 } from "@pantheon-systems/pcc-sdk-core";
 export * from "@pantheon-systems/pcc-sdk-core/types";
 
 export { NextPantheonAPI as PantheonAPI } from "../core/pantheon-api";
-export { findTab } from "../utils/tabs";
