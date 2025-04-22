@@ -78,3 +78,11 @@ export function getSeoMetadata(article) {
     },
   };
 }
+
+export function parseAsTabTree(raw) {
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}

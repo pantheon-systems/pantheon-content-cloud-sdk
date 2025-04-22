@@ -1,14 +1,14 @@
 import {
   Article,
-  PantheonTree,
-  TreePantheonContent,
+  PantheonTreeNode,
+  TabTree,
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
 import React, { useEffect } from "react";
 import { getTextContent } from "../../utils/react-element";
+import { findTab } from "../../utils/tabs";
 import MarkdownRenderer from "./Markdown";
-import PantheonTreeRenderer from "./PantheonTreeRenderer";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
 export { getArticleTitle, useArticleTitle } from "./useArticleTitle";
@@ -42,6 +42,7 @@ export type ComponentMap = Partial<{
 
 interface Props {
   article?: Article;
+  tabId?: string | null;
   bodyClassName?: string;
   containerClassName?: string;
   headerClassName?: string;
@@ -60,8 +61,17 @@ interface Props {
   };
 }
 
+function UnboxContent(content: string) {
+  try {
+    return JSON.parse(content);
+  } catch (e) {
+    return content;
+  }
+}
+
 const ArticleRenderer = ({
   article,
+  tabId,
   bodyClassName,
   containerClassName,
   headerClassName,
@@ -79,16 +89,31 @@ const ArticleRenderer = ({
     }
   }, [__experimentalFlags]);
 
-  if (!article?.content) {
+  if (!article?.resolvedContent) {
     return null;
   }
 
   const contentType = article?.contentType;
+  const rawContent = article.resolvedContent;
+  const unboxedContent = UnboxContent(rawContent);
+  let contentToShow =
+    (tabId != null && findTab(unboxedContent, tabId)?.documentTab) ||
+    unboxedContent;
+
+  if (
+    tabId == null &&
+    typeof unboxedContent === "object" &&
+    contentToShow?.children == null
+  ) {
+    contentToShow = Array.isArray(unboxedContent)
+      ? unboxedContent[0]?.documentTab
+      : (unboxedContent as TabTree<any>)?.documentTab;
+  }
 
   if (contentType === "TEXT_MARKDOWN") {
     return (
       <div className={containerClassName}>
-        {article?.content ? (
+        {contentToShow ? (
           <MarkdownRenderer
             smartComponentMap={smartComponentMap}
             componentMap={componentMap}
@@ -96,7 +121,7 @@ const ArticleRenderer = ({
               !!__experimentalFlags?.disableDefaultErrorBoundaries
             }
           >
-            {article.content}
+            {contentToShow}
           </MarkdownRenderer>
         ) : (
           <span>No content to display</span>
@@ -105,17 +130,7 @@ const ArticleRenderer = ({
     );
   }
 
-  const content = JSON.parse(article.content) as
-    | PantheonTree
-    | TreePantheonContent[];
-
-  const renderer =
-    // V1 content is array of TreePantheonContent
-    Array.isArray(content) ? PantheonTreeRenderer : PantheonTreeV2Renderer;
-
-  const parsedContent = Array.isArray(content)
-    ? content
-    : content.children || [];
+  const parsedContent: PantheonTreeNode[] = contentToShow.children || [];
 
   let titleElement = null;
 
@@ -145,8 +160,7 @@ const ArticleRenderer = ({
   const bodyElement = (
     <div className={bodyClassName}>
       {parsedContent?.map((element, idx) =>
-        // @ts-expect-error Dynamic component props
-        React.createElement(renderer, {
+        React.createElement(PantheonTreeV2Renderer, {
           key: idx,
           element,
           smartComponentMap,

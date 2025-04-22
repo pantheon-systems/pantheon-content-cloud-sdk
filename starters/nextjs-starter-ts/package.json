@@ -37,6 +37,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "next": "^14.2.28",
+    "react-hot-toast": "^2.5.2",
     "next-seo": "^5.15.0",
     "query-string": "^8.2.0",
     "react": "18.3.1",

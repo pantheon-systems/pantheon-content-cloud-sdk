@@ -22,3 +22,4 @@ export {
 export * from "@pantheon-systems/pcc-sdk-core/types";
 
 export { NextPantheonAPI as PantheonAPI } from "../core/pantheon-api";
+export { findTab } from "../utils/tabs";

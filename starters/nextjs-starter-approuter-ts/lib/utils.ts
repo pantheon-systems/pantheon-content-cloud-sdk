@@ -1,4 +1,7 @@
-import { Article, ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+import {
+  ArticleWithoutContent,
+  TabTree,
+} from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
 import { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
@@ -79,4 +82,12 @@ export function getSeoMetadata(
       description,
     },
   };
+}
+
+export function parseAsTabTree(raw: string) {
+  try {
+    return JSON.parse(raw) as TabTree<unknown>[];
+  } catch (e) {
+    return null;
+  }
 }

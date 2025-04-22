@@ -15,7 +15,7 @@ export function renderArticleToElement(
   element: HTMLElement,
   config?: RendererConfig,
 ) {
-  if (!article.content) {
+  if (!article.resolvedContent) {
     throw new Error(
       "Article has no content. Preview or publish the article to view it here.",
     );
@@ -30,7 +30,8 @@ export function renderArticleToElement(
     );
   }
 
-  const content = JSON.parse(article.content) as
+  // TODO: FIX THIS.
+  const content = JSON.parse(article.resolvedContent) as
     | PantheonTree
     | TreePantheonContent[];
 
