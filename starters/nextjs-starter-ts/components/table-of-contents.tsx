@@ -27,7 +27,13 @@ const NavigationOption = ({
         })}
       >
         <Link
-          href={`?tabId=${tabTree.tabProperties?.tabId}`}
+          href={(() => {
+            if (typeof window === "undefined") return "#";
+
+            const params = new URLSearchParams(window.location.search);
+            params.set("tabId", tabTree.tabProperties?.tabId || "");
+            return `${window.location.pathname}?${params.toString()}`;
+          })()}
           className={clsx(
             "flex-1 no-underline decoration-neutral-800 hover:underline",
             {

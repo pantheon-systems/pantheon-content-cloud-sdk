@@ -1,3 +1,4 @@
+import { flattenDocumentTabs } from "@pantheon-systems/pcc-sdk-core";
 import {
   Article,
   PantheonTree,
@@ -7,7 +8,6 @@ import {
 } from "@pantheon-systems/pcc-sdk-core/types";
 import _ from "lodash";
 import { useMemo } from "react";
-import { flattenDocumentTabs } from "@pantheon-systems/pcc-sdk-core/src/helpers/tabs";
 
 export function getArticleTitle(article: Article | undefined): string | null {
   if (!article?.resolvedContent) {

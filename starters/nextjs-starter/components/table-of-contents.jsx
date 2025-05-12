@@ -1,14 +1,10 @@
-import { TabTree } from "@pantheon-systems/pcc-react-sdk";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import ChevronRight from "./../assets/icons/chevron-right.svg";
 
-const NavigationOption = ({
-  tabTree,
-  activeTab,
-}) => {
+const NavigationOption = ({ tabTree, activeTab }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -24,7 +20,13 @@ const NavigationOption = ({
         })}
       >
         <Link
-          href={`?tabId=${tabTree.tabProperties?.tabId}`}
+          href={(() => {
+            if (typeof window === "undefined") return "#";
+
+            const params = new URLSearchParams(window.location.search);
+            params.set("tabId", tabTree.tabProperties?.tabId || "");
+            return `${window.location.pathname}?${params.toString()}`;
+          })()}
           className={clsx(
             "flex-1 no-underline decoration-neutral-800 hover:underline",
             {
@@ -80,10 +82,7 @@ const NavigationOption = ({
   );
 };
 
-export const TableOfContents = ({
-  tabTree,
-  activeTab,
-}) => {
+export const TableOfContents = ({ tabTree, activeTab }) => {
   return (
     <div className="mt-1">
       <div className="mb-2 font-semibold text-neutral-500">

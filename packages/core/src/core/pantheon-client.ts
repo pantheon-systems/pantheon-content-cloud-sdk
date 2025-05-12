@@ -126,7 +126,7 @@ export class PantheonClient {
       }),
     ).concat(
       new HttpLink({
-        uri: `${this.host}/sites/${this.siteId}/query`,
+        uri: `${this.host}/sites/${this.siteId}/query?cb=1`,
         headers: {
           "PCC-TOKEN": this.apiKey,
         },
@@ -153,6 +153,9 @@ export class PantheonClient {
       cache: new InMemoryCache(),
       defaultOptions: {
         query: {
+          fetchPolicy: "no-cache",
+        },
+        watchQuery: {
           fetchPolicy: "no-cache",
         },
       },

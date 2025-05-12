@@ -141,7 +141,7 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             <h3 className="my-0 flex items-center gap-x-4">
               <span>{currentTab.tabProperties.title}</span>
               <Link
-                href={`?tabId=${currentTab.tabProperties.tabId}`}
+                href={window.location.href}
                 aria-label={`Link to "${currentTab.tabProperties.title}"`}
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
@@ -205,7 +205,9 @@ export default function ArticleView({
     },
   );
 
+  console.log("ArticleView", { data }, data?.article?.updatedAt);
   const hydratedArticle = data?.article ?? article;
+  console.log(hydratedArticle, hydratedArticle.updatedAt);
 
   return (
     <>

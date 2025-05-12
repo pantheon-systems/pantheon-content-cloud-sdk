@@ -1,8 +1,8 @@
 import { TabTree } from "@pantheon-systems/pcc-react-sdk";
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useMemo, useState } from "react";
 import ChevronRight from "./../assets/icons/chevron-right.svg";
 
 const NavigationOption = ({
@@ -12,7 +12,19 @@ const NavigationOption = ({
   tabTree: TabTree<unknown>;
   activeTab: string | null | undefined;
 }) => {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(true);
+  const params = useMemo(() => {
+    if (typeof window === "undefined") return null;
+
+    const params = new URLSearchParams(window.location.search);
+    params.set("tabId", tabTree.tabProperties?.tabId || "");
+    return params;
+  }, [tabTree]);
+
+  const href = useMemo(() => {
+    return params ? `${pathname}?${params.toString()}` : "#";
+  }, [pathname, params]);
 
   return (
     <div
@@ -26,8 +38,16 @@ const NavigationOption = ({
             activeTab === tabTree.tabProperties?.tabId,
         })}
       >
-        <Link
-          href={`?tabId=${tabTree.tabProperties?.tabId}`}
+        <a
+          href={href}
+          onClick={(e) => {
+            if (!params) {
+              return;
+            }
+
+            e.preventDefault();
+            window.history.replaceState(null, "", href);
+          }}
           className={clsx(
             "flex-1 no-underline decoration-neutral-800 hover:underline",
             {
@@ -46,7 +66,7 @@ const NavigationOption = ({
           >
             {tabTree.tabProperties?.title}
           </div>
-        </Link>
+        </a>
         {tabTree.childTabs?.length ? (
           <div
             onClick={() => {

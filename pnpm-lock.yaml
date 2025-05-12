@@ -20,7 +20,7 @@ overrides:
   axios: 1.8.2
   image-size: 1.2.1
 
-pnpmfileChecksum: dwsml3ncnigkmiwvwlkoqsfuki
+pnpmfileChecksum: sha256-4MsH1g26NkA4ElRATPgUw4yyCde2YSF6pkEsB+NKNFM=
 
 importers:
 
@@ -269,7 +269,7 @@ importers:
         version: 0.2.3
       ts-jest:
         specifier: 29.1.0
-        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3)
+        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.25.0)(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3)
       tsup:
         specifier: ^8.2.4
         version: 8.4.0(jiti@1.21.7)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.7.0)
@@ -497,7 +497,7 @@ importers:
         version: 18.3.1(react@18.3.1)
       ts-jest:
         specifier: 29.1.0
-        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3)
+        version: 29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.25.0)(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3)
       tsup:
         specifier: ^8.2.4
         version: 8.4.0(jiti@1.21.7)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.7.0)
@@ -18388,7 +18388,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  ts-jest@29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3):
+  ts-jest@29.1.0(@babel/core@7.26.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.0))(esbuild@0.25.0)(jest@29.5.0(@types/node@20.17.19))(typescript@5.7.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
@@ -18404,6 +18404,7 @@ snapshots:
       '@babel/core': 7.26.0
       '@jest/types': 29.6.3
       babel-jest: 29.7.0(@babel/core@7.26.0)
+      esbuild: 0.25.0
 
   ts-pnp@1.2.0(typescript@5.7.3):
     optionalDependencies:

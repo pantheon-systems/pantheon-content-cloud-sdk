@@ -1,3 +1,4 @@
+import { findTab } from "@pantheon-systems/pcc-sdk-core";
 import {
   Article,
   PantheonTreeNode,
@@ -5,9 +6,8 @@ import {
   type SmartComponentMap as CoreSmartComponentMap,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import { Element } from "hast";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { getTextContent } from "../../utils/react-element";
-import { findTab } from "@pantheon-systems/pcc-sdk-core/src/helpers/tabs";
 import MarkdownRenderer from "./Markdown";
 import PantheonTreeV2Renderer from "./PantheonTreeV2Renderer";
 
@@ -89,25 +89,36 @@ const ArticleRenderer = ({
     }
   }, [__experimentalFlags]);
 
-  if (!article?.resolvedContent) {
-    return null;
-  }
-
   const contentType = article?.contentType;
-  const rawContent = article.resolvedContent;
-  const unboxedContent = UnboxContent(rawContent);
-  let contentToShow =
-    (tabId != null && findTab(unboxedContent, tabId)?.documentTab) ||
-    unboxedContent;
+  const unboxedContent = useMemo(
+    () =>
+      article?.resolvedContent ? UnboxContent(article.resolvedContent) : null,
+    [article?.resolvedContent, article?.updatedAt],
+  );
 
-  if (
-    tabId == null &&
-    typeof unboxedContent === "object" &&
-    contentToShow?.children == null
-  ) {
-    contentToShow = Array.isArray(unboxedContent)
-      ? unboxedContent[0]?.documentTab
-      : (unboxedContent as TabTree<any>)?.documentTab;
+  console.log({ unboxedContent });
+  const contentToShow = useMemo(() => {
+    if (!unboxedContent) return null;
+
+    const content =
+      (tabId != null && findTab(unboxedContent, tabId)?.documentTab) ||
+      unboxedContent;
+
+    if (
+      tabId == null &&
+      typeof unboxedContent === "object" &&
+      content?.children == null
+    ) {
+      return Array.isArray(unboxedContent)
+        ? unboxedContent[0]?.documentTab
+        : (unboxedContent as TabTree<any>)?.documentTab;
+    }
+
+    return content;
+  }, [tabId, unboxedContent]);
+
+  if (!contentToShow) {
+    return null;
   }
 
   if (contentType === "TEXT_MARKDOWN") {
