@@ -12,6 +12,7 @@ interface Props {
   disableAllStyles?: boolean;
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
+  renderImageCaptions?: boolean;
 }
 
 const PantheonTreeRenderer = ({
@@ -21,6 +22,7 @@ const PantheonTreeRenderer = ({
   disableAllStyles,
   preserveImageStyles,
   disableDefaultErrorBoundaries,
+  renderImageCaptions,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
@@ -32,6 +34,7 @@ const PantheonTreeRenderer = ({
         disableAllStyles,
         preserveImageStyles,
         disableDefaultErrorBoundaries,
+        renderImageCaptions,
       }),
     ) ?? [];
 
@@ -103,6 +106,24 @@ const PantheonTreeRenderer = ({
       targetingClasses.push("pantheon-img-container-breakright");
     } else {
       targetingClasses.push("pantheon-img-container-inline");
+    }
+
+    const imageChild = element.children[0];
+    const imageTitle = imageChild.attrs?.title?.trim();
+
+    if (renderImageCaptions !== false && imageTitle?.length) {
+      nodeChildren.push(
+        <span
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            fontSize: ".75rem",
+          }}
+        >
+          {imageTitle}
+        </span>,
+      );
     }
   }
 

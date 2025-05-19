@@ -32,8 +32,9 @@
 /* Inline images should be horizontally centered. */
 .pantheon-img-container-inline {
   max-width: 100% !important;
-  display: flex;
-  justify-content: center;
+  justify-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* 

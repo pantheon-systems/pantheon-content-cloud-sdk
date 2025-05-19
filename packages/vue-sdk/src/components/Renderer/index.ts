@@ -46,6 +46,7 @@ export type ExperimentalFlags = {
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries: boolean;
   useUnintrusiveTitleRendering?: boolean;
+  renderImageCaptions?: boolean;
 };
 
 const pccGeneratedPortalTargetKey = "__pcc-portal-target__";
