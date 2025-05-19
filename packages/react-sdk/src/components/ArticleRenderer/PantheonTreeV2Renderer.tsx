@@ -85,12 +85,31 @@ const PantheonTreeRenderer = ({
     (element.tag !== "img" || !preserveImageStyles) &&
     (typeof componentOverride === "string" || componentOverride == null);
 
+  let targetingClasses = [];
+  const styleObject = shouldPruneStyles
+    ? undefined
+    : getStyleObjectFromString(element?.style);
+
+  if (
+    element.tag === "span" &&
+    children.length === 1 &&
+    element.children[0].tag === "img"
+  ) {
+    targetingClasses.push("pantheon-img-container");
+
+    if (styleObject?.float === "left") {
+      targetingClasses.push("pantheon-img-container-breakleft");
+    } else if (styleObject?.float === "right") {
+      targetingClasses.push("pantheon-img-container-breakright");
+    } else {
+      targetingClasses.push("pantheon-img-container-inline");
+    }
+  }
+
   return React.createElement(
     componentOverride || convertedTagName,
     {
-      style: shouldPruneStyles
-        ? undefined
-        : getStyleObjectFromString(element?.style),
+      style: styleObject,
 
       // If shouldPruneStyles, then overwrite the class
       // but leave other attrs intact.
@@ -98,7 +117,11 @@ const PantheonTreeRenderer = ({
         Object.assign(
           {},
           element.attrs,
-          shouldPruneStyles ? { class: null } : {},
+          shouldPruneStyles
+            ? { class: targetingClasses.join(" ") }
+            : {
+                class: `${element.attrs.class || ""} ${targetingClasses.join(" ")}`,
+              },
         ),
       ),
     },

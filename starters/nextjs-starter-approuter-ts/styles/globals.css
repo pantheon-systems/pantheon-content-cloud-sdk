@@ -17,16 +17,23 @@
 }
 
 /* Handle margins and left/right padding for images, to support text wrapping. */
-.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+.pantheon-img-container img {
   margin: 0;
 }
 
-.prose span[style*="shape-outside"][style*="float:left"] {
+.pantheon-img-container-breakleft {
   padding-right: 2em;
 }
 
-.prose span[style*="shape-outside"][style*="float:right"] {
+.pantheon-img-container-breakright {
   padding-left: 2em;
+}
+
+/* Inline images should be horizontally centered. */
+.pantheon-img-container-inline {
+  max-width: 100% !important;
+  display: flex;
+  justify-content: center;
 }
 
 /* 
@@ -34,6 +41,6 @@
   text-wrapped images, but at the cost of not being able
   to set vertical offset of a wrapped image in Google Docs.
 */
-.prose span[style*="shape-outside"] {
+.pantheon-img-container {
   margin: 2em 0;
 }
