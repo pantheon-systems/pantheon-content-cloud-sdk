@@ -88,7 +88,7 @@ const PantheonTreeRenderer = ({
     (element.tag !== "img" || !preserveImageStyles) &&
     (typeof componentOverride === "string" || componentOverride == null);
 
-  let targetingClasses = [];
+  const targetingClasses = [];
   const styleObject = shouldPruneStyles
     ? undefined
     : getStyleObjectFromString(element?.style);
