@@ -120,6 +120,7 @@ const PantheonTreeRenderer = ({
             justifyContent: "center",
             fontSize: ".75rem",
           }}
+          className="pantheon-caption"
         >
           {imageTitle}
         </span>,
