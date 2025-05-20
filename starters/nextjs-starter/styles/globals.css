@@ -36,6 +36,7 @@ li::before {
 
 /* Inline images should be horizontally centered. */
 .pantheon-img-container-inline {
+  display: flex;
   max-width: 100% !important;
   place-items: center;
   flex-direction: column;
