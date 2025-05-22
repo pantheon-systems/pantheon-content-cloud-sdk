@@ -13,10 +13,40 @@ li::before {
   }
 
   .responsive-iframe-container {
-    @apply max-w-[640px] relative overflow-hidden pt-[56.25%];
+    @apply relative max-w-[640px] overflow-hidden pt-[56.25%];
   }
 
   .responsive-iframe {
-    @apply absolute top-0 left-0 bottom-0 right-0 w-full h-full;
+    @apply absolute bottom-0 left-0 right-0 top-0 h-full w-full;
   }
+}
+
+/* Handle margins and left/right padding for images, to support text wrapping. */
+.pantheon-img-container img {
+  margin: 0;
+}
+
+.pantheon-img-container-breakleft {
+  padding-right: 2em;
+}
+
+.pantheon-img-container-breakright {
+  padding-left: 2em;
+}
+
+/* Inline images should be horizontally centered. */
+.pantheon-img-container-inline {
+  display: flex;
+  max-width: 100% !important;
+  place-items: center;
+  flex-direction: column;
+}
+
+/* 
+  This creates consistent spacing above and below
+  text-wrapped images, but at the cost of not being able
+  to set vertical offset of a wrapped image in Google Docs.
+*/
+.pantheon-img-container {
+  margin: 2em 0;
 }

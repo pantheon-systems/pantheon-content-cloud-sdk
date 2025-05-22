@@ -57,6 +57,7 @@ interface Props {
     preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
+    renderImageCaptions?: boolean;
   };
 }
 
@@ -139,6 +140,7 @@ const ArticleRenderer = ({
       preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
+      renderImageCaptions: __experimentalFlags?.renderImageCaptions !== false,
     });
   }
 
@@ -155,6 +157,8 @@ const ArticleRenderer = ({
           preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
           disableDefaultErrorBoundaries:
             !!__experimentalFlags?.disableDefaultErrorBoundaries,
+          renderImageCaptions:
+            __experimentalFlags?.renderImageCaptions !== false,
         }),
       )}
     </div>
