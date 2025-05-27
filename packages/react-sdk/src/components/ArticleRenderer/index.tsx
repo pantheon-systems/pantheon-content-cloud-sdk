@@ -150,7 +150,11 @@ const ArticleRenderer = ({
         // @ts-expect-error Dynamic component props
         React.createElement(renderer, {
           key: idx,
-          element,
+          element: {
+            ...element,
+            prevNode: parsedContent[idx - 1],
+            nextNode: parsedContent[idx + 1],
+          },
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,
