@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-vue-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Vue SDK",
-  "version": "3.11.3",
+  "version": "3.12.0",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

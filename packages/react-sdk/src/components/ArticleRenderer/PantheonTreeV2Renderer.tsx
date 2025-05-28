@@ -12,6 +12,7 @@ interface Props {
   disableAllStyles?: boolean;
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
+  renderImageCaptions?: boolean;
 }
 
 const PantheonTreeRenderer = ({
@@ -21,6 +22,7 @@ const PantheonTreeRenderer = ({
   disableAllStyles,
   preserveImageStyles,
   disableDefaultErrorBoundaries,
+  renderImageCaptions,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
@@ -32,6 +34,7 @@ const PantheonTreeRenderer = ({
         disableAllStyles,
         preserveImageStyles,
         disableDefaultErrorBoundaries,
+        renderImageCaptions,
       }),
     ) ?? [];
 
@@ -85,12 +88,50 @@ const PantheonTreeRenderer = ({
     (element.tag !== "img" || !preserveImageStyles) &&
     (typeof componentOverride === "string" || componentOverride == null);
 
+  const targetingClasses = [];
+  const styleObject = shouldPruneStyles
+    ? undefined
+    : getStyleObjectFromString(element?.style);
+
+  if (
+    element.tag === "span" &&
+    children.length === 1 &&
+    element.children[0].tag === "img"
+  ) {
+    targetingClasses.push("pantheon-img-container");
+
+    if (styleObject?.float === "left") {
+      targetingClasses.push("pantheon-img-container-breakleft");
+    } else if (styleObject?.float === "right") {
+      targetingClasses.push("pantheon-img-container-breakright");
+    } else {
+      targetingClasses.push("pantheon-img-container-inline");
+    }
+
+    const imageChild = element.children[0];
+    const imageTitle = imageChild.attrs?.title?.trim();
+
+    if (renderImageCaptions !== false && imageTitle?.length) {
+      nodeChildren.push(
+        <span
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            fontSize: ".75rem",
+          }}
+          className="pantheon-caption"
+        >
+          {imageTitle}
+        </span>,
+      );
+    }
+  }
+
   return React.createElement(
     componentOverride || convertedTagName,
     {
-      style: shouldPruneStyles
-        ? undefined
-        : getStyleObjectFromString(element?.style),
+      style: styleObject,
 
       // If shouldPruneStyles, then overwrite the class
       // but leave other attrs intact.
@@ -98,7 +139,11 @@ const PantheonTreeRenderer = ({
         Object.assign(
           {},
           element.attrs,
-          shouldPruneStyles ? { class: null } : {},
+          shouldPruneStyles
+            ? { class: targetingClasses.join(" ") }
+            : {
+                class: `${element.attrs.class || ""} ${targetingClasses.join(" ")}`,
+              },
         ),
       ),
     },

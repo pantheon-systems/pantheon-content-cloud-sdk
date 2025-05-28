@@ -1,5 +1,17 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.12.0
+
+### Minor Changes
+
+- 33368d3: Image captions are now rendered by default, but can be opted out by
+  using \_\_experimentalFlags.renderImageCpations in ArticleRenderer. Image
+  containers and captions are now targetable with CSS classes.
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.0
+
 ## 3.11.3
 
 ### Patch Changes
