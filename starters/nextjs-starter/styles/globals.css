@@ -35,7 +35,7 @@ li::before {
 }
 
 /* Inline images should be horizontally centered. */
-.pantheon-img-container-inline {
+.pantheon-img-container-breakboth, .pantheon-img-container-alone {
   display: flex;
   max-width: 100% !important;
   place-items: center;
@@ -49,4 +49,13 @@ li::before {
 */
 .pantheon-img-container {
   margin: 2em 0;
+}
+
+.pantheon-img-container-inline {
+  display: inline-block;
+  margin: 0;
+}
+
+.pantheon-img-container-inline .pantheon-caption {
+  display: inline !important;
 }
