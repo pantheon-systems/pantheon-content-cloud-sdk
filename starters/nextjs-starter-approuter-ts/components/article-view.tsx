@@ -1,13 +1,17 @@
 "use client";
 
-import { useArticle } from "@pantheon-systems/pcc-react-sdk";
+import { findTab, useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { getSeoMetadata } from "../lib/utils";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import HeaderLink from "../assets/icons/HeaderLink";
+import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components/client-components";
+import { TableOfContents } from "./table-of-contents";
 
 const ELEMENT_STYLES_TO_OVERRIDE = [
   /fontSize/,
@@ -68,7 +72,7 @@ const ArticleHeader = ({
   if (!author?.name && !article.updatedAt) return null;
 
   return (
-    <div className="border-b-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-b-[1px] py-4">
+    <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
       {author?.name ? (
         <>
           <div>
@@ -106,21 +110,66 @@ const ArticleHeader = ({
 };
 
 export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+  const searchParams = useSearchParams();
   const seoMetadata = getSeoMetadata(article);
+  const [tabId, setTabId] = useState<string | null>();
+
+  const tabTree =
+    article.resolvedContent == null
+      ? null
+      : parseAsTabTree(article.resolvedContent);
+
+  const currentTab =
+    tabTree != null && tabId != null ? findTab(tabTree, tabId) : null;
+
+  useEffect(() => {
+    const id = searchParams.get("tabId");
+    setTabId(id);
+  }, [searchParams]);
 
   return (
     <div className="px-8 lg:px-4">
       <ArticleHeader article={article} seoMetadata={seoMetadata} />
-      <ArticleRenderer
-        article={article}
-        componentMap={componentOverrideMap}
-        smartComponentMap={clientSmartComponentMap}
-        __experimentalFlags={{
-          disableAllStyles: !!onlyContent,
-          preserveImageStyles: true,
-          useUnintrusiveTitleRendering: true,
-        }}
-      />
+
+      <div className="flex justify-start gap-x-[50px] lg:gap-x-[115px]">
+        {article.renderAsTabs && tabTree ? (
+          <TableOfContents tabTree={tabTree} activeTab={tabId} />
+        ) : null}
+
+        <div className="flex-1">
+          {currentTab?.tabProperties?.title ? (
+            <h3 className="my-0 flex items-center gap-x-4">
+              <span>{currentTab.tabProperties.title}</span>
+              <Link
+                href={`?tabId=${currentTab.tabProperties.tabId}`}
+                aria-label={`Link to "${currentTab.tabProperties.title}"`}
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  toast.success(
+                    "A link to this page has been copied to your clipboard",
+                    {
+                      position: "top-right",
+                    },
+                  );
+                }}
+              >
+                <HeaderLink height={25} width={25} />
+              </Link>
+            </h3>
+          ) : null}
+          <ArticleRenderer
+            article={article}
+            tabId={tabId}
+            componentMap={componentOverrideMap}
+            smartComponentMap={clientSmartComponentMap}
+            __experimentalFlags={{
+              disableAllStyles: !!onlyContent,
+              preserveImageStyles: true,
+              useUnintrusiveTitleRendering: true,
+            }}
+          />
+        </div>
+      </div>
 
       <div className="border-base-300 mt-16 flex w-full gap-x-3 border-t-[1px] pt-7 lg:mt-32">
         {seoMetadata.keywords != null
@@ -159,6 +208,11 @@ export default function ArticleView({
   const hydratedArticle = data?.article ?? article;
 
   return (
-    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+    </>
   );
 }
