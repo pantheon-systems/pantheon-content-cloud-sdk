@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.12.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.1
+
 ## 3.12.0
 
 ### Patch Changes
