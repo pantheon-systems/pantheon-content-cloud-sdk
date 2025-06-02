@@ -122,15 +122,21 @@ export function StaticArticleView({ article, onlyContent }) {
   );
 }
 
-export default function ArticleView({ article, onlyContent }) {
+export default function ArticleView({
+  article,
+  onlyContent,
+  publishingLevel,
+  versionId,
+}) {
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
+      versionId: versionId ?? undefined,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 

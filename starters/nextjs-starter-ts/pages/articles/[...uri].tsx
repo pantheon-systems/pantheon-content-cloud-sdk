@@ -2,6 +2,7 @@ import {
   PantheonProvider,
   PCCConvenienceFunctions,
   type Article,
+  type PublishingLevel,
 } from "@pantheon-systems/pcc-react-sdk";
 import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { NextSeo } from "next-seo";
@@ -14,9 +15,16 @@ import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 interface ArticlePageProps {
   article: Article;
   grant: string;
+  publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
 }
 
-export default function ArticlePage({ article, grant }: ArticlePageProps) {
+export default function ArticlePage({
+  article,
+  grant,
+  publishingLevel,
+  versionId,
+}: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -34,7 +42,11 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
         />
 
         <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-          <ArticleView article={article} />
+          <ArticleView
+            article={article}
+            publishingLevel={publishingLevel}
+            versionId={versionId}
+          />
         </div>
       </Layout>
     </PantheonProvider>
@@ -43,15 +55,16 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
 
 export async function getServerSideProps({
   req: { cookies },
-  query: { uri, publishingLevel, pccGrant, ...query },
+  query: { uri, publishingLevel, pccGrant, versionId, ...query },
 }: {
   req: {
     cookies: Record<string, unknown>;
   };
   query: {
     uri: string[];
-    publishingLevel: "PRODUCTION" | "REALTIME" | undefined;
+    publishingLevel: keyof typeof PublishingLevel | undefined;
     pccGrant: string;
+    versionId: string | undefined;
   };
 }) {
   const slugOrId = uri[uri.length - 1];
@@ -59,14 +72,10 @@ export async function getServerSideProps({
 
   // Fetch the article and the site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(
-      slugOrId,
-      publishingLevel
-        ? (publishingLevel.toString().toUpperCase() as
-            | "PRODUCTION"
-            | "REALTIME")
-        : "PRODUCTION",
-    ),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
+      publishingLevel,
+      versionId,
+    }),
     PCCConvenienceFunctions.getSite(),
   ]);
 
@@ -114,6 +123,8 @@ export async function getServerSideProps({
     props: {
       article,
       grant,
+      publishingLevel,
+      versionId: versionId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),
