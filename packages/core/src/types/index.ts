@@ -34,6 +34,7 @@ export type PaginatedArticle = {
 export enum PublishingLevel {
   PRODUCTION = "PRODUCTION",
   REALTIME = "REALTIME",
+  DRAFT = "DRAFT",
 }
 
 export enum ContentType {

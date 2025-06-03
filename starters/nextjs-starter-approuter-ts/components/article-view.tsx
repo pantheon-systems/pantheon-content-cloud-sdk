@@ -1,7 +1,7 @@
 "use client";
 
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
-import type { Article } from "@pantheon-systems/pcc-react-sdk";
+import type { Article, PublishingLevel } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,6 +52,8 @@ const componentOverrideMap = {
 type ArticleViewProps = {
   article: Article;
   onlyContent?: boolean;
+  publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
 };
 
 const ArticleHeader = ({
@@ -105,7 +107,10 @@ const ArticleHeader = ({
   );
 };
 
-export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
+export function StaticArticleView({
+  article,
+  onlyContent,
+}: Pick<ArticleViewProps, "article" | "onlyContent">) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -144,15 +149,18 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
 export default function ArticleView({
   article,
   onlyContent,
+  publishingLevel,
+  versionId,
 }: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
+      versionId: versionId ?? undefined,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 

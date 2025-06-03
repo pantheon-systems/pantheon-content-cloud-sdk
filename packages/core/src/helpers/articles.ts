@@ -32,6 +32,7 @@ export interface ArticleQueryArgs {
   sortOrder?: keyof typeof SortOrder;
   metadataFilters?: { [key: string]: unknown };
   preamble?: string;
+  versionId?: string;
 }
 
 export interface ArticlePaginatedQueryArgs {
