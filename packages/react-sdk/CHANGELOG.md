@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.12.1
+
+### Patch Changes
+
+- b587dda: New CSS classes: pantheon-img-container-breakboth and
+  pantheon-img-container-alone
+  - @pantheon-systems/pcc-sdk-core@3.12.1
+
 ## 3.12.0
 
 ### Minor Changes

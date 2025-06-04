@@ -175,7 +175,11 @@ const ArticleRenderer = ({
       {parsedContent?.map((element, idx) =>
         React.createElement(PantheonTreeV2Renderer, {
           key: idx,
-          element,
+          element: {
+            ...element,
+            prevNode: parsedContent[idx - 1],
+            nextNode: parsedContent[idx + 1],
+          },
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,

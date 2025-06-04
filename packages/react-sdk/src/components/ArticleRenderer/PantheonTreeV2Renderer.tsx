@@ -28,7 +28,11 @@ const PantheonTreeRenderer = ({
     element.children?.map((child, idx) =>
       React.createElement(PantheonTreeRenderer, {
         key: idx,
-        element: child,
+        element: {
+          ...child,
+          prevNode: element.children[idx - 1],
+          nextNode: element.children[idx + 1],
+        },
         smartComponentMap,
         componentMap,
         disableAllStyles,
@@ -93,19 +97,24 @@ const PantheonTreeRenderer = ({
     ? undefined
     : getStyleObjectFromString(element?.style);
 
-  if (
-    element.tag === "span" &&
-    children.length === 1 &&
-    element.children[0].tag === "img"
-  ) {
+  if (isImageContainer(element) && children.length === 1) {
     targetingClasses.push("pantheon-img-container");
 
     if (styleObject?.float === "left") {
       targetingClasses.push("pantheon-img-container-breakleft");
     } else if (styleObject?.float === "right") {
       targetingClasses.push("pantheon-img-container-breakright");
+    } else if (styleObject?.clear === "both") {
+      targetingClasses.push("pantheon-img-container-breakboth");
     } else {
       targetingClasses.push("pantheon-img-container-inline");
+
+      if (
+        (element.prevNode == null || !isImageContainer(element.prevNode)) &&
+        (element.nextNode == null || !isImageContainer(element.nextNode))
+      ) {
+        targetingClasses.push("pantheon-img-container-alone");
+      }
     }
 
     const imageChild = element.children[0];
@@ -150,5 +159,13 @@ const PantheonTreeRenderer = ({
     nodeChildren.length ? nodeChildren : undefined,
   );
 };
+
+function isImageContainer(element: PantheonTreeNode<string>) {
+  return (
+    element.tag === "span" &&
+    element.children?.[0].tag === "img" &&
+    element.children?.length === 1
+  );
+}
 
 export default PantheonTreeRenderer;
