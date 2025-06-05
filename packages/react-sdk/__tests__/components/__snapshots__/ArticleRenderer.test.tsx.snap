@@ -3,627 +3,1333 @@
 exports[`<ArticleRenderer /> should render a post's content 1`] = `
 <div>
   <div>
-    <h1>
-      <span>
-        This is a title, there are many like it, but this one is mine
+    <style
+      dangerouslySetInnerHTML={
+        {
+          "__html": "
+
+ul.nesting-level-1 {
+  list-style-type: disc; 
+}
+ul.nesting-level-2 {
+  list-style-type: circle; 
+}
+ul.nesting-level-3 {
+  list-style-type: square; 
+}
+ul.nesting-level-4 {
+  list-style-type: disc; 
+}
+ul.nesting-level-5 {
+  list-style-type: circle; 
+}
+ul.nesting-level-6 {
+  list-style-type: square; 
+}
+ul.nesting-level-7 {
+  list-style-type: disc; 
+}
+ul.nesting-level-8 {
+  list-style-type: circle; 
+}
+
+
+ol[list-style-type="decimal"] {
+  list-style-type: decimal;
+}
+ol[list-style-type="lower-alpha"] {
+  list-style-type: lower-alpha;
+}
+ol[list-style-type="lower-roman"] { 
+  list-style-type: lower-roman;
+}
+
+",
+        }
+      }
+    />
+    <h1
+      className="heading-1 "
+      id="h.yga84kcidt1h"
+    >
+      <span
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          This is a title, there are many like it, but this one is mine
+        </span>
       </span>
     </h1>
-    <h1>
-      <span>
-        This is h1
+    <h1
+      className="heading-1 "
+      id="h.s3bvibj9h0dt"
+    >
+      <span
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          This is h1
+        </span>
       </span>
     </h1>
-    <h2>
-      <span>
+    <h2
+      className="heading-2 "
+      id="h.um9b1oy1kxok"
+    >
+      <span
+        className=" "
+      >
         This is h2
       </span>
     </h2>
-    <h3>
-      <span>
+    <h3
+      className="heading-3 "
+      id="h.h31ko2mh0gun"
+    >
+      <span
+        className=" "
+      >
         This is h3
       </span>
     </h3>
-    <h4>
-      <span>
+    <h4
+      className="heading-4 "
+      id="h.wnhfn1n79rxt"
+    >
+      <span
+        className=" "
+      >
         This is h4
       </span>
     </h4>
-    <h5>
-      <span>
+    <h5
+      className="heading-5 "
+      id="h.xvp9ub5kkns"
+    >
+      <span
+        className=" "
+      >
         This is h5
       </span>
     </h5>
-    <h6>
+    <h6
+      className="heading-6 "
+      id="h.gpqs2vw2rytx"
+    >
       <span
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
+        className=" "
       >
         This is h6
       </span>
     </h6>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "fontWeight": "bold",
-          }
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
-      >
-        This is bold
-      </span>
-    </div>
-    <div>
-      <span
-        style={
-          {
-            "fontStyle": "italic",
-          }
+      }
+    />
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <strong
+        className=" "
       >
-        This is italic
-      </span>
-    </div>
-    <div>
-      <span
-        style={
-          {
-            "textDecoration": "underline",
-          }
+        <span
+          className=" "
+        >
+          This is bold
+        </span>
+      </strong>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <i
+        className=" "
       >
-        This is underlined
-      </span>
-    </div>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
+        <span
+          className=" "
+        >
+          This is italic
+        </span>
+      </i>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <u
+        className=" "
       >
-        aaa
-      </span>
-      <span
-        style={
-          {
-            "fontStyle": "italic",
-            "fontWeight": "bold",
-            "textDecoration": "underline",
-            "verticalAlign": "super",
-          }
+        <span
+          className=" "
+        >
+          This is underlined
+        </span>
+      </u>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
-      >
-        This is bold, underlined, italic, strikethrough and supertext
-      </span>
-    </div>
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
+      }
+    >
+      <u
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <sup
+        className=" "
       >
-        eee
-      </span>
-      <span
-        style={
-          {
-            "fontStyle": "italic",
-            "fontWeight": "bold",
-            "textDecoration": "underline",
-            "verticalAlign": "sub",
-          }
+        <span
+          className=" "
+        >
+          aaa
+        </span>
+      </sup>
+      <u
+        className=" "
+      >
+        <s
+          className=" "
+        >
+          <i
+            className=" "
+          >
+            <strong
+              className=" "
+            >
+              <sup
+                className=" "
+              >
+                <span
+                  className=" "
+                >
+                  This is bold, underlined, italic, strikethrough and supertext
+                </span>
+              </sup>
+            </strong>
+          </i>
+        </s>
+      </u>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <sub
+        className=" "
       >
-        This is bold, underlined, italic, strikethrough and subscript
-      </span>
-    </div>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
+        <span
+          className=" "
+        >
+          eee
+        </span>
+      </sub>
+      <u
+        className=" "
+      >
+        <s
+          className=" "
+        >
+          <i
+            className=" "
+          >
+            <strong
+              className=" "
+            >
+              <sub
+                className=" "
+              >
+                <span
+                  className=" "
+                >
+                  This is bold, underlined, italic, strikethrough and subscript
+                </span>
+              </sub>
+            </strong>
+          </i>
+        </s>
+      </u>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <s
+        className=" "
       >
-        horizontal line below:
-      </span>
-    </div>
-    <hr />
-    <div />
-    <div />
-    <div>
-      <span>
+        <sub
+          className=" "
+        />
+      </s>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          horizontal line below:
+        </span>
+      </sub>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <s
+        className=" "
+      >
+        <sub
+          className=" "
+        />
+      </s>
+    </p>
+    <hr
+      className=" "
+    />
+    <s
+      className=" "
+    >
+      <sub
+        className=" "
+      />
+    </s>
+    <p
+      className=" "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    />
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    />
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <span
+        className=" "
+      >
         x
       </span>
-      <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
-        }
+      <sup
+        className=" "
       >
-        3
-      </span>
-    </div>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
+        <span
+          className=" "
+        >
+          3
+        </span>
+      </sup>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
-      >
-        H
-      </span>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
+      }
+    >
+      <sup
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <sup
+        className=" "
       >
-        2
-      </span>
-      <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
+        <span
+          className=" "
+        >
+          H
+        </span>
+      </sup>
+      <sub
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          2
+        </span>
+      </sub>
+      <sup
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          O x
+        </span>
+      </sup>
+      <strong
+        className=" "
+      >
+        <sup
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            o
+          </span>
+        </sup>
+      </strong>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
-      >
-        O x
-      </span>
-      <span
-        style={
-          {
-            "fontWeight": "bold",
-            "verticalAlign": "super",
-          }
+      }
+    />
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <sub
+        className=" "
       >
-        o
-      </span>
-    </div>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
-      >
-        Unordered “bullet point” list
-      </span>
-    </div>
-    <ul>
-      <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          className=" "
         >
-          Apple
+          Unordered “bullet point” list
         </span>
-      </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          Pineapple
-        </span>
-      </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          Pen 
-        </span>
-        <span
-          style={
-            {
-              "fontWeight": "bold",
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          pineapple
-        </span>
-        <span
-          style={
-            {
-              "fontStyle": "italic",
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          apple
-        </span>
-        <span
-          style={
-            {
-              "textDecoration": "underline",
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          pen
-        </span>
-      </li>
-    </ul>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
-      >
-        Unordered list with different symbols
-      </span>
-    </div>
-    <ul>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          Duck
-        </span>
-      </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          Duck2
-        </span>
-      </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
-        >
-          Goose
-        </span>
-      </li>
-    </ul>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
-      >
-        Todo list with checkmarks
-      </span>
-    </div>
-    <ul>
+      </sub>
+    </p>
+    <ul
+      className="nesting-level-1 "
+    >
       <li
-        style={{}}
+        className=" "
       >
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+        <sub
+          className=" "
         >
-          Veni
-        </span>
+          <span
+            className=" "
+          >
+            Apple
+          </span>
+        </sub>
       </li>
       <li
-        style={{}}
+        className=" "
       >
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+        <sub
+          className=" "
         >
-          Vidi
-        </span>
+          <span
+            className=" "
+          >
+            Pineapple
+          </span>
+        </sub>
       </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
         >
-          Vici
-        </span>
+          <span
+            className=" "
+          >
+            Pen 
+          </span>
+        </sub>
+        <strong
+          className=" "
+        >
+          <sub
+            className=" "
+          >
+            <span
+              className=" "
+            >
+              pineapple
+            </span>
+          </sub>
+        </strong>
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+             
+          </span>
+        </sub>
+        <i
+          className=" "
+        >
+          <sub
+            className=" "
+          >
+            <span
+              className=" "
+            >
+              apple
+            </span>
+          </sub>
+        </i>
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+             
+          </span>
+        </sub>
+        <u
+          className=" "
+        >
+          <sub
+            className=" "
+          >
+            <span
+              className=" "
+            >
+              pen
+            </span>
+          </sub>
+        </u>
       </li>
     </ul>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <u
+        className=" "
       >
-        Ordered “numbered” list
-      </span>
-    </div>
-    <ol>
-      <li>
+        <sub
+          className=" "
+        />
+      </u>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      >
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          className=" "
         >
-          Waking in the morning
+          Unordered list with different symbols
         </span>
+      </sub>
+    </p>
+    <ul
+      className="nesting-level-1 "
+    >
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Duck
+          </span>
+        </sub>
       </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
         >
-          Gotta go downstairs
-        </span>
+          <span
+            className=" "
+          >
+            Duck2
+          </span>
+        </sub>
       </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
         >
-          Gotta have cereal
-        </span>
+          <span
+            className=" "
+          >
+            Goose
+          </span>
+        </sub>
       </li>
-      <li>
+    </ul>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      >
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          className=" "
         >
-          I see my friends
+          Todo list with checkmarks
         </span>
+      </sub>
+    </p>
+    <ul
+      className="nesting-level-1 "
+    >
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Veni
+          </span>
+        </sub>
       </li>
-      <li>
-        <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
         >
-          Gotta get down on Friday
+          <span
+            className=" "
+          >
+            Vidi
+          </span>
+        </sub>
+      </li>
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Vici
+          </span>
+        </sub>
+      </li>
+    </ul>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <u
+        className=" "
+      >
+        <sub
+          className=" "
+        />
+      </u>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      >
+        <span
+          className=" "
+        >
+          Ordered “numbered” list
         </span>
+      </sub>
+    </p>
+    <ol
+      className="nesting-level-1 "
+      list-style-type="decimal"
+    >
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Waking in the morning
+          </span>
+        </sub>
+      </li>
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Gotta go downstairs
+          </span>
+        </sub>
+      </li>
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Gotta have cereal
+          </span>
+        </sub>
+      </li>
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            I see my friends
+          </span>
+        </sub>
+      </li>
+      <li
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            Gotta get down on Friday
+          </span>
+        </sub>
       </li>
     </ol>
-    <div />
-    <div>
-      <img />
-    </div>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "fontWeight": "bold",
-            "verticalAlign": "sub",
-          }
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
-      >
-        A wild table appears
-      </span>
-    </div>
-    <table
-      className="text-black"
+      }
     >
-      <tbody>
-        <tr>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+      <sub
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      >
+        <img
+          className=" "
+          style={
+            {
+              "height": "492.26625px",
+              "maxWidth": "none",
+              "width": "328.1775px",
+            }
+          }
+        />
+      </sub>
+      <sub
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <strong
+        className=" "
+      >
+        <sub
+          className=" "
+        >
+          <span
+            className=" "
+          >
+            A wild table appears
+          </span>
+        </sub>
+      </strong>
+    </p>
+    <table
+      className=" "
+    >
+      <tbody
+        className=" "
+      >
+        <tr
+          className=" "
+        >
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                Merged cols 1 & 2
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  Merged cols 1 & 2
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
-              >
-                Col 3
-              </span>
-            </div>
+              }
+            >
+              <sub
+                className=" "
+              />
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                Col 4
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  Col 3
+                </span>
+              </sub>
+            </p>
+          </td>
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
+                }
+              }
+            >
+              <sub
+                className=" "
+              >
+                <span
+                  className=" "
+                >
+                  Col 4
+                </span>
+              </sub>
+            </p>
           </td>
         </tr>
-        <tr>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+        <tr
+          className=" "
+        >
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                A
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  A
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                B
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  B
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                C
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  C
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                D
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  D
+                </span>
+              </sub>
+            </p>
           </td>
         </tr>
-        <tr>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+        <tr
+          className=" "
+        >
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                ა
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  ა
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                ბ
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  ბ
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                ს
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  ს
+                </span>
+              </sub>
+            </p>
           </td>
-          <td>
-            <div>
-              <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
+          <td
+            className=" "
+            style={
+              {
+                "paddingBottom": "5PT",
+                "paddingLeft": "5PT",
+                "paddingRight": "5PT",
+                "paddingTop": "5PT",
+                "verticalAlign": "top",
+              }
+            }
+          >
+            <p
+              className="normal-text "
+              style={
+                {
+                  "margin": "0",
                 }
+              }
+            >
+              <sub
+                className=" "
               >
-                დ
-              </span>
-            </div>
+                <span
+                  className=" "
+                >
+                  დ
+                </span>
+              </sub>
+            </p>
           </td>
         </tr>
       </tbody>
     </table>
-    <div />
-    <div>
-      <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
         }
+      }
+    >
+      <sub
+        className=" "
+      />
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    >
+      <sub
+        className=" "
       >
-        Some more paragraphs after everything else.
-      </span>
-    </div>
-    <div />
-    <div />
+        <span
+          className=" "
+        >
+          Some more paragraphs after everything else.
+        </span>
+      </sub>
+    </p>
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    />
+    <p
+      className="normal-text "
+      style={
+        {
+          "margin": "0",
+        }
+      }
+    />
   </div>
 </div>
 `;
