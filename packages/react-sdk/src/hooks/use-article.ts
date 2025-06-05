@@ -57,8 +57,6 @@ export const useArticle = (
     });
   }, [id, memoizedArgs, subscribeToMore, apolloQueryOptions?.skip]);
 
-  console.log({ queryData });
-
   return {
     ...queryData,
     subscribeToMore,

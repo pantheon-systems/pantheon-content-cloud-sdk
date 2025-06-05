@@ -9,6 +9,7 @@ import {
   InMemoryCache,
   split,
 } from "../lib/apollo-client";
+import { axiosFetch } from "../lib/axios-fetch-adapter";
 import { DefaultLogger, Logger, NoopLogger } from "../lib/logger";
 
 export type PantheonClientConfig = {
@@ -130,9 +131,7 @@ export class PantheonClient {
         headers: {
           "PCC-TOKEN": this.apiKey,
         },
-        fetch: (uri, options) => {
-          return fetch(uri, { ...options, cache: "no-store" });
-        },
+        fetch: axiosFetch,
       }),
     );
 

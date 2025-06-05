@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import HeaderLink from "../assets/icons/HeaderLink";
 import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
@@ -118,7 +118,12 @@ export default function ArticleView({
       <div>
         <Toaster />
       </div>
-      <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+      <Suspense>
+        <StaticArticleView
+          article={hydratedArticle}
+          onlyContent={onlyContent}
+        />
+      </Suspense>
     </>
   );
 }
