@@ -80,6 +80,8 @@ export function getSeoMetadata(article) {
 }
 
 export function parseAsTabTree(raw) {
+  if (!raw) return null;
+
   try {
     return JSON.parse(raw);
   } catch (e) {
