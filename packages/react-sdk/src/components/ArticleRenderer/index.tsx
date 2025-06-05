@@ -97,7 +97,6 @@ const ArticleRenderer = ({
     [article?.resolvedContent, article?.updatedAt],
   );
 
-  console.log({ unboxedContent });
   const contentToShow = useMemo(() => {
     if (!unboxedContent) return null;
 

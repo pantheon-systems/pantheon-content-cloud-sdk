@@ -112,7 +112,7 @@ const ArticleHeader = ({
 export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
   const searchParams = useSearchParams();
   const seoMetadata = getSeoMetadata(article);
-  const [tabId, setTabId] = useState<string | null>();
+  const [tabId, setTabId] = useState<string | null>(searchParams.get("tabId"));
 
   const tabTree =
     article.resolvedContent == null
@@ -141,7 +141,9 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             <h3 className="my-0 flex items-center gap-x-4">
               <span>{currentTab.tabProperties.title}</span>
               <Link
-                href={window.location.href}
+                href={
+                  typeof window === "undefined" ? "#" : window.location.href
+                }
                 aria-label={`Link to "${currentTab.tabProperties.title}"`}
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
@@ -205,9 +207,7 @@ export default function ArticleView({
     },
   );
 
-  console.log("ArticleView", { data }, data?.article?.updatedAt);
   const hydratedArticle = data?.article ?? article;
-  console.log(hydratedArticle, hydratedArticle.updatedAt);
 
   return (
     <>

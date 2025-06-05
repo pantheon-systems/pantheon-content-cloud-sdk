@@ -126,9 +126,12 @@ export class PantheonClient {
       }),
     ).concat(
       new HttpLink({
-        uri: `${this.host}/sites/${this.siteId}/query?cb=1`,
+        uri: `${this.host}/sites/${this.siteId}/query`,
         headers: {
           "PCC-TOKEN": this.apiKey,
+        },
+        fetch: (uri, options) => {
+          return fetch(uri, { ...options, cache: "no-store" });
         },
       }),
     );

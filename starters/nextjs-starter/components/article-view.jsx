@@ -125,7 +125,9 @@ export function StaticArticleView({ article, onlyContent }) {
             <h3 className="my-0 flex items-center gap-x-4">
               <span>{currentTab.tabProperties.title}</span>
               <Link
-                href={window.location.href}
+                href={
+                  typeof window === "undefined" ? "#" : window.location.href
+                }
                 aria-label={`Link to "${currentTab.tabProperties.title}"`}
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.href);
