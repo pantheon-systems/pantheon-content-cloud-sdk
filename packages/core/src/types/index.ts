@@ -36,8 +36,8 @@ export type TabTree<T> = {
 export interface Article {
   resolvedContent:
     | string
-    // | PantheonTree
-    // | TabTree<PantheonTree | string | undefined | null>[]
+    | PantheonTree
+    | TabTree<PantheonTree | string | undefined | null>[]
     | null;
   renderAsTabs?: boolean | null;
   contentType: keyof typeof ContentType;
