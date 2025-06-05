@@ -83,6 +83,7 @@ export function parseAsTabTree(raw) {
   try {
     return JSON.parse(raw);
   } catch (e) {
+    // Don't rethrow.
     return null;
   }
 }
