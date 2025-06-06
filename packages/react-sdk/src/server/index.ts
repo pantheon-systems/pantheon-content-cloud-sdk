@@ -18,6 +18,8 @@ export {
   updateConfig,
   GQL,
   getSite,
+  findTab,
+  flattenDocumentTabs,
 } from "@pantheon-systems/pcc-sdk-core";
 export * from "@pantheon-systems/pcc-sdk-core/types";
 

@@ -51,7 +51,8 @@ export const useArticle = (
         if (!subscriptionData.data) return prev;
 
         const { article } = subscriptionData.data;
-        return { article };
+        console.log("updateQuery", article.updatedAt);
+        return { article, updatedAt: article.updatedAt };
       },
     });
   }, [id, memoizedArgs, subscribeToMore, apolloQueryOptions?.skip]);

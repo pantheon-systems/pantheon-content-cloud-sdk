@@ -4,3 +4,4 @@ export * from "./errors";
 export * from "./metadata";
 export * from "./validator";
 export * from "./site";
+export * from "./tabs";
