@@ -20,9 +20,10 @@ export function getArticleTitle(article: Article | undefined): string | null {
     return null;
   }
 
-  const jsonContent = JSON.parse(article.resolvedContent) as
-    | PantheonTree
-    | TabTree<PantheonTree>[];
+  const jsonContent =
+    typeof article.resolvedContent === "string"
+      ? JSON.parse(article.resolvedContent)
+      : (article.resolvedContent as PantheonTree | TabTree<PantheonTree>[]);
 
   const content: Array<PantheonTreeNode> = Array.isArray(jsonContent)
     ? _.flatMap(jsonContent, flattenDocumentTabs)

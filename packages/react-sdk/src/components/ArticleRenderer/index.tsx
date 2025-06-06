@@ -62,7 +62,9 @@ interface Props {
   };
 }
 
-function UnboxContent(content: string) {
+function UnboxContent(content: string | unknown) {
+  if (typeof content !== "string") return content;
+
   try {
     return JSON.parse(content);
   } catch (e) {
