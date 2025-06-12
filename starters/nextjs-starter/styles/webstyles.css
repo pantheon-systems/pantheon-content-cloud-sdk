@@ -11,6 +11,7 @@
 
 .responsive-table {
   --min-col-width: 20rem;
+
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--min-col-width), 1fr));
   gap: 1rem;
