@@ -6,6 +6,7 @@ import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
 import type { ComponentMap, SmartComponentMap } from ".";
+import { CDNDomains } from "../../utils/cdn-domains";
 import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
 interface MarkdownRendererProps {
@@ -13,6 +14,7 @@ interface MarkdownRendererProps {
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableDefaultErrorBoundaries: boolean;
+  cdnURLOverride?: string;
 }
 
 interface ComponentProperties {
@@ -26,10 +28,15 @@ const MarkdownRenderer = ({
   smartComponentMap,
   componentMap,
   disableDefaultErrorBoundaries,
+  cdnURLOverride,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
-      rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
+      rehypePlugins={[
+        rehypeRaw,
+        fixComponentParentRehypePlugin,
+        overrideCDNUrls(cdnURLOverride),
+      ]}
       remarkPlugins={[remarkHeaderId]}
       components={{
         ...(componentMap as Components),
@@ -113,6 +120,37 @@ function fixComponentParentRehypePlugin() {
         }
       },
     );
+  };
+}
+
+/**
+ * Rehype plugin to set the parent of a pcc-component node to a div
+ * to fix hydration errors from the component being nested in an invalid parent.
+ */
+function overrideCDNUrls(cdnURLOverride?: string) {
+  // If the env var is set, return a no-op transformer:
+  if (!cdnURLOverride) {
+    return () => (tree: UnistParent) => tree;
+  }
+
+  return () => (tree: UnistParent) => {
+    visit(tree, "element", (node: Element) => {
+      try {
+        if (node.tagName === "img" && node.hasAttribute("src")) {
+          const src = String(node.getAttribute("src"));
+
+          // A dummy base handles relative URLs such as "/"
+          const url = new URL(src, "https://relativeurl");
+
+          if (CDNDomains.includes(url.hostname)) {
+            url.hostname = cdnURLOverride;
+            node.setAttribute("src", url.toString());
+          }
+        }
+      } catch (err) {
+        // If it's not a valid URL (or cannot be parsed), leave it unchanged.
+      }
+    });
   };
 }
 
