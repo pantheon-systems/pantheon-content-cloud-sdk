@@ -2,6 +2,7 @@ import { PantheonTreeNode } from "@pantheon-systems/pcc-sdk-core/types";
 import React from "react";
 import { ComponentMap, SmartComponentMap } from ".";
 import { convertAttributes } from "../../utils/attributes";
+import { CDNDomains } from "../../utils/cdn-domains";
 import { getStyleObjectFromString } from "../../utils/styles";
 import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
@@ -13,6 +14,7 @@ interface Props {
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
   renderImageCaptions?: boolean;
+  cdnURLOverride?: string;
 }
 
 const PantheonTreeRenderer = ({
@@ -23,6 +25,7 @@ const PantheonTreeRenderer = ({
   preserveImageStyles,
   disableDefaultErrorBoundaries,
   renderImageCaptions,
+  cdnURLOverride,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
@@ -39,6 +42,7 @@ const PantheonTreeRenderer = ({
         preserveImageStyles,
         disableDefaultErrorBoundaries,
         renderImageCaptions,
+        cdnURLOverride,
       }),
     ) ?? [];
 
@@ -119,6 +123,20 @@ const PantheonTreeRenderer = ({
 
     const imageChild = element.children[0];
     const imageTitle = imageChild.attrs?.title?.trim();
+
+    if (imageChild.attrs.src && cdnURLOverride) {
+      try {
+        // A dummy base handles relative URLs such as "/"
+        const srcUrl = new URL(imageChild.attrs.src, "https://relativeurl");
+
+        if (CDNDomains.includes(srcUrl.hostname)) {
+          srcUrl.hostname = cdnURLOverride;
+          imageChild.attrs.src = srcUrl.toString();
+        }
+      } catch (err) {
+        // If it's not a valid URL (or cannot be parsed), leave it unchanged.
+      }
+    }
 
     if (renderImageCaptions !== false && imageTitle?.length) {
       nodeChildren.push(
