@@ -8,6 +8,7 @@
 */
 
 /* Responsive table webstyle */
+
 .responsive-table {
   --min-col-width: 20rem;
   display: grid;
@@ -39,7 +40,7 @@
 
 /* Pull quote webstyle */
 .pull-quote {
-  font-family: "Aleo", serif;
+  font-family: Aleo, serif;
   font-style: italic;
   font-size: 1.875rem;
   color: theme("colors.neutral.800");
@@ -59,7 +60,7 @@
   border-radius: 16px;
   width: 100%;
   color: theme("colors.neutral.800");
-  font-family: "Poppins", sans-serif;
+  font-family: Poppins, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   box-sizing: border-box;
@@ -95,6 +96,7 @@
   border: 1px solid theme("colors.purple.300");
   border-radius: 3px;
   padding: 0.2em 0.4em;
+  /* stylelint-disable -- These do not go through the CSS processor */
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
