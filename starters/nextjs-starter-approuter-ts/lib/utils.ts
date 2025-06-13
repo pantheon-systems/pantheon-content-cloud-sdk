@@ -1,5 +1,6 @@
 import {
   ArticleWithoutContent,
+  PantheonTree,
   TabTree,
 } from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
@@ -84,9 +85,21 @@ export function getSeoMetadata(
   };
 }
 
-export function parseAsTabTree(raw: string) {
+export function parseAsTabTree(
+  raw:
+    | string
+    | PantheonTree
+    | TabTree<PantheonTree | string | undefined | null>[]
+    | null,
+): TabTree<PantheonTree | string | undefined | null>[] | null {
+  // If it's not a TabTree, then return null.
+  if (raw == null || "children" in (raw as PantheonTree)) return null;
+  if (typeof raw !== "string") return null;
+
   try {
-    return JSON.parse(raw) as TabTree<unknown>[];
+    return JSON.parse(raw) as TabTree<
+      PantheonTree | string | undefined | null
+    >[];
   } catch (e) {
     return null;
   }
