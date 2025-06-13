@@ -32,12 +32,18 @@ export function renderArticleToElement(
     );
   }
 
-  const jsonContent = JSON.parse(article.resolvedContent) as
-    | PantheonTree
-    | TabTree<PantheonTree>[];
+  const jsonContent =
+    typeof article.resolvedContent === "string"
+      ? (JSON.parse(article.resolvedContent) as
+          | PantheonTree
+          | TabTree<PantheonTree>[])
+      : article.resolvedContent;
 
   const content: Array<PantheonTreeNode> = Array.isArray(jsonContent)
-    ? _.flatMap(jsonContent, flattenDocumentTabs)
+    ? _.flatMap(
+        jsonContent as Array<TabTree<PantheonTree>>,
+        flattenDocumentTabs,
+      )
     : jsonContent.children;
 
   // Parent node to be added to the DOM
