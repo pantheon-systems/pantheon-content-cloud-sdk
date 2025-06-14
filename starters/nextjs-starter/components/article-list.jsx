@@ -1,28 +1,8 @@
-"use client";
-
-import {
-  ArticleWithoutContent,
-  PaginatedArticle,
-  Site,
-} from "@pantheon-systems/pcc-react-sdk";
 import React, { useMemo, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useBreakpoint } from "../hooks/useBreakpoint";
 import { ArticleGridCard } from "./grid";
 import PageHeader from "./page-header";
-
-interface Props {
-  headerText?: string | null | undefined;
-  articles: PaginatedArticle[] | ArticleWithoutContent[];
-  totalCount: number;
-  cursor: string;
-  fetcher: (cursor?: string | null | undefined) => Promise<{
-    data: PaginatedArticle[] | ArticleWithoutContent[];
-    newCursor: string;
-  }>;
-  additionalHeader?: React.ReactNode;
-  site: Site;
-}
 
 export default function ArticleList({
   headerText,
@@ -31,8 +11,7 @@ export default function ArticleList({
   cursor,
   fetcher,
   additionalHeader = null,
-  site,
-}: Props) {
+}) {
   const [allArticles, setAllArticles] = useState(articles);
   const [pageCursor, setPageCursor] = useState(cursor);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +54,7 @@ export default function ArticleList({
           fetcher(pageCursor)
             .then(({ data, newCursor }) => {
               if (data?.length) {
-                setAllArticles((v) => [...v, ...data] as any[]);
+                setAllArticles((v) => [...v, ...data]);
               }
 
               setPageCursor(newCursor);
@@ -118,12 +97,11 @@ export default function ArticleList({
             "grid grid-cols-1 gap-8 pb-4 lg:grid-cols-2 xl:grid-cols-3"
           }
         >
-          {(allArticles as ArticleWithoutContent[]).map((article) => (
+          {allArticles.map((article) => (
             <ArticleGridCard
               key={article.id}
               article={article}
               basePath={"/articles"}
-              site={site}
             />
           ))}
           {skeletonCards.map((x, i) => (

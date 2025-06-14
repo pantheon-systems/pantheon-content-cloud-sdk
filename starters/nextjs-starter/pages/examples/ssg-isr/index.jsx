@@ -4,9 +4,8 @@ import { ArticleGrid } from "../../../components/grid";
 import Layout from "../../../components/layout";
 import PageHeader from "../../../components/page-header";
 import Pagination from "../../../components/pagination";
+import { PAGE_SIZE } from "../../../constants";
 import { usePagination } from "../../../hooks/usePagination";
-
-const PAGE_SIZE = 20;
 
 export default function SSGISRExampleTemplate({
   articles,
@@ -64,11 +63,7 @@ export default function SSGISRExampleTemplate({
 
 export async function getStaticProps() {
   // Fetch the articles and site in parallel
-  const [{
-    data: articles,
-    totalCount,
-    cursor,
-  }, site] = await Promise.all([
+  const [{ data: articles, totalCount, cursor }, site] = await Promise.all([
     PCCConvenienceFunctions.getPaginatedArticles({
       pageSize: PAGE_SIZE,
     }),

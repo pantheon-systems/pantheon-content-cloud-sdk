@@ -12,6 +12,7 @@ interface Props {
   disableAllStyles?: boolean;
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
+  renderImageCaptions?: boolean;
 }
 
 const PantheonTreeRenderer = ({
@@ -21,17 +22,23 @@ const PantheonTreeRenderer = ({
   disableAllStyles,
   preserveImageStyles,
   disableDefaultErrorBoundaries,
+  renderImageCaptions,
 }: Props): React.ReactElement | null => {
   const children =
     element.children?.map((child, idx) =>
       React.createElement(PantheonTreeRenderer, {
         key: idx,
-        element: child,
+        element: {
+          ...child,
+          prevNode: element.children[idx - 1],
+          nextNode: element.children[idx + 1],
+        },
         smartComponentMap,
         componentMap,
         disableAllStyles,
         preserveImageStyles,
         disableDefaultErrorBoundaries,
+        renderImageCaptions,
       }),
     ) ?? [];
 
@@ -85,25 +92,72 @@ const PantheonTreeRenderer = ({
     (element.tag !== "img" || !preserveImageStyles) &&
     (typeof componentOverride === "string" || componentOverride == null);
 
+  const targetingClasses = [];
+  const styleObject = shouldPruneStyles
+    ? undefined
+    : getStyleObjectFromString(element?.style);
+
+  if (isImageContainer(element) && children.length === 1) {
+    targetingClasses.push("pantheon-img-container");
+
+    if (styleObject?.float === "left") {
+      targetingClasses.push("pantheon-img-container-breakleft");
+    } else if (styleObject?.float === "right") {
+      targetingClasses.push("pantheon-img-container-breakright");
+    } else if (styleObject?.clear === "both") {
+      targetingClasses.push("pantheon-img-container-breakboth");
+    } else {
+      targetingClasses.push("pantheon-img-container-inline");
+
+      if (
+        (element.prevNode == null || !isImageContainer(element.prevNode)) &&
+        (element.nextNode == null || !isImageContainer(element.nextNode))
+      ) {
+        targetingClasses.push("pantheon-img-container-alone");
+      }
+    }
+
+    const imageChild = element.children[0];
+    const imageTitle = imageChild.attrs?.title?.trim();
+
+    if (renderImageCaptions !== false && imageTitle?.length) {
+      nodeChildren.push(
+        <span
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            fontSize: ".75rem",
+          }}
+          className="pantheon-caption"
+        >
+          {imageTitle}
+        </span>,
+      );
+    }
+  }
+
   return React.createElement(
     componentOverride || convertedTagName,
     {
-      style: shouldPruneStyles
-        ? undefined
-        : getStyleObjectFromString(element?.style),
-
-      // If shouldPruneStyles, then overwrite the class
-      // but leave other attrs intact.
-      ...convertAttributes(
-        Object.assign(
-          {},
-          element.attrs,
-          shouldPruneStyles ? { class: null } : {},
-        ),
-      ),
+      style: styleObject,
+      ...convertAttributes({
+        ...element.attrs,
+        class: [element.attrs?.class, ...targetingClasses]
+          .filter(Boolean)
+          .join(" "),
+      }),
     },
     nodeChildren.length ? nodeChildren : undefined,
   );
 };
+
+function isImageContainer(element: PantheonTreeNode<string>) {
+  return (
+    element.tag === "span" &&
+    element.children?.[0].tag === "img" &&
+    element.children?.length === 1
+  );
+}
 
 export default PantheonTreeRenderer;

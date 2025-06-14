@@ -57,6 +57,7 @@ interface Props {
     preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
+    renderImageCaptions?: boolean;
   };
 }
 
@@ -139,6 +140,7 @@ const ArticleRenderer = ({
       preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
+      renderImageCaptions: __experimentalFlags?.renderImageCaptions !== false,
     });
   }
 
@@ -148,13 +150,19 @@ const ArticleRenderer = ({
         // @ts-expect-error Dynamic component props
         React.createElement(renderer, {
           key: idx,
-          element,
+          element: {
+            ...element,
+            prevNode: parsedContent[idx - 1],
+            nextNode: parsedContent[idx + 1],
+          },
           smartComponentMap,
           componentMap,
           disableAllStyles: !!__experimentalFlags?.disableAllStyles,
           preserveImageStyles: !!__experimentalFlags?.preserveImageStyles,
           disableDefaultErrorBoundaries:
             !!__experimentalFlags?.disableDefaultErrorBoundaries,
+          renderImageCaptions:
+            __experimentalFlags?.renderImageCaptions !== false,
         }),
       )}
     </div>
