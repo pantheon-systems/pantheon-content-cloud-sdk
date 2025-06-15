@@ -26,6 +26,7 @@ li::before {
 /* Handle margins and left/right padding for images, to support text wrapping. */
 .pantheon-img-container img {
   margin: 0;
+  border-radius: 0;
 }
 
 .pantheon-img-container-breakleft {
@@ -52,6 +53,7 @@ li::before {
 */
 .pantheon-img-container {
   margin: 2em 0;
+  border-radius: 1rem;
 }
 
 .pantheon-img-container-inline {
