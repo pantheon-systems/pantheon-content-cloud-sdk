@@ -63,7 +63,3 @@ li::before {
   display: inline-block;
   margin: 0;
 }
-
-.pantheon-img-container-inline .pantheon-caption {
-  display: inline !important;
-}
