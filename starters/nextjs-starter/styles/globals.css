@@ -56,8 +56,7 @@ li::before {
   to set vertical offset of a wrapped image in Google Docs.
 */
 .pantheon-img-container {
-  margin-top: 2em;
-  margin-bottom: 2em;
+  margin: 2em 0;
 }
 
 .pantheon-img-container-inline {
