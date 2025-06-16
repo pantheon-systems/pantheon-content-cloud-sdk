@@ -30,11 +30,11 @@ li::before {
 }
 
 .pantheon-img-container-breakleft {
-  padding-right: 2em;
+  margin-right: 2em;
 }
 
 .pantheon-img-container-breakright {
-  padding-left: 2em;
+  margin-left: 2em;
 }
 
 /* Inline images should be horizontally centered. */
@@ -52,7 +52,8 @@ li::before {
   to set vertical offset of a wrapped image in Google Docs.
 */
 .pantheon-img-container {
-  margin: 2em 0;
+  margin-top: 2em;
+  margin-bottom: 2em;
   border-radius: 1rem;
 }
 
