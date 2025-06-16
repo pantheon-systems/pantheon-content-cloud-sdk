@@ -34,11 +34,11 @@ li::before {
 }
 
 .pantheon-img-container-breakleft {
-  margin-right: 2em;
+  padding-right: 2em;
 }
 
 .pantheon-img-container-breakright {
-  margin-left: 2em;
+  padding-left: 2em;
 }
 
 /* Inline images should be horizontally centered. */
