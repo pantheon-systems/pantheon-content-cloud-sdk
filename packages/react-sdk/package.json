@@ -23,6 +23,7 @@
     "lint:fix": "eslint . --fix && prettier --write .",
     "test": "jest --coverage --passWithNoTests",
     "test:ci": "pnpm run test --ci",
+    "update-snapshots": "pnpm run test --updateSnapshot",
     "test:watch": "jest --watch"
   },
   "main": "./dist/index.js",
