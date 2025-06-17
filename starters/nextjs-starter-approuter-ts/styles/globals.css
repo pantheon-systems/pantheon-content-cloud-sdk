@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./webstyles.css");
+
 /* Revert custom font's bullet rendering styles */
 li::before {
   font-family: auto;
@@ -35,7 +37,8 @@ li::before {
 }
 
 /* Inline images should be horizontally centered. */
-.pantheon-img-container-breakboth, .pantheon-img-container-alone {
+.pantheon-img-container-breakboth,
+.pantheon-img-container-alone {
   display: flex;
   max-width: 100% !important;
   place-items: center;

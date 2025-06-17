@@ -141,20 +141,12 @@ const PantheonTreeRenderer = ({
     componentOverride || convertedTagName,
     {
       style: styleObject,
-
-      // If shouldPruneStyles, then overwrite the class
-      // but leave other attrs intact.
-      ...convertAttributes(
-        Object.assign(
-          {},
-          element.attrs,
-          shouldPruneStyles
-            ? { class: targetingClasses.join(" ") }
-            : {
-                class: `${element.attrs.class || ""} ${targetingClasses.join(" ")}`,
-              },
-        ),
-      ),
+      ...convertAttributes({
+        ...element.attrs,
+        class: [element.attrs?.class, ...targetingClasses]
+          .filter(Boolean)
+          .join(" "),
+      }),
     },
     nodeChildren.length ? nodeChildren : undefined,
   );
