@@ -1,5 +1,5 @@
 ---
-"@pantheon-systems/pcc-react-sdk": patch
+"@pantheon-systems/pcc-react-sdk": minor
 ---
 
 Updated DOM structure for image elements: The `img` tag is now wrapped within an
