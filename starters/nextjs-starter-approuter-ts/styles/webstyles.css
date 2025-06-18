@@ -40,7 +40,8 @@
 }
 
 /* Pull quote webstyle */
-.pull-quote {
+p.pull-quote,
+p:has(span.pull-quote) {
   font-family: Aleo, serif;
   font-style: italic;
   font-size: 1.875rem;
