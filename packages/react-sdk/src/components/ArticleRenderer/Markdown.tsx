@@ -134,23 +134,27 @@ function overrideCDNUrls(cdnURLOverride?: string) {
   }
 
   return () => (tree: UnistParent) => {
-    visit(tree, "element", (node: Element) => {
-      try {
-        if (node.tagName === "img" && node.hasAttribute("src")) {
-          const src = String(node.getAttribute("src"));
+    visit(
+      tree,
+      "element",
+      (node: Element & { properties: { src: string } }) => {
+        try {
+          if (node.tagName === "img" && node.properties.src) {
+            const src = node.properties.src;
 
-          // A dummy base handles relative URLs such as "/"
-          const url = new URL(src, "https://relativeurl");
+            // A dummy base handles relative URLs such as "/"
+            const url = new URL(src, "https://relativeurl");
 
-          if (CDNDomains.includes(url.hostname)) {
-            url.hostname = cdnURLOverride;
-            node.setAttribute("src", url.toString());
+            if (CDNDomains.includes(url.hostname)) {
+              url.hostname = cdnURLOverride;
+              node.properties.src = url.toString();
+            }
           }
+        } catch (err) {
+          // If it's not a valid URL (or cannot be parsed), leave it unchanged.
         }
-      } catch (err) {
-        // If it's not a valid URL (or cannot be parsed), leave it unchanged.
-      }
-    });
+      },
+    );
   };
 }
 
