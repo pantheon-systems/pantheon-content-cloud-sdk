@@ -53,10 +53,7 @@ export async function GET(request: NextRequest) {
     articles = await Promise.all(
       docIds.map(async (id) => {
         try {
-          return await PCCConvenienceFunctions.getArticleBySlugOrId(
-            id,
-            "PRODUCTION",
-          );
+          return await PCCConvenienceFunctions.getArticleBySlugOrId(id);
         } catch (error) {
           const sanitizedId = id.replace(/\n|\r/g, "");
           console.error(

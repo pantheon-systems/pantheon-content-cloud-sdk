@@ -6,12 +6,14 @@ export const GET_ARTICLE_QUERY = gql`
     $slug: String
     $contentType: ContentType
     $publishingLevel: PublishingLevel
+    $versionId: String
   ) {
     article(
       id: $id
       slug: $slug
       contentType: $contentType
       publishingLevel: $publishingLevel
+      versionId: $versionId
     ) {
       id
       title
@@ -34,11 +36,13 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
     $id: String!
     $contentType: ContentType
     $publishingLevel: PublishingLevel
+    $versionId: String
   ) {
     article: articleUpdate(
       id: $id
       contentType: $contentType
       publishingLevel: $publishingLevel
+      versionId: $versionId
     ) {
       id
       title
