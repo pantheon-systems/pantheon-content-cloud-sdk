@@ -15,7 +15,8 @@ export const GET_ARTICLE_QUERY = gql`
     ) {
       id
       title
-      content
+      resolvedContent
+      renderAsTabs
       slug
       tags
       siteId
@@ -43,7 +44,8 @@ export const ARTICLE_UPDATE_SUBSCRIPTION = gql`
       id
       title
       siteId
-      content
+      resolvedContent
+      renderAsTabs
       slug
       tags
       metadata
@@ -95,7 +97,8 @@ export function generateListArticlesGQL({
         publishedDate
         publishingLevel
         contentType
-        ${withContent ? "content" : ""}
+        ${withContent ? "resolvedContent" : ""}
+        ${withContent ? "renderAsTabs" : ""}
         updatedAt
         previewActiveUntil
         snippet
@@ -198,7 +201,8 @@ export const LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT = gql`
         publishedDate
         publishingLevel
         contentType
-        content
+        resolvedContent
+        renderAsTabs
         updatedAt
         previewActiveUntil
       }
@@ -215,7 +219,8 @@ export const GET_RECOMMENDED_ARTICLES_QUERY = gql`
     recommendedArticles(id: $id) {
       id
       title
-      content
+      resolvedContent
+      renderAsTabs
       slug
       tags
       siteId

@@ -5,6 +5,7 @@ import {
 import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
+import { Suspense } from "react";
 import { StaticArticleView } from "../../../components/article-view";
 import Layout from "../../../components/layout";
 import { getSeoMetadata } from "../../../lib/utils";
@@ -25,7 +26,9 @@ export default function ArticlePage({ article }: ArticlePageProps) {
       />
 
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-        <StaticArticleView article={article} />
+        <Suspense>
+          <StaticArticleView article={article} />
+        </Suspense>
       </div>
     </Layout>
   );
