@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./webstyles.css");
+
 /* Revert custom font's bullet rendering styles */
 li::before {
   font-family: auto;
@@ -22,8 +24,13 @@ li::before {
 }
 
 /* Handle margins and left/right padding for images, to support text wrapping. */
-.pantheon-img-container img {
+.pantheon-img-container span img {
   margin: 0;
+  border-radius: 0;
+}
+
+.pantheon-img-container span {
+  border-radius: 1rem;
 }
 
 .pantheon-img-container-breakleft {
@@ -35,7 +42,8 @@ li::before {
 }
 
 /* Inline images should be horizontally centered. */
-.pantheon-img-container-breakboth, .pantheon-img-container-alone {
+.pantheon-img-container-breakboth,
+.pantheon-img-container-alone {
   display: flex;
   max-width: 100% !important;
   place-items: center;
@@ -54,8 +62,4 @@ li::before {
 .pantheon-img-container-inline {
   display: inline-block;
   margin: 0;
-}
-
-.pantheon-img-container-inline .pantheon-caption {
-  display: inline !important;
 }

@@ -117,7 +117,7 @@ const PantheonTreeRenderer = ({
       }
     }
 
-    const imageChild = element.children[0];
+    const imageChild = element.children[0].children[0];
     const imageTitle = imageChild.attrs?.title?.trim();
 
     if (renderImageCaptions !== false && imageTitle?.length) {
@@ -141,20 +141,12 @@ const PantheonTreeRenderer = ({
     componentOverride || convertedTagName,
     {
       style: styleObject,
-
-      // If shouldPruneStyles, then overwrite the class
-      // but leave other attrs intact.
-      ...convertAttributes(
-        Object.assign(
-          {},
-          element.attrs,
-          shouldPruneStyles
-            ? { class: targetingClasses.join(" ") }
-            : {
-                class: `${element.attrs.class || ""} ${targetingClasses.join(" ")}`,
-              },
-        ),
-      ),
+      ...convertAttributes({
+        ...element.attrs,
+        class: [element.attrs?.class, ...targetingClasses]
+          .filter(Boolean)
+          .join(" "),
+      }),
     },
     nodeChildren.length ? nodeChildren : undefined,
   );
@@ -163,8 +155,10 @@ const PantheonTreeRenderer = ({
 function isImageContainer(element: PantheonTreeNode<string>) {
   return (
     element.tag === "span" &&
-    element.children?.[0].tag === "img" &&
-    element.children?.length === 1
+    element.children?.[0].tag === "span" &&
+    element.children.length === 1 &&
+    element.children?.[0].children?.[0].tag === "img" &&
+    element.children[0].children?.length === 1
   );
 }
 
