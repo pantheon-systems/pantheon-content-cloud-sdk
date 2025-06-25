@@ -13,6 +13,7 @@ export interface Article {
   metadata: Record<string, unknown> | null;
   previewActiveUntil: number | null;
   snippet?: string | null;
+  site?: Site | null;
 }
 
 export type ArticleSummaryResponse = {

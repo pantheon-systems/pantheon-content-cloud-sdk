@@ -114,6 +114,7 @@ async function getAllArticlesWithSummary(
 async function getArticleBySlugOrId(
   id: number | string,
   args?: Parameters<typeof _getArticleBySlugOrId>[2],
+  related?: Parameters<typeof _getArticleBySlugOrId>[3],
 ) {
   const post = await _getArticleBySlugOrId(
     buildPantheonClient({ isClientSide: false }),
@@ -123,6 +124,7 @@ async function getArticleBySlugOrId(
       contentType: "TREE_PANTHEON_V2",
       ...args,
     },
+    related,
   );
 
   return post;
