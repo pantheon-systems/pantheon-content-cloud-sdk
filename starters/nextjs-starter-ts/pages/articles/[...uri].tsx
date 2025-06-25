@@ -68,7 +68,7 @@ export async function getServerSideProps({
   };
 }) {
   const slugOrId = uri[uri.length - 1];
-  const grant = pccGrant || cookies["PCC-GRANT"] || null;
+  const grant = pccGrant || cookies["PCC-GRANT"];
 
   // Fetch the article and the site in parallel
   const [article, site] = await Promise.all([
@@ -122,8 +122,8 @@ export async function getServerSideProps({
   return {
     props: {
       article,
-      grant,
-      publishingLevel,
+      grant: grant || null,
+      publishingLevel: publishingLevel || null,
       versionId: versionId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
