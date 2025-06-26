@@ -10,12 +10,7 @@ import Layout from "../../components/layout";
 import { getSeoMetadata } from "../../lib/utils";
 import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 
-export default function ArticlePage({
-  article,
-  grant,
-  publishingLevel,
-  versionId,
-}) {
+export default function ArticlePage({ article, grant, publishingLevel }) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -33,11 +28,7 @@ export default function ArticlePage({
         />
 
         <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-          <ArticleView
-            article={article}
-            publishingLevel={publishingLevel}
-            versionId={versionId}
-          />
+          <ArticleView article={article} publishingLevel={publishingLevel} />
         </div>
       </Layout>
     </PantheonProvider>
@@ -46,7 +37,7 @@ export default function ArticlePage({
 
 export async function getServerSideProps({
   req: { cookies },
-  query: { uri, publishingLevel, pccGrant, versionId, ...query },
+  query: { uri, publishingLevel, pccGrant, ...query },
 }) {
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies["PCC-GRANT"] || null;
@@ -55,7 +46,6 @@ export async function getServerSideProps({
   const [article, site] = await Promise.all([
     PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
       publishingLevel,
-      versionId,
     }),
     PCCConvenienceFunctions.getSite(),
   ]);
@@ -104,7 +94,6 @@ export async function getServerSideProps({
       article,
       grant: grant || null,
       publishingLevel: publishingLevel || null,
-      versionId: versionId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),

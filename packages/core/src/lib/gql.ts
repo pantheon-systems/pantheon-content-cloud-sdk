@@ -39,14 +39,12 @@ export function generateArticleQuery({
       $slug: String
       $contentType: ContentType
       $publishingLevel: PublishingLevel
-      $versionId: String
     ) {
       article(
         id: $id
         slug: $slug
         contentType: $contentType
         publishingLevel: $publishingLevel
-        versionId: $versionId
       ) {
         ...ArticleFields
         content
@@ -81,13 +79,11 @@ export function generateArticleUpdateSubscription({
       $id: String!
       $contentType: ContentType
       $publishingLevel: PublishingLevel
-      $versionId: String
     ) {
       article: articleUpdate(
         id: $id
         contentType: $contentType
         publishingLevel: $publishingLevel
-        versionId: $versionId
       ) {
         ...ArticleFields
         content
