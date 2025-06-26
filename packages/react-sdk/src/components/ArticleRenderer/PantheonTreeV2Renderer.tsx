@@ -128,8 +128,7 @@ const PantheonTreeRenderer = ({
 
     if (imageChild.attrs.src && cdnURLOverride) {
       try {
-        // A dummy base handles relative URLs such as "/"
-        const srcUrl = new URL(imageChild.attrs.src, "https://relativeurl");
+        const srcUrl = new URL(imageChild.attrs.src);
 
         if (CDNDomains.includes(srcUrl.hostname)) {
           srcUrl.hostname = cdnURLOverride;

@@ -124,11 +124,10 @@ function fixComponentParentRehypePlugin() {
 }
 
 /**
- * Rehype plugin to set the parent of a pcc-component node to a div
- * to fix hydration errors from the component being nested in an invalid parent.
+ * Rehype plugin to override the CDN domain.
  */
 function overrideCDNUrls(cdnURLOverride?: string) {
-  // If the env var is set, return a no-op transformer:
+  // If cdnURLOverride is not provided, return a no-op transformer:
   if (!cdnURLOverride) {
     return () => (tree: UnistParent) => tree;
   }
@@ -141,9 +140,7 @@ function overrideCDNUrls(cdnURLOverride?: string) {
         try {
           if (node.tagName === "img" && node.properties.src) {
             const src = node.properties.src;
-
-            // A dummy base handles relative URLs such as "/"
-            const url = new URL(src, "https://relativeurl");
+            const url = new URL(src);
 
             if (CDNDomains.includes(url.hostname)) {
               url.hostname = cdnURLOverride;
