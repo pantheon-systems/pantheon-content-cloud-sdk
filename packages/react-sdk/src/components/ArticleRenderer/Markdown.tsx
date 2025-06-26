@@ -6,6 +6,7 @@ import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
 import type { ComponentMap, SmartComponentMap } from ".";
+import { CDNDomains } from "../../utils/cdn-domains";
 import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
 interface MarkdownRendererProps {
@@ -13,6 +14,7 @@ interface MarkdownRendererProps {
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableDefaultErrorBoundaries: boolean;
+  cdnURLOverride?: string;
 }
 
 interface ComponentProperties {
@@ -26,10 +28,15 @@ const MarkdownRenderer = ({
   smartComponentMap,
   componentMap,
   disableDefaultErrorBoundaries,
+  cdnURLOverride,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
-      rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
+      rehypePlugins={[
+        rehypeRaw,
+        fixComponentParentRehypePlugin,
+        overrideCDNUrls(cdnURLOverride),
+      ]}
       remarkPlugins={[remarkHeaderId]}
       components={{
         ...(componentMap as Components),
@@ -110,6 +117,38 @@ function fixComponentParentRehypePlugin() {
         ) {
           // @ts-expect-error TODO: Type this properly
           parent.tagName = "div";
+        }
+      },
+    );
+  };
+}
+
+/**
+ * Rehype plugin to override the CDN domain.
+ */
+function overrideCDNUrls(cdnURLOverride?: string) {
+  // If cdnURLOverride is not provided, return a no-op transformer:
+  if (!cdnURLOverride) {
+    return () => (tree: UnistParent) => tree;
+  }
+
+  return () => (tree: UnistParent) => {
+    visit(
+      tree,
+      "element",
+      (node: Element & { properties: { src: string } }) => {
+        try {
+          if (node.tagName === "img" && node.properties.src) {
+            const src = node.properties.src;
+            const url = new URL(src);
+
+            if (CDNDomains.includes(url.hostname)) {
+              url.hostname = cdnURLOverride;
+              node.properties.src = url.toString();
+            }
+          }
+        } catch (err) {
+          // If it's not a valid URL (or cannot be parsed), leave it unchanged.
         }
       },
     );
