@@ -102,8 +102,8 @@ export async function getServerSideProps({
   return {
     props: {
       article,
-      grant,
-      publishingLevel,
+      grant: grant || null,
+      publishingLevel: publishingLevel || null,
       versionId: versionId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
