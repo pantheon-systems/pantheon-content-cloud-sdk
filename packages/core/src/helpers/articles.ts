@@ -5,8 +5,8 @@
 import { ApolloError } from "..";
 import { PantheonClient } from "../core/pantheon-client";
 import {
+  generateArticleQuery,
   generateListArticlesGQL,
-  GET_ARTICLE_QUERY,
   GET_RECOMMENDED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY,
   LIST_PAGINATED_ARTICLES_QUERY_W_CONTENT,
@@ -204,6 +204,9 @@ export async function getArticle(
   client: PantheonClient,
   id: number | string,
   args?: ArticleQueryArgs,
+  related?: {
+    site?: boolean;
+  },
 ) {
   const {
     contentType: requestedContentType,
@@ -213,7 +216,7 @@ export async function getArticle(
   const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
-    query: GET_ARTICLE_QUERY,
+    query: generateArticleQuery({ withSite: related?.site }),
     variables: {
       id: id.toString(),
       contentType,
@@ -231,6 +234,9 @@ export async function getArticleBySlug(
   client: PantheonClient,
   slug: string,
   args?: ArticleQueryArgs,
+  related?: {
+    site?: boolean;
+  },
 ) {
   const {
     contentType: requestedContentType,
@@ -240,7 +246,7 @@ export async function getArticleBySlug(
   const contentType = buildContentType(requestedContentType);
 
   const article = await client.apolloClient.query({
-    query: GET_ARTICLE_QUERY,
+    query: generateArticleQuery({ withSite: related?.site }),
     variables: {
       slug,
       contentType,
@@ -258,11 +264,19 @@ export async function getArticleBySlugOrId(
   client: PantheonClient,
   slugOrId: number | string,
   args?: ArticleQueryArgs,
+  related?: {
+    site?: boolean;
+  },
 ) {
   // First attempt to retrieve by slug, and fallback to by id if the matching slug
   // couldn't be found.
   try {
-    const article = await getArticleBySlug(client, slugOrId.toString(), args);
+    const article = await getArticleBySlug(
+      client,
+      slugOrId.toString(),
+      args,
+      related,
+    );
 
     if (article) {
       return article;
@@ -274,7 +288,7 @@ export async function getArticleBySlugOrId(
   }
 
   try {
-    const article = await getArticle(client, slugOrId, args);
+    const article = await getArticle(client, slugOrId, args, related);
     return article;
   } catch (e) {
     if (
