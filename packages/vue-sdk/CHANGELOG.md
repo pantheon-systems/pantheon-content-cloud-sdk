@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.13.0-beta.2
+
+### Patch Changes
+
+- Revert 2a3a4a947c50d80d1a5b287a3bba976fab4fffb7
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.0-beta.2
+
 ## 3.13.0-beta.1
 
 ### Patch Changes
