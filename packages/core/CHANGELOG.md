@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.13.0-beta.1
+
+### Minor Changes
+
+- Bumping minor version
+
 ## 3.13.0-beta.0
 
 ## 3.12.1
