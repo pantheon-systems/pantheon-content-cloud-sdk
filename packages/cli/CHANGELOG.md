@@ -1,5 +1,30 @@
 # @pantheon-systems/pcc-cli
 
+## 3.13.0-beta.2
+
+### Patch Changes
+
+- Revert 2a3a4a947c50d80d1a5b287a3bba976fab4fffb7
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.0-beta.2
+
+## 3.13.0-beta.1
+
+### Minor Changes
+
+- Bumping minor version
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.0-beta.1
+
+## 3.13.0-beta.0
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.13.0-beta.0
+
 ## 3.12.1
 
 ### Patch Changes
