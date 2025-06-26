@@ -130,7 +130,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     await res.setHeader("Access-Control-Allow-Origin", "*");
 
     const { command: commandInput, pccGrant, ...restOfQuery } = req.query;
-    const { publishingLevel } = restOfQuery;
+    const { publishingLevel, versionId } = restOfQuery;
 
     if (!commandInput) {
       return await res.redirect(302, options?.notFoundPath || "/404");
@@ -203,6 +203,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
                   publishingLevel: publishingLevel
                     ?.toString()
                     .toUpperCase() as AllowablePublishingLevels,
+                  versionId: versionId?.toString(),
                 },
               ),
           client && !client.apiKey?.startsWith("pcc_grant")
@@ -219,6 +220,7 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
         const queryParams = {
           pccGrant: pccGrant?.toString(),
           publishingLevel: publishingLevel?.toString().toUpperCase(),
+          versionId: versionId?.toString(),
         };
 
         return await res.redirect(

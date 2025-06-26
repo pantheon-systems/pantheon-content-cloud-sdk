@@ -19,10 +19,12 @@ export const ClientsideArticleView = ({
   article,
   grant,
   publishingLevel,
+  versionId,
 }: {
   article: Article;
   grant?: string | undefined;
   publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
 }) => {
   return (
     <PantheonProvider
@@ -31,7 +33,11 @@ export const ClientsideArticleView = ({
         pccGrant: grant,
       })}
     >
-      <ArticleView article={article} publishingLevel={publishingLevel} />
+      <ArticleView
+        article={article}
+        publishingLevel={publishingLevel}
+        versionId={versionId}
+      />
     </PantheonProvider>
   );
 };
