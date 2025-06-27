@@ -1,6 +1,6 @@
 {
   "name": "@pantheon-systems/next-approuter-pcc-starter-ts",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "private": true,
   "license": "GPL-3.0-or-later",
   "description": "A starter for building a Pantheon Content Cloud (PCC) powered site with Next.js App Router and TypeScript",
@@ -27,7 +27,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.12.0",
+    "@pantheon-systems/pcc-react-sdk": "~3.13.1",
     "@radix-ui/react-popover": "^1.1.1",
     "@tailwindcss/typography": "0.5.10",
     "@types/node": "^20.11.21",
