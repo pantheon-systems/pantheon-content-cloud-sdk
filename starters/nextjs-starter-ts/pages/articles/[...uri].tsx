@@ -65,9 +65,7 @@ export async function getServerSideProps({
 
   // Fetch the article and the site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
-      publishingLevel,
-    }),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
     PCCConvenienceFunctions.getSite(),
   ]);
 

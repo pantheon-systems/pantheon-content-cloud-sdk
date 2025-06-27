@@ -55,9 +55,7 @@ export async function getServersideArticle({
 
   // Fetch the article and site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
-      publishingLevel,
-    }),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
     PCCConvenienceFunctions.getSite(),
   ]);
 
