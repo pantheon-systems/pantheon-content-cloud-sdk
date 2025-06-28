@@ -1,13 +1,14 @@
 import { PCCConvenienceFunctions } from "@pantheon-systems/pcc-react-sdk";
 import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { NextSeo } from "next-seo";
-import { Suspense } from "react";
 import { StaticArticleView } from "../../../components/article-view";
 import Layout from "../../../components/layout";
 import { getSeoMetadata } from "../../../lib/utils";
+import { useSearchParams } from "next/navigation";
 
 export default function ArticlePage({ article, recommendedArticles }) {
   const seoMetadata = getSeoMetadata(article);
+  const searchParams = useSearchParams();
 
   return (
     <Layout>
@@ -18,9 +19,7 @@ export default function ArticlePage({ article, recommendedArticles }) {
       />
 
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-        <Suspense>
-          <StaticArticleView article={article} />
-        </Suspense>
+        <StaticArticleView article={article} tabId={searchParams.get("tabId")} />
       </div>
     </Layout>
   );

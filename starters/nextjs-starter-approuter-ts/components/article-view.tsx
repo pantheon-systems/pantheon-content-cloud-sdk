@@ -5,13 +5,13 @@ import type { Article } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import HeaderLink from "../assets/icons/HeaderLink";
 import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components/client-components";
 import { TableOfContents } from "./table-of-contents";
+import { useSearchParams } from "next/navigation";
 
 const ELEMENT_STYLES_TO_OVERRIDE = [
   /fontSize/,
@@ -56,6 +56,7 @@ const componentOverrideMap = {
 type ArticleViewProps = {
   article: Article;
   onlyContent?: boolean;
+  tabId?: string | null;
 };
 
 const ArticleHeader = ({
@@ -109,10 +110,8 @@ const ArticleHeader = ({
   );
 };
 
-export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
-  const searchParams = useSearchParams();
+export function StaticArticleView({ article, onlyContent, tabId }: ArticleViewProps) {
   const seoMetadata = getSeoMetadata(article);
-  const [tabId, setTabId] = useState<string | null>(searchParams.get("tabId"));
 
   const tabTree =
     article.resolvedContent == null
@@ -121,11 +120,6 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
 
   const currentTab =
     tabTree != null && tabId != null ? findTab(tabTree, tabId) : null;
-
-  useEffect(() => {
-    const id = searchParams.get("tabId");
-    setTabId(id);
-  }, [searchParams]);
 
   return (
     <div className="px-8 lg:px-4">
@@ -176,16 +170,16 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
       <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">
         {seoMetadata.keywords != null
           ? (Array.isArray(seoMetadata.keywords)
-              ? seoMetadata.keywords
-              : [seoMetadata.keywords]
-            ).map((x, i) => (
-              <div
-                key={i}
-                className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
-              >
-                {x}
-              </div>
-            ))
+            ? seoMetadata.keywords
+            : [seoMetadata.keywords]
+          ).map((x, i) => (
+            <div
+              key={i}
+              className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+            >
+              {x}
+            </div>
+          ))
           : null}
       </div>
     </div>
@@ -195,7 +189,11 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
 export default function ArticleView({
   article,
   onlyContent,
+  tabId,
 }: ArticleViewProps) {
+  const searchParams = useSearchParams();
+  const currentTabId = useMemo(() => searchParams.get("tabId") || tabId, [searchParams, tabId]);
+
   const { data } = useArticle(
     article.id,
     {
@@ -214,12 +212,11 @@ export default function ArticleView({
       <div>
         <Toaster />
       </div>
-      <Suspense>
-        <StaticArticleView
-          article={hydratedArticle}
-          onlyContent={onlyContent}
-        />
-      </Suspense>
+      <StaticArticleView
+        article={hydratedArticle}
+        onlyContent={onlyContent}
+        tabId={currentTabId}
+      />
     </>
   );
 }

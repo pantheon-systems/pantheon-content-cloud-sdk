@@ -92,8 +92,12 @@ export function parseAsTabTree(
     | TabTree<PantheonTree | string | undefined | null>[]
     | null,
 ): TabTree<PantheonTree | string | undefined | null>[] | null {
-  // If it's not a TabTree, then return null.
-  if (raw == null || "children" in (raw as PantheonTree)) return null;
+  if (!raw) return null;
+
+  // If it looks like a TabTree array, then return it.
+  if (typeof raw === "object" && Array.isArray(raw) && ("children" in (raw[0] as TabTree<PantheonTree | string | undefined | null>))) return raw;
+
+  // If it's not a string, then return null since we can't parse it anyways
   if (typeof raw !== "string") return null;
 
   try {

@@ -13,6 +13,7 @@ export interface ArticleViewProps {
   searchParams: {
     publishingLevel: "PRODUCTION" | "REALTIME";
     pccGrant: string | undefined;
+    tabId: string | null;
   };
 }
 
@@ -25,8 +26,8 @@ export const ArticleView = async ({
     searchParams,
   });
 
-  return <ClientsideArticleView article={article} grant={grant || undefined} />;
-};
+  return <ClientsideArticleView article={article} grant={grant || undefined} tabId={searchParams.tabId} />;
+}
 
 interface GetServersideArticleProps {
   params: { uri: string[] };

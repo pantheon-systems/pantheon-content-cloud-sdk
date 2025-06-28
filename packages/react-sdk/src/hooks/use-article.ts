@@ -51,7 +51,6 @@ export const useArticle = (
         if (!subscriptionData.data) return prev;
 
         const { article } = subscriptionData.data;
-        console.log("updateQuery", article.updatedAt);
         return { article, updatedAt: article.updatedAt };
       },
     });

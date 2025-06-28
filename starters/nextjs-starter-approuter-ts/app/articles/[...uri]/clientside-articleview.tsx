@@ -17,9 +17,11 @@ updateConfig({
 export const ClientsideArticleView = ({
   article,
   grant,
+  tabId,
 }: {
   article: Article;
   grant?: string | undefined;
+  tabId?: string | null;
 }) => {
   return (
     <PantheonProvider
@@ -28,7 +30,7 @@ export const ClientsideArticleView = ({
         pccGrant: grant,
       })}
     >
-      <ArticleView article={article} />
+      <ArticleView article={article} tabId={tabId} />
     </PantheonProvider>
   );
 };

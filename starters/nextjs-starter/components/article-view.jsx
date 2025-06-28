@@ -2,8 +2,7 @@ import { findTab, useArticle } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import HeaderLink from "../assets/icons/HeaderLink";
 import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
@@ -93,10 +92,8 @@ const ArticleHeader = ({ article, seoMetadata }) => {
   );
 };
 
-export function StaticArticleView({ article, onlyContent }) {
-  const searchParams = useSearchParams();
+export function StaticArticleView({ article, onlyContent, tabId }) {
   const seoMetadata = getSeoMetadata(article);
-  const [tabId, setTabId] = useState();
 
   const tabTree =
     article.resolvedContent == null
@@ -105,11 +102,6 @@ export function StaticArticleView({ article, onlyContent }) {
 
   const currentTab =
     tabTree != null && tabId != null ? findTab(tabTree, tabId) : null;
-
-  useEffect(() => {
-    const id = searchParams.get("tabId");
-    setTabId(id);
-  }, [searchParams]);
 
   return (
     <div className="px-8 lg:px-4">
@@ -172,7 +164,7 @@ export function StaticArticleView({ article, onlyContent }) {
   );
 }
 
-export default function ArticleView({ article, onlyContent }) {
+export default function ArticleView({ article, onlyContent, tabId }) {
   const { data } = useArticle(
     article.id,
     {
@@ -191,12 +183,11 @@ export default function ArticleView({ article, onlyContent }) {
       <div>
         <Toaster />
       </div>{" "}
-      <Suspense>
-        <StaticArticleView
-          article={hydratedArticle}
-          onlyContent={onlyContent}
-        />
-      </Suspense>
+      <StaticArticleView
+        article={hydratedArticle}
+        onlyContent={onlyContent}
+        tabId={tabId}
+      />
     </>
   );
 }

@@ -5,7 +5,7 @@ import {
 import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { NextSeo } from "next-seo";
-import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { StaticArticleView } from "../../../components/article-view";
 import Layout from "../../../components/layout";
 import { getSeoMetadata } from "../../../lib/utils";
@@ -16,6 +16,7 @@ interface ArticlePageProps {
 
 export default function ArticlePage({ article }: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
+  const searchParams = useSearchParams();
 
   return (
     <Layout>
@@ -26,9 +27,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
       />
 
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-        <Suspense>
-          <StaticArticleView article={article} />
-        </Suspense>
+        <StaticArticleView article={article} tabId={searchParams.get("tabId")} />
       </div>
     </Layout>
   );
