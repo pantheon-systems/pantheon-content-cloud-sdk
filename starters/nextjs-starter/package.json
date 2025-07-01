@@ -27,9 +27,8 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.11.3",
+    "@pantheon-systems/pcc-react-sdk": "~3.13.1",
     "@radix-ui/react-popover": "^1.1.1",
-    "@radix-ui/react-slot": "^1.1.0",
     "@tailwindcss/typography": "0.5.10",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",

@@ -1,5 +1,15 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+## 3.12.1
+
+## 3.12.0
+
 ## 3.11.3
 
 ## 3.11.2

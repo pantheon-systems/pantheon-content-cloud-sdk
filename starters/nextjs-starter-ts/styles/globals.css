@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("./webstyles.css");
+
 /* Revert custom font's bullet rendering styles */
 li::before {
   font-family: auto;
@@ -19,4 +21,45 @@ li::before {
   .responsive-iframe {
     @apply absolute bottom-0 left-0 right-0 top-0 h-full w-full;
   }
+}
+
+/* Handle margins and left/right padding for images, to support text wrapping. */
+.pantheon-img-container span img {
+  margin: 0;
+  border-radius: 0;
+}
+
+.pantheon-img-container span {
+  border-radius: 1rem;
+}
+
+.pantheon-img-container-breakleft {
+  padding-right: 2em;
+}
+
+.pantheon-img-container-breakright {
+  padding-left: 2em;
+}
+
+/* Inline images should be horizontally centered. */
+.pantheon-img-container-breakboth,
+.pantheon-img-container-alone {
+  display: flex;
+  max-width: 100% !important;
+  place-items: center;
+  flex-direction: column;
+}
+
+/* 
+  This creates consistent spacing above and below
+  text-wrapped images, but at the cost of not being able
+  to set vertical offset of a wrapped image in Google Docs.
+*/
+.pantheon-img-container {
+  margin: 2em 0;
+}
+
+.pantheon-img-container-inline {
+  display: inline-block;
+  margin: 0;
 }

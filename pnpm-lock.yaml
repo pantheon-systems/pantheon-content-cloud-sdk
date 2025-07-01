@@ -604,9 +604,6 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.1.1
         version: 1.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slot':
-        specifier: ^1.1.0
-        version: 1.1.2(@types/react@18.3.18)(react@18.3.1)
       '@tailwindcss/typography':
         specifier: 0.5.10
         version: 0.5.10(tailwindcss@3.4.17)
@@ -716,9 +713,6 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.1.1
         version: 1.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slot':
-        specifier: ^1.1.0
-        version: 1.1.2(@types/react@18.3.18)(react@18.3.1)
       '@tailwindcss/typography':
         specifier: 0.5.10
         version: 0.5.10(tailwindcss@3.4.17)
@@ -831,9 +825,6 @@ importers:
       '@radix-ui/react-popover':
         specifier: ^1.1.1
         version: 1.1.6(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@radix-ui/react-slot':
-        specifier: ^1.1.0
-        version: 1.1.2(@types/react@18.3.18)(react@18.3.1)
       '@tailwindcss/typography':
         specifier: 0.5.10
         version: 0.5.10(tailwindcss@3.4.17)

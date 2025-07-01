@@ -2,6 +2,7 @@ import {
   PantheonProvider,
   PCCConvenienceFunctions,
   type Article,
+  type PublishingLevel,
 } from "@pantheon-systems/pcc-react-sdk";
 import { getArticlePathComponentsFromContentStructure } from "@pantheon-systems/pcc-react-sdk/server";
 import { NextSeo } from "next-seo";
@@ -14,9 +15,14 @@ import { pantheonAPIOptions } from "../api/pantheoncloud/[...command]";
 interface ArticlePageProps {
   article: Article;
   grant: string;
+  publishingLevel: keyof typeof PublishingLevel;
 }
 
-export default function ArticlePage({ article, grant }: ArticlePageProps) {
+export default function ArticlePage({
+  article,
+  grant,
+  publishingLevel,
+}: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
   return (
@@ -34,7 +40,7 @@ export default function ArticlePage({ article, grant }: ArticlePageProps) {
         />
 
         <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-          <ArticleView article={article} />
+          <ArticleView article={article} publishingLevel={publishingLevel} />
         </div>
       </Layout>
     </PantheonProvider>
@@ -50,23 +56,16 @@ export async function getServerSideProps({
   };
   query: {
     uri: string[];
-    publishingLevel: "PRODUCTION" | "REALTIME" | undefined;
+    publishingLevel: keyof typeof PublishingLevel | undefined;
     pccGrant: string;
   };
 }) {
   const slugOrId = uri[uri.length - 1];
-  const grant = pccGrant || cookies["PCC-GRANT"] || null;
+  const grant = pccGrant || cookies["PCC-GRANT"];
 
   // Fetch the article and the site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(
-      slugOrId,
-      publishingLevel
-        ? (publishingLevel.toString().toUpperCase() as
-            | "PRODUCTION"
-            | "REALTIME")
-        : "PRODUCTION",
-    ),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
     PCCConvenienceFunctions.getSite(),
   ]);
 
@@ -113,7 +112,8 @@ export async function getServerSideProps({
   return {
     props: {
       article,
-      grant,
+      grant: grant || null,
+      publishingLevel: publishingLevel || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),

@@ -106,12 +106,12 @@ export function StaticArticleView({ article, onlyContent }) {
         }}
       />
 
-      <div className="border-base-300 mt-16 flex w-full gap-x-3 border-t-[1px] pt-7 lg:mt-32">
+      <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">
         {seoMetadata.keywords && Array.isArray(seoMetadata.keywords)
           ? seoMetadata.keywords.map((x, i) => (
               <div
                 key={i}
-                className="text-bold text-neutral-content rounded-full border-[1px] border-[#d4d4d4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+                className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
               >
                 {x}
               </div>
@@ -122,15 +122,15 @@ export function StaticArticleView({ article, onlyContent }) {
   );
 }
 
-export default function ArticleView({ article, onlyContent }) {
+export default function ArticleView({ article, onlyContent, publishingLevel }) {
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 
