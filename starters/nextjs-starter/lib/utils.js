@@ -78,3 +78,19 @@ export function getSeoMetadata(article) {
     },
   };
 }
+
+export function parseAsTabTree(raw) {
+  if (!raw) return null;
+
+  // If it looks like a TabTree array, then return it.
+  if (typeof raw === "object" && Array.isArray(raw) && ("children" in raw[0])) return raw;
+
+  // If it's not a string, then return null since we can't parse it anyways
+  if (typeof raw !== "string") return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch (e) {
+    return null;
+  }
+}

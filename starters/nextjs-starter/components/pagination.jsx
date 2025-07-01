@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import ChevronLeft from "./../assets/icons/chevron-left.svg";
 import ChevronRight from "./../assets/icons/chevron-right.svg";
 
@@ -10,20 +10,19 @@ const Pagination = ({
   onChange,
   disabled,
 }) => {
-  const pageCount = Math.ceil(totalCount / pageSize);
-
+  const pageCount = useMemo(() => Math.ceil(totalCount / pageSize), [totalCount, pageSize]);
   const showPrevButton = currentPage > 0;
   const showNextButton = currentPage + 1 < pageCount;
 
   const goToNextPage = useCallback(async () => {
     const newPage = Math.min(currentPage + 1, pageCount - 1);
     onChange(newPage);
-  }, [currentPage]);
+  }, [currentPage, pageCount, onChange]);
 
   const goToPreviousPage = useCallback(() => {
     const newPage = Math.max(currentPage - 1, 0);
     onChange(newPage);
-  }, [currentPage]);
+  }, [currentPage, onChange]);
 
   return (
     <div className="my-5 flex items-center">

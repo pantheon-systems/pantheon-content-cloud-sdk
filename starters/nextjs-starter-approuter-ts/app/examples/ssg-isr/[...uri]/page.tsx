@@ -9,12 +9,13 @@ import Layout from "../../../../components/layout";
 import { getSeoMetadata } from "../../../../lib/utils";
 
 interface ArticlePageProps {
-  params: { uri: string[] };
+  params: { uri: string[], tabId: string };
 }
 
 export const revalidate = 21600; // revalidate every 6 hours
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
+
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     params.uri[params.uri.length - 1],
   );
@@ -26,7 +27,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   return (
     <Layout>
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-        <StaticArticleView article={article} />
+        <StaticArticleView article={article} tabId={params.tabId} />
       </div>
     </Layout>
   );

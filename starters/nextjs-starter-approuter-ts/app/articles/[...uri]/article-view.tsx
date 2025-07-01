@@ -14,6 +14,7 @@ export interface ArticleViewProps {
   searchParams: {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
+    tabId: string | null;
   };
 }
 
@@ -31,6 +32,7 @@ export const ArticleView = async ({
       article={article}
       grant={grant || undefined}
       publishingLevel={searchParams.publishingLevel}
+      tabId={searchParams.tabId}
     />
   );
 };
@@ -55,7 +57,14 @@ export async function getServersideArticle({
 
   // Fetch the article and site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
+    PCCConvenienceFunctions.getArticleBySlugOrId(
+      slugOrId,
+      {
+        publishingLevel: (publishingLevel?.toString().toUpperCase() as
+          | "PRODUCTION"
+          | "REALTIME") || "PRODUCTION",
+      }
+    ),
     PCCConvenienceFunctions.getSite(),
   ]);
 
