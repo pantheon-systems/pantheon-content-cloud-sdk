@@ -1,5 +1,22 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 3.13.1
+
+### Minor Changes
+
+- 4317fcd: Updated DOM structure for image elements: The `img` tag is now
+  wrapped within an additional `span` element. As a result, any CSS targeting
+  `.pantheon-img-container img` should be updated to reflect the new structure
+  using the selector `.pantheon-img-container span img`.
+- Bump to 3.13.1
+
+### Patch Changes
+
+- a235787: Added cdnURLOverride experimental option to ArticleRenderer to allow
+  you to use different CDN origins.
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
 ## 3.12.1
 
 ### Patch Changes

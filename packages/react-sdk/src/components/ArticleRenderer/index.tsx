@@ -59,6 +59,7 @@ interface Props {
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
     renderImageCaptions?: boolean;
+    cdnURLOverride?: string;
   };
 }
 
@@ -133,6 +134,7 @@ const ArticleRenderer = ({
             disableDefaultErrorBoundaries={
               !!__experimentalFlags?.disableDefaultErrorBoundaries
             }
+            cdnURLOverride={__experimentalFlags?.cdnURLOverride}
           >
             {contentToShow}
           </MarkdownRenderer>
@@ -168,6 +170,7 @@ const ArticleRenderer = ({
       disableDefaultErrorBoundaries:
         !!__experimentalFlags?.disableDefaultErrorBoundaries,
       renderImageCaptions: __experimentalFlags?.renderImageCaptions !== false,
+      cdnURLOverride: __experimentalFlags?.cdnURLOverride,
     });
   }
 
@@ -189,6 +192,7 @@ const ArticleRenderer = ({
             !!__experimentalFlags?.disableDefaultErrorBoundaries,
           renderImageCaptions:
             __experimentalFlags?.renderImageCaptions !== false,
+          cdnURLOverride: __experimentalFlags?.cdnURLOverride,
         }),
       )}
     </div>

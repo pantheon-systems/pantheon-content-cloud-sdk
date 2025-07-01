@@ -4,7 +4,7 @@ import {
   ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
   buildContentType,
-  GET_ARTICLE_QUERY,
+  generateArticleQuery,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { useEffect, useMemo } from "react";
@@ -22,6 +22,9 @@ export const useArticle = (
   id: string,
   args?: ArticleQueryArgs,
   apolloQueryOptions?: ApolloQueryOptions,
+  related?: {
+    site?: boolean;
+  },
 ): Return => {
   const publishingLevel = args?.publishingLevel;
   const contentType = buildContentType(args?.contentType);
@@ -34,7 +37,7 @@ export const useArticle = (
   }, [publishingLevel, contentType]);
 
   const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
-    GET_ARTICLE_QUERY,
+    generateArticleQuery({ withSite: related?.site }),
     {
       ...apolloQueryOptions,
       variables: { id, ...memoizedArgs },

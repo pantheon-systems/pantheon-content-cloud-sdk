@@ -1,5 +1,5 @@
 import { findTab, useArticle } from "@pantheon-systems/pcc-react-sdk";
-import type { Article } from "@pantheon-systems/pcc-react-sdk";
+import type { Article, PublishingLevel } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -40,6 +40,7 @@ type ArticleViewProps = {
   article: Article;
   onlyContent?: boolean;
   tabId?: string | null;
+  publishingLevel: keyof typeof PublishingLevel;
 };
 
 const ArticleHeader = ({
@@ -97,15 +98,16 @@ export default function ArticleView({
   article,
   onlyContent,
   tabId,
+  publishingLevel,
 }: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 
@@ -128,7 +130,11 @@ export default function ArticleView({
   );
 }
 
-export function StaticArticleView({ article, onlyContent, tabId }: ArticleViewProps) {
+export function StaticArticleView({
+  article,
+  onlyContent,
+  tabId,
+}: Pick<ArticleViewProps, "article" | "onlyContent" | "tabId">) {
   const seoMetadata = getSeoMetadata(article);
 
   const tabTree =

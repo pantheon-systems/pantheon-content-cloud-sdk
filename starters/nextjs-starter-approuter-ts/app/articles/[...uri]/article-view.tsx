@@ -1,6 +1,7 @@
 import {
   getArticlePathComponentsFromContentStructure,
   PCCConvenienceFunctions,
+  type PublishingLevel,
 } from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
@@ -11,7 +12,7 @@ import { ClientsideArticleView } from "./clientside-articleview";
 export interface ArticleViewProps {
   params: { uri: string[] };
   searchParams: {
-    publishingLevel: "PRODUCTION" | "REALTIME";
+    publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
     tabId: string | null;
   };
@@ -26,13 +27,20 @@ export const ArticleView = async ({
     searchParams,
   });
 
-  return <ClientsideArticleView article={article} grant={grant || undefined} tabId={searchParams.tabId} />;
-}
+  return (
+    <ClientsideArticleView
+      article={article}
+      grant={grant || undefined}
+      publishingLevel={searchParams.publishingLevel}
+      tabId={searchParams.tabId}
+    />
+  );
+};
 
 interface GetServersideArticleProps {
   params: { uri: string[] };
   searchParams: {
-    publishingLevel: "PRODUCTION" | "REALTIME";
+    publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
   };
 }
@@ -51,9 +59,11 @@ export async function getServersideArticle({
   const [article, site] = await Promise.all([
     PCCConvenienceFunctions.getArticleBySlugOrId(
       slugOrId,
-      (publishingLevel?.toString().toUpperCase() as
-        | "PRODUCTION"
-        | "REALTIME") || "PRODUCTION",
+      {
+        publishingLevel: (publishingLevel?.toString().toUpperCase() as
+          | "PRODUCTION"
+          | "REALTIME") || "PRODUCTION",
+      }
     ),
     PCCConvenienceFunctions.getSite(),
   ]);
@@ -96,6 +106,7 @@ export async function getServersideArticle({
   return {
     article,
     grant,
+    publishingLevel,
     site,
   };
 }

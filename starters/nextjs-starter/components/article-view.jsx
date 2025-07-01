@@ -164,15 +164,15 @@ export function StaticArticleView({ article, onlyContent, tabId }) {
   );
 }
 
-export default function ArticleView({ article, onlyContent, tabId }) {
+export default function ArticleView({ article, onlyContent, tabId, publishingLevel }) {
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 

@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
 ## 3.12.1
 
 ### Patch Changes

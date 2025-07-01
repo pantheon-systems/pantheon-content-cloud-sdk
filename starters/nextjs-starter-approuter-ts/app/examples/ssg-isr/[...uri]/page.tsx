@@ -18,7 +18,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     params.uri[params.uri.length - 1],
-    "PRODUCTION",
   );
 
   if (!article) {
@@ -39,7 +38,6 @@ export async function generateMetadata({
 }: ArticlePageProps): Promise<Metadata> {
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     params.uri[params.uri.length - 1],
-    "PRODUCTION",
   );
 
   return getSeoMetadata(article);

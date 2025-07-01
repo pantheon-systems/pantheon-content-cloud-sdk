@@ -1,7 +1,7 @@
 "use client";
 
 import { findTab, useArticle } from "@pantheon-systems/pcc-react-sdk";
-import type { Article } from "@pantheon-systems/pcc-react-sdk";
+import type { Article, PublishingLevel } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
@@ -57,6 +57,7 @@ type ArticleViewProps = {
   article: Article;
   onlyContent?: boolean;
   tabId?: string | null;
+  publishingLevel: keyof typeof PublishingLevel;
 };
 
 const ArticleHeader = ({
@@ -110,7 +111,11 @@ const ArticleHeader = ({
   );
 };
 
-export function StaticArticleView({ article, onlyContent, tabId }: ArticleViewProps) {
+export function StaticArticleView({
+  article,
+  onlyContent,
+  tabId
+}: Pick<ArticleViewProps, "article" | "onlyContent" | "tabId">) {
   const seoMetadata = getSeoMetadata(article);
 
   const tabTree =
@@ -190,6 +195,7 @@ export default function ArticleView({
   article,
   onlyContent,
   tabId,
+  publishingLevel,
 }: ArticleViewProps) {
   const searchParams = useSearchParams();
   const currentTabId = useMemo(() => searchParams.get("tabId") || tabId, [searchParams, tabId]);
@@ -197,11 +203,11 @@ export default function ArticleView({
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 

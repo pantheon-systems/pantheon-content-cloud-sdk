@@ -5,6 +5,7 @@ import {
   PantheonProvider,
   PCCConvenienceFunctions,
   updateConfig,
+  type PublishingLevel,
 } from "@pantheon-systems/pcc-react-sdk";
 import ArticleView from "../../../components/article-view";
 
@@ -18,10 +19,12 @@ export const ClientsideArticleView = ({
   article,
   grant,
   tabId,
+  publishingLevel,
 }: {
   article: Article;
   grant?: string | undefined;
   tabId?: string | null;
+  publishingLevel: keyof typeof PublishingLevel;
 }) => {
   return (
     <PantheonProvider
@@ -30,7 +33,7 @@ export const ClientsideArticleView = ({
         pccGrant: grant,
       })}
     >
-      <ArticleView article={article} tabId={tabId} />
+      <ArticleView article={article} tabId={tabId} publishingLevel={publishingLevel} />
     </PantheonProvider>
   );
 };
