@@ -38,6 +38,20 @@ export function ArticleGrid({ articles, site, basePath = "/articles" }) {
   );
 }
 
+// Utility to ensure URL include width and height params
+function withImageSizeParams(url, width = 400, height = 400) {
+  if (!url) return url;
+  try {
+    const u = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+    u.searchParams.set('width', width.toString());
+    u.searchParams.set('height', height.toString());
+    return u.toString();
+  } catch {
+    // If url is not valid, return as is
+    return url;
+  }
+}
+
 export function ArticleGridCard({
   article,
   imageAltText,
@@ -46,7 +60,8 @@ export function ArticleGridCard({
   site,
 }) {
   const targetHref = getArticleURLFromSite(article, site, basePath);
-  const imageSrc = article.metadata?.["image"] || null;
+  const rawImageSrc = article.metadata?.["image"] || null;
+  const imageSrc = withImageSizeParams(rawImageSrc, 400, 400);
 
   return (
     <div
