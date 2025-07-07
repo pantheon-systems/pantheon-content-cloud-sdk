@@ -31,13 +31,13 @@ type ExtraProps = {
 
 export type ComponentMap = Partial<{
   [TagName in keyof JSX.IntrinsicElements]:
-  | (new (
-    props: JSX.IntrinsicElements[TagName] & ExtraProps,
-  ) => JSX.ElementClass)
-  // Function component:
-  | ((props: JSX.IntrinsicElements[TagName] & ExtraProps) => JSX.Element)
-  // Tag name:
-  | keyof JSX.IntrinsicElements;
+    | (new (
+        props: JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => JSX.ElementClass)
+    // Function component:
+    | ((props: JSX.IntrinsicElements[TagName] & ExtraProps) => JSX.Element)
+    // Tag name:
+    | keyof JSX.IntrinsicElements;
 }>;
 
 interface Props {
