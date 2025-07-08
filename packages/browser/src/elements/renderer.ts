@@ -1,9 +1,14 @@
-import { type Article } from "@pantheon-systems/pcc-sdk-core";
+import {
+  flattenDocumentTabs,
+  type Article,
+} from "@pantheon-systems/pcc-sdk-core";
 import {
   PantheonTree,
   PantheonTreeNode,
+  TabTree,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
+import _ from "lodash";
 
 export type RendererConfig = {
   disableStyles?: boolean;
@@ -15,41 +20,37 @@ export function renderArticleToElement(
   element: HTMLElement,
   config?: RendererConfig,
 ) {
-  if (!article.content) {
+  if (!article.resolvedContent) {
     throw new Error(
       "Article has no content. Preview or publish the article to view it here.",
     );
   }
 
-  if (
-    article.contentType !== "TREE_PANTHEON" &&
-    article.contentType !== "TREE_PANTHEON_V2"
-  ) {
+  if (article.contentType !== "TREE_PANTHEON_V2") {
     throw new Error(
-      `Unsupported content type: ${article.contentType}. PCC Article only supports TREE_PANTHEON and TREE_PANTHEON_V2`,
+      `Unsupported content type: ${article.contentType}. PCC Article only supports TREE_PANTHEON_V2`,
     );
   }
 
-  const content = JSON.parse(article.content) as
-    | PantheonTree
-    | TreePantheonContent[];
+  const jsonContent =
+    typeof article.resolvedContent === "string"
+      ? (JSON.parse(article.resolvedContent) as
+          | PantheonTree
+          | TabTree<PantheonTree>[])
+      : article.resolvedContent;
 
-  // V1 content is array of TreePantheonContent
-  if (Array.isArray(content)) {
-    console.warn(
-      "Outdated content format detected. Your content may not render correctly. Please republish your article.",
-    );
-  }
-
-  const contentNodes = Array.isArray(content)
-    ? content
-    : content.children || [];
+  const content: Array<PantheonTreeNode> = Array.isArray(jsonContent)
+    ? _.flatMap(
+        jsonContent as Array<TabTree<PantheonTree>>,
+        flattenDocumentTabs,
+      )
+    : jsonContent.children;
 
   // Parent node to be added to the DOM
   const documentNode = document.createElement("div");
 
   // Add PCC content to the document node
-  contentNodes.forEach((node) => {
+  content.forEach((node) => {
     const contentNode = renderContentNode(node, config);
     contentNode && documentNode.appendChild(contentNode);
   });

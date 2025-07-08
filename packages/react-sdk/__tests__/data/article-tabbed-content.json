@@ -1,0 +1,17 @@
+{
+  "id": "1p2kIznxENd3pJQnPjF-RZ50qw6Qzf_L1HFtysSi5_MY",
+  "title": "Tabbed Document For Tests",
+  "renderAsTabs": true,
+  "content": "Tab 1\n\nTab 2",
+  "resolvedContent": "[{\"documentTab\":\"Tab 1\",\"tabProperties\":{\"tabId\":\"t.0\",\"title\":\"Tab 1\",\"index\":0}},{\"documentTab\":\"Tab 2\",\"tabProperties\":{\"tabId\":\"t.tlembaievla6\",\"title\":\"Tab 2\",\"index\":1}}]",
+  "tabbedContent": "[{\"documentTab\":\"Tab 1\",\"tabProperties\":{\"tabId\":\"t.0\",\"title\":\"Tab 1\",\"index\":0}},{\"documentTab\":\"Tab 2\",\"tabProperties\":{\"tabId\":\"t.tlembaievla6\",\"title\":\"Tab 2\",\"index\":1}}]",
+  "contentType": "TEXT_MARKDOWN",
+  "tags": null,
+  "publishedDate": 1751887115875,
+  "publishingLevel": "PRODUCTION",
+  "updatedAt": 1751887115875,
+  "metadata": {
+    "slug": "tabbed-document-for-tests"
+  },
+  "previewActiveUntil": 1751887620633
+}

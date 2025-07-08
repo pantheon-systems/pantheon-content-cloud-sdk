@@ -11,6 +11,8 @@ const ARTICLE_FIELDS_FRAGMENT = gql`
     publishedDate
     publishingLevel
     contentType
+    resolvedContent
+    renderAsTabs
     updatedAt
     previewActiveUntil
   }
@@ -150,7 +152,8 @@ export function generateListArticlesGQL({
         publishedDate
         publishingLevel
         contentType
-        ${withContent ? "content" : ""}
+        ${withContent ? "resolvedContent" : ""}
+        ${withContent ? "renderAsTabs" : ""}
         updatedAt
         previewActiveUntil
         snippet
