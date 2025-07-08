@@ -66,6 +66,20 @@ interface ArticleGridCardProps {
   site: Site;
 }
 
+// Utility to ensure URL include width and height params
+function withImageSizeParams(url: string | null, width = 400, height = 400): string | null {
+  if (!url) return url;
+  try {
+    const u = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+    u.searchParams.set('width', width.toString());
+    u.searchParams.set('height', height.toString());
+    return u.toString();
+  } catch {
+    // If url is not valid, return as is
+    return url;
+  }
+}
+
 export function ArticleGridCard({
   article,
   basePath = "/articles",
@@ -74,7 +88,8 @@ export function ArticleGridCard({
   site,
 }: ArticleGridCardProps) {
   const targetHref = getArticleURLFromSite(article, site, basePath);
-  const imageSrc = (article.metadata?.["image"] as string) || null;
+  const rawImageSrc = (article.metadata?.["image"] as string) || null;
+  const imageSrc = withImageSizeParams(rawImageSrc, 400, 400);
 
   return (
     <div
