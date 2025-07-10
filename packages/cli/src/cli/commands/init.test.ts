@@ -144,3 +144,35 @@ test("should raise error when template name is incorrect", async () => {
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
+
+test("should be able to init starter kit with default git ref (latest tag)", async () => {
+  const appFolder = tmp.tmpNameSync();
+
+  await executePCC("init", [appFolder, "--template", "nextjs"]);
+
+  // Check for expected files
+  expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
+
+  // Remove app folder
+  fs.rmSync(appFolder, { recursive: true, force: true });
+});
+
+test("should be able to init starter kit with a specific git ref (3.0.3)", async () => {
+  const appFolder = tmp.tmpNameSync();
+
+  await executePCC("init", [
+    appFolder,
+    "--template",
+    "nextjs",
+    "--git-ref",
+    "3.0.3",
+  ]);
+
+  // Check for expected files
+  expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
+  expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
+
+  // Remove app folder
+  fs.rmSync(appFolder, { recursive: true, force: true });
+});
