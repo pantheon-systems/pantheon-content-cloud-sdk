@@ -46,6 +46,7 @@ const init = async ({
   useAppRouter,
   useTypescript,
   printVerbose,
+  gitRef,
 }: {
   dirName: string;
   template: CliTemplateOptions;
@@ -59,6 +60,7 @@ const init = async ({
   useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
+  gitRef?: string;
 }) => {
   const logger = new Logger(silentLogs);
   if (!dirName) {
@@ -94,6 +96,7 @@ const init = async ({
     starterPath,
     dirName,
     printVerbose,
+    gitRef,
   );
 
   fetchStarter.succeed("Fetched starter kit!");
@@ -260,6 +263,7 @@ export default errorHandler<{
   useAppRouter?: boolean;
   useTypescript: boolean;
   printVerbose?: boolean;
+  gitRef?: string;
 }>(init, (args) => {
   // Cleanup template directory if it exists
   const { dirName } = args;
