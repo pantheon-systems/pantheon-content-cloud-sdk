@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 4.0.0-beta.0
+
+### Major Changes
+
+- a6c7134: Now supporting tabbed content.
+
 ## 3.13.1
 
 ### Minor Changes
