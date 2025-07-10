@@ -154,11 +154,20 @@ test("should be able to init starter kit with default git ref (latest tag)", asy
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
   expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
 
+  // Check that the pcc-sdk-core version is NOT 3.0.3
+  const packageJson = JSON.parse(
+    readFileSync(`${appFolder}/package.json`).toString(),
+  );
+  const sdkVersion =
+    packageJson.dependencies?.["@pantheon-systems/pcc-react-sdk"] ||
+    packageJson.devDependencies?.["@pantheon-systems/pcc-react-sdk"];
+  expect(sdkVersion).not.toBe("~4.0.0-beta.0");
+
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
 });
 
-test("should be able to init starter kit with a specific git ref (3.0.3)", async () => {
+test("should be able to init starter kit with a specific git ref (4.0.0-beta)", async () => {
   const appFolder = tmp.tmpNameSync();
 
   await executePCC("init", [
@@ -166,12 +175,22 @@ test("should be able to init starter kit with a specific git ref (3.0.3)", async
     "--template",
     "nextjs",
     "--git-ref",
-    "3.0.3",
+    "4.0.0-beta",
   ]);
 
   // Check for expected files
   expect(fs.existsSync(`${appFolder}/next.config.js`)).toBe(true);
   expect(fs.existsSync(`${appFolder}/package.json`)).toBe(true);
+
+  // Check that the pcc-sdk-core version is 4.0.0-beta.0
+  const packageJson = JSON.parse(
+    readFileSync(`${appFolder}/package.json`).toString(),
+  );
+  console.dir(packageJson, { depth: null });
+  const sdkVersion =
+    packageJson.dependencies?.["@pantheon-systems/pcc-react-sdk"] ||
+    packageJson.devDependencies?.["@pantheon-systems/pcc-react-sdk"];
+  expect(sdkVersion).toBe("~4.0.0-beta.0");
 
   // Remove app folder
   fs.rmSync(appFolder, { recursive: true, force: true });
