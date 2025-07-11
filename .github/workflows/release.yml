@@ -44,7 +44,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag release branch as 'stable'
-        if: steps.changesets.outputs.published == 'true'
+        if: steps.changesets.outputs.published == 'true' &&
+          !contains(steps.changesets.outputs.publishedPackages, '-') # Only tag if the published packages are not pre-release
         uses: EndBug/latest-tag@7589411ebda7bc8f98deb2dbc37e3dc45828f7d0
         with:
           ref: "stable"
