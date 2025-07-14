@@ -58,7 +58,7 @@ interface Props {
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
     renderImageCaptions?: boolean;
-    cdnURLOverride?: string;
+    cdnURLOverride?: string | ((url: string) => string);
   };
 }
 

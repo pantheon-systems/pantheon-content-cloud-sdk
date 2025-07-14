@@ -123,22 +123,23 @@ export function StaticArticleView({
           disableAllStyles: !!onlyContent,
           preserveImageStyles: true,
           useUnintrusiveTitleRendering: true,
+          cdnURLOverride: (url) => url.replace(/cdn\.staging\.content\.pantheon\.io\/[^/]+/, "cdn.example.com"),
         }}
       />
 
       <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">
         {seoMetadata.keywords != null
           ? (Array.isArray(seoMetadata.keywords)
-              ? seoMetadata.keywords
-              : [seoMetadata.keywords]
-            ).map((x, i) => (
-              <div
-                key={i}
-                className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
-              >
-                {x}
-              </div>
-            ))
+            ? seoMetadata.keywords
+            : [seoMetadata.keywords]
+          ).map((x, i) => (
+            <div
+              key={i}
+              className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+            >
+              {x}
+            </div>
+          ))
           : null}
       </div>
     </div>
