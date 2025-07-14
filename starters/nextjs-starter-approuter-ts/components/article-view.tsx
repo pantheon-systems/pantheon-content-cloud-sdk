@@ -123,7 +123,6 @@ export function StaticArticleView({
           disableAllStyles: !!onlyContent,
           preserveImageStyles: true,
           useUnintrusiveTitleRendering: true,
-          cdnURLOverride: (url) => url.replace(/cdn\.staging\.content\.pantheon\.io\/[^/]+/, "cdn.example.com"),
         }}
       />
 
