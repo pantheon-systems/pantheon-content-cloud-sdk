@@ -1,18 +1,18 @@
-import { 
+import {
+  getArticlePathComponentsFromContentStructure,
   PCCConvenienceFunctions,
-  getArticlePathComponentsFromContentStructure
- } from "@pantheon-systems/pcc-react-sdk/server";
+  type PublishingLevel,
+} from "@pantheon-systems/pcc-react-sdk/server";
 import { cookies } from "next/headers";
 import { notFound, redirect, RedirectType } from "next/navigation";
 import queryString from "query-string";
 import { pantheonAPIOptions } from "../../api/pantheoncloud/[...command]/api-options";
 import { ClientsideArticleView } from "./clientside-articleview";
 
-
 export interface ArticleViewProps {
   params: { uri: string[] };
   searchParams: {
-    publishingLevel: "PRODUCTION" | "REALTIME";
+    publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
   };
 }
@@ -26,13 +26,19 @@ export const ArticleView = async ({
     searchParams,
   });
 
-  return <ClientsideArticleView article={article} grant={grant || undefined} />;
+  return (
+    <ClientsideArticleView
+      article={article}
+      grant={grant || undefined}
+      publishingLevel={searchParams.publishingLevel}
+    />
+  );
 };
 
 interface GetServersideArticleProps {
   params: { uri: string[] };
   searchParams: {
-    publishingLevel: "PRODUCTION" | "REALTIME";
+    publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
   };
 }
@@ -49,11 +55,7 @@ export async function getServersideArticle({
 
   // Fetch the article and site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(
-      slugOrId,
-      (publishingLevel?.toString().toUpperCase() as "PRODUCTION" | "REALTIME") ||
-        "PRODUCTION",
-    ),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
     PCCConvenienceFunctions.getSite(),
   ]);
 
@@ -61,7 +63,7 @@ export async function getServersideArticle({
     return notFound();
   }
 
-    // Get the article path from the content structure
+  // Get the article path from the content structure
   const articlePath = getArticlePathComponentsFromContentStructure(
     article,
     site,
@@ -70,12 +72,12 @@ export async function getServersideArticle({
   if (
     // Check if the article has a slug
     ((article.slug?.trim().length &&
-    // Check if the slug is not the same as the slugOrId
-    article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase())||
-    // Check if the article path is not the same as the uri
-    articlePath.length !== uri.length - 1 ||
-    // Check if the article path (with all the components together) is not the same as the uri
-    articlePath.join("/") !== uri.slice(0, -1).join("/")) &&
+      // Check if the slug is not the same as the slugOrId
+      article.slug.toLowerCase() !== slugOrId?.trim().toLowerCase()) ||
+      // Check if the article path is not the same as the uri
+      articlePath.length !== uri.length - 1 ||
+      // Check if the article path (with all the components together) is not the same as the uri
+      articlePath.join("/") !== uri.slice(0, -1).join("/")) &&
     // Check if resolvePath in pantheon API options is not null
     pantheonAPIOptions.resolvePath != null
   ) {
@@ -95,6 +97,7 @@ export async function getServersideArticle({
   return {
     article,
     grant,
+    publishingLevel,
     site,
   };
 }

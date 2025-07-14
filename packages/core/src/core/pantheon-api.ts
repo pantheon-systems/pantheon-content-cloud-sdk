@@ -6,7 +6,13 @@ import {
   PCCConvenienceFunctions,
 } from "../helpers";
 import { parseJwt } from "../lib/jwt";
-import { Article, MetadataGroup, Site, SmartComponentMap } from "../types";
+import {
+  Article,
+  MetadataGroup,
+  Site,
+  SmartComponentMap,
+  type PublishingLevel,
+} from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
 export interface ApiRequest {
@@ -111,7 +117,7 @@ const defaultOptions = {
   notFoundPath: "/404",
 } satisfies PantheonAPIOptions;
 
-type AllowablePublishingLevels = "PRODUCTION" | "REALTIME" | undefined;
+type AllowablePublishingLevels = keyof typeof PublishingLevel | undefined;
 
 export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
   const options = {
