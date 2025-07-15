@@ -14,7 +14,7 @@ interface Props {
   preserveImageStyles?: boolean;
   disableDefaultErrorBoundaries?: boolean;
   renderImageCaptions?: boolean;
-  cdnURLOverride?: string;
+  cdnURLOverride?: string | ((url: string) => string);
 }
 
 const PantheonTreeRenderer = ({
@@ -131,8 +131,12 @@ const PantheonTreeRenderer = ({
         const srcUrl = new URL(imageChild.attrs.src);
 
         if (CDNDomains.includes(srcUrl.hostname)) {
-          srcUrl.hostname = cdnURLOverride;
-          imageChild.attrs.src = srcUrl.toString();
+          if (typeof cdnURLOverride === "function") {
+            imageChild.attrs.src = cdnURLOverride(srcUrl.toString());
+          } else {
+            srcUrl.hostname = cdnURLOverride;
+            imageChild.attrs.src = srcUrl.toString();
+          }
         }
       } catch (err) {
         // If it's not a valid URL (or cannot be parsed), leave it unchanged.

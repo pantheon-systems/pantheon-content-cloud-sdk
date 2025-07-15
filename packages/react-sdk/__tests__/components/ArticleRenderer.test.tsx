@@ -50,4 +50,61 @@ describe("<ArticleRenderer />", () => {
     );
     expect(tree).toMatchSnapshot();
   });
+
+  it("should replace the CDN URL with the override (markdown with function)", () => {
+    const tree = renderer
+      .create(
+        <ArticleRenderer
+          article={articleWithImageMarkdown as Article}
+          __experimentalFlags={{
+            cdnURLOverride: (url) =>
+              url.replace(
+                /cdn\.staging\.content.pantheon.io\/[^/]+/,
+                "cdn.example.com",
+              ),
+          }}
+        />,
+      )
+      .toJSON();
+
+    expect(
+      JSON.stringify(tree).includes(
+        "https://cdn.example.com/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(true);
+    expect(
+      JSON.stringify(tree).includes(
+        "https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(false);
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("should replace the CDN URL with the override (tree with function)", () => {
+    const tree = renderer
+      .create(
+        <ArticleRenderer
+          article={articleWithImageTree as Article}
+          __experimentalFlags={{
+            cdnURLOverride: (url) =>
+              url.replace(
+                /cdn\.staging\.content.pantheon.io\/[^/]+/,
+                "cdn.example.com",
+              ),
+          }}
+        />,
+      )
+      .toJSON();
+    expect(
+      JSON.stringify(tree).includes(
+        "https://cdn.example.com/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(true);
+    expect(
+      JSON.stringify(tree).includes(
+        "https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(false);
+    expect(tree).toMatchSnapshot();
+  });
 });
