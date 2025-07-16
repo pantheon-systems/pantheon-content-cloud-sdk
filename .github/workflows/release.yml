@@ -9,6 +9,10 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CI: true
+  IS_CICD: true
+  PCC_SITE_ID: ${{ secrets.PCC_SITE_ID }}
+  PCC_TOKEN: ${{ secrets.PCC_TOKEN }}
+
 jobs:
   release:
     timeout-minutes: 15
