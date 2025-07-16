@@ -1,14 +1,16 @@
+import { flattenDocumentTabs } from "@pantheon-systems/pcc-sdk-core";
 import {
   Article,
   PantheonTree,
   PantheonTreeNode,
+  TabTree,
   TreePantheonContent,
 } from "@pantheon-systems/pcc-sdk-core/types";
 import _ from "lodash";
 import { useMemo } from "react";
 
 export function getArticleTitle(article: Article | undefined): string | null {
-  if (!article?.content) {
+  if (!article?.resolvedContent) {
     return null;
   }
 
@@ -18,14 +20,13 @@ export function getArticleTitle(article: Article | undefined): string | null {
     return null;
   }
 
-  const jsonContent = JSON.parse(article.content) as
-    | PantheonTree
-    | TreePantheonContent[];
+  const jsonContent =
+    typeof article.resolvedContent === "string"
+      ? JSON.parse(article.resolvedContent)
+      : (article.resolvedContent as PantheonTree | TabTree<PantheonTree>[]);
 
-  const content: Array<PantheonTreeNode | TreePantheonContent> = Array.isArray(
-    jsonContent,
-  )
-    ? jsonContent
+  const content: Array<PantheonTreeNode> = Array.isArray(jsonContent)
+    ? _.flatMap(jsonContent, flattenDocumentTabs)
     : jsonContent.children;
 
   const titleContent = content.find((x) => x.tag === "title");
