@@ -11,8 +11,6 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 env:
   CI: true
   IS_CICD: true
-  PCC_SITE_ID: ${{ secrets.PCC_SITE_ID }}
-  PCC_TOKEN: ${{ secrets.PCC_TOKEN }}
 
 jobs:
   release:
@@ -46,6 +44,7 @@ jobs:
           version: pnpm ci:version
           publish: pnpm ci:publish
         env:
+          HUSKY: "0"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
