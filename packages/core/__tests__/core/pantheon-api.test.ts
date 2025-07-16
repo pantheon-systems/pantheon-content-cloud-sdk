@@ -264,7 +264,7 @@ describe("Command Handling", () => {
     it("retrieves article and redirects for document command with valid article ID", async () => {
       vi.mocked(getArticleBySlugOrId).mockResolvedValue({
         id: "test-article-id",
-        content: "Article content",
+        resolvedContent: "Article content",
         contentType: "TEXT_MARKDOWN",
         title: "Article title",
         tags: [],
