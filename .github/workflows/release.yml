@@ -47,10 +47,12 @@ jobs:
 
       - name: Add auth token to npmrc
         run: |
-          echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+          echo "\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
 
       - name: Debug whoami
         run: npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # - name: Create and publish versions
       #   id: changesets
