@@ -1,4 +1,8 @@
-import { ArticleWithoutContent, Site } from "@pantheon-systems/pcc-react-sdk";
+import {
+  ArticleWithoutContent,
+  PantheonTree,
+  TabTree,
+} from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
 import type { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
@@ -85,4 +89,28 @@ export function getSeoMetadata(article: ArticleWithoutContent | null) {
       description,
     },
   };
+}
+
+export function parseAsTabTree(
+  raw:
+    | string
+    | PantheonTree
+    | TabTree<PantheonTree | string | undefined | null>[]
+    | null,
+): TabTree<PantheonTree | string | undefined | null>[] | null {
+  if (!raw) return null;
+
+  // If it looks like a TabTree array, then return it.
+  if (typeof raw === "object" && Array.isArray(raw) && ("children" in (raw[0] as TabTree<PantheonTree | string | undefined | null>))) return raw;
+
+  // If it's not a string, then return null since we can't parse it anyways
+  if (typeof raw !== "string") return null;
+
+  try {
+    return JSON.parse(raw) as TabTree<
+      PantheonTree | string | undefined | null
+    >[];
+  } catch (e) {
+    return null;
+  }
 }
