@@ -4,14 +4,21 @@ import { SkeletonArticleView } from "../../../components/skeleton-article-view";
 import { getSeoMetadata } from "../../../lib/utils";
 import {
   ArticleView,
-  ArticleViewProps,
   getServersideArticle,
 } from "./article-view";
+import { PublishingLevel } from "@pantheon-systems/pcc-react-sdk/server";
 
-export default async function ArticlePage({
-  params,
-  searchParams,
-}: ArticleViewProps) {
+interface ArticleViewProps {
+  params: Promise<{ uri: string[] }>;
+  searchParams: Promise<{
+    publishingLevel: keyof typeof PublishingLevel;
+    pccGrant: string | undefined;
+  }>;
+}
+
+export default async function ArticlePage(props: ArticleViewProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   return (
     <Layout>
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
@@ -23,10 +30,10 @@ export default async function ArticlePage({
   );
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: ArticleViewProps) {
+
+export async function generateMetadata(props: ArticleViewProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const { article } = await getServersideArticle({ params, searchParams });
 
   return getSeoMetadata(article);

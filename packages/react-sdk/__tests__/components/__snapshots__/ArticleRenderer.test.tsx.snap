@@ -35,11 +35,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     </h5>
     <h6>
       <span
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
+        style="font-style: italic;"
       >
         This is h6
       </span>
@@ -47,33 +43,21 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "fontWeight": "bold",
-          }
-        }
+        style="font-weight: bold;"
       >
         This is bold
       </span>
     </div>
     <div>
       <span
-        style={
-          {
-            "fontStyle": "italic",
-          }
-        }
+        style="font-style: italic;"
       >
         This is italic
       </span>
     </div>
     <div>
       <span
-        style={
-          {
-            "textDecoration": "underline",
-          }
-        }
+        style="text-decoration: underline;"
       >
         This is underlined
       </span>
@@ -81,46 +65,24 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
-        }
+        style="vertical-align: super;"
       >
         aaa
       </span>
       <span
-        style={
-          {
-            "fontStyle": "italic",
-            "fontWeight": "bold",
-            "textDecoration": "underline",
-            "verticalAlign": "super",
-          }
-        }
+        style="font-weight: bold; font-style: italic; vertical-align: super; text-decoration: underline;"
       >
         This is bold, underlined, italic, strikethrough and supertext
       </span>
     </div>
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         eee
       </span>
       <span
-        style={
-          {
-            "fontStyle": "italic",
-            "fontWeight": "bold",
-            "textDecoration": "underline",
-            "verticalAlign": "sub",
-          }
-        }
+        style="font-weight: bold; font-style: italic; vertical-align: sub; text-decoration: underline;"
       >
         This is bold, underlined, italic, strikethrough and subscript
       </span>
@@ -128,11 +90,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         horizontal line below:
       </span>
@@ -145,11 +103,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
         x
       </span>
       <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
-        }
+        style="vertical-align: super;"
       >
         3
       </span>
@@ -157,39 +111,22 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
-        }
+        style="vertical-align: super;"
       >
         H
       </span>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         2
       </span>
       <span
-        style={
-          {
-            "verticalAlign": "super",
-          }
-        }
+        style="vertical-align: super;"
       >
         O x
       </span>
       <span
-        style={
-          {
-            "fontWeight": "bold",
-            "verticalAlign": "super",
-          }
-        }
+        style="font-weight: bold; vertical-align: super;"
       >
         o
       </span>
@@ -197,11 +134,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         Unordered “bullet point” list
       </span>
@@ -209,63 +142,36 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <ul>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Apple
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Pineapple
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Pen 
         </span>
         <span
-          style={
-            {
-              "fontWeight": "bold",
-              "verticalAlign": "sub",
-            }
-          }
+          style="font-weight: bold; vertical-align: sub;"
         >
           pineapple
         </span>
         <span
-          style={
-            {
-              "fontStyle": "italic",
-              "verticalAlign": "sub",
-            }
-          }
+          style="font-style: italic; vertical-align: sub;"
         >
           apple
         </span>
         <span
-          style={
-            {
-              "textDecoration": "underline",
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub; text-decoration: underline;"
         >
           pen
         </span>
@@ -274,11 +180,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         Unordered list with different symbols
       </span>
@@ -286,33 +188,21 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <ul>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Duck
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Duck2
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Goose
         </span>
@@ -321,49 +211,29 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         Todo list with checkmarks
       </span>
     </div>
     <ul>
-      <li
-        style={{}}
-      >
+      <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Veni
         </span>
       </li>
-      <li
-        style={{}}
-      >
+      <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Vidi
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Vici
         </span>
@@ -372,11 +242,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         Ordered “numbered” list
       </span>
@@ -384,55 +250,35 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <ol>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Waking in the morning
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Gotta go downstairs
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Gotta have cereal
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           I see my friends
         </span>
       </li>
       <li>
         <span
-          style={
-            {
-              "verticalAlign": "sub",
-            }
-          }
+          style="vertical-align: sub;"
         >
           Gotta get down on Friday
         </span>
@@ -445,29 +291,20 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "fontWeight": "bold",
-            "verticalAlign": "sub",
-          }
-        }
+        style="font-weight: bold; vertical-align: sub;"
       >
         A wild table appears
       </span>
     </div>
     <table
-      className="text-black"
+      class="text-black"
     >
       <tbody>
         <tr>
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 Merged cols 1 & 2
               </span>
@@ -476,11 +313,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 Col 3
               </span>
@@ -489,11 +322,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 Col 4
               </span>
@@ -504,11 +333,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 A
               </span>
@@ -517,11 +342,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 B
               </span>
@@ -530,11 +351,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 C
               </span>
@@ -543,11 +360,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 D
               </span>
@@ -558,11 +371,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 ა
               </span>
@@ -571,11 +380,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 ბ
               </span>
@@ -584,11 +389,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 ს
               </span>
@@ -597,11 +398,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
           <td>
             <div>
               <span
-                style={
-                  {
-                    "verticalAlign": "sub",
-                  }
-                }
+                style="vertical-align: sub;"
               >
                 დ
               </span>
@@ -613,11 +410,7 @@ exports[`<ArticleRenderer /> should render a post's content 1`] = `
     <div />
     <div>
       <span
-        style={
-          {
-            "verticalAlign": "sub",
-          }
-        }
+        style="vertical-align: sub;"
       >
         Some more paragraphs after everything else.
       </span>
