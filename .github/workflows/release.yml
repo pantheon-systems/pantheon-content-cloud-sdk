@@ -38,12 +38,12 @@ jobs:
       - name: Build Packages
         run: pnpm run build
 
-      - name: Add auth token to global npmrc
-        run: |
-          echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+      # - name: Add auth token to global npmrc
+      #   run: |
+      #     echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
-      - name: Debug whoami
-        run: npm whoami
+      # - name: Debug whoami
+      #   run: npm whoami
 
       - name: Add auth token to npmrc
         run: |
