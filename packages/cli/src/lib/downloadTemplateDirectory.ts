@@ -50,8 +50,8 @@ async function fetchFiles(
   printVerbose?: boolean,
   ref?: string,
 ) {
-  // Use the provided ref (commit, tag, or branch), default to main if not set
-  const treeSha = ref || "main";
+  // Use the provided ref (commit, tag, or branch), default to stable if not set
+  const treeSha = ref || "stable";
   const { data } = await octokit.request(
     "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
     {
