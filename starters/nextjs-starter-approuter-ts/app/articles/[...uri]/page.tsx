@@ -13,6 +13,7 @@ interface ArticleViewProps {
   searchParams: Promise<{
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
+    tabId: string | null;
   }>;
 }
 

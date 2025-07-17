@@ -13,7 +13,7 @@ export const reactComponent = ({
   headingLevel = "h2",
   className,
 }: InferSmartComponentProps<typeof smartComponentDefinition>) => {
-  const linkItems = links.map((link) => (
+  const linkItems = (links || []).map((link) => (
     <a href={link.href}>{link.linkText}</a>
   ));
   return (

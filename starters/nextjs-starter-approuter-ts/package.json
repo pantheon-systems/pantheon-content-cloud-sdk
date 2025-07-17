@@ -27,7 +27,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.13.1",
+    "@pantheon-systems/pcc-react-sdk": "~4.0.0",
     "@radix-ui/react-popover": "^1.1.1",
     "@tailwindcss/typography": "0.5.10",
     "@types/node": "^20.11.21",
@@ -38,6 +38,7 @@
     "query-string": "^8.2.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-hot-toast": "^2.5.2",
     "react-icons": "^5.4.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-loading-skeleton": "^3.4.0",

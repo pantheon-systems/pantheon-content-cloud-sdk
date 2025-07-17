@@ -14,6 +14,7 @@ export interface ArticleViewProps {
   searchParams: {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
+    tabId: string | null;
   };
 }
 
@@ -31,6 +32,7 @@ export const ArticleView = async ({
       article={article}
       grant={grant || undefined}
       publishingLevel={searchParams.publishingLevel}
+      tabId={searchParams.tabId}
     />
   );
 };
@@ -40,6 +42,7 @@ interface GetServersideArticleProps {
   searchParams: {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
+    tabId: string | null;
   };
 }
 

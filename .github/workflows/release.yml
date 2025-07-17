@@ -9,12 +9,15 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CI: true
+  IS_CICD: true
+
 jobs:
   release:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -41,6 +44,7 @@ jobs:
           version: pnpm ci:version
           publish: pnpm ci:publish
         env:
+          HUSKY: "0"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
