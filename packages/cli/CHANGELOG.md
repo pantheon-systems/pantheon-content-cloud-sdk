@@ -1,5 +1,18 @@
 # @pantheon-systems/pcc-cli
 
+## 4.0.0
+
+### Minor Changes
+
+- 6980df3: The CLI should use the 'stable' tag when initializing a new template,
+  with the option to provide a --git-ref to use a specific ref instead of
+  stable.
+
+### Patch Changes
+
+- Updated dependencies [a6c7134]
+  - @pantheon-systems/pcc-sdk-core@4.0.0
+
 ## 3.13.1
 
 ### Minor Changes
