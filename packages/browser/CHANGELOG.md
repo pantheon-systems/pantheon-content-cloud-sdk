@@ -1,5 +1,11 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 4.0.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@4.0.1
+
 ## 4.0.0
 
 ### Major Changes

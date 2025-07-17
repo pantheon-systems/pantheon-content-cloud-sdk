@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-cli
 
+## 4.0.1
+
+### Patch Changes
+
+- 1ac0171: test patch
+  - @pantheon-systems/pcc-sdk-core@4.0.1
+
 ## 4.0.0
 
 ### Minor Changes
