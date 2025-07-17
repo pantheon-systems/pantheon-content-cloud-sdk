@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - ag-pcc-2213-github-workflow-for-npm-release
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -42,29 +41,20 @@ jobs:
         run: |
           echo "\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
-      - name: Add auth token to npmrc
-        run: |
-          echo "\n//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> .npmrc
-
-      - name: Debug whoami
-        run: npm whoami
+      - name: Create and publish versions
+        id: changesets
+        uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
+        with:
+          version: pnpm ci:version
+          publish: pnpm ci:publish
         env:
+          HUSKY: "0"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # - name: Create and publish versions
-      #   id: changesets
-      #   uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
-      #   with:
-      #     version: pnpm ci:version
-      #     publish: pnpm ci:publish
-      #   env:
-      #     HUSKY: "0"
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      # - name: Tag release branch as 'stable'
-      #   if: steps.changesets.outputs.published == 'true' &&
-      #     !contains(steps.changesets.outputs.publishedPackages, '-') # Only tag if the published packages are not pre-release
-      #   uses: EndBug/latest-tag@7589411ebda7bc8f98deb2dbc37e3dc45828f7d0
-      #   with:
-      #     ref: "stable"
+      - name: Tag release branch as 'stable'
+        if: steps.changesets.outputs.published == 'true' &&
+          !contains(steps.changesets.outputs.publishedPackages, '-') # Only tag if the published packages are not pre-release
+        uses: EndBug/latest-tag@7589411ebda7bc8f98deb2dbc37e3dc45828f7d0
+        with:
+          ref: "stable"
