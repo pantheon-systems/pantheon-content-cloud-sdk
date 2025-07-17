@@ -15,6 +15,7 @@ export interface ArticleViewProps {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
     tabId: string | null;
+    versionId: string | undefined;
   };
 }
 
@@ -33,6 +34,7 @@ export const ArticleView = async ({
       grant={grant || undefined}
       publishingLevel={searchParams.publishingLevel}
       tabId={searchParams.tabId}
+      versionId={searchParams.versionId || null}
     />
   );
 };
@@ -42,6 +44,7 @@ interface GetServersideArticleProps {
   searchParams: {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
+    versionId: string | undefined;
   };
 }
 
@@ -50,14 +53,17 @@ export async function getServersideArticle({
   searchParams,
 }: GetServersideArticleProps) {
   const { uri } = params;
-  const { publishingLevel, pccGrant, ...query } = searchParams;
+  const { publishingLevel, pccGrant, versionId, ...query } = searchParams;
 
   const slugOrId = uri[uri.length - 1];
   const grant = pccGrant || cookies().get("PCC-GRANT")?.value || null;
 
   // Fetch the article and site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
+      publishingLevel,
+      versionId,
+    }),
     PCCConvenienceFunctions.getSite(),
   ]);
 
@@ -100,6 +106,7 @@ export async function getServersideArticle({
     article,
     grant,
     publishingLevel,
+    versionId,
     site,
   };
 }
