@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ag-pcc-2213-github-workflow-for-npm-release
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
