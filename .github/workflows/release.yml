@@ -41,7 +41,8 @@ jobs:
       - name: Prep commit message
         id: prep_commit
         run: |
-          echo "NEW_VERSION=$(pnpm changeset status --output=release.json && jq -r '.releases[0].newVersion' release.json && rm release.json)" >> "$GITHUB_OUTPUT"
+          NEW_VERSION=$(pnpm changeset status --output=release.json && jq -r '.releases[0].newVersion' release.json && rm release.json)
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create Release Pull Request or Publish
         id: changesets
@@ -61,9 +62,9 @@ jobs:
         id: prerelease_check
         run: |
           if echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -e 'any(.[] | .version; contains("-"))'; then
-            echo "is_prerelease=true" >> $GITHUB_OUTPUT
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
           else
-            echo "is_prerelease=false" >> $GITHUB_OUTPUT
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Tag release branch as 'stable'
