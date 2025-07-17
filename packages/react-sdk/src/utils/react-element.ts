@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { isValidElement, PropsWithChildren, type ReactNode } from "react";
 
 export const getTextContent = (node: ReactNode): string => {
   // Handle all possible types that ReactNode can be, since it is a union of types.
@@ -14,10 +14,8 @@ export const getTextContent = (node: ReactNode): string => {
     return "";
   } else if (Array.isArray(node)) {
     return node.map(getTextContent).join("");
-  } else if ("props" in node) {
-    return (node.props.children || node.props.element?.children || [])
-      .map(getTextContent)
-      .join("");
+  } else if (isValidElement(node)) {
+    return getTextContent((node.props as PropsWithChildren).children);
   }
 
   return "";

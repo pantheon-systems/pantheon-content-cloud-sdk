@@ -3,10 +3,11 @@ import Layout from "../../components/layout";
 import SearchResults from "./search-results";
 
 interface Props {
-  searchParams: { q?: string | null | undefined };
+  searchParams: Promise<{ q?: string | null | undefined }>;
 }
 
-export default async function SearchPage({ searchParams }: Props) {
+export default async function SearchPage(props: Props) {
+  const searchParams = await props.searchParams;
   const searchResults = await PCCConvenienceFunctions.getAllArticlesWithSummary(
     {
       publishingLevel: "PRODUCTION",
@@ -29,7 +30,8 @@ export default async function SearchPage({ searchParams }: Props) {
   );
 }
 
-export function generateMetadata({ searchParams }: Props) {
+export async function generateMetadata(props: Props) {
+  const searchParams = await props.searchParams;
   return {
     title: `Search results for "${searchParams.q}"`,
     description: `Search results for "${searchParams.q}"`,

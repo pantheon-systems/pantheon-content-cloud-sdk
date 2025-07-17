@@ -34,11 +34,12 @@ function fetchNextPages(author?: string | null | undefined) {
   };
 }
 
-export default async function ArticlesListTemplate({
-  params,
-}: {
-  params: { author: string };
-}) {
+export default async function ArticlesListTemplate(
+  props: {
+    params: Promise<{ author: string }>;
+  }
+) {
+  const params = await props.params;
   const author = params.author ? decodeURIComponent(params.author) : undefined;
 
   const [site, {

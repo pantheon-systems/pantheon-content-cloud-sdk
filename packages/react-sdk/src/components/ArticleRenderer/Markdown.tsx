@@ -1,6 +1,6 @@
-import { Components } from "react-markdown";
-import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
+import { ClassAttributes, HTMLAttributes } from "react";
+import ReactMarkdown, { ExtraProps } from "react-markdown";
+import { Components } from "react-markdown/lib";
 import rehypeRaw from "rehype-raw";
 import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
@@ -40,7 +40,13 @@ const MarkdownRenderer = ({
       remarkPlugins={[remarkHeaderId]}
       components={{
         ...(componentMap as Components),
-        ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
+        ["pcc-component" as "div"]: ({
+          node,
+        }: ClassAttributes<HTMLDivElement> &
+          HTMLAttributes<HTMLDivElement> &
+          ExtraProps) => {
+          if (!node) return <div>NO REPLACEMENT PROVIDED</div>;
+
           const { attrs, type } = node.properties as typeof node.properties &
             ComponentProperties;
 

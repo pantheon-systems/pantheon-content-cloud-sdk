@@ -6,8 +6,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import type { NextRequest } from "next/server";
 
 export interface AppRouterParams {
-  params: Record<string, string>;
-  headers?: null;
+  params: Promise<Record<string, string>>;
+  headers?: Promise<null>;
 }
 
 type Handler = {
@@ -31,14 +31,14 @@ export function NextPantheonAPI(options?: PantheonAPIOptions) {
     // App router
     const appRouterParams = res as AppRouterParams;
     const headers = new Headers({
-      ...(appRouterParams.headers || {}),
+      ...((await appRouterParams.headers) || {}),
     });
 
     return (await api(
       {
         query: {
           ...Object.fromEntries((req as NextRequest).nextUrl.searchParams),
-          ...appRouterParams.params,
+          ...(await appRouterParams.params),
         },
         cookies: cookiesToObj((req as NextRequest).cookies),
       },
