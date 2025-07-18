@@ -169,6 +169,7 @@ export default function ArticleView({
   onlyContent,
   publishingLevel,
   versionId,
+  tabId,
 }) {
   const { data } = useArticle(
     article.id,
