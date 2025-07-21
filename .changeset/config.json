@@ -12,7 +12,7 @@
     ]
   ],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "ignore": [
     "testpages",
