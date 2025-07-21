@@ -97,6 +97,8 @@ export async function getServerSideProps({
   );
 
   if (
+    // Only redirect if this is a published article
+    article.publishingLevel === "PRODUCTION" &&
     // Check if the article has a slug
     ((article.slug?.trim().length &&
       // Check if the slug is not the same as the slugOrId
