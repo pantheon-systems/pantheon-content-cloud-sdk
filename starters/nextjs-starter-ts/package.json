@@ -27,7 +27,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@pantheon-systems/pcc-react-sdk": "~3.13.1",
+    "@pantheon-systems/pcc-react-sdk": "~4.0.0",
     "@playwright/test": "^1.49.1",
     "@radix-ui/react-popover": "^1.1.1",
     "@tailwindcss/typography": "0.5.10",
@@ -36,6 +36,7 @@
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "next": "^14.2.28",
+    "react-hot-toast": "^2.5.2",
     "next-seo": "^5.15.0",
     "query-string": "^8.2.0",
     "react": "18.3.1",

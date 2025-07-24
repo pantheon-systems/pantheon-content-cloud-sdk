@@ -9,12 +9,15 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CI: true
+  IS_CICD: true
+
 jobs:
   release:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -34,19 +37,39 @@ jobs:
       - name: Build Packages
         run: pnpm run build
 
-      - name: Create and publish versions
+      - name: Prep commit message
+        id: prep_commit
+        run: |
+          NEW_VERSION=$(pnpm changeset status --output=release.json && jq -r '.releases[0].newVersion' release.json && rm release.json)
+          echo "NEW_VERSION=$NEW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release Pull Request or Publish
         id: changesets
         uses: changesets/action@e0145edc7d9d8679003495b11f87bd8ef63c0cba
         with:
+          title: "Release v${{steps.prep_commit.outputs.NEW_VERSION}}"
+          commit: "Release v${{steps.prep_commit.outputs.NEW_VERSION}}"
           version: pnpm ci:version
           publish: pnpm ci:publish
         env:
+          HUSKY: "0"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Check for pre-release versions
+        if: steps.changesets.outputs.published == 'true'
+        id: prerelease_check
+        run: |
+          if echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -e 'any(.[] | .version; contains("-"))'; then
+            echo "is_prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Tag release branch as 'stable'
-        if: steps.changesets.outputs.published == 'true' &&
-          !contains(steps.changesets.outputs.publishedPackages, '-') # Only tag if the published packages are not pre-release
-        uses: EndBug/latest-tag@7589411ebda7bc8f98deb2dbc37e3dc45828f7d0
-        with:
-          ref: "stable"
+        if:
+          steps.changesets.outputs.published == 'true' &&
+          steps.prerelease_check.outputs.is_prerelease == 'false'
+        run: |
+          git tag -a stable -f -m "Release v${{steps.prep_commit.outputs.NEW_VERSION}}"
+          git push origin stable --force

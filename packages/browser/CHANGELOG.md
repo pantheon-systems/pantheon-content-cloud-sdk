@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 4.0.0
+
+### Major Changes
+
+- a6c7134: Now supporting tabbed content.
+
+### Patch Changes
+
+- Updated dependencies [a6c7134]
+  - @pantheon-systems/pcc-sdk-core@4.0.0
+
 ## 3.13.1
 
 ### Minor Changes

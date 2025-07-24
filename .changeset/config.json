@@ -12,12 +12,14 @@
     ]
   ],
   "linked": [],
-  "access": "restricted",
+  "access": "public",
   "baseBranch": "main",
   "ignore": [
     "testpages",
     "@pantheon-systems/pcc-vue-sdk",
     "@pantheon-systems/next-pcc-starter",
-    "@pantheon-systems/next-pcc-starter-ts"
+    "@pantheon-systems/next-pcc-starter-ts",
+    "@pantheon-systems/next-approuter-pcc-starter-ts",
+    "@pantheon-systems/pcc-vue-sdk"
   ]
 }
