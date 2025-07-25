@@ -21,14 +21,15 @@ export async function downloadTemplateDirectory(
   directory: string,
   outputDirectory: string,
   printVerbose?: boolean,
+  gitRef = "latest",
 ) {
   try {
     // Fetch files but ignore certain ones.
-    const files = (await fetchFiles(directory, printVerbose)).filter(
-      (file) => !["turbo.json"].includes(file.path),
+    const files = (await fetchFiles(directory, printVerbose, gitRef)).filter(
+      (file: File) => !["turbo.json"].includes(file.path),
     );
 
-    await Promise.all(files.map((file) => output(file, outputDirectory)));
+    await Promise.all(files.map((file: File) => output(file, outputDirectory)));
 
     return path.resolve(outputDirectory);
   } catch (error) {
@@ -44,29 +45,36 @@ async function output(file: File, outputDirectory: string) {
   await writeFile(outputPath, file.contents);
 }
 
-async function fetchFiles(directory: string, printVerbose?: boolean) {
+async function fetchFiles(
+  directory: string,
+  printVerbose?: boolean,
+  ref?: string,
+) {
+  // Use the provided ref (commit, tag, or branch), default to stable if not set
+  const treeSha = ref || "stable";
   const { data } = await octokit.request(
     "GET /repos/{owner}/{repo}/git/trees/{tree_sha}",
     {
       owner,
       repo,
-      tree_sha: "main",
+      tree_sha: treeSha,
       recursive: "true",
     },
   );
 
   const files = data.tree
-    .filter((node): node is TreeNode =>
+    .filter((node: any): node is TreeNode =>
       Boolean(node.path?.startsWith(directory) && node.type === "blob"),
     )
-    .map((node) => node.path);
+    .map((node: any) => node.path);
 
-  const downloadPromises = files.map(async (path) => {
+  const downloadPromises = files.map(async (filePath: string) => {
     if (printVerbose) {
-      console.log(`Downloading ${path}`);
+      console.log(`Downloading ${filePath}`);
     }
 
-    const url = `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
+    // Use the ref for the raw file download
+    const url = `https://raw.githubusercontent.com/${owner}/${repo}/${treeSha}/${filePath}`;
 
     async function attemptDownload(url: string, retryAllowed: boolean) {
       try {
@@ -75,7 +83,7 @@ async function fetchFiles(directory: string, printVerbose?: boolean) {
         });
 
         return {
-          path: path.replace(directory, ""),
+          path: filePath.replace(directory, ""),
           contents: data,
         };
       } catch (e) {
