@@ -32,6 +32,7 @@ export interface ArticleQueryArgs {
   sortOrder?: keyof typeof SortOrder;
   metadataFilters?: { [key: string]: unknown };
   preamble?: string;
+  siteIds?: string[];
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -43,6 +44,7 @@ export interface ArticlePaginatedQueryArgs {
   pageSize?: number;
   cursor?: string;
   preamble?: string;
+  siteIds?: string[];
 }
 
 type PublishStatus = "published" | "unpublished";
@@ -52,6 +54,7 @@ export type ArticleSearchArgs = {
   titleContains?: string;
   tags?: string[];
   publishStatus?: PublishStatus;
+  siteIds?: string[];
 };
 
 type ConvertedArticleSearchArgs = {
@@ -59,6 +62,7 @@ type ConvertedArticleSearchArgs = {
   title?: { contains: string };
   tags?: string[];
   publishStatus?: PublishStatus;
+  siteIds?: string[];
 };
 
 export function convertSearchParamsToGQL(
@@ -122,6 +126,7 @@ export async function getPaginatedArticles(
         }),
         ...convertSearchParamsToGQL(searchParams),
         contentType,
+        ...(rest.siteIds && { siteIds: rest.siteIds }),
       },
     });
     const responseData = response.data.articlesv3;

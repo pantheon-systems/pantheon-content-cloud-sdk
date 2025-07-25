@@ -131,6 +131,7 @@ export function generateListArticlesGQL({
     $publishingLevel: PublishingLevel
     $filter: ArticleFilterInput
     $preamble: String
+    $siteIds: [String]
   ) {
     articlesv3(
       pageSize: $pageSize
@@ -142,6 +143,7 @@ export function generateListArticlesGQL({
       publishingLevel: $publishingLevel
       filter: $filter
       preamble: $preamble
+      siteIds: $siteIds
     ) {
       articles {
         id
@@ -199,6 +201,7 @@ export function generateListPaginatedArticlesGQL({
       $publishingLevel: PublishingLevel
       $filter: ArticleFilterInput
       $metadataFilters: String
+      $siteIds: [String]
     ) {
       articlesv3(
         pageSize: $pageSize
@@ -209,6 +212,7 @@ export function generateListPaginatedArticlesGQL({
         publishingLevel: $publishingLevel
         filter: $filter
         metadataFilters: $metadataFilters
+        siteIds: $siteIds
       ) {
         articles {
           ...ArticleFields
