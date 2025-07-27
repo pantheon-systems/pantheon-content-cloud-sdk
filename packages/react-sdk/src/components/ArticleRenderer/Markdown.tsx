@@ -45,7 +45,6 @@ const MarkdownRenderer = ({
         }: ClassAttributes<HTMLDivElement> &
           HTMLAttributes<HTMLDivElement> &
           ExtraProps) => {
-
           if (!node) {
             console.warn("No replacement found");
             return null;
