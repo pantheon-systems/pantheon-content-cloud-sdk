@@ -45,7 +45,11 @@ const MarkdownRenderer = ({
         }: ClassAttributes<HTMLDivElement> &
           HTMLAttributes<HTMLDivElement> &
           ExtraProps) => {
-          if (!node) return <div>NO REPLACEMENT PROVIDED</div>;
+
+          if (!node) {
+            console.warn("No replacement found");
+            return null;
+          }
 
           const { attrs, type } = node.properties as typeof node.properties &
             ComponentProperties;
