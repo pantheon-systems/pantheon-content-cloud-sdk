@@ -16,12 +16,16 @@ interface ArticlePageProps {
   article: Article;
   grant: string;
   publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
+  tabId: string | null;
 }
 
 export default function ArticlePage({
   article,
   grant,
   publishingLevel,
+  versionId,
+  tabId,
 }: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
@@ -40,7 +44,12 @@ export default function ArticlePage({
         />
 
         <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-          <ArticleView article={article} publishingLevel={publishingLevel} />
+          <ArticleView
+            article={article}
+            publishingLevel={publishingLevel}
+            versionId={versionId}
+            tabId={tabId}
+          />
         </div>
       </Layout>
     </PantheonProvider>
@@ -49,7 +58,7 @@ export default function ArticlePage({
 
 export async function getServerSideProps({
   req: { cookies },
-  query: { uri, publishingLevel, pccGrant, ...query },
+  query: { uri, publishingLevel, pccGrant, versionId, ...query },
 }: {
   req: {
     cookies: Record<string, unknown>;
@@ -58,6 +67,8 @@ export async function getServerSideProps({
     uri: string[];
     publishingLevel: keyof typeof PublishingLevel | undefined;
     pccGrant: string;
+    versionId: string | undefined;
+    tabId: string | undefined;
   };
 }) {
   const slugOrId = uri[uri.length - 1];
@@ -65,7 +76,10 @@ export async function getServerSideProps({
 
   // Fetch the article and the site in parallel
   const [article, site] = await Promise.all([
-    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId),
+    PCCConvenienceFunctions.getArticleBySlugOrId(slugOrId, {
+      publishingLevel,
+      versionId,
+    }),
     PCCConvenienceFunctions.getSite(),
   ]);
 
@@ -83,6 +97,8 @@ export async function getServerSideProps({
   );
 
   if (
+    // Only redirect if this is a published article
+    article.publishingLevel === "PRODUCTION" &&
     // Check if the article has a slug
     ((article.slug?.trim().length &&
       // Check if the slug is not the same as the slugOrId
@@ -114,6 +130,8 @@ export async function getServerSideProps({
       article,
       grant: grant || null,
       publishingLevel: publishingLevel || null,
+      versionId: versionId || null,
+      tabId: query.tabId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),
