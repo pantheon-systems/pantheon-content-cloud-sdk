@@ -41,6 +41,7 @@ type ArticleViewProps = {
   onlyContent?: boolean;
   tabId?: string | null;
   publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
 };
 
 const ArticleHeader = ({
@@ -99,11 +100,13 @@ export default function ArticleView({
   onlyContent,
   tabId,
   publishingLevel,
+  versionId,
 }: ArticleViewProps) {
   const { data } = useArticle(
     article.id,
     {
       publishingLevel,
+      versionId: versionId ?? undefined,
       contentType: "TREE_PANTHEON_V2",
     },
     {
