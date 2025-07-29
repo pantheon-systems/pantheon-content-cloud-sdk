@@ -33,6 +33,7 @@ export interface ArticleQueryArgs {
   metadataFilters?: { [key: string]: unknown };
   preamble?: string;
   siteIds?: string[];
+  versionId?: string;
 }
 
 export interface ArticlePaginatedQueryArgs {
@@ -495,12 +496,19 @@ export function getArticleURLFromSite(
     articlePath,
     maxDepth,
   );
+
+  const identifier =
+    article.publishingLevel === "PRODUCTION"
+      ? article.slug || article.id
+      : article.id;
+
   // Add the basePath before the articlePath and the article slug or id at the end
   if (relevantArticlePath.length > 0) {
-    return `${basePath}/${relevantArticlePath.join("/")}/${article.slug || article.id}`;
+    return `${basePath}/${relevantArticlePath.join("/")}/${identifier}`;
   }
+
   // If the maxDepth is 0 or the articlePath is empty, return the article's slug or id
-  return `${basePath}/${article.slug || article.id}`;
+  return `${basePath}/${identifier}`;
 }
 
 export function getArticleURLFromSiteWithOptions(options: {

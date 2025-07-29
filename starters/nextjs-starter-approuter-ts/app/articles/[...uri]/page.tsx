@@ -14,6 +14,7 @@ interface ArticleViewProps {
     publishingLevel: keyof typeof PublishingLevel;
     pccGrant: string | undefined;
     tabId: string | null;
+    versionId: string | undefined;
   }>;
 }
 
