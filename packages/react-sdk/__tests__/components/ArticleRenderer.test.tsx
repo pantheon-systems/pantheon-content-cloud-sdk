@@ -97,8 +97,16 @@ describe("<ArticleRenderer />", () => {
       />,
     );
 
-    expect(container.innerHTML.includes("https://cdn.example.com/djHVTYbPaCby44H5CxhH")).toBe(true);
-    expect(container.innerHTML.includes("https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH")).toBe(false);
+    expect(
+      container.innerHTML.includes(
+        "https://cdn.example.com/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(true);
+    expect(
+      container.innerHTML.includes(
+        "https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(false);
     expect(container.firstChild).toMatchSnapshot();
   });
 
@@ -115,8 +123,16 @@ describe("<ArticleRenderer />", () => {
         }}
       />,
     );
-    expect(container.innerHTML.includes("https://cdn.example.com/djHVTYbPaCby44H5CxhH")).toBe(true);
-    expect(container.innerHTML.includes("https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH")).toBe(false);
+    expect(
+      container.innerHTML.includes(
+        "https://cdn.example.com/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(true);
+    expect(
+      container.innerHTML.includes(
+        "https://cdn.staging.content.pantheon.io/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH",
+      ),
+    ).toBe(false);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
