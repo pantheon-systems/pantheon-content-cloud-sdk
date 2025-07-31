@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-browser-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Browser SDK",
-  "version": "4.0.0",
+  "version": "5.0.0-beta.0",
   "main": "dist/index.js",
   "files": [
     "dist",

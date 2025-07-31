@@ -14,5 +14,10 @@
     "@pantheon-systems/next-approuter-pcc-starter-ts": "1.2.4",
     "@pantheon-systems/next-pcc-starter-ts": "1.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "blue-jeans-stop",
+    "lazy-jeans-learn",
+    "slow-poems-type",
+    "smooth-wings-argue"
+  ]
 }
