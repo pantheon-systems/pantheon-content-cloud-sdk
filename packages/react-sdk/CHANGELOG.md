@@ -1,21 +1,5 @@
 # @pantheon-systems/pcc-react-sdk
 
-## 5.0.0-beta.0
-
-### Major Changes
-
-- a780941: Now requiring Next 15 and React 19
-
-### Minor Changes
-
-- 654325d: Added support for the DRAFT publishing level and versionIds
-
-### Patch Changes
-
-- Updated dependencies [654325d]
-- Updated dependencies [dd8541f]
-  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.0
-
 ## 4.0.0
 
 ### Major Changes
