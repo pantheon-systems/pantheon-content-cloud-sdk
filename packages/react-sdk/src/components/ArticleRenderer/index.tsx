@@ -30,14 +30,16 @@ type ExtraProps = {
 };
 
 export type ComponentMap = Partial<{
-  [TagName in keyof JSX.IntrinsicElements]:
+  [TagName in keyof React.JSX.IntrinsicElements]:
     | (new (
-        props: JSX.IntrinsicElements[TagName] & ExtraProps,
-      ) => JSX.ElementClass)
+        props: React.JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => React.JSX.ElementClass)
     // Function component:
-    | ((props: JSX.IntrinsicElements[TagName] & ExtraProps) => JSX.Element)
+    | ((
+        props: React.JSX.IntrinsicElements[TagName] & ExtraProps,
+      ) => React.JSX.Element)
     // Tag name:
-    | keyof JSX.IntrinsicElements;
+    | keyof React.JSX.IntrinsicElements;
 }>;
 
 interface Props {
@@ -59,7 +61,7 @@ interface Props {
     disableDefaultErrorBoundaries?: boolean;
     useUnintrusiveTitleRendering?: boolean;
     renderImageCaptions?: boolean;
-    cdnURLOverride?: string;
+    cdnURLOverride?: string | ((url: string) => string);
   };
 }
 
@@ -86,12 +88,12 @@ const ArticleRenderer = ({
   __experimentalFlags,
 }: Props) => {
   useEffect(() => {
-    if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
+    if (renderTitle) {
       console.warn(
         "PCC Deprecation Warning: ArticleRenderer's renderTitle will no longer be supported in a future release.",
       );
     }
-  }, [__experimentalFlags]);
+  }, [renderTitle]);
 
   const contentType = article?.contentType;
   const unboxedContent = useMemo(
@@ -160,8 +162,7 @@ const ArticleRenderer = ({
 
     const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
 
-    // @ts-expect-error Dynamic component props
-    titleElement = React.createElement(renderer, {
+    titleElement = React.createElement(PantheonTreeV2Renderer, {
       element: titleContent,
       componentMap,
       smartComponentMap,

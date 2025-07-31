@@ -19,7 +19,8 @@ describe("Article URL generation from Site content structure", () => {
     const article = {
       id: "test-article",
       slug: "my-article",
-    };
+      publishingLevel: "PRODUCTION",
+    } as const;
 
     const articleURL = getArticleURLFromSite(article, site);
 
@@ -59,7 +60,8 @@ describe("Article URL generation from Site content structure", () => {
     const article = {
       id: "test-article",
       slug: "my-article",
-    };
+      publishingLevel: "PRODUCTION",
+    } as const;
 
     const articleURL = getArticleURLFromSite(article, site);
 
@@ -99,7 +101,8 @@ describe("Article URL generation from Site content structure", () => {
     const article = {
       id: "test-article",
       slug: "my-article",
-    };
+      publishingLevel: "PRODUCTION",
+    } as const;
 
     const basePath = "/test-articles";
 
@@ -140,7 +143,8 @@ describe("Article URL generation from Site content structure", () => {
     const article = {
       id: "test-article",
       slug: "my-article",
-    };
+      publishingLevel: "PRODUCTION",
+    } as const;
 
     const basePath = "/test-articles";
 

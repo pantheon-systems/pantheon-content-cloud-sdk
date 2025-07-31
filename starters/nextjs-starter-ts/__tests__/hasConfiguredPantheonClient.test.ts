@@ -1,5 +1,5 @@
-import { pantheonAPIOptions } from "../pages/api/pantheoncloud/[...command]";
 import { Site } from "@pantheon-systems/pcc-react-sdk/server";
+import { pantheonAPIOptions } from "../pages/api/pantheoncloud/[...command]";
 
 describe("hasConfiguredPantheonClient", () => {
   it("Pantheon API options have been filled out", () => {
@@ -18,10 +18,12 @@ describe("hasConfiguredPantheonClient", () => {
         active: [],
       },
     };
-    expect(pantheonAPIOptions.resolvePath!({ id: "123" }, site)).toBe("/articles/123");
+    expect(pantheonAPIOptions.resolvePath!({ id: "123" }, site)).toBe(
+      "/articles/123",
+    );
   });
 
-  it("Resolve document by article slug", () => {
+  it("Resolve document by article slug in production publishing level", () => {
     const site: Site = {
       id: "123",
       name: "test",
@@ -34,7 +36,10 @@ describe("hasConfiguredPantheonClient", () => {
       },
     };
     expect(
-      pantheonAPIOptions.resolvePath!({ id: "123", slug: "foo-bar-slug" }, site),
+      pantheonAPIOptions.resolvePath!(
+        { id: "123", slug: "foo-bar-slug", publishingLevel: "PRODUCTION" },
+        site,
+      ),
     ).toBe("/articles/foo-bar-slug");
   });
 });

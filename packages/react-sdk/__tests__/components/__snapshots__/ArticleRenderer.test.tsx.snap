@@ -3,10 +3,8 @@
 exports[`<ArticleRenderer /> should render a post's content 1`] = `
 <div>
   <div>
-    <style
-      dangerouslySetInnerHTML={
-        {
-          "__html": "
+    <style>
+      
 
 ul.nesting-level-1 {
   list-style-type: disc; 
@@ -44,196 +42,170 @@ ol[list-style-type="lower-roman"] {
   list-style-type: lower-roman;
 }
 
-",
-        }
-      }
-    />
+
+    </style>
     <h1
-      className="heading-1"
+      class="heading-1"
       id="h.yga84kcidt1h"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           This is a title, there are many like it, but this one is mine
         </span>
       </span>
     </h1>
     <h1
-      className="heading-1"
+      class="heading-1"
       id="h.s3bvibj9h0dt"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           This is h1
         </span>
       </span>
     </h1>
     <h2
-      className="heading-2"
+      class="heading-2"
       id="h.um9b1oy1kxok"
     >
       <span
-        className=""
+        class=""
       >
         This is h2
       </span>
     </h2>
     <h3
-      className="heading-3"
+      class="heading-3"
       id="h.h31ko2mh0gun"
     >
       <span
-        className=""
+        class=""
       >
         This is h3
       </span>
     </h3>
     <h4
-      className="heading-4"
+      class="heading-4"
       id="h.wnhfn1n79rxt"
     >
       <span
-        className=""
+        class=""
       >
         This is h4
       </span>
     </h4>
     <h5
-      className="heading-5"
+      class="heading-5"
       id="h.xvp9ub5kkns"
     >
       <span
-        className=""
+        class=""
       >
         This is h5
       </span>
     </h5>
     <h6
-      className="heading-6"
+      class="heading-6"
       id="h.gpqs2vw2rytx"
     >
       <span
-        className=""
+        class=""
       >
         This is h6
       </span>
     </h6>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     />
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <strong
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           This is bold
         </span>
       </strong>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <i
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           This is italic
         </span>
       </i>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <u
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           This is underlined
         </span>
       </u>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <u
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sup
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           aaa
         </span>
       </sup>
       <u
-        className=""
+        class=""
       >
         <s
-          className=""
+          class=""
         >
           <i
-            className=""
+            class=""
           >
             <strong
-              className=""
+              class=""
             >
               <sup
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   This is bold, underlined, italic, strikethrough and supertext
                 </span>
@@ -244,39 +216,35 @@ ol[list-style-type="lower-roman"] {
       </u>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           eee
         </span>
       </sub>
       <u
-        className=""
+        class=""
       >
         <s
-          className=""
+          class=""
         >
           <i
-            className=""
+            class=""
           >
             <strong
-              className=""
+              class=""
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   This is bold, underlined, italic, strikethrough and subscript
                 </span>
@@ -287,159 +255,127 @@ ol[list-style-type="lower-roman"] {
       </u>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <s
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         />
       </s>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           horizontal line below:
         </span>
       </sub>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <s
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         />
       </s>
     </p>
     <hr
-      className=""
+      class=""
     />
     <s
-      className=""
+      class=""
     >
       <sub
-        className=""
+        class=""
       />
     </s>
     <p
-      className=""
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class=""
+      style="margin: 0px;"
     />
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     />
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         x
       </span>
       <sup
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           3
         </span>
       </sup>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sup
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sup
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           H
         </span>
       </sup>
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           2
         </span>
       </sub>
       <sup
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           O x
         </span>
       </sup>
       <strong
-        className=""
+        class=""
       >
         <sup
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             o
           </span>
@@ -447,124 +383,116 @@ ol[list-style-type="lower-roman"] {
       </strong>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     />
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Unordered “bullet point” list
         </span>
       </sub>
     </p>
     <ul
-      className="nesting-level-1"
+      class="nesting-level-1"
     >
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Apple
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Pineapple
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Pen 
           </span>
         </sub>
         <strong
-          className=""
+          class=""
         >
           <sub
-            className=""
+            class=""
           >
             <span
-              className=""
+              class=""
             >
               pineapple
             </span>
           </sub>
         </strong>
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
              
           </span>
         </sub>
         <i
-          className=""
+          class=""
         >
           <sub
-            className=""
+            class=""
           >
             <span
-              className=""
+              class=""
             >
               apple
             </span>
           </sub>
         </i>
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
              
           </span>
         </sub>
         <u
-          className=""
+          class=""
         >
           <sub
-            className=""
+            class=""
           >
             <span
-              className=""
+              class=""
             >
               pen
             </span>
@@ -573,76 +501,68 @@ ol[list-style-type="lower-roman"] {
       </li>
     </ul>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <u
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         />
       </u>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Unordered list with different symbols
         </span>
       </sub>
     </p>
     <ul
-      className="nesting-level-1"
+      class="nesting-level-1"
     >
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Duck
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Duck2
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Goose
           </span>
@@ -650,72 +570,64 @@ ol[list-style-type="lower-roman"] {
       </li>
     </ul>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Todo list with checkmarks
         </span>
       </sub>
     </p>
     <ul
-      className="nesting-level-1"
+      class="nesting-level-1"
     >
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Veni
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Vidi
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Vici
           </span>
@@ -723,103 +635,95 @@ ol[list-style-type="lower-roman"] {
       </li>
     </ul>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <u
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         />
       </u>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Ordered “numbered” list
         </span>
       </sub>
     </p>
     <ol
-      className="nesting-level-1"
+      class="nesting-level-1"
       list-style-type="decimal"
     >
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Waking in the morning
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Gotta go downstairs
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Gotta have cereal
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             I see my friends
           </span>
         </sub>
       </li>
       <li
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             Gotta get down on Friday
           </span>
@@ -827,71 +731,49 @@ ol[list-style-type="lower-roman"] {
       </li>
     </ol>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <img
-          className=""
-          style={
-            {
-              "height": "492.26625px",
-              "maxWidth": "none",
-              "width": "328.1775px",
-            }
-          }
+          class=""
+          style="height: 492.26625px; width: 328.1775px; max-width: none;"
         />
       </sub>
       <sub
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <strong
-        className=""
+        class=""
       >
         <sub
-          className=""
+          class=""
         >
           <span
-            className=""
+            class=""
           >
             A wild table appears
           </span>
@@ -899,39 +781,27 @@ ol[list-style-type="lower-roman"] {
       </strong>
     </p>
     <table
-      className=""
+      class=""
     >
       <tbody
-        className=""
+        class=""
       >
         <tr
-          className=""
+          class=""
         >
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   Merged cols 1 & 2
                 </span>
@@ -939,55 +809,31 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               />
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   Col 3
                 </span>
@@ -995,30 +841,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   Col 4
                 </span>
@@ -1027,33 +861,21 @@ ol[list-style-type="lower-roman"] {
           </td>
         </tr>
         <tr
-          className=""
+          class=""
         >
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   A
                 </span>
@@ -1061,30 +883,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   B
                 </span>
@@ -1092,30 +902,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   C
                 </span>
@@ -1123,30 +921,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   D
                 </span>
@@ -1155,33 +941,21 @@ ol[list-style-type="lower-roman"] {
           </td>
         </tr>
         <tr
-          className=""
+          class=""
         >
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   ა
                 </span>
@@ -1189,30 +963,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   ბ
                 </span>
@@ -1220,30 +982,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   ს
                 </span>
@@ -1251,30 +1001,18 @@ ol[list-style-type="lower-roman"] {
             </p>
           </td>
           <td
-            className=""
-            style={
-              {
-                "paddingBottom": "5PT",
-                "paddingLeft": "5PT",
-                "paddingRight": "5PT",
-                "paddingTop": "5PT",
-                "verticalAlign": "top",
-              }
-            }
+            class=""
+            style="padding: 5pt 5pt 5pt 5pt; vertical-align: top;"
           >
             <p
-              className="normal-text"
-              style={
-                {
-                  "margin": "0",
-                }
-              }
+              class="normal-text"
+              style="margin: 0px;"
             >
               <sub
-                className=""
+                class=""
               >
                 <span
-                  className=""
+                  class=""
                 >
                   დ
                 </span>
@@ -1285,52 +1023,124 @@ ol[list-style-type="lower-roman"] {
       </tbody>
     </table>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       />
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <sub
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Some more paragraphs after everything else.
         </span>
       </sub>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     />
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     />
   </div>
+</div>
+`;
+
+exports[`<ArticleRenderer /> should replace the CDN URL with the override (markdown with function) 1`] = `
+<div>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
+    <img
+      alt=""
+      src="https://cdn.example.com/djHVTYbPaCby44H5CxhH"
+      title="just another dog"
+    />
+  </p>
+  
+
+  <p>
+    Integer pretium bibendum ipsum, vehicula placerat orci finibus id. Proin orci mauris, ornare commodo congue sit amet, dignissim non eros. Nullam risus nibh, dictum et enim vel, vestibulum maximus velit. Proin eu porta risus. Aliquam nec lacus et lacus commodo elementum. Mauris quis massa ac urna iaculis hendrerit. Nulla eget ullamcorper lorem, in rutrum sapien. Vivamus finibus placerat massa a mollis.
+  </p>
+  
+
+  <p>
+    Cras vitae ultricies odio. Vestibulum iaculis interdum feugiat. Donec iaculis finibus lorem. Quisque lacinia volutpat magna, in dapibus lectus gravida id. Cras iaculis justo et diam elementum, nec rhoncus dolor efficitur. Sed lacus libero, lobortis in mauris ut, imperdiet suscipit quam. Sed eu leo vitae sapien vestibulum viverra.
+  </p>
+  
+
+  <p>
+    Morbi varius, velit volutpat auctor malesuada, nisi mi rhoncus urna, at tempus risus libero ac turpis. Nullam sit amet porta leo. Nam dapibus maximus ante, vitae fringilla ipsum lacinia posuere. Donec efficitur, odio ac blandit convallis, purus arcu posuere risus, maximus scelerisque quam augue id ante. Etiam ultrices neque in purus rhoncus laoreet. Nunc bibendum tincidunt felis, quis molestie libero dictum scelerisque. Sed urna dolor, elementum eget auctor tincidunt, lacinia in diam. Duis a libero tristique, luctus lacus aliquet, fermentum odio. Integer lacinia nunc metus, ac egestas nibh mattis a. Fusce sodales mollis odio non pulvinar. Nulla vitae dignissim nibh, ac finibus neque.
+  </p>
+  
+
+  <p>
+    Mauris mollis, lacus eu sodales tincidunt, ipsum ex pharetra libero, eu posuere ante lectus nec velit. Sed commodo ultrices diam eget pulvinar. Vestibulum volutpat sapien non nisl porttitor, sed euismod magna sollicitudin. Suspendisse potenti. Sed posuere sapien id magna euismod tincidunt. Phasellus in cursus diam, eget vestibulum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur tempus mollis tempus. Phasellus rhoncus, turpis sed mollis rutrum, tellus mauris hendrerit nulla, a congue dolor mauris in leo. Sed feugiat posuere neque, eget cursus est luctus at. Vestibulum accumsan convallis ante in auctor. Aliquam ac orci sem. Nunc auctor mauris sed felis tristique, nec malesuada ante porta.
+  </p>
+  
+
+  <p>
+    Sed et ligula nec nisl convallis volutpat. Curabitur semper massa ac mollis feugiat. Vestibulum eget orci ac arcu tempus dapibus. Nunc augue lorem, ultrices in velit non, porta cursus ex. Aenean eget nunc sit amet quam vulputate porttitor vitae sed ex. Morbi porttitor libero nec hendrerit vehicula. Ut maximus odio ac odio blandit pharetra. Etiam quis condimentum est. Morbi dui nisi, ornare at dignissim vel, ultrices rhoncus nisl. Sed at euismod enim. Quisque efficitur orci a velit pretium scelerisque. Nulla eleifend feugiat porta. Etiam eu rhoncus lectus.
+    <img
+      alt=""
+      src="https://cdn.example.com/ZWJn6ilXOYs9oS9iDgMH"
+      title="This is a title"
+    />
+  </p>
+  
+
+  <p>
+    THIS PUPPY BREAKS UP TEXT Etiam maximus mauris eu felis interdum, in bibendum orci sodales. In posuere elit quam. Nulla dictum, sapien ut sagittis consequat, nisl elit suscipit lectus, a blandit risus nunc eget nunc. Donec augue ante, eleifend non risus at, dignissim gravida ipsum. Vivamus tristique tempor dui, at condimentum dui tristique nec. Suspendisse potenti. Nulla facilisi. Quisque orci risus, iaculis vel vehicula eu, cursus sit amet justo. Cras sed erat a est tristique elementum.
+  </p>
+  
+
+  <p>
+    Morbi justo lorem, ultricies ut volutpat aliquam, blandit eu erat. Duis accumsan egestas convallis. Morbi a finibus lectus. Vivamus vel ultrices felis. Donec faucibus placerat mi, non pellentesque est lacinia non. Ut vitae metus leo. Mauris volutpat malesuada lorem, et auctor metus sodales ultrices. Nulla rhoncus augue pulvinar consectetur bibendum. Nunc ac urna vel mauris venenatis euismod in et massa.
+  </p>
+  
+
+  <p>
+    Proin sed laoreet augue. Aliquam malesuada vel ex ut vestibulum. Mauris at libero vestibulum, vehicula mi nec, ullamcorper magna. Vivamus bibendum ipsum imperdiet placerat pharetra. Curabitur fermentum id est a tristique. Integer at semper erat. Phasellus volutpat dolor in ipsum hendrerit, eu maximus libero mattis. Nunc aliquam, tortor at congue vehicula, mi purus mollis metus, et convallis orci quam at elit.
+    <img
+      alt=""
+      src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+    />
+  </p>
+  
+
+  <p>
+    Etiam non eleifend nisl. Morbi eu libero a erat volutpat dictum eu sodales urna. Ut venenatis rutrum dolor, a euismod nibh egestas a. Nullam pretium congue tellus, eu tempor est consectetur et. Etiam dapibus consequat volutpat. Nunc sed bibendum ipsum, a egestas risus. Nulla id dolor nibh. Nulla tempor diam eget sapien elementum faucibus. Sed elementum, mi ut maximus facilisis, ex enim fringilla sem, at fermentum odio mi id diam. Pellentesque vitae commodo felis. Vestibulum eget diam pellentesque, porttitor ante a, ultricies lacus.
+    <img
+      alt=""
+      src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+    />
+  </p>
+  
+
+  <p>
+    <img
+      alt=""
+      src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+    />
+  </p>
+  
+
+  <p>
+    <img
+      alt=""
+      src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+      title="inline puppies"
+    />
+  </p>
 </div>
 `;
 
@@ -1422,81 +1232,39 @@ exports[`<ArticleRenderer /> should replace the CDN URL with the override (markd
 </div>
 `;
 
-exports[`<ArticleRenderer /> should replace the CDN URL with the override (markdown) 2`] = `
-<div>
-  <p>
-    Tab 1
-  </p>
-</div>
-`;
+exports[`<ArticleRenderer /> should replace the CDN URL with the override (markdown) 2`] = `"<div><p>Tab 1</p></div>"`;
 
-exports[`<ArticleRenderer /> should replace the CDN URL with the override (markdown) 3`] = `
-<div>
-  <p>
-    Tab 2
-  </p>
-</div>
-`;
+exports[`<ArticleRenderer /> should replace the CDN URL with the override (markdown) 3`] = `"<div><p>Tab 2</p></div>"`;
 
-exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree) 1`] = `
+exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree with function) 1`] = `
 <div>
   <div>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
         </span>
       </span>
       <span
-        className="pantheon-img-container pantheon-img-container-breakright"
-        style={
-          {
-            "float": "right",
-            "height": "auto",
-            "marginTop": "170.85929748535153px",
-            "maxHeight": "352.00px",
-            "maxWidth": "480.00px",
-            "shapeOutside": "padding-box",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "352.00px",
-              "maxWidth": "480.00px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/djHVTYbPaCby44H5CxhH"
+          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
           title="just another dog"
         />
         <span
-          className="pantheon-caption"
-          style={
-            {
-              "display": "flex",
-              "fontSize": ".75rem",
-              "justifyContent": "center",
-              "width": "100%",
-            }
-          }
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
         >
           just another dog
         </span>
@@ -1504,10 +1272,8 @@ exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree)
     </p>
   </div>
   <div>
-    <style
-      dangerouslySetInnerHTML={
-        {
-          "__html": "
+    <style>
+      
 
 ul.nesting-level-1 {
   list-style-type: disc; 
@@ -1545,357 +1311,484 @@ ol[list-style-type="lower-roman"] {
   list-style-type: lower-roman;
 }
 
-",
-        }
-      }
-    />
+
+    </style>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Integer pretium bibendum ipsum, vehicula placerat orci finibus id. Proin orci mauris, ornare commodo congue sit amet, dignissim non eros. Nullam risus nibh, dictum et enim vel, vestibulum maximus velit. Proin eu porta risus. Aliquam nec lacus et lacus commodo elementum. Mauris quis massa ac urna iaculis hendrerit. Nulla eget ullamcorper lorem, in rutrum sapien. Vivamus finibus placerat massa a mollis.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Cras vitae ultricies odio. Vestibulum iaculis interdum feugiat. Donec iaculis finibus lorem. Quisque lacinia volutpat magna, in dapibus lectus gravida id. Cras iaculis justo et diam elementum, nec rhoncus dolor efficitur. Sed lacus libero, lobortis in mauris ut, imperdiet suscipit quam. Sed eu leo vitae sapien vestibulum viverra.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Morbi varius, velit volutpat auctor malesuada, nisi mi rhoncus urna, at tempus risus libero ac turpis. Nullam sit amet porta leo. Nam dapibus maximus ante, vitae fringilla ipsum lacinia posuere. Donec efficitur, odio ac blandit convallis, purus arcu posuere risus, maximus scelerisque quam augue id ante. Etiam ultrices neque in purus rhoncus laoreet. Nunc bibendum tincidunt felis, quis molestie libero dictum scelerisque. Sed urna dolor, elementum eget auctor tincidunt, lacinia in diam. Duis a libero tristique, luctus lacus aliquet, fermentum odio. Integer lacinia nunc metus, ac egestas nibh mattis a. Fusce sodales mollis odio non pulvinar. Nulla vitae dignissim nibh, ac finibus neque.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Mauris mollis, lacus eu sodales tincidunt, ipsum ex pharetra libero, eu posuere ante lectus nec velit. Sed commodo ultrices diam eget pulvinar. Vestibulum volutpat sapien non nisl porttitor, sed euismod magna sollicitudin. Suspendisse potenti. Sed posuere sapien id magna euismod tincidunt. Phasellus in cursus diam, eget vestibulum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur tempus mollis tempus. Phasellus rhoncus, turpis sed mollis rutrum, tellus mauris hendrerit nulla, a congue dolor mauris in leo. Sed feugiat posuere neque, eget cursus est luctus at. Vestibulum accumsan convallis ante in auctor. Aliquam ac orci sem. Nunc auctor mauris sed felis tristique, nec malesuada ante porta.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Sed et ligula nec nisl convallis volutpat. Curabitur semper massa ac mollis feugiat. Vestibulum eget orci ac arcu tempus dapibus. Nunc augue lorem, ultrices in velit non, porta cursus ex. Aenean eget nunc sit amet quam vulputate porttitor vitae sed ex. Morbi porttitor libero nec hendrerit vehicula. Ut maximus odio ac odio blandit pharetra. Etiam quis condimentum est. Morbi dui nisi, ornare at dignissim vel, ultrices rhoncus nisl. Sed at euismod enim. Quisque efficitur orci a velit pretium scelerisque. Nulla eleifend feugiat porta. Etiam eu rhoncus lectus.
         </span>
       </span>
       <span
-        className="pantheon-img-container pantheon-img-container-breakleft"
-        style={
-          {
-            "float": "left",
-            "height": "auto",
-            "marginTop": "24.937500000000085px",
-            "maxHeight": "350.00px",
-            "maxWidth": "470.00px",
-            "shapeOutside": "padding-box",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-breakleft"
+        style="float: left; margin-top: 24.937500000000085px; shape-outside: padding-box; max-width: 470.00px; max-height: 350.00px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/ZWJn6ilXOYs9oS9iDgMH"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "350.00px",
-              "maxWidth": "470.00px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/ZWJn6ilXOYs9oS9iDgMH"
+          style="margin-left: 0px; max-width: 470.00px; max-height: 350.00px; width: 100%; height: auto;"
           title="This is a title"
         />
         <span
-          className="pantheon-caption"
-          style={
-            {
-              "display": "flex",
-              "fontSize": ".75rem",
-              "justifyContent": "center",
-              "width": "100%",
-            }
-          }
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
         >
           This is a title
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           THIS PUPPY BREAKS UP TEXT Etiam maximus mauris eu felis interdum, in bibendum orci sodales. In posuere elit quam. Nulla dictum, sapien ut sagittis consequat, nisl elit suscipit lectus, a blandit risus nunc eget nunc. Donec augue ante, eleifend non risus at, dignissim gravida ipsum. Vivamus tristique tempor dui, at condimentum dui tristique nec. Suspendisse potenti. Nulla facilisi. Quisque orci risus, iaculis vel vehicula eu, cursus sit amet justo. Cras sed erat a est tristique elementum.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Morbi justo lorem, ultricies ut volutpat aliquam, blandit eu erat. Duis accumsan egestas convallis. Morbi a finibus lectus. Vivamus vel ultrices felis. Donec faucibus placerat mi, non pellentesque est lacinia non. Ut vitae metus leo. Mauris volutpat malesuada lorem, et auctor metus sodales ultrices. Nulla rhoncus augue pulvinar consectetur bibendum. Nunc ac urna vel mauris venenatis euismod in et massa.
         </span>
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Proin sed laoreet augue. Aliquam malesuada vel ex ut vestibulum. Mauris at libero vestibulum, vehicula mi nec, ullamcorper magna. Vivamus bibendum ipsum imperdiet placerat pharetra. Curabitur fermentum id est a tristique. Integer at semper erat. Phasellus volutpat dolor in ipsum hendrerit, eu maximus libero mattis. Nunc aliquam, tortor at congue vehicula, mi purus mollis metus, et convallis orci quam at elit.
         </span>
       </span>
       <span
-        className="pantheon-img-container pantheon-img-container-breakright"
-        style={
-          {
-            "float": "right",
-            "height": "auto",
-            "marginTop": "64.63423339843754px",
-            "maxHeight": "352.00px",
-            "maxWidth": "462.00px",
-            "shapeOutside": "padding-box",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 64.63423339843754px; shape-outside: padding-box; max-width: 462.00px; max-height: 352.00px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "352.00px",
-              "maxWidth": "462.00px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 462.00px; max-height: 352.00px; width: 100%; height: auto;"
         />
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-          "marginBottom": "11PT",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className=""
+        class=""
       >
         <span
-          className=""
+          class=""
         >
           Etiam non eleifend nisl. Morbi eu libero a erat volutpat dictum eu sodales urna. Ut venenatis rutrum dolor, a euismod nibh egestas a. Nullam pretium congue tellus, eu tempor est consectetur et. Etiam dapibus consequat volutpat. Nunc sed bibendum ipsum, a egestas risus. Nulla id dolor nibh. Nulla tempor diam eget sapien elementum faucibus. Sed elementum, mi ut maximus facilisis, ex enim fringilla sem, at fermentum odio mi id diam. Pellentesque vitae commodo felis. Vestibulum eget diam pellentesque, porttitor ante a, ultricies lacus.
         </span>
       </span>
       <span
-        className="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
-        style={
-          {
-            "border": "0.00px solid #000000",
-            "display": "inline-block",
-            "height": "auto",
-            "margin": "0.00px 0.00px",
-            "maxHeight": "193.99px",
-            "maxWidth": "256.50px",
-            "overflow": "hidden",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="overflow: hidden; display: inline-block; margin: 0px 0px; border: 0px solid rgb(0, 0, 0); max-width: 256.50px; max-height: 193.99px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "193.99px",
-              "maxWidth": "256.50px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 256.50px; max-height: 193.99px; width: 100%; height: auto;"
         />
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
-        style={
-          {
-            "height": "auto",
-            "maxHeight": "90.22325805664047px",
-            "maxWidth": "118.41802619934062px",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="max-width: 118.41802619934062px; max-height: 90.22325805664047px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "90.45px",
-              "maxWidth": "118.71px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 118.71px; max-height: 90.45px; width: 100%; height: auto;"
         />
       </span>
     </p>
     <p
-      className="normal-text"
-      style={
-        {
-          "margin": "0",
-        }
-      }
+      class="normal-text"
+      style="margin: 0px;"
     >
       <span
-        className="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
-        style={
-          {
-            "height": "auto",
-            "maxHeight": "57.30575805664048px",
-            "maxWidth": "75.77094676378019px",
-            "width": "100%",
-          }
-        }
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="max-width: 75.77094676378019px; max-height: 57.30575805664048px; width: 100%; height: auto;"
       >
         <img
-          className=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
-          style={
-            {
-              "height": "auto",
-              "marginLeft": "0.00px",
-              "maxHeight": "57.45px",
-              "maxWidth": "75.96px",
-              "width": "100%",
-            }
-          }
+          class=""
+          src="https://cdn.example.com/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 75.96px; max-height: 57.45px; width: 100%; height: auto;"
           title="inline puppies"
         />
         <span
-          className="pantheon-caption"
-          style={
-            {
-              "display": "flex",
-              "fontSize": ".75rem",
-              "justifyContent": "center",
-              "width": "100%",
-            }
-          }
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
+        >
+          inline puppies
+        </span>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree) 1`] = `
+<div>
+  <div>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH"
+          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+          title="just another dog"
+        />
+        <span
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
+        >
+          just another dog
+        </span>
+      </span>
+    </p>
+  </div>
+  <div>
+    <style>
+      
+
+ul.nesting-level-1 {
+  list-style-type: disc; 
+}
+ul.nesting-level-2 {
+  list-style-type: circle; 
+}
+ul.nesting-level-3 {
+  list-style-type: square; 
+}
+ul.nesting-level-4 {
+  list-style-type: disc; 
+}
+ul.nesting-level-5 {
+  list-style-type: circle; 
+}
+ul.nesting-level-6 {
+  list-style-type: square; 
+}
+ul.nesting-level-7 {
+  list-style-type: disc; 
+}
+ul.nesting-level-8 {
+  list-style-type: circle; 
+}
+
+
+ol[list-style-type="decimal"] {
+  list-style-type: decimal;
+}
+ol[list-style-type="lower-alpha"] {
+  list-style-type: lower-alpha;
+}
+ol[list-style-type="lower-roman"] { 
+  list-style-type: lower-roman;
+}
+
+
+    </style>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Integer pretium bibendum ipsum, vehicula placerat orci finibus id. Proin orci mauris, ornare commodo congue sit amet, dignissim non eros. Nullam risus nibh, dictum et enim vel, vestibulum maximus velit. Proin eu porta risus. Aliquam nec lacus et lacus commodo elementum. Mauris quis massa ac urna iaculis hendrerit. Nulla eget ullamcorper lorem, in rutrum sapien. Vivamus finibus placerat massa a mollis.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Cras vitae ultricies odio. Vestibulum iaculis interdum feugiat. Donec iaculis finibus lorem. Quisque lacinia volutpat magna, in dapibus lectus gravida id. Cras iaculis justo et diam elementum, nec rhoncus dolor efficitur. Sed lacus libero, lobortis in mauris ut, imperdiet suscipit quam. Sed eu leo vitae sapien vestibulum viverra.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Morbi varius, velit volutpat auctor malesuada, nisi mi rhoncus urna, at tempus risus libero ac turpis. Nullam sit amet porta leo. Nam dapibus maximus ante, vitae fringilla ipsum lacinia posuere. Donec efficitur, odio ac blandit convallis, purus arcu posuere risus, maximus scelerisque quam augue id ante. Etiam ultrices neque in purus rhoncus laoreet. Nunc bibendum tincidunt felis, quis molestie libero dictum scelerisque. Sed urna dolor, elementum eget auctor tincidunt, lacinia in diam. Duis a libero tristique, luctus lacus aliquet, fermentum odio. Integer lacinia nunc metus, ac egestas nibh mattis a. Fusce sodales mollis odio non pulvinar. Nulla vitae dignissim nibh, ac finibus neque.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Mauris mollis, lacus eu sodales tincidunt, ipsum ex pharetra libero, eu posuere ante lectus nec velit. Sed commodo ultrices diam eget pulvinar. Vestibulum volutpat sapien non nisl porttitor, sed euismod magna sollicitudin. Suspendisse potenti. Sed posuere sapien id magna euismod tincidunt. Phasellus in cursus diam, eget vestibulum ipsum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Curabitur tempus mollis tempus. Phasellus rhoncus, turpis sed mollis rutrum, tellus mauris hendrerit nulla, a congue dolor mauris in leo. Sed feugiat posuere neque, eget cursus est luctus at. Vestibulum accumsan convallis ante in auctor. Aliquam ac orci sem. Nunc auctor mauris sed felis tristique, nec malesuada ante porta.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Sed et ligula nec nisl convallis volutpat. Curabitur semper massa ac mollis feugiat. Vestibulum eget orci ac arcu tempus dapibus. Nunc augue lorem, ultrices in velit non, porta cursus ex. Aenean eget nunc sit amet quam vulputate porttitor vitae sed ex. Morbi porttitor libero nec hendrerit vehicula. Ut maximus odio ac odio blandit pharetra. Etiam quis condimentum est. Morbi dui nisi, ornare at dignissim vel, ultrices rhoncus nisl. Sed at euismod enim. Quisque efficitur orci a velit pretium scelerisque. Nulla eleifend feugiat porta. Etiam eu rhoncus lectus.
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-breakleft"
+        style="float: left; margin-top: 24.937500000000085px; shape-outside: padding-box; max-width: 470.00px; max-height: 350.00px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/ZWJn6ilXOYs9oS9iDgMH"
+          style="margin-left: 0px; max-width: 470.00px; max-height: 350.00px; width: 100%; height: auto;"
+          title="This is a title"
+        />
+        <span
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
+        >
+          This is a title
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          THIS PUPPY BREAKS UP TEXT Etiam maximus mauris eu felis interdum, in bibendum orci sodales. In posuere elit quam. Nulla dictum, sapien ut sagittis consequat, nisl elit suscipit lectus, a blandit risus nunc eget nunc. Donec augue ante, eleifend non risus at, dignissim gravida ipsum. Vivamus tristique tempor dui, at condimentum dui tristique nec. Suspendisse potenti. Nulla facilisi. Quisque orci risus, iaculis vel vehicula eu, cursus sit amet justo. Cras sed erat a est tristique elementum.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Morbi justo lorem, ultricies ut volutpat aliquam, blandit eu erat. Duis accumsan egestas convallis. Morbi a finibus lectus. Vivamus vel ultrices felis. Donec faucibus placerat mi, non pellentesque est lacinia non. Ut vitae metus leo. Mauris volutpat malesuada lorem, et auctor metus sodales ultrices. Nulla rhoncus augue pulvinar consectetur bibendum. Nunc ac urna vel mauris venenatis euismod in et massa.
+        </span>
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Proin sed laoreet augue. Aliquam malesuada vel ex ut vestibulum. Mauris at libero vestibulum, vehicula mi nec, ullamcorper magna. Vivamus bibendum ipsum imperdiet placerat pharetra. Curabitur fermentum id est a tristique. Integer at semper erat. Phasellus volutpat dolor in ipsum hendrerit, eu maximus libero mattis. Nunc aliquam, tortor at congue vehicula, mi purus mollis metus, et convallis orci quam at elit.
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 64.63423339843754px; shape-outside: padding-box; max-width: 462.00px; max-height: 352.00px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 462.00px; max-height: 352.00px; width: 100%; height: auto;"
+        />
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Etiam non eleifend nisl. Morbi eu libero a erat volutpat dictum eu sodales urna. Ut venenatis rutrum dolor, a euismod nibh egestas a. Nullam pretium congue tellus, eu tempor est consectetur et. Etiam dapibus consequat volutpat. Nunc sed bibendum ipsum, a egestas risus. Nulla id dolor nibh. Nulla tempor diam eget sapien elementum faucibus. Sed elementum, mi ut maximus facilisis, ex enim fringilla sem, at fermentum odio mi id diam. Pellentesque vitae commodo felis. Vestibulum eget diam pellentesque, porttitor ante a, ultricies lacus.
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="overflow: hidden; display: inline-block; margin: 0px 0px; border: 0px solid rgb(0, 0, 0); max-width: 256.50px; max-height: 193.99px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 256.50px; max-height: 193.99px; width: 100%; height: auto;"
+        />
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="max-width: 118.41802619934062px; max-height: 90.22325805664047px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 118.71px; max-height: 90.45px; width: 100%; height: auto;"
+        />
+      </span>
+    </p>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class="pantheon-img-container pantheon-img-container-inline pantheon-img-container-alone"
+        style="max-width: 75.77094676378019px; max-height: 57.30575805664048px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/RoJOqZdOWPaxWCVnH9sD"
+          style="margin-left: 0px; max-width: 75.96px; max-height: 57.45px; width: 100%; height: auto;"
+          title="inline puppies"
+        />
+        <span
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
         >
           inline puppies
         </span>

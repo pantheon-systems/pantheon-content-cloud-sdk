@@ -1,6 +1,6 @@
-import { Components } from "react-markdown";
-import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
+import { ClassAttributes, HTMLAttributes } from "react";
+import ReactMarkdown, { ExtraProps } from "react-markdown";
+import { Components } from "react-markdown/lib";
 import rehypeRaw from "rehype-raw";
 import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
@@ -14,7 +14,7 @@ interface MarkdownRendererProps {
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableDefaultErrorBoundaries: boolean;
-  cdnURLOverride?: string;
+  cdnURLOverride?: string | ((url: string) => string);
 }
 
 interface ComponentProperties {
@@ -40,7 +40,16 @@ const MarkdownRenderer = ({
       remarkPlugins={[remarkHeaderId]}
       components={{
         ...(componentMap as Components),
-        ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
+        ["pcc-component" as "div"]: ({
+          node,
+        }: ClassAttributes<HTMLDivElement> &
+          HTMLAttributes<HTMLDivElement> &
+          ExtraProps) => {
+          if (!node) {
+            console.warn("No replacement found");
+            return null;
+          }
+
           const { attrs, type } = node.properties as typeof node.properties &
             ComponentProperties;
 
@@ -126,7 +135,7 @@ function fixComponentParentRehypePlugin() {
 /**
  * Rehype plugin to override the CDN domain.
  */
-function overrideCDNUrls(cdnURLOverride?: string) {
+function overrideCDNUrls(cdnURLOverride?: string | ((url: string) => string)) {
   // If cdnURLOverride is not provided, return a no-op transformer:
   if (!cdnURLOverride) {
     return () => (tree: UnistParent) => tree;
@@ -143,8 +152,12 @@ function overrideCDNUrls(cdnURLOverride?: string) {
             const url = new URL(src);
 
             if (CDNDomains.includes(url.hostname)) {
-              url.hostname = cdnURLOverride;
-              node.properties.src = url.toString();
+              if (typeof cdnURLOverride === "function") {
+                node.properties.src = cdnURLOverride(url.toString());
+              } else {
+                url.hostname = cdnURLOverride;
+                node.properties.src = url.toString();
+              }
             }
           }
         } catch (err) {
