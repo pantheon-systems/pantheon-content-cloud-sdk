@@ -9,12 +9,13 @@ import Layout from "../../../../components/layout";
 import { getSeoMetadata } from "../../../../lib/utils";
 
 interface ArticlePageProps {
-  params: { uri: string[] };
+  params: Promise<{ uri: string[], tabId: string }>;
 }
 
 export const revalidate = 21600; // revalidate every 6 hours
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
+export default async function ArticlePage(props: ArticlePageProps) {
+  const params = await props.params;
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     params.uri[params.uri.length - 1],
   );
@@ -26,15 +27,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   return (
     <Layout>
       <div className="prose mx-4 mt-16 text-black sm:mx-6 md:mx-auto">
-        <StaticArticleView article={article} />
+        <StaticArticleView article={article} tabId={params.tabId} />
       </div>
     </Layout>
   );
 }
 
-export async function generateMetadata({
-  params,
-}: ArticlePageProps): Promise<Metadata> {
+export async function generateMetadata(props: ArticlePageProps): Promise<Metadata> {
+  const params = await props.params;
   const article = await PCCConvenienceFunctions.getArticleBySlugOrId(
     params.uri[params.uri.length - 1],
   );

@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sample-library",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud Sample Component Library for React",
-  "version": "3.13.1",
+  "version": "4.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -45,8 +45,8 @@
     "@storybook/react": "^8.6.12",
     "@storybook/test": "^8.6.12",
     "@types/node": "^20.11.21",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "copyfiles": "^2.4.1",
     "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
@@ -59,10 +59,10 @@
     "typescript": "^5.5.4"
   },
   "peerDependencies": {
-    "@types/react": ">=17",
-    "@types/react-dom": ">=17",
-    "react": ">=17",
-    "react-dom": ">=17"
+    "@types/react": ">=19",
+    "@types/react-dom": ">=19",
+    "react": ">=19",
+    "react-dom": ">=19"
   },
   "peerDependenciesMeta": {
     "@types/react": {

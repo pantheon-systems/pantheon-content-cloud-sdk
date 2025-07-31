@@ -1,8 +1,8 @@
+@import url("./webstyles.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("./webstyles.css");
 
 /* Revert custom font's bullet rendering styles */
 li::before {
