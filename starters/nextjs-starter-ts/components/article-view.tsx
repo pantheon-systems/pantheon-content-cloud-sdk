@@ -1,15 +1,15 @@
-import { findTab, useArticle } from "@pantheon-systems/pcc-react-sdk";
+import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import type { Article, PublishingLevel } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import HeaderLink from "../assets/icons/HeaderLink";
+import { Toaster } from "react-hot-toast";
 import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components";
 import { TableOfContents } from "./table-of-contents";
+import { useSearchParams } from "next/navigation";
 
 const ELEMENT_STYLES_TO_OVERRIDE = [
   /fontSize/,
@@ -102,6 +102,9 @@ export default function ArticleView({
   publishingLevel,
   versionId,
 }: ArticleViewProps) {
+  const searchParams = useSearchParams();
+  const currentTabId = useMemo(() => searchParams.get("tabId") || tabId, [searchParams, tabId]);
+
   const { data } = useArticle(
     article.id,
     {
@@ -127,7 +130,7 @@ export default function ArticleView({
       <StaticArticleView
         article={hydratedArticle}
         onlyContent={onlyContent}
-        tabId={tabId}
+        tabId={currentTabId}
       />
     </>
   );
@@ -145,9 +148,6 @@ export function StaticArticleView({
       ? null
       : parseAsTabTree(article.resolvedContent);
 
-  const currentTab =
-    tabTree != null && tabId != null ? findTab(tabTree, tabId) : null;
-
   return (
     <div className="px-8 lg:px-4">
       <ArticleHeader article={article} seoMetadata={seoMetadata} />
@@ -157,50 +157,27 @@ export function StaticArticleView({
           <TableOfContents tabTree={tabTree} activeTab={tabId} />
         ) : null}
 
-        <div className="flex-1">
-          {currentTab?.tabProperties?.title ? (
-            <h3 className="my-0 flex items-center gap-x-4">
-              <span>{currentTab.tabProperties.title}</span>
-              <Link
-                href={
-                  typeof window === "undefined" ? "#" : window.location.href
-                }
-                aria-label={`Link to "${currentTab.tabProperties.title}"`}
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  toast.success(
-                    "A link to this page has been copied to your clipboard",
-                    {
-                      position: "top-right",
-                    },
-                  );
-                }}
-              >
-                <HeaderLink height={25} width={25} />
-              </Link>
-            </h3>
-          ) : null}
-          <ArticleRenderer
-            componentMap={{
-              h1: overrideElementStyles("h1"),
-              h2: overrideElementStyles("h2"),
-              h3: overrideElementStyles("h3"),
-              h4: overrideElementStyles("h4"),
-              h5: overrideElementStyles("h5"),
-              h6: overrideElementStyles("h6"),
-              p: overrideElementStyles("p"),
-              li: overrideElementStyles("li"),
-              span: overrideElementStyles("span"),
-            }}
-            article={article}
-            smartComponentMap={clientSmartComponentMap}
-            __experimentalFlags={{
-              disableAllStyles: !!onlyContent,
-              preserveImageStyles: true,
-              useUnintrusiveTitleRendering: true,
-            }}
-          />
-        </div>
+        <ArticleRenderer
+          componentMap={{
+            h1: overrideElementStyles("h1"),
+            h2: overrideElementStyles("h2"),
+            h3: overrideElementStyles("h3"),
+            h4: overrideElementStyles("h4"),
+            h5: overrideElementStyles("h5"),
+            h6: overrideElementStyles("h6"),
+            p: overrideElementStyles("p"),
+            li: overrideElementStyles("li"),
+            span: overrideElementStyles("span"),
+          }}
+          article={article}
+          tabId={tabId}
+          smartComponentMap={clientSmartComponentMap}
+          __experimentalFlags={{
+            disableAllStyles: !!onlyContent,
+            preserveImageStyles: true,
+            useUnintrusiveTitleRendering: true,
+          }}
+        />
       </div>
 
       <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">

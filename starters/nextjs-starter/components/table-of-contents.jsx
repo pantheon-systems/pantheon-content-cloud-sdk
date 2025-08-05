@@ -20,6 +20,8 @@ const NavigationOption = ({ tabTree, activeTab }) => {
         })}
       >
         <Link
+          replace={true}
+          shallow={true}
           href={(() => {
             if (typeof window === "undefined") return "#";
 

@@ -27,6 +27,8 @@ const NavigationOption = ({
         })}
       >
         <Link
+          replace={true}
+          shallow={true}
           href={(() => {
             if (typeof window === "undefined") return "#";
 
