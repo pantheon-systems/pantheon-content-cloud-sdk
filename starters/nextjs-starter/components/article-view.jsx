@@ -108,7 +108,7 @@ export function StaticArticleView({ article, onlyContent, tabId }) {
         {article.renderAsTabs && tabTree ? (
           <TableOfContents tabTree={tabTree} activeTab={tabId} />
         ) : null}
-        starts-js
+
         <ArticleRenderer
           article={article}
           tabId={tabId}

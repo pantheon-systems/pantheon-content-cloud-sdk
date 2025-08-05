@@ -132,7 +132,6 @@ export function StaticArticleView({
           <TableOfContents tabTree={tabTree} activeTab={tabId} />
         ) : null}
 
-        starts-approuter
         <ArticleRenderer
           article={article}
           tabId={tabId}
