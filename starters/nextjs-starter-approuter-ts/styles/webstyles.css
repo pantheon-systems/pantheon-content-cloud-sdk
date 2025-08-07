@@ -54,9 +54,6 @@ p:has(span.pull-quote) {
 
 /* Section Message webstyle */
 .section-message {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
   background-color: theme("colors.neutral.100");
   padding: 1.5rem;
   border-radius: 16px;
@@ -66,12 +63,15 @@ p:has(span.pull-quote) {
   font-size: 1rem;
   font-weight: 400;
   box-sizing: border-box;
+  padding-left: calc(1.5rem + 27px + 1.5rem);
+  position: relative;
 }
 
 .section-message::before {
   content: "";
-  display: block;
-  flex-shrink: 0;
+  position: absolute;
+  left: 1.5rem;
+  top: 1.9rem;
   width: 27px;
   height: 26px;
   background-image: url("data:image/svg+xml,%3csvg width='27' height='26' viewBox='0 0 27 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M13.5 25.125C9.00781 25.125 4.90625 22.7812 2.66016 18.875C0.414062 15.0176 0.414062 10.2812 2.66016 6.375C4.90625 2.51758 9.00781 0.125 13.5 0.125C17.9434 0.125 22.0449 2.51758 24.291 6.375C26.5371 10.2812 26.5371 15.0176 24.291 18.875C22.0449 22.7812 17.9434 25.125 13.5 25.125ZM11.5469 16.5312C10.8633 16.5312 10.375 17.0684 10.375 17.7031C10.375 18.3867 10.8633 18.875 11.5469 18.875H15.4531C16.0879 18.875 16.625 18.3867 16.625 17.7031C16.625 17.0684 16.0879 16.5312 15.4531 16.5312H15.0625V12.2344C15.0625 11.5996 14.5254 11.0625 13.8906 11.0625H11.5469C10.8633 11.0625 10.375 11.5996 10.375 12.2344C10.375 12.918 10.8633 13.4062 11.5469 13.4062H12.7188V16.5312H11.5469ZM13.5 6.375C12.6211 6.375 11.9375 7.10742 11.9375 7.9375C11.9375 8.81641 12.6211 9.5 13.5 9.5C14.3301 9.5 15.0625 8.81641 15.0625 7.9375C15.0625 7.10742 14.3301 6.375 13.5 6.375Z' fill='%23262626'/%3e%3c/svg%3e");
