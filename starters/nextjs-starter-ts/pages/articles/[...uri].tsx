@@ -17,7 +17,6 @@ interface ArticlePageProps {
   grant: string;
   publishingLevel: keyof typeof PublishingLevel;
   versionId: string | null;
-  tabId: string | null;
 }
 
 export default function ArticlePage({
@@ -25,7 +24,6 @@ export default function ArticlePage({
   grant,
   publishingLevel,
   versionId,
-  tabId,
 }: ArticlePageProps) {
   const seoMetadata = getSeoMetadata(article);
 
@@ -48,7 +46,6 @@ export default function ArticlePage({
             article={article}
             publishingLevel={publishingLevel}
             versionId={versionId}
-            tabId={tabId}
           />
         </div>
       </Layout>
@@ -68,7 +65,6 @@ export async function getServerSideProps({
     publishingLevel: keyof typeof PublishingLevel | undefined;
     pccGrant: string;
     versionId: string | undefined;
-    tabId: string | undefined;
   };
 }) {
   const slugOrId = uri[uri.length - 1];
@@ -131,7 +127,6 @@ export async function getServerSideProps({
       grant: grant || null,
       publishingLevel: publishingLevel || null,
       versionId: versionId || null,
-      tabId: query.tabId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),

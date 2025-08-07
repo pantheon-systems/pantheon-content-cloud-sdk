@@ -167,12 +167,10 @@ export function StaticArticleView({
 export default function ArticleView({
   article,
   onlyContent,
-  tabId,
   publishingLevel,
   versionId,
 }: ArticleViewProps) {
   const searchParams = useSearchParams();
-  const currentTabId = useMemo(() => searchParams.get("tabId") || tabId, [searchParams, tabId]);
 
   const { data } = useArticle(
     article.id,
@@ -196,7 +194,7 @@ export default function ArticleView({
       <StaticArticleView
         article={hydratedArticle}
         onlyContent={onlyContent}
-        tabId={currentTabId}
+        tabId={searchParams.get("tabId")}
       />
     </>
   );
