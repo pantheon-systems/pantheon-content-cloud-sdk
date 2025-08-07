@@ -33,7 +33,6 @@ export const ArticleView = async ({
       article={article}
       grant={grant || undefined}
       publishingLevel={searchParams.publishingLevel}
-      tabId={searchParams.tabId}
       versionId={searchParams.versionId || null}
     />
   );

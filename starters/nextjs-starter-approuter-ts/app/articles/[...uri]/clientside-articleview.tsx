@@ -18,13 +18,11 @@ updateConfig({
 export const ClientsideArticleView = ({
   article,
   grant,
-  tabId,
   publishingLevel,
   versionId,
 }: {
   article: Article;
   grant?: string | undefined;
-  tabId?: string | null;
   publishingLevel: keyof typeof PublishingLevel;
   versionId: string | null;
 }) => {
