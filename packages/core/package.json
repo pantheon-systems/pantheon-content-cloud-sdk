@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-sdk-core",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud SDK Core",
-  "version": "4.0.0",
+  "version": "5.0.0-beta.0",
   "license": "MIT",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

@@ -1,5 +1,20 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 5.0.0-beta.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- Updated dependencies [654325d]
+- Updated dependencies [f88e3da]
+- Updated dependencies [a780941]
+- Updated dependencies [dd8541f]
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.0
+  - @pantheon-systems/pcc-react-sdk@5.0.0-beta.0
+
 ## 4.0.0
 
 ### Patch Changes
