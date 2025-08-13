@@ -1,16 +1,18 @@
 import { type QueryHookOptions } from "@apollo/client";
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
+import { useSubscription } from "@apollo/client/react/hooks/useSubscription.js";
 import {
-  ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
   buildContentType,
   generateArticleQuery,
+  generateArticleUpdateSubscription,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
   article: Article | undefined;
+  subscriptionResult: ReturnType<typeof useSubscription<{ article: Article }>>;
 };
 
 type ApolloQueryOptions = Omit<
@@ -28,40 +30,61 @@ export const useArticle = (
 ): Return => {
   const publishingLevel = args?.publishingLevel;
   const contentType = buildContentType(args?.contentType);
+  const versionId = args?.versionId;
 
   const memoizedArgs = useMemo(() => {
     return {
       ...(publishingLevel && { publishingLevel }),
       ...(contentType && { contentType }),
+      ...(versionId && { versionId }),
     };
-  }, [publishingLevel, contentType]);
+  }, [publishingLevel, contentType, versionId]);
 
-  const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
-    generateArticleQuery({ withSite: related?.site }),
+  const queryDocument = useMemo(
+    () => generateArticleQuery({ withSite: related?.site }),
+    [related?.site],
+  );
+
+  const subscriptionDocument = useMemo(
+    () => generateArticleUpdateSubscription({ withSite: related?.site }),
+    [related?.site],
+  );
+
+  const variables = useMemo(
+    () => ({ id, ...memoizedArgs }),
+    [id, memoizedArgs],
+  );
+
+  const queryResult = useQuery<{ article: Article }>(queryDocument, {
+    ...apolloQueryOptions,
+    variables,
+  });
+
+  const subscriptionResult = useSubscription<{ article: Article }>(
+    subscriptionDocument,
     {
-      ...apolloQueryOptions,
-      variables: { id, ...memoizedArgs },
+      variables,
+      skip: !!apolloQueryOptions?.skip,
+      onData: ({ client, data }) => {
+        if (!data?.data) return;
+        const incoming = data.data.article as Article;
+
+        client.cache.updateQuery<{ article: Article }>(
+          {
+            query: queryDocument,
+            variables,
+          },
+          () => {
+            return { article: incoming };
+          },
+        );
+      },
     },
   );
 
-  useEffect(() => {
-    if (apolloQueryOptions?.skip) return;
-
-    subscribeToMore({
-      document: ARTICLE_UPDATE_SUBSCRIPTION,
-      variables: { id, ...memoizedArgs },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-
-        const { article } = subscriptionData.data;
-        return { article, updatedAt: article.updatedAt };
-      },
-    });
-  }, [id, memoizedArgs, subscribeToMore, apolloQueryOptions?.skip]);
-
   return {
-    ...queryData,
-    subscribeToMore,
-    article: queryData.data?.article,
+    ...queryResult,
+    article: queryResult.data?.article,
+    subscriptionResult,
   };
 };
