@@ -1,5 +1,12 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 5.0.0-beta.1
+
+### Patch Changes
+
+- bb12fa0: Multi-collection search through articlesv3 now supported
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.1
+
 ## 5.0.0-beta.0
 
 ### Major Changes
