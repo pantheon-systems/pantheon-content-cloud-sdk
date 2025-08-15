@@ -1,6 +1,5 @@
 import { type QueryHookOptions } from "@apollo/client";
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
-import { useSubscription } from "@apollo/client/react/hooks/useSubscription.js";
 import {
   ArticleQueryArgs,
   buildContentType,
@@ -8,11 +7,10 @@ import {
   generateArticleUpdateSubscription,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 type Return = ReturnType<typeof useQuery<{ article: Article }>> & {
   article: Article | undefined;
-  subscriptionResult: ReturnType<typeof useSubscription<{ article: Article }>>;
 };
 
 type ApolloQueryOptions = Omit<
@@ -55,36 +53,38 @@ export const useArticle = (
     [id, memoizedArgs],
   );
 
-  const queryResult = useQuery<{ article: Article }>(queryDocument, {
-    ...apolloQueryOptions,
-    variables,
-  });
-
-  const subscriptionResult = useSubscription<{ article: Article }>(
-    subscriptionDocument,
+  const { subscribeToMore, ...queryResult } = useQuery<{ article: Article }>(
+    queryDocument,
     {
+      ...apolloQueryOptions,
       variables,
-      skip: !!apolloQueryOptions?.skip,
-      onData: ({ client, data }) => {
-        if (!data?.data) return;
-        const incoming = data.data.article as Article;
-
-        client.cache.updateQuery<{ article: Article }>(
-          {
-            query: queryDocument,
-            variables,
-          },
-          () => {
-            return { article: incoming };
-          },
-        );
-      },
     },
   );
 
+  useEffect(() => {
+    if (apolloQueryOptions?.skip) return;
+
+    const unsubscribe = subscribeToMore({
+      document: subscriptionDocument,
+      variables,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const incoming = subscriptionData.data.article as Article;
+        return { article: incoming };
+      },
+    });
+
+    return () => unsubscribe();
+  }, [
+    subscribeToMore,
+    subscriptionDocument,
+    variables,
+    apolloQueryOptions?.skip,
+  ]);
+
   return {
     ...queryResult,
+    subscribeToMore,
     article: queryResult.data?.article,
-    subscriptionResult,
   };
 };
