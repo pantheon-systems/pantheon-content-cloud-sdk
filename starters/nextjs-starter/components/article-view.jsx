@@ -2,8 +2,8 @@ import { useArticle } from "@pantheon-systems/pcc-react-sdk";
 import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import React from "react";
 import { Toaster } from "react-hot-toast";
 import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components";
@@ -117,7 +117,6 @@ export function StaticArticleView({ article, onlyContent, tabId }) {
           __experimentalFlags={{
             disableAllStyles: !!onlyContent,
             preserveImageStyles: true,
-            useUnintrusiveTitleRendering: true,
           }}
         />
       </div>
@@ -125,13 +124,13 @@ export function StaticArticleView({ article, onlyContent, tabId }) {
       <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">
         {seoMetadata.keywords && Array.isArray(seoMetadata.keywords)
           ? seoMetadata.keywords.map((x, i) => (
-            <div
-              key={i}
-              className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
-            >
-              {x}
-            </div>
-          ))
+              <div
+                key={i}
+                className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+              >
+                {x}
+              </div>
+            ))
           : null}
       </div>
     </div>
@@ -142,7 +141,7 @@ export default function ArticleView({
   article,
   onlyContent,
   publishingLevel,
-  versionId
+  versionId,
 }) {
   const searchParams = useSearchParams();
 

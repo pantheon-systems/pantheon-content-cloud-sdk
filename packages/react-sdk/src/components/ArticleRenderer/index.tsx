@@ -59,7 +59,6 @@ interface Props {
     disableAllStyles?: boolean;
     preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
-    useUnintrusiveTitleRendering?: boolean;
     renderImageCaptions?: boolean;
     cdnURLOverride?: string | ((url: string) => string);
   };
@@ -173,10 +172,7 @@ const ArticleRenderer = ({
 
   let titleElement = null;
 
-  if (
-    __experimentalFlags?.useUnintrusiveTitleRendering !== true &&
-    titleContent
-  ) {
+  if (renderTitle != null && titleContent) {
     titleElement = React.createElement(PantheonTreeV2Renderer, {
       element: titleContent,
       componentMap,
@@ -190,9 +186,7 @@ const ArticleRenderer = ({
     });
   }
 
-  const bodyNodes = __experimentalFlags?.useUnintrusiveTitleRendering
-    ? nodes
-    : splitBodyNodes;
+  const bodyNodes = renderTitle != null ? splitBodyNodes : nodes;
 
   const bodyElement = (
     <div className={bodyClassName}>

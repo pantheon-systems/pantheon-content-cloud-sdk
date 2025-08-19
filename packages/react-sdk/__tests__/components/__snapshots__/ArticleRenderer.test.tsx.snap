@@ -1239,39 +1239,6 @@ exports[`<ArticleRenderer /> should replace the CDN URL with the override (markd
 exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree with function) 1`] = `
 <div>
   <div>
-    <p
-      class="normal-text"
-      style="margin: 0px;"
-    >
-      <span
-        class=""
-      >
-        <span
-          class=""
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
-        </span>
-      </span>
-      <span
-        class="pantheon-img-container pantheon-img-container-breakright"
-        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
-      >
-        <img
-          class=""
-          src="https://cdn.example.com/djHVTYbPaCby44H5CxhH"
-          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
-          title="just another dog"
-        />
-        <span
-          class="pantheon-caption"
-          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
-        >
-          just another dog
-        </span>
-      </span>
-    </p>
-  </div>
-  <div>
     <style>
       
 
@@ -1313,6 +1280,37 @@ ol[list-style-type="lower-roman"] {
 
 
     </style>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/djHVTYbPaCby44H5CxhH"
+          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+          title="just another dog"
+        />
+        <span
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
+        >
+          just another dog
+        </span>
+      </span>
+    </p>
     <p
       class="normal-text"
       style="margin: 0px;"
@@ -1520,39 +1518,6 @@ ol[list-style-type="lower-roman"] {
 exports[`<ArticleRenderer /> should replace the CDN URL with the override (tree) 1`] = `
 <div>
   <div>
-    <p
-      class="normal-text"
-      style="margin: 0px;"
-    >
-      <span
-        class=""
-      >
-        <span
-          class=""
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
-        </span>
-      </span>
-      <span
-        class="pantheon-img-container pantheon-img-container-breakright"
-        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
-      >
-        <img
-          class=""
-          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH"
-          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
-          title="just another dog"
-        />
-        <span
-          class="pantheon-caption"
-          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
-        >
-          just another dog
-        </span>
-      </span>
-    </p>
-  </div>
-  <div>
     <style>
       
 
@@ -1594,6 +1559,37 @@ ol[list-style-type="lower-roman"] {
 
 
     </style>
+    <p
+      class="normal-text"
+      style="margin: 0px;"
+    >
+      <span
+        class=""
+      >
+        <span
+          class=""
+        >
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vitae leo nec massa semper venenatis eu at felis. Nam consequat accumsan dictum. Suspendisse eu metus in justo eleifend consequat id quis nunc. Etiam pharetra, tortor id malesuada efficitur, ligula sem posuere erat, vitae placerat ipsum felis non leo. Praesent lobortis, mauris vel posuere bibendum, leo diam vehicula lacus, a interdum odio massa et elit. Suspendisse ac lorem imperdiet, suscipit quam eu, maximus elit. Quisque nec metus eu nibh iaculis dignissim. Cras ultricies pulvinar erat eget luctus. In id ipsum non diam sagittis ullamcorper eget nec arcu. Ut laoreet accumsan ex non porta. Donec vitae mi porttitor, dictum lacus sit amet, dapibus ipsum. Praesent bibendum lacus nibh, sed egestas enim facilisis vitae!
+        </span>
+      </span>
+      <span
+        class="pantheon-img-container pantheon-img-container-breakright"
+        style="float: right; margin-top: 170.85929748535153px; shape-outside: padding-box; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+      >
+        <img
+          class=""
+          src="https://cdn.example.com/loAWY0YB0HTHexSzw3Z1/djHVTYbPaCby44H5CxhH"
+          style="margin-left: 0px; max-width: 480.00px; max-height: 352.00px; width: 100%; height: auto;"
+          title="just another dog"
+        />
+        <span
+          class="pantheon-caption"
+          style="width: 100%; display: flex; justify-content: center; font-size: 0.75rem;"
+        >
+          just another dog
+        </span>
+      </span>
+    </p>
     <p
       class="normal-text"
       style="margin: 0px;"
