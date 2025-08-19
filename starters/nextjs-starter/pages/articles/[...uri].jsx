@@ -15,7 +15,6 @@ export default function ArticlePage({
   grant,
   publishingLevel,
   versionId,
-  tabId,
 }) {
   const seoMetadata = getSeoMetadata(article);
 
@@ -38,7 +37,6 @@ export default function ArticlePage({
             article={article}
             publishingLevel={publishingLevel}
             versionId={versionId}
-            tabId={tabId}
           />
         </div>
       </Layout>
@@ -109,7 +107,6 @@ export async function getServerSideProps({
       grant: grant || null,
       publishingLevel: publishingLevel || null,
       versionId: versionId || null,
-      tabId: query.tabId || null,
       recommendedArticles: await PCCConvenienceFunctions.getRecommendedArticles(
         article.id,
       ),
