@@ -59,7 +59,6 @@ interface Props {
     disableAllStyles?: boolean;
     preserveImageStyles?: boolean;
     disableDefaultErrorBoundaries?: boolean;
-    useUnintrusiveTitleRendering?: boolean;
     renderImageCaptions?: boolean;
     cdnURLOverride?: string | ((url: string) => string);
   };
@@ -73,6 +72,27 @@ function UnboxContent(content: string | unknown) {
   } catch (e) {
     return content;
   }
+}
+
+function splitTitleAndBody(nodes: PantheonTreeNode[]): {
+  titleContent: PantheonTreeNode | null;
+  bodyNodes: PantheonTreeNode[];
+} {
+  const indexOfFirstHeader = nodes.findIndex((x) =>
+    ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
+  );
+  const indexOfFirstParagraph = nodes.findIndex((x) => x.tag === "p");
+  const resolvedTitleIndex =
+    indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
+
+  if (resolvedTitleIndex < 0) {
+    return { titleContent: null, bodyNodes: nodes };
+  }
+
+  const titleContent = nodes[resolvedTitleIndex] ?? null;
+  const bodyNodes = nodes.filter((_, i) => i !== resolvedTitleIndex);
+
+  return { titleContent, bodyNodes };
 }
 
 const ArticleRenderer = ({
@@ -147,21 +167,12 @@ const ArticleRenderer = ({
     );
   }
 
-  const parsedContent: PantheonTreeNode[] = contentToShow.children || [];
+  const nodes: PantheonTreeNode[] = contentToShow.children || [];
+  const { titleContent, bodyNodes: splitBodyNodes } = splitTitleAndBody(nodes);
 
   let titleElement = null;
 
-  if (__experimentalFlags?.useUnintrusiveTitleRendering !== true) {
-    const indexOfFirstHeader = parsedContent.findIndex((x) =>
-      ["h1", "h2", "h3", "h4", "h5", "h6", "h7", "title"].includes(x.tag),
-    );
-
-    const indexOfFirstParagraph = parsedContent.findIndex((x) => x.tag === "p");
-    const resolvedTitleIndex =
-      indexOfFirstHeader === -1 ? indexOfFirstParagraph : indexOfFirstHeader;
-
-    const [titleContent] = parsedContent.splice(resolvedTitleIndex, 1);
-
+  if (renderTitle != null && titleContent) {
     titleElement = React.createElement(PantheonTreeV2Renderer, {
       element: titleContent,
       componentMap,
@@ -175,15 +186,17 @@ const ArticleRenderer = ({
     });
   }
 
+  const bodyNodes = renderTitle != null ? splitBodyNodes : nodes;
+
   const bodyElement = (
     <div className={bodyClassName}>
-      {parsedContent?.map((element, idx) =>
+      {bodyNodes?.map((element, idx) =>
         React.createElement(PantheonTreeV2Renderer, {
           key: idx,
           element: {
             ...element,
-            prevNode: parsedContent[idx - 1],
-            nextNode: parsedContent[idx + 1],
+            prevNode: bodyNodes[idx - 1],
+            nextNode: bodyNodes[idx + 1],
           },
           smartComponentMap,
           componentMap,
