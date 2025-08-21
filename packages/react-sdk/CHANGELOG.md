@@ -1,5 +1,13 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 5.0.0-beta.2
+
+### Patch Changes
+
+- 45c39b4: Fixes issue with deprecated renderTitle prop which would cause
+  article elements to get removed from the body.
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.2
+
 ## 5.0.0-beta.1
 
 ### Patch Changes
