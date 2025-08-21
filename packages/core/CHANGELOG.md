@@ -1,5 +1,9 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 5.0.0-beta.2
+
+## 5.0.0-beta.1
+
 ## 5.0.0-beta.0
 
 ### Minor Changes

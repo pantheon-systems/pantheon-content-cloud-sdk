@@ -13,10 +13,7 @@ import article from "../data/article.json";
 describe("<ArticleRenderer />", () => {
   it("should render a post's content", () => {
     const { container } = render(
-      <ArticleRenderer
-        article={article as Article}
-        __experimentalFlags={{ useUnintrusiveTitleRendering: true }}
-      />,
+      <ArticleRenderer article={article as Article} />,
     );
     const title = getArticleTitle(article as Article);
     expect(title).toEqual("Test 1");

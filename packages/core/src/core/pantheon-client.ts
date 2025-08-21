@@ -155,10 +155,10 @@ export class PantheonClient {
       cache: new InMemoryCache(),
       defaultOptions: {
         query: {
-          fetchPolicy: "no-cache",
+          fetchPolicy: "network-only",
         },
         watchQuery: {
-          fetchPolicy: "no-cache",
+          fetchPolicy: "cache-and-network",
         },
       },
     });
