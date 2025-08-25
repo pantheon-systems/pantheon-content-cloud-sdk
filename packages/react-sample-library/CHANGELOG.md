@@ -1,5 +1,143 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 5.0.0-beta.2
+
+### Patch Changes
+
+- Updated dependencies [45c39b4]
+  - @pantheon-systems/pcc-react-sdk@5.0.0-beta.2
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.2
+
+## 5.0.0-beta.1
+
+### Patch Changes
+
+- Updated dependencies [bb12fa0]
+  - @pantheon-systems/pcc-react-sdk@5.0.0-beta.1
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.1
+
+## 5.0.0-beta.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- Updated dependencies [654325d]
+- Updated dependencies [f88e3da]
+- Updated dependencies [a780941]
+- Updated dependencies [dd8541f]
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.0
+  - @pantheon-systems/pcc-react-sdk@5.0.0-beta.0
+
+## 4.0.0
+
+### Patch Changes
+
+- Updated dependencies [a6c7134]
+  - @pantheon-systems/pcc-react-sdk@4.0.0
+  - @pantheon-systems/pcc-sdk-core@4.0.0
+
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+### Patch Changes
+
+- Updated dependencies [4317fcd]
+- Updated dependencies
+- Updated dependencies [a235787]
+  - @pantheon-systems/pcc-react-sdk@3.13.1
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
+## 3.12.1
+
+### Patch Changes
+
+- Updated dependencies [b587dda]
+  - @pantheon-systems/pcc-react-sdk@3.12.1
+  - @pantheon-systems/pcc-sdk-core@3.12.1
+
+## 3.12.0
+
+### Patch Changes
+
+- Updated dependencies [33368d3]
+  - @pantheon-systems/pcc-react-sdk@3.12.0
+  - @pantheon-systems/pcc-sdk-core@3.12.0
+
+## 3.11.3
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.3
+- @pantheon-systems/pcc-react-sdk@3.11.3
+
+## 3.11.2
+
+### Patch Changes
+
+- Updated dependencies [b8be0ac]
+  - @pantheon-systems/pcc-sdk-core@3.11.2
+  - @pantheon-systems/pcc-react-sdk@3.11.2
+
+## 3.11.1
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [b75afed]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1
+  - @pantheon-systems/pcc-react-sdk@3.11.1
+
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-react-sdk@3.11.1-beta.2
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+- @pantheon-systems/pcc-react-sdk@3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+  - @pantheon-systems/pcc-react-sdk@3.11.1-beta.0
+
+## 3.11.0
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-react-sdk@3.11.0
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [b89c5ee]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-react-sdk@3.10.0
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.10.0-beta.2
 
 ### Patch Changes

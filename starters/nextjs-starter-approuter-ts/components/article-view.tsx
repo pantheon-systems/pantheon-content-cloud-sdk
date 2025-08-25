@@ -1,17 +1,16 @@
 "use client";
 
 import { useArticle } from "@pantheon-systems/pcc-react-sdk";
-import type { Article } from "@pantheon-systems/pcc-react-sdk";
-import {
-  ArticleRenderer,
-  useArticleTitle,
-} from "@pantheon-systems/pcc-react-sdk/components";
-import { Metadata } from "next";
+import type { Article, PublishingLevel } from "@pantheon-systems/pcc-react-sdk";
+import { ArticleRenderer } from "@pantheon-systems/pcc-react-sdk/components";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import React from "react";
-import { getSeoMetadata } from "../lib/utils";
+import { Toaster } from "react-hot-toast";
+import { getSeoMetadata, parseAsTabTree } from "../lib/utils";
 import { clientSmartComponentMap } from "./smart-components/client-components";
+import { TableOfContents } from "./table-of-contents";
 
 const ELEMENT_STYLES_TO_OVERRIDE = [
   /fontSize/,
@@ -56,85 +55,96 @@ const componentOverrideMap = {
 type ArticleViewProps = {
   article: Article;
   onlyContent?: boolean;
+  tabId?: string | null;
+  publishingLevel: keyof typeof PublishingLevel;
+  versionId: string | null;
 };
 
 const ArticleHeader = ({
   article,
-  articleTitle,
   seoMetadata,
 }: {
   article: Article;
-  articleTitle: string;
-  seoMetadata: Metadata;
+  seoMetadata: ReturnType<typeof getSeoMetadata>;
 }) => {
   const author = Array.isArray(seoMetadata.authors)
     ? seoMetadata.authors[0]
     : seoMetadata.authors;
 
+  if (!author?.name && !article.updatedAt) return null;
+
   return (
-    <div>
-      <div className="text-5xl font-bold">{articleTitle}</div>
-      <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
-        {author?.name ? (
-          <>
-            <div>
-              <Link
-                data-testid="author"
-                className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
-                href={`/authors/${author?.name}`}
-              >
-                <div>
-                  <Image
-                    className="m-0 rounded-full"
-                    src="/images/no-avatar.png"
-                    width={24}
-                    height={24}
-                    alt={`Avatar of ${author?.name}`}
-                  />
-                </div>
-                <div className="underline">{author?.name}</div>
-              </Link>
-            </div>
-            <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
-          </>
-        ) : null}
-        {article.updatedAt ? (
-          <span>
-            {new Date(article.updatedAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
-        ) : null}
-      </div>
+    <div className="border-y-base-300 text-neutral-content mb-14 mt-6 flex w-full flex-row gap-x-4 border-y-[1px] py-4">
+      {author?.name ? (
+        <>
+          <div>
+            <Link
+              data-testid="author"
+              className="flex flex-row items-center gap-x-2 font-thin uppercase text-black no-underline"
+              href={`/authors/${author?.name}`}
+            >
+              <div>
+                <Image
+                  className="m-0 rounded-full"
+                  src="/images/no-avatar.png"
+                  width={24}
+                  height={24}
+                  alt={`Avatar of ${author?.name}`}
+                />
+              </div>
+              <div className="underline">{author?.name}</div>
+            </Link>
+          </div>
+          <div className="h-full w-[1px] bg-[#e5e7eb]">&nbsp;</div>
+        </>
+      ) : null}
+      {article.updatedAt ? (
+        <span>
+          {new Date(article.updatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </span>
+      ) : null}
     </div>
   );
 };
 
-export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
-  const articleTitle = useArticleTitle(article);
+export function StaticArticleView({
+  article,
+  onlyContent,
+  tabId,
+}: Pick<ArticleViewProps, "article" | "onlyContent" | "tabId">) {
   const seoMetadata = getSeoMetadata(article);
 
-  return (
-    <>
-      <ArticleHeader
-        article={article}
-        articleTitle={articleTitle || ""}
-        seoMetadata={seoMetadata}
-      />
-      <ArticleRenderer
-        article={article}
-        componentMap={componentOverrideMap}
-        smartComponentMap={clientSmartComponentMap}
-        __experimentalFlags={{
-          disableAllStyles: !!onlyContent,
-          preserveImageStyles: true,
-          useUnintrusiveTitleRendering: true,
-        }}
-      />
+  const tabTree =
+    article.resolvedContent == null
+      ? null
+      : parseAsTabTree(article.resolvedContent);
 
-      <div className="border-base-300 mt-16 flex w-full gap-x-3 border-t-[1px] pt-7 lg:mt-32">
+  return (
+    <div className="px-8 lg:px-4">
+      <ArticleHeader article={article} seoMetadata={seoMetadata} />
+
+      <div className="flex justify-start gap-x-[50px] lg:gap-x-[115px]">
+        {article.renderAsTabs && tabTree ? (
+          <TableOfContents tabTree={tabTree} activeTab={tabId} />
+        ) : null}
+
+        <ArticleRenderer
+          article={article}
+          tabId={tabId}
+          componentMap={componentOverrideMap}
+          smartComponentMap={clientSmartComponentMap}
+          __experimentalFlags={{
+            disableAllStyles: !!onlyContent,
+            preserveImageStyles: true,
+          }}
+        />
+      </div>
+
+      <div className="border-base-300 mt-16 flex w-full flex-wrap gap-x-3 gap-y-3 border-t-[1px] pt-9 lg:mt-32">
         {seoMetadata.keywords != null
           ? (Array.isArray(seoMetadata.keywords)
               ? seoMetadata.keywords
@@ -142,35 +152,49 @@ export function StaticArticleView({ article, onlyContent }: ArticleViewProps) {
             ).map((x, i) => (
               <div
                 key={i}
-                className="text-bold text-neutral-content rounded-full border-[1px] border-[#d4d4d4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
+                className="text-bold text-neutral-content inline-block rounded-full border border-[#D4D4D4] bg-[#F5F5F5] px-3 py-1 text-sm !no-underline"
               >
                 {x}
               </div>
             ))
           : null}
       </div>
-    </>
+    </div>
   );
 }
 
 export default function ArticleView({
   article,
   onlyContent,
+  publishingLevel,
+  versionId,
 }: ArticleViewProps) {
+  const searchParams = useSearchParams();
+
   const { data } = useArticle(
     article.id,
     {
-      publishingLevel: article.publishingLevel,
+      publishingLevel,
+      versionId: versionId ?? undefined,
       contentType: "TREE_PANTHEON_V2",
     },
     {
-      skip: article.publishingLevel !== "REALTIME",
+      skip: publishingLevel !== "REALTIME",
     },
   );
 
   const hydratedArticle = data?.article ?? article;
 
   return (
-    <StaticArticleView article={hydratedArticle} onlyContent={onlyContent} />
+    <>
+      <div>
+        <Toaster />
+      </div>
+      <StaticArticleView
+        article={hydratedArticle}
+        onlyContent={onlyContent}
+        tabId={searchParams.get("tabId")}
+      />
+    </>
   );
 }

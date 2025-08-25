@@ -1,13 +1,19 @@
 import { notFound } from "next/navigation";
 import { clientSmartComponentMap } from "../../../components/smart-components/client-components";
 
-export default function ComponentPreviewPage({
-  params,
-  searchParams: { attrs },
-}: {
-  params: { id: string };
-  searchParams: { attrs: string };
-}) {
+export default async function ComponentPreviewPage(
+  props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ attrs: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+
+  const {
+    attrs
+  } = searchParams;
+
+  const params = await props.params;
   if (!params.id) {
     return notFound();
   }

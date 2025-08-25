@@ -1,11 +1,12 @@
-import { Components } from "react-markdown";
-import type { ReactMarkdownProps } from "react-markdown/lib/complex-types";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown.js";
+import { ClassAttributes, HTMLAttributes } from "react";
+import ReactMarkdown, { ExtraProps } from "react-markdown";
+import { Components } from "react-markdown/lib";
 import rehypeRaw from "rehype-raw";
 import remarkHeaderId from "remark-heading-id";
 import { visit } from "unist-util-visit";
 import type { UnistParent } from "unist-util-visit/lib";
 import type { ComponentMap, SmartComponentMap } from ".";
+import { CDNDomains } from "../../utils/cdn-domains";
 import { withSmartComponentErrorBoundary } from "./SmartComponentErrorBoundary";
 
 interface MarkdownRendererProps {
@@ -13,6 +14,7 @@ interface MarkdownRendererProps {
   smartComponentMap?: SmartComponentMap;
   componentMap?: ComponentMap;
   disableDefaultErrorBoundaries: boolean;
+  cdnURLOverride?: string | ((url: string) => string);
 }
 
 interface ComponentProperties {
@@ -26,14 +28,28 @@ const MarkdownRenderer = ({
   smartComponentMap,
   componentMap,
   disableDefaultErrorBoundaries,
+  cdnURLOverride,
 }: MarkdownRendererProps) => {
   return (
     <ReactMarkdown
-      rehypePlugins={[rehypeRaw, fixComponentParentRehypePlugin]}
+      rehypePlugins={[
+        rehypeRaw,
+        fixComponentParentRehypePlugin,
+        overrideCDNUrls(cdnURLOverride),
+      ]}
       remarkPlugins={[remarkHeaderId]}
       components={{
         ...(componentMap as Components),
-        ["pcc-component" as "div"]: ({ node }: ReactMarkdownProps) => {
+        ["pcc-component" as "div"]: ({
+          node,
+        }: ClassAttributes<HTMLDivElement> &
+          HTMLAttributes<HTMLDivElement> &
+          ExtraProps) => {
+          if (!node) {
+            console.warn("No replacement found");
+            return null;
+          }
+
           const { attrs, type } = node.properties as typeof node.properties &
             ComponentProperties;
 
@@ -110,6 +126,42 @@ function fixComponentParentRehypePlugin() {
         ) {
           // @ts-expect-error TODO: Type this properly
           parent.tagName = "div";
+        }
+      },
+    );
+  };
+}
+
+/**
+ * Rehype plugin to override the CDN domain.
+ */
+function overrideCDNUrls(cdnURLOverride?: string | ((url: string) => string)) {
+  // If cdnURLOverride is not provided, return a no-op transformer:
+  if (!cdnURLOverride) {
+    return () => (tree: UnistParent) => tree;
+  }
+
+  return () => (tree: UnistParent) => {
+    visit(
+      tree,
+      "element",
+      (node: Element & { properties: { src: string } }) => {
+        try {
+          if (node.tagName === "img" && node.properties.src) {
+            const src = node.properties.src;
+            const url = new URL(src);
+
+            if (CDNDomains.includes(url.hostname)) {
+              if (typeof cdnURLOverride === "function") {
+                node.properties.src = cdnURLOverride(url.toString());
+              } else {
+                url.hostname = cdnURLOverride;
+                node.properties.src = url.toString();
+              }
+            }
+          }
+        } catch (err) {
+          // If it's not a valid URL (or cannot be parsed), leave it unchanged.
         }
       },
     );

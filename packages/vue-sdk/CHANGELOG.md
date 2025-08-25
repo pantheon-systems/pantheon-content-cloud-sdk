@@ -1,5 +1,85 @@
 # @pantheon-systems/pcc-vue-sdk
 
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
+## 3.12.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.1
+
+## 3.12.0
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.0
+
+## 3.11.3
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.3
+
+## 3.11.2
+
+### Patch Changes
+
+- Updated dependencies [b8be0ac]
+  - @pantheon-systems/pcc-sdk-core@3.11.2
+
+## 3.11.1
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1
+
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+
+## 3.11.0
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Patch Changes
+
+- Updated dependencies [67bc79b]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.9.0
 
 ### Patch Changes

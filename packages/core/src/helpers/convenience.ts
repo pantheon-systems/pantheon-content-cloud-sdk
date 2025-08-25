@@ -13,19 +13,20 @@ import {
 import { getAllTags } from "./metadata";
 import { getSite as _getSite } from "./site";
 
-const config = {
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  pccHost: (process.env.PCC_HOST || process.env.NEXT_PUBLIC_PCC_HOST) as string,
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  siteId: (process.env.PCC_SITE_ID ||
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
-  token:
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    (process.env.PCC_TOKEN as string) ||
-    // eslint-disable-next-line turbo/no-undeclared-env-vars
-    (process.env.PCC_API_KEY as string),
-};
+/* eslint-disable turbo/no-undeclared-env-vars */
+const config =
+  typeof process === "undefined"
+    ? { pccHost: undefined, siteId: "", token: "" }
+    : {
+        pccHost: (process.env.PCC_HOST ||
+          process.env.NEXT_PUBLIC_PCC_HOST) as string,
+        siteId: (process.env.PCC_SITE_ID ||
+          process.env.NEXT_PUBLIC_PCC_SITE_ID) as string,
+        token:
+          (process.env.PCC_TOKEN as string) ||
+          (process.env.PCC_API_KEY as string),
+      };
+/* eslint-enable turbo/no-undeclared-env-vars */
 
 export const updateConfig = ({
   pccHost,
@@ -112,15 +113,18 @@ async function getAllArticlesWithSummary(
 
 async function getArticleBySlugOrId(
   id: number | string,
-  publishingLevel: "PRODUCTION" | "REALTIME" = "PRODUCTION",
+  args?: Parameters<typeof _getArticleBySlugOrId>[2],
+  related?: Parameters<typeof _getArticleBySlugOrId>[3],
 ) {
   const post = await _getArticleBySlugOrId(
     buildPantheonClient({ isClientSide: false }),
     id,
     {
-      publishingLevel,
+      publishingLevel: "PRODUCTION",
       contentType: "TREE_PANTHEON_V2",
+      ...args,
     },
+    related,
   );
 
   return post;

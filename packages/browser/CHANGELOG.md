@@ -1,5 +1,129 @@
 # @pantheon-systems/pcc-browser-sdk
 
+## 5.0.0-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@5.0.0-beta.2
+
+## 5.0.0-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@5.0.0-beta.1
+
+## 5.0.0-beta.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- Updated dependencies [654325d]
+- Updated dependencies [dd8541f]
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.0
+
+## 4.0.0
+
+### Major Changes
+
+- a6c7134: Now supporting tabbed content.
+
+### Patch Changes
+
+- Updated dependencies [a6c7134]
+  - @pantheon-systems/pcc-sdk-core@4.0.0
+
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
+## 3.12.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.1
+
+## 3.12.0
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.0
+
+## 3.11.3
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.3
+
+## 3.11.2
+
+### Patch Changes
+
+- Updated dependencies [b8be0ac]
+  - @pantheon-systems/pcc-sdk-core@3.11.2
+
+## 3.11.1
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- e5dc1c9: Fix a bug with the new article data fingerprint hash.
+- d8f826f: Do not re-render articles from Browser SDK if the article data hasn't changed
+  since previous GQL subscription update.
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1
+
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- c553b94: Fix a bug with the new article data fingerprint hash.
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- d8f826f: Do not re-render articles from Browser SDK if the article data hasn't changed
+  since previous GQL subscription update.
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+
+## 3.11.0
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.10.0-beta.2
 
 ### Patch Changes

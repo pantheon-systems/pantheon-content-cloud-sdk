@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
-        <Blockquote
+        <Blockquote.reactComponent
           type="full-width"
           quote="Live in the sunshine, swim the sea, drink the wild air."
           person="R. Waldo Emerson"

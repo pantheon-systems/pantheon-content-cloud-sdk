@@ -1,5 +1,97 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 5.0.0-beta.2
+
+## 5.0.0-beta.1
+
+## 5.0.0-beta.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- dd8541f: `getArticleURLFromSite` only returns slugs in the url for published
+  articles
+
+## 4.0.0
+
+### Major Changes
+
+- a6c7134: Now supporting tabbed content.
+
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+## 3.12.1
+
+## 3.12.0
+
+## 3.11.3
+
+## 3.11.2
+
+### Patch Changes
+
+- b8be0ac: Have the option to accept multiple values for any smart-component
+  field values
+
+## 3.11.1
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- 548a31f: - Tries to fetch the site info from pantheon client rather than
+  convenience functions in pantheon-api.ts
+  - If the client is not defined or if pcc grant is used to initialize the
+    client, we dont fetch the site.
+  - If the site is not fetched, the path computed for an article is just
+    basepath/slug-or-id
+
+## 3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- b72e906: Fix browser SDK referencing process.env even from client-side pages.
+- 548a31f: - Tries to fetch the site info from pantheon client rather than
+  convenience functions in pantheon-api.ts
+  - If the client is not defined or if pcc grant is used to initialize the
+    client, we dont fetch the site.
+  - If the site is not fetched, the path computed for an article is just
+    basepath/slug-or-id
+
+## 3.11.0
+
+### Minor Changes
+
+- a407141: - Added functionality in the pcc-sdk-core to compute the path of an
+  article from the site's content structure. This will be the path at which the
+  article will be visible.
+  - If someone tries to access the article without the full path, it will be
+    redirected to the full path.
+  - Developers can use the default functionality as is and also customise the
+    path generation to only include the id or slug and a configurable number of
+    parents.
+
+## 3.10.0
+
+### Minor Changes
+
+- 572fb97: Add support for metadata groups (like authors).
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- 400fc48: Allow caller to retrieve all metadata groups, optionally hydrated.
+
 ## 3.10.0-beta.2
 
 ### Patch Changes

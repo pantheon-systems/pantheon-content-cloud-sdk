@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
+import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 
-export function HomepageArticleGrid({ articles }) {
+export function HomepageArticleGrid({ articles, site }) {
   return (
     <div
       className={cn(
@@ -14,13 +16,14 @@ export function HomepageArticleGrid({ articles }) {
           key={article.id}
           article={article}
           isWide={articles.length === 1 || (articles.length > 2 && index === 2)}
+          site={site}
         />
       ))}
     </div>
   );
 }
 
-export function ArticleGrid({ articles, basePath = "/articles" }) {
+export function ArticleGrid({ articles, site, basePath = "/articles" }) {
   return (
     <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
       {articles.map((article) => (
@@ -28,20 +31,37 @@ export function ArticleGrid({ articles, basePath = "/articles" }) {
           key={article.id}
           article={article}
           basePath={basePath}
+          site={site}
         />
       ))}
     </div>
   );
 }
 
+// Utility to ensure URL include width and height params
+function withImageSizeParams(url, width = 400, height = 400) {
+  if (!url) return url;
+  try {
+    const u = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+    u.searchParams.set('width', width.toString());
+    u.searchParams.set('height', height.toString());
+    return u.toString();
+  } catch {
+    // If url is not valid, return as is
+    return url;
+  }
+}
+
 export function ArticleGridCard({
   article,
-  basePath = "/articles",
   imageAltText,
   isWide = false,
+  basePath = "/articles",
+  site,
 }) {
-  const targetHref = `${basePath}/${article.slug || article.id}`;
-  const imageSrc = article.metadata?.["image"] || null;
+  const targetHref = getArticleURLFromSite(article, site, basePath);
+  const rawImageSrc = article.metadata?.["image"] || null;
+  const imageSrc = withImageSizeParams(rawImageSrc, 400, 400);
 
   return (
     <div
@@ -90,14 +110,26 @@ export function ArticleGridCard({
 }
 
 function GridItemCoverImage({ imageSrc, imageAltText }) {
-  return imageSrc != null ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={imageSrc}
-      alt={imageAltText}
-      className="h-full w-full object-cover"
-    />
-  ) : (
-    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  return (
+    <>
+      {imageSrc != null ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageSrc}
+          alt={imageAltText || undefined}
+          onLoad={() => setHasLoaded(true)}
+          className={cn("h-full w-full object-cover", {
+            block: hasLoaded,
+            hidden: !hasLoaded,
+          })}
+        />
+      ) : null}
+
+      {imageSrc == null || !hasLoaded ? (
+        <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+      ) : null}
+    </>
   );
 }

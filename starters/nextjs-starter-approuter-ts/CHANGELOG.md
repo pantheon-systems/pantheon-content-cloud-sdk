@@ -1,5 +1,69 @@
 # @pantheon-systems/next-pcc-starter
 
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies [4317fcd]
+- Updated dependencies
+- Updated dependencies [a235787]
+  - @pantheon-systems/pcc-react-sdk@3.13.1
+
+## 1.2.3
+
+### Patch Changes
+
+- Updated dependencies [33368d3]
+  - @pantheon-systems/pcc-react-sdk@3.12.0
+
+## 1.2.2
+
+### Patch Changes
+
+- b8be0ac: Have the option to accept multiple values for any smart-component
+  field values
+  - @pantheon-systems/pcc-react-sdk@3.11.2
+
+## 1.2.1
+
+### Patch Changes
+
+- Updated dependencies [b75afed]
+  - @pantheon-systems/pcc-react-sdk@3.11.1
+
+## 1.2.1-beta.0
+
+### Patch Changes
+
+- @pantheon-systems/pcc-react-sdk@3.11.1-beta.0
+
+## 1.2.0
+
+### Minor Changes
+
+- a407141: - Added functionality in the pcc-sdk-core to compute the path of an
+  article from the site's content structure. This will be the path at which the
+  article will be visible.
+  - If someone tries to access the article without the full path, it will be
+    redirected to the full path.
+  - Developers can use the default functionality as is and also customise the
+    path generation to only include the id or slug and a configurable number of
+    parents.
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-react-sdk@3.11.0
+
+## 1.1.9
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- Updated dependencies [67bc79b]
+- Updated dependencies [b89c5ee]
+  - @pantheon-systems/pcc-react-sdk@3.10.0
+
 ## 1.1.9-beta.1
 
 ### Patch Changes

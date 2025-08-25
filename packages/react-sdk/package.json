@@ -2,7 +2,7 @@
   "name": "@pantheon-systems/pcc-react-sdk",
   "author": "@pantheon-systems",
   "description": "Pantheon Content Cloud React SDK",
-  "version": "3.10.0-beta.2",
+  "version": "5.0.0-beta.2",
   "license": "MIT",
   "keywords": [
     "pcc",
@@ -23,6 +23,7 @@
     "lint:fix": "eslint . --fix && prettier --write .",
     "test": "jest --coverage --passWithNoTests",
     "test:ci": "pnpm run test --ci",
+    "update-snapshots": "pnpm run test --updateSnapshot",
     "test:watch": "jest --watch"
   },
   "main": "./dist/index.js",
@@ -66,11 +67,13 @@
     "@babel/preset-env": "^7.25.3",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "16.3.0",
     "@types/jest": "29.5.1",
+    "@types/lodash": "^4.17.15",
     "@types/node": "^20.11.21",
-    "@types/react": "^18.3.3",
-    "@types/react-dom": "^18.3.0",
-    "@types/react-test-renderer": "18.0.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "babel-loader": "9.1.2",
     "chalk": "^5.3.0",
     "cli-spinners": "^2.9.2",
@@ -78,22 +81,22 @@
     "eslint": "^8.57.0",
     "eslint-config-pcc-custom": "workspace:*",
     "jest": "29.5.0",
-    "next": "^14.2.15",
+    "jest-environment-jsdom": "^30.0.4",
+    "next": "^15.4.1",
     "octokit": "^3.2.1",
     "ora": "^6.3.1",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "react-test-renderer": "18.3.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "ts-jest": "29.1.0",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "yargs": "^17.7.2"
   },
   "peerDependencies": {
-    "@types/react": ">=18",
-    "@types/react-dom": ">=18",
-    "react": ">=18",
-    "react-dom": ">=18"
+    "@types/react": ">=19",
+    "@types/react-dom": ">=19",
+    "react": ">=19",
+    "react-dom": ">=9"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -105,8 +108,9 @@
     "@pantheon-systems/pcc-sdk-core": "workspace:*",
     "graphql": "^16.8.1",
     "lodash": "^4.17.21",
-    "react-markdown": "^8.0.7",
-    "rehype-raw": "^6.1.1",
+    "markdown-to-txt": "^2.0.1",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
     "remark-heading-id": "^1.0.1",
     "unist-util-visit": "^5.0.0"
   }

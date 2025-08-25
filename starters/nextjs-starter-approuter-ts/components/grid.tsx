@@ -1,12 +1,21 @@
-import type { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+"use client";
+
+import type {
+  ArticleWithoutContent,
+  Site,
+} from "@pantheon-systems/pcc-react-sdk";
+import { getArticleURLFromSite } from "@pantheon-systems/pcc-react-sdk/server";
 import Link from "next/link";
+import { useState } from "react";
 import { cn } from "../lib/utils";
 import { Button } from "./ui/button";
 
 export function HomepageArticleGrid({
   articles,
+  site,
 }: {
   articles: ArticleWithoutContent[];
+  site: Site;
 }) {
   return (
     <div
@@ -19,6 +28,7 @@ export function HomepageArticleGrid({
           key={article.id}
           article={article}
           isWide={articles.length === 1 || (articles.length > 2 && index === 2)}
+          site={site}
         />
       ))}
     </div>
@@ -28,9 +38,11 @@ export function HomepageArticleGrid({
 export function ArticleGrid({
   articles,
   basePath = "/articles",
+  site,
 }: {
   articles: ArticleWithoutContent[];
   basePath?: string;
+  site: Site;
 }) {
   return (
     <div className={cn("grid grid-cols-1 gap-8 lg:grid-cols-2 xl:grid-cols-3")}>
@@ -39,6 +51,7 @@ export function ArticleGrid({
           key={article.id}
           article={article}
           basePath={basePath}
+          site={site}
         />
       ))}
     </div>
@@ -50,6 +63,21 @@ interface ArticleGridCardProps {
   basePath?: string;
   imageAltText?: string;
   isWide?: boolean;
+  site: Site;
+}
+
+// Utility to ensure URL include width and height params
+function withImageSizeParams(url: string | null, width = 400, height = 400): string | null {
+  if (!url) return url;
+  try {
+    const u = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost');
+    u.searchParams.set('width', width.toString());
+    u.searchParams.set('height', height.toString());
+    return u.toString();
+  } catch {
+    // If url is not valid, return as is
+    return url;
+  }
 }
 
 export function ArticleGridCard({
@@ -57,9 +85,11 @@ export function ArticleGridCard({
   basePath = "/articles",
   imageAltText,
   isWide = false,
+  site,
 }: ArticleGridCardProps) {
-  const targetHref = `${basePath}/${article.metadata?.slug || article.id}`;
-  const imageSrc = (article.metadata?.["image"] as string) || null;
+  const targetHref = getArticleURLFromSite(article, site, basePath);
+  const rawImageSrc = (article.metadata?.["image"] as string) || null;
+  const imageSrc = withImageSizeParams(rawImageSrc, 400, 400);
 
   return (
     <div
@@ -114,14 +144,26 @@ function GridItemCoverImage({
   imageSrc: string | null;
   imageAltText?: string | null | undefined;
 }) {
-  return imageSrc != null ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={imageSrc}
-      alt={imageAltText || undefined}
-      className="h-full w-full object-cover"
-    />
-  ) : (
-    <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  return (
+    <>
+      {imageSrc != null ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={imageSrc}
+          alt={imageAltText || undefined}
+          onLoad={() => setHasLoaded(true)}
+          className={cn("h-full w-full object-cover", {
+            block: hasLoaded,
+            hidden: !hasLoaded,
+          })}
+        />
+      ) : null}
+
+      {imageSrc == null || !hasLoaded ? (
+        <div className="h-full w-full bg-gradient-to-t from-neutral-800 to-neutral-100" />
+      ) : null}
+    </>
   );
 }

@@ -7,27 +7,103 @@ const path = require("path");
  * depending on the local version of the package when inside the monorepo.
  */
 const monorepoRoot = findMonorepoRoot(process.cwd());
-const workspacePackageDirectories = [
-  "packages",
-  "starters",
-  "configs",
-  "local_testing",
-];
 const workspacePackages = new Map();
 
-workspacePackageDirectories.forEach((workspacePackageDir) => {
-  const allDirs = fs.readdirSync(path.join(monorepoRoot, workspacePackageDir));
-  allDirs
-    .filter((dir) => {
-      return fs
-        .statSync(path.join(monorepoRoot, workspacePackageDir, dir))
-        .isDirectory();
-    })
-    .forEach((dir) => {
-      const pkgPath = path.join(monorepoRoot, workspacePackageDir, dir);
-      const pkgName = require(path.join(pkgPath, "package.json")).name;
-      workspacePackages.set(pkgName, pkgPath);
-    });
+// Read the workspace configuration from pnpm-workspace.yaml
+const workspaceYamlContent = fs.readFileSync(
+  path.join(monorepoRoot, "pnpm-workspace.yaml"),
+  "utf8",
+);
+
+// Simple parsing of the YAML file to extract package patterns
+const packagePatterns = [];
+const lines = workspaceYamlContent.split("\n");
+let inPackagesSection = false;
+
+for (const line of lines) {
+  if (line.trim().startsWith("packages:")) {
+    inPackagesSection = true;
+    continue;
+  }
+
+  if (inPackagesSection && line.trim().startsWith("-")) {
+    // Extract the pattern, removing the dash and spaces
+    const pattern = line.trim().substring(1).trim();
+    if (pattern) {
+      packagePatterns.push(pattern);
+    }
+  } else if (
+    inPackagesSection &&
+    !line.trim().startsWith("#") &&
+    line.trim() !== ""
+  ) {
+    // If we hit a non-comment, non-empty line that doesn't start with a dash,
+    // we're out of the packages section
+    inPackagesSection = false;
+  }
+}
+
+// Process each workspace pattern
+packagePatterns.forEach((pattern) => {
+  if (pattern.endsWith("/*")) {
+    // Handle wildcard patterns like "packages/*"
+    const dirPath = pattern.slice(0, -2); // Remove the "/*"
+    const fullDirPath = path.join(monorepoRoot, dirPath);
+
+    // Check if directory exists before trying to read it
+    if (!fs.existsSync(fullDirPath)) {
+      console.warn(`Warning: Directory not found: ${fullDirPath}`);
+      return;
+    }
+
+    try {
+      const allDirs = fs.readdirSync(fullDirPath);
+      allDirs
+        .filter((dir) => {
+          try {
+            return fs.statSync(path.join(fullDirPath, dir)).isDirectory();
+          } catch (err) {
+            return false;
+          }
+        })
+        .forEach((dir) => {
+          const pkgPath = path.join(fullDirPath, dir);
+          try {
+            const pkgName = require(path.join(pkgPath, "package.json")).name;
+            workspacePackages.set(pkgName, pkgPath);
+          } catch (err) {
+            // Skip directories without a package.json
+          }
+        });
+    } catch (err) {
+      console.warn(
+        `Warning: Error processing directory pattern ${pattern}: ${err.message}`,
+      );
+    }
+  } else {
+    // Handle specific paths like "starters/nextjs-starter"
+    const pkgPath = path.join(monorepoRoot, pattern);
+
+    // Check if directory exists before trying to access it
+    if (!fs.existsSync(pkgPath)) {
+      console.warn(`Warning: Package path not found: ${pkgPath}`);
+      return;
+    }
+
+    try {
+      if (fs.statSync(pkgPath).isDirectory()) {
+        const pkgJsonPath = path.join(pkgPath, "package.json");
+        if (fs.existsSync(pkgJsonPath)) {
+          const pkgName = require(pkgJsonPath).name;
+          workspacePackages.set(pkgName, pkgPath);
+        }
+      }
+    } catch (err) {
+      console.warn(
+        `Warning: Error processing package path ${pattern}: ${err.message}`,
+      );
+    }
+  }
 });
 
 module.exports = {

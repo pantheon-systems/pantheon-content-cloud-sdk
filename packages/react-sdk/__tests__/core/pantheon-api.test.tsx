@@ -147,9 +147,9 @@ describe("App routing", () => {
       "http://localhost:3000/?command=test&foo=bar&1=2",
     );
     const params = {
-      params: {
+      params: Promise.resolve({
         testParam: "123",
-      },
+      }),
     } satisfies AppRouterParams;
 
     await NextPantheonAPI()(request, params);
@@ -177,9 +177,9 @@ describe("App routing", () => {
     request.cookies.set("foo", "bar");
 
     const params = {
-      params: {
+      params: Promise.resolve({
         testParam: "123",
-      },
+      }),
     } satisfies AppRouterParams;
 
     await NextPantheonAPI()(request, params);
@@ -205,7 +205,7 @@ describe("App routing", () => {
 
     const request = new NextRequest("http://localhost:3000/");
     const params = {
-      params: {},
+      params: Promise.resolve({}),
     } satisfies AppRouterParams;
 
     // When the API handler is called, it calls res.json with the response data
@@ -224,7 +224,7 @@ describe("App routing", () => {
   it("should return redirect responses correctly", async () => {
     const request = new NextRequest("http://localhost:3000/");
     const params = {
-      params: {},
+      params: Promise.resolve({}),
     } satisfies AppRouterParams;
 
     // When the API handler is called, it calls res.redirect with the status and path
@@ -246,7 +246,7 @@ describe("App routing", () => {
 
     const request = new NextRequest("http://localhost:3000/");
     const params = {
-      params: {},
+      params: Promise.resolve({}),
     } satisfies AppRouterParams;
 
     // When the API handler is called, it sets a header and then calls res.json with the response data

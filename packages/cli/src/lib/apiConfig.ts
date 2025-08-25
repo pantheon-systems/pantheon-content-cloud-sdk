@@ -35,7 +35,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.staging]: {
     // TODO: Uncomment the correct one
     // addOnApiEndpoint:
-    //   "https://us-central1-pantheon-content-cloud-staging.cloudfunctions.net/addOnApi",
+    //   "https://addonapi-cxog5ytt4a-uc.a.run.app",
     addOnApiEndpoint: "http://localhost:8080",
     // TODO: Update with the Auth0 staging tenant
     auth0ClientId: "RAHxEbc251zD529hByapcv6Dcp3pmv4P",

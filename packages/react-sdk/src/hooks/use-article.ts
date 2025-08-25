@@ -1,10 +1,10 @@
 import { type QueryHookOptions } from "@apollo/client";
 import { useQuery } from "@apollo/client/react/hooks/useQuery.js";
 import {
-  ARTICLE_UPDATE_SUBSCRIPTION,
   ArticleQueryArgs,
   buildContentType,
-  GET_ARTICLE_QUERY,
+  generateArticleQuery,
+  generateArticleUpdateSubscription,
 } from "@pantheon-systems/pcc-sdk-core";
 import { Article } from "@pantheon-systems/pcc-sdk-core/types";
 import { useEffect, useMemo } from "react";
@@ -22,43 +22,69 @@ export const useArticle = (
   id: string,
   args?: ArticleQueryArgs,
   apolloQueryOptions?: ApolloQueryOptions,
+  related?: {
+    site?: boolean;
+  },
 ): Return => {
   const publishingLevel = args?.publishingLevel;
   const contentType = buildContentType(args?.contentType);
+  const versionId = args?.versionId;
 
   const memoizedArgs = useMemo(() => {
     return {
       ...(publishingLevel && { publishingLevel }),
       ...(contentType && { contentType }),
+      ...(versionId && { versionId }),
     };
-  }, [publishingLevel, contentType]);
+  }, [publishingLevel, contentType, versionId]);
 
-  const { subscribeToMore, ...queryData } = useQuery<{ article: Article }>(
-    GET_ARTICLE_QUERY,
+  const queryDocument = useMemo(
+    () => generateArticleQuery({ withSite: related?.site }),
+    [related?.site],
+  );
+
+  const subscriptionDocument = useMemo(
+    () => generateArticleUpdateSubscription({ withSite: related?.site }),
+    [related?.site],
+  );
+
+  const variables = useMemo(
+    () => ({ id, ...memoizedArgs }),
+    [id, memoizedArgs],
+  );
+
+  const { subscribeToMore, ...queryResult } = useQuery<{ article: Article }>(
+    queryDocument,
     {
       ...apolloQueryOptions,
-      variables: { id, ...memoizedArgs },
+      variables,
     },
   );
 
   useEffect(() => {
     if (apolloQueryOptions?.skip) return;
 
-    subscribeToMore({
-      document: ARTICLE_UPDATE_SUBSCRIPTION,
-      variables: { id, ...memoizedArgs },
+    const unsubscribe = subscribeToMore({
+      document: subscriptionDocument,
+      variables,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
-
-        const { article } = subscriptionData.data;
-        return { article };
+        const incoming = subscriptionData.data.article as Article;
+        return { article: incoming };
       },
     });
-  }, [id, memoizedArgs, subscribeToMore, apolloQueryOptions?.skip]);
+
+    return () => unsubscribe();
+  }, [
+    subscribeToMore,
+    subscriptionDocument,
+    variables,
+    apolloQueryOptions?.skip,
+  ]);
 
   return {
-    ...queryData,
+    ...queryResult,
     subscribeToMore,
-    article: queryData.data?.article,
+    article: queryResult.data?.article,
   };
 };

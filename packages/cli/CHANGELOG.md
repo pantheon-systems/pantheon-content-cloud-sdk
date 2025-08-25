@@ -1,5 +1,133 @@
 # @pantheon-systems/pcc-cli
 
+## 5.0.0-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@5.0.0-beta.2
+
+## 5.0.0-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@5.0.0-beta.1
+
+## 5.0.0-beta.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- Updated dependencies [654325d]
+- Updated dependencies [dd8541f]
+  - @pantheon-systems/pcc-sdk-core@5.0.0-beta.0
+
+## 4.0.0
+
+### Minor Changes
+
+- 6980df3: The CLI should use the 'stable' tag when initializing a new template,
+  with the option to provide a --git-ref to use a specific ref instead of
+  stable.
+
+### Patch Changes
+
+- Updated dependencies [a6c7134]
+  - @pantheon-systems/pcc-sdk-core@4.0.0
+
+## 3.13.1
+
+### Minor Changes
+
+- Bump to 3.13.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @pantheon-systems/pcc-sdk-core@3.13.1
+
+## 3.12.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.1
+
+## 3.12.0
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.12.0
+
+## 3.11.3
+
+### Patch Changes
+
+- Update staging oauth client id
+  - @pantheon-systems/pcc-sdk-core@3.11.3
+
+## 3.11.2
+
+### Patch Changes
+
+- b8be0ac: Have the option to accept multiple values for any smart-component
+  field values
+- Updated dependencies [b8be0ac]
+  - @pantheon-systems/pcc-sdk-core@3.11.2
+
+## 3.11.1
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1
+
+## 3.11.1-beta.2
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.2
+
+## 3.11.1-beta.1
+
+### Patch Changes
+
+- @pantheon-systems/pcc-sdk-core@3.11.1-beta.1
+
+## 3.11.1-beta.0
+
+### Patch Changes
+
+- Updated dependencies [b72e906]
+- Updated dependencies [548a31f]
+  - @pantheon-systems/pcc-sdk-core@3.11.1-beta.0
+
+## 3.11.0
+
+### Patch Changes
+
+- Updated dependencies [a407141]
+  - @pantheon-systems/pcc-sdk-core@3.11.0
+
+## 3.10.0
+
+### Minor Changes
+
+- 0b3ee7b: No longer download turbo.json when initializing a new project from
+  the starter kit.
+
+### Patch Changes
+
+- 67bc79b: Use 'label' for metadata group record identifiers instead of 'name'
+- 39b7604: Added a warning message when CLI build is pointing to non-production
+  environment.
+- Updated dependencies [67bc79b]
+- Updated dependencies [400fc48]
+- Updated dependencies [572fb97]
+  - @pantheon-systems/pcc-sdk-core@3.10.0
+
 ## 3.10.0-beta.2
 
 ### Minor Changes

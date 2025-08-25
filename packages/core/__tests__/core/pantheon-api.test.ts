@@ -28,6 +28,8 @@ vi.mock("../../src/helpers/", () => ({
     buildPantheonClient: vi.fn(),
   },
   getArticleBySlugOrId: vi.fn(),
+  getArticleURLFromSite: vi.fn(),
+  getSite: vi.fn(),
 }));
 
 vi.mock("../../src/lib/jwt", () => ({
@@ -262,7 +264,7 @@ describe("Command Handling", () => {
     it("retrieves article and redirects for document command with valid article ID", async () => {
       vi.mocked(getArticleBySlugOrId).mockResolvedValue({
         id: "test-article-id",
-        content: "Article content",
+        resolvedContent: "Article content",
         contentType: "TEXT_MARKDOWN",
         title: "Article title",
         tags: [],
@@ -306,9 +308,15 @@ describe("Command Handling", () => {
         },
       );
 
+      // Validate cookie is set
+      expect(mockResponse.setHeader).toHaveBeenCalledWith("Set-Cookie", [
+        "PCC-GRANT=pcc_grant ABC-DEF; Path=/; SameSite=None;Secure;",
+      ]);
+
+      // Validate redirect URL is correct
       expect(mockResponse.redirect).toHaveBeenCalledWith(
         302,
-        "/test-articles-path/test-article-id",
+        "/test-articles-path/test-article-id?pccGrant=pcc_grant%20ABC-DEF",
       );
     });
 

@@ -162,6 +162,12 @@ yargs(hideBin(process.argv))
           default: true,
           demandOption: false,
         })
+        .option("git-ref", {
+          describe:
+            "Git ref (commit, tag, or branch) to use for the template. Defaults to latest tag.",
+          type: "string",
+          demandOption: false,
+        })
         .example(formatExamples(INIT_EXAMPLES));
     },
     async (args) => {
@@ -178,6 +184,7 @@ yargs(hideBin(process.argv))
       const useAppRouter = args.appRouter as boolean;
       const useTypescript = args.ts as boolean;
       const printVerbose = args.verbose as boolean;
+      const gitRef = args.gitRef as string | undefined;
 
       if (args.template === "vue" || args.template === "gatsby") {
         throw new Error(
@@ -220,6 +227,7 @@ yargs(hideBin(process.argv))
         useAppRouter,
         useTypescript,
         printVerbose,
+        gitRef,
       });
     },
   )
@@ -296,8 +304,9 @@ yargs(hideBin(process.argv))
           "Set the target environment.",
           (yargs) => {
             yargs.positional("<target>", {
-              describe: "Target environment: either 'production' or 'staging'.",
+              describe: "Target environment.",
               demandOption: true,
+              choices: ["production", "staging"],
               type: "string",
             });
           },

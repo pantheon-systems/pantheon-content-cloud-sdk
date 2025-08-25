@@ -1,7 +1,45 @@
 import { z } from "zod";
 
+// From the googleapis package.
+/**
+ * Properties of a tab.
+ */
+export interface Schema$TabProperties {
+  /**
+   * The zero-based index of the tab within the parent.
+   */
+  index?: number | null;
+  /**
+   * Output only. The depth of the tab within the document. Root-level tabs start at 0.
+   */
+  nestingLevel?: number | null;
+  /**
+   * Optional. The ID of the parent tab. Empty when the current tab is a root-level tab, which means it doesn't have any parents.
+   */
+  parentTabId?: string | null;
+  /**
+   * Output only. The ID of the tab. This field can't be changed.
+   */
+  tabId?: string | null;
+  /**
+   * The user-visible name of the tab.
+   */
+  title?: string | null;
+}
+
+export type TabTree<T> = {
+  documentTab?: T | undefined;
+  childTabs?: TabTree<T>[] | undefined;
+  tabProperties?: Schema$TabProperties | undefined;
+};
+
 export interface Article {
-  content: string | null;
+  resolvedContent:
+    | string
+    | PantheonTree
+    | TabTree<PantheonTree | string | undefined | null>[]
+    | null;
+  renderAsTabs?: boolean | null;
   contentType: keyof typeof ContentType;
   id: string;
   slug?: string | null;
@@ -13,17 +51,18 @@ export interface Article {
   metadata: Record<string, unknown> | null;
   previewActiveUntil: number | null;
   snippet?: string | null;
+  site?: Site | null;
 }
 
 export type ArticleSummaryResponse = {
-  articles: Omit<Article, "content">[];
+  articles: Omit<Article, "resolvedContent">[];
   summary: string;
 };
 export type PageInfo = {
   totalCount: number;
   nextCursor: string;
 };
-export type ArticleWithoutContent = Omit<Article, "content">;
+export type ArticleWithoutContent = Omit<Article, "resolvedContent">;
 export type PaginatedArticle = {
   data: ArticleWithoutContent[];
   totalCount: number;
@@ -34,6 +73,7 @@ export type PaginatedArticle = {
 export enum PublishingLevel {
   PRODUCTION = "PRODUCTION",
   REALTIME = "REALTIME",
+  DRAFT = "DRAFT",
 }
 
 export enum ContentType {
@@ -152,7 +192,17 @@ const baseFieldSchema = z.object({
   type: fieldTypes,
   displayName: z.string(),
   required: z.boolean(),
-  defaultValue: z.union([z.string(), z.number(), z.boolean()]).optional(),
+  defaultValue: z
+    .union([
+      z.string(),
+      z.number(),
+      z.boolean(),
+      z.array(z.string()),
+      z.array(z.number()),
+      z.array(z.boolean()),
+    ])
+    .optional(),
+  multiple: z.boolean().optional(),
 });
 
 const optionsSchema = z.array(
@@ -175,7 +225,6 @@ const enumFieldSchema = baseFieldSchema.merge(
 const objectFieldSchema = baseFieldSchema.merge(
   z.object({
     type: z.literal("object"),
-    multiple: z.boolean().optional(),
     fields: z.union([
       z.record(z.string(), baseFieldSchema),
       z.record(z.string(), baseFieldSchema).readonly(),

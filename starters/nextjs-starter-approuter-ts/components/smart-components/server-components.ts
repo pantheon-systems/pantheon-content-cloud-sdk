@@ -40,6 +40,18 @@ const serverSmartComponentMap: ServersideSmartComponentMap = {
       },
     },
   },
+  TILE_NAVIGATION: {
+    title: "Tile Navigation",
+    iconUrl: null,
+    fields: {
+      documentIds: {
+        displayName: "Document Links or IDs",
+        required: true,
+        type: "string",
+        multiple: true,
+      },
+    },
+  },
 };
 
 export { serverSmartComponentMap };

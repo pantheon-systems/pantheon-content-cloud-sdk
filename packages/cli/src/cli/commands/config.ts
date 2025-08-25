@@ -1,3 +1,4 @@
+import { exit } from "process";
 import nunjucks from "nunjucks";
 import ora from "ora";
 import { getApiConfig } from "../../lib/apiConfig";
@@ -6,15 +7,24 @@ import { errorHandler } from "../exceptions";
 
 nunjucks.configure({ autoescape: true });
 
-export const setTargetEnvironment = errorHandler<"production" | "staging">(
-  async (target: "production" | "staging") => {
+export const setTargetEnvironment = errorHandler<string>(
+  async (target: string) => {
     return new Promise<void>(
       // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
       async (resolve, reject) => {
         const spinner = ora("Updating config file").start();
+
+        // Validate target value
+        if (!["production", "staging"].includes(target)) {
+          spinner.fail(
+            "The provided value should either be 'production' or `staging'",
+          );
+          exit(1);
+        }
+
         try {
-          await LocalStorage.persistConfigDetails({
-            targetEnvironment: target,
+          await persistConfigDetails({
+            targetEnvironment: target as "production" | "staging",
           });
 
           spinner.succeed(`Successfully updated config file`);

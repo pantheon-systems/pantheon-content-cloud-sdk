@@ -1,6 +1,10 @@
-import { ArticleWithoutContent } from "@pantheon-systems/pcc-react-sdk";
+import {
+  ArticleWithoutContent,
+  PantheonTree,
+  TabTree,
+} from "@pantheon-systems/pcc-react-sdk";
 import { clsx, type ClassValue } from "clsx";
-import { OpenGraph } from "next-seo/lib/types";
+import type { Metadata } from "next";
 import { twMerge } from "tailwind-merge";
 import { getAuthorById } from "./pcc-metadata-groups";
 
@@ -25,7 +29,15 @@ function isDateInputObject(v: DateInputObject | unknown): v is DateInputObject {
   return (v as DateInputObject).msSinceEpoch != null;
 }
 
-export function getSeoMetadata(article: ArticleWithoutContent) {
+export function getSeoMetadata(article: ArticleWithoutContent | null) {
+  if (article == null) {
+    return {
+      openGraph: {
+        type: "website",
+      },
+    };
+  }
+
   const tags: string[] =
     article.tags && article.tags.length > 0 ? article.tags : [];
   const imageProperties = [
@@ -39,8 +51,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     ? String(article.metadata?.description)
     : "Article hosted using Pantheon Content Cloud";
 
-  const authors: string[] = [];
-  let publishedTime: number | null = article.publishedDate;
+  const authors: Metadata["authors"] = [];
 
   // Collecting data from metadata fields
   Object.entries(article.metadata || {}).forEach(([k, v]) => {
@@ -49,7 +60,7 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
     switch (key) {
       case "author": {
         if (typeof v === "string") {
-          authors.push(v);
+          authors.push({ name: v });
         }
         break;
       }
@@ -58,15 +69,8 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
           const authorName = getAuthorById(v)?.label;
 
           if (authorName) {
-            authors.push(v);
+            authors.push({ name: v });
           }
-        }
-        break;
-      }
-      case "date": {
-        if (isDateInputObject(v)) {
-          // Prefer the date from the metadata, if it exists
-          publishedTime = parseInt(v.msSinceEpoch);
         }
         break;
       }
@@ -76,18 +80,37 @@ export function getSeoMetadata(article: ArticleWithoutContent) {
   return {
     title: article.title,
     description,
+    keywords: tags,
+    authors,
     openGraph: {
       type: "website",
       title: article.title || undefined,
       images: imageProperties,
       description,
-      article: {
-        authors: authors,
-        tags: tags,
-        ...(publishedTime && {
-          publishedTime: new Date(publishedTime).toISOString(),
-        }),
-      },
-    } satisfies OpenGraph,
+    },
   };
+}
+
+export function parseAsTabTree(
+  raw:
+    | string
+    | PantheonTree
+    | TabTree<PantheonTree | string | undefined | null>[]
+    | null,
+): TabTree<PantheonTree | string | undefined | null>[] | null {
+  if (!raw) return null;
+
+  // If it looks like a TabTree array, then return it.
+  if (typeof raw === "object" && Array.isArray(raw) && ("children" in (raw[0] as TabTree<PantheonTree | string | undefined | null>))) return raw;
+
+  // If it's not a string, then return null since we can't parse it anyways
+  if (typeof raw !== "string") return null;
+
+  try {
+    return JSON.parse(raw) as TabTree<
+      PantheonTree | string | undefined | null
+    >[];
+  } catch (e) {
+    return null;
+  }
 }
