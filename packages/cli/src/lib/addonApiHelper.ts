@@ -1,7 +1,11 @@
 import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
 import queryString from "query-string";
-import { HTTPNotFound, UserNotLoggedIn } from "../cli/exceptions";
+import {
+  HTTPNotFound,
+  IncorrectAccount,
+  UserNotLoggedIn,
+} from "../cli/exceptions";
 import { getApiConfig } from "./apiConfig";
 import { Auth0Provider, GoogleAuthProvider, PersistedTokens } from "./auth";
 import { toKebabCase } from "./utils";
@@ -298,19 +302,18 @@ class AddOnApiHelper {
   }
 
   static async createSite(url: string, accountEmail: string): Promise<string> {
-    // const { access_token: googleAccessToken } = await this.getGoogleTokens({
-    //   email: "",
-    // });
-    // TODO: Fetch accountId for given account Email
+    const accounts = await AddOnApiHelper.listAccounts();
+    const accountId = accounts.find((a) => a.accountEmail === accountEmail)?.id;
+    if (!accountId) throw new IncorrectAccount();
+
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
 
     const resp = await axios.post(
       (await getApiConfig()).SITE_ENDPOINT,
-      { name: "", url, emailList: "" },
+      { name: "", url, emailList: "", accountId },
       {
         headers: {
           Authorization: `Bearer ${auth0AccessToken}`,
-          // "oauth-token": googleAccessToken,
         },
       },
     );

@@ -5,19 +5,19 @@ import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { printTable } from "../../../lib/cliDisplay";
 import { errorHandler, IncorrectAccount } from "../../exceptions";
 
-export const createSite = errorHandler<{ url: string; domain: string }>(
-  async ({ url, domain }) => {
+export const createSite = errorHandler<{ url: string; accountEmail: string }>(
+  async ({ url, accountEmail }) => {
     const spinner = ora("Creating site...").start();
 
     try {
-      const siteId = await AddOnApiHelper.createSite(url, domain);
+      const siteId = await AddOnApiHelper.createSite(url, accountEmail);
       spinner.succeed(
         `Successfully created the site with given details. Id: ${siteId}`,
       );
     } catch (e) {
       if (e instanceof IncorrectAccount) {
         spinner.fail(
-          "Selected account doesn't match with the account provided in the CLI.",
+          "Given `accountEmail` is not connected to your user, please connect it with `pcc account connect` command first.",
         );
         return;
       }

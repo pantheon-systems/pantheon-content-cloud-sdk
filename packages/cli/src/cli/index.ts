@@ -74,8 +74,9 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 We need to update all commands for below things:
 *- Use Auth0 login
 *- Connect and list accounts 
-- Persist tokens generated locally
-- Update site creation command to have accountId or accountEmail passed as param
+*- Persist tokens generated locally
+*- Update site creation command to have accountId or accountEmail passed as param
+- Handle validation errors while connecting account
 - Test that all commands are working fine
 - document preview, hit site API to know which account can access it
  */
@@ -439,8 +440,8 @@ yargs(hideBin(process.argv))
               type: "string",
               demandOption: true,
             });
-            yargs.option("domain", {
-              describe: "Domain of the site",
+            yargs.option("accountEmail", {
+              describe: "Account email site should be created with",
               type: "string",
               demandOption: true,
             });
@@ -448,7 +449,7 @@ yargs(hideBin(process.argv))
           async (args) =>
             await createSite({
               url: args.url as string,
-              domain: args.domain as string,
+              accountEmail: args.accountEmail as string,
             }),
         )
         .command(
