@@ -12,6 +12,14 @@ declare type ApiKey = {
   created: string;
 };
 
+declare type Account = {
+  id: string;
+  name: string;
+  accountEmail: string;
+  userEmail: string;
+  created: string;
+};
+
 declare type Site = {
   id: string;
   url: string;

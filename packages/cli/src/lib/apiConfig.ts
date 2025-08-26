@@ -68,6 +68,7 @@ export const getApiConfig = async () => {
   return {
     ...apiConfig,
 
+    ACCOUNT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/accounts`,
     API_KEY_ENDPOINT: `${apiConfig.addOnApiEndpoint}/api-key`,
     SITE_ENDPOINT: `${apiConfig.addOnApiEndpoint}/sites`,
     DOCUMENT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/articles`,

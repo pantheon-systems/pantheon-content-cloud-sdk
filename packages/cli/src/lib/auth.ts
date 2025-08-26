@@ -33,7 +33,7 @@ export interface PersistedTokens {
 abstract class BaseAuthProvider {
   abstract generateToken(code: string): Promise<PersistedTokens>;
   abstract refreshToken(refreshToken: string): Promise<PersistedTokens>;
-  abstract getTokens(): Promise<PersistedTokens | null>;
+  abstract getTokens(email?: string): Promise<PersistedTokens | null>;
   abstract login(): Promise<void>;
 }
 
@@ -175,11 +175,9 @@ export class Auth0Provider extends BaseAuthProvider {
 }
 
 export class GoogleAuthProvider extends BaseAuthProvider {
-  private email: string;
   private scopes?: string[];
-  constructor(email: string, scopes?: string[]) {
+  constructor(scopes?: string[]) {
     super();
-    this.email = email;
     this.scopes = [...DEFAULT_GOOGLE_SCOPES, ...(scopes || [])];
   }
   async generateToken(code: string): Promise<PersistedTokens> {
@@ -202,14 +200,14 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     return resp.data as PersistedTokens;
   }
 
-  async getTokens(): Promise<PersistedTokens | null> {
+  async getTokens(email?: string): Promise<PersistedTokens | null> {
     const credentialArr = await LocalStorage.getGoogleAuthDetails();
     if (!credentialArr) return null;
 
     // Return null if required given email
     const credIndex = (credentialArr || []).findIndex((acc) => {
       const payload = parseJwt(acc.id_token as string);
-      return payload.email === this.email;
+      return payload.email === email;
     });
 
     if (credIndex === -1) return null;

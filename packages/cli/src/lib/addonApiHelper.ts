@@ -36,9 +36,9 @@ class AddOnApiHelper {
     email?: string | undefined;
     domain?: string | undefined;
   }): Promise<PersistedTokens> {
-    const { scopes, email, domain } = args || {};
-    const provider = new GoogleAuthProvider(scopes, email, domain);
-    let tokens = await provider.getTokens();
+    const { scopes, email } = args || {};
+    const provider = new GoogleAuthProvider(scopes);
+    let tokens = await provider.getTokens(email);
     if (tokens) return tokens;
 
     // Login user if token is not found
@@ -236,6 +236,17 @@ class AddOnApiHelper {
       },
     );
     return resp.data.apiKey as string;
+  }
+  static async listAccounts(): Promise<Account[]> {
+    const { access_token: accessToken } = await this.getAuth0Tokens();
+
+    const resp = await axios.get((await getApiConfig()).ACCOUNT_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    return resp.data as Account[];
   }
 
   static async listApiKeys(): Promise<ApiKey[]> {

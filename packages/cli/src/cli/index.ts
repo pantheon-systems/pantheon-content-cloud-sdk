@@ -6,6 +6,11 @@ import { checkEnvironment } from "../lib/checkEnvironment";
 import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import {
+  ACCOUNT_EXAMPLES,
+  connectAccount,
+  listAccounts,
+} from "./commands/accounts";
+import {
   printConfigurationData,
   resetTargetEnvironment,
   setTargetEnvironment,
@@ -239,6 +244,32 @@ yargs(hideBin(process.argv))
         printVerbose,
         gitRef,
       });
+    },
+  )
+  .command(
+    "account <cmd> [options]",
+    "Manage accounts for a PCC project.",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "connect",
+          "Connect new account.",
+          async () => await connectAccount(),
+        )
+        .command(
+          "list",
+          "Lists connected accounts.",
+          () => {
+            // noop
+          },
+          async () => await listAccounts(),
+        )
+        .example(formatExamples(ACCOUNT_EXAMPLES));
+    },
+    async () => {
+      // noop
     },
   )
   .command(
