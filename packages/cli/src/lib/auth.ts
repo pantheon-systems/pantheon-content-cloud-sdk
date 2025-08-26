@@ -270,7 +270,29 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                 );
                 const credentials = await this.generateToken(code as string);
 
-                await AddOnApiHelper.connectAccount(credentials.access_token);
+                try {
+                  await AddOnApiHelper.connectAccount(credentials.access_token);
+                } catch (e) {
+                  if (
+                    (e as any).response?.data.message ===
+                    "account_already_connected_to_other_user"
+                  ) {
+                    spinner.fail(
+                      "You cannot connect this account because it’s already linked to another Pantheon user.",
+                    );
+                    resolve();
+                    return;
+                  } else if (
+                    (e as any).response?.data.message ===
+                    "cannot_connect_gmail_account"
+                  ) {
+                    spinner.fail(
+                      "Only Google Workspace accounts are supported. Please connect your work email.",
+                    );
+                    resolve();
+                    return;
+                  }
+                }
 
                 const tokenPayload = parseJwt(credentials.id_token as string);
                 await LocalStorage.persistGoogleAuthDetails(
