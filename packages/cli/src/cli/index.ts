@@ -70,17 +70,6 @@ const configureMiddleware = (func: () => void) => {
 
 const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
-/*
-We need to update all commands for below things:
-*- Use Auth0 login
-*- Connect and list accounts 
-*- Persist tokens generated locally
-*- Update site creation command to have accountId or accountEmail passed as param
-- Handle validation errors while connecting account
-- Test that all commands are working fine
-- document preview, hit site API to know which account can access it
- */
-
 yargs(hideBin(process.argv))
   .scriptName("pcc")
   .usage("$0 <cmd>")
