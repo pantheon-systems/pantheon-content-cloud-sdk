@@ -22,6 +22,7 @@ declare type Site = {
     connected: boolean;
     capabilities: Record<string, boolean>;
   } | null;
+  accessorAccount: string;
 };
 
 declare type AuthDetails = {

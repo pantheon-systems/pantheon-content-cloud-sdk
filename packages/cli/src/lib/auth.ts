@@ -10,17 +10,14 @@ import open from "open";
 import ora from "ora";
 import queryString from "query-string";
 import destroyer from "server-destroy";
-import { IncorrectAccount } from "../cli/exceptions";
 import AddOnApiHelper from "./addonApiHelper";
 import { getApiConfig } from "./apiConfig";
 import * as LocalStorage from "./localStorage";
 
-const DEFAULT_AUTH0_SCOPES = [
-  "openid",
-  "profile",
-  "create:session",
-  "offline_access",
-];
+const AUTH0_PCC_CONTEXT_KEY = "pcc";
+const DEFAULT_AUTH0_SCOPES = ["openid", "profile", "offline_access"];
+const DEFAULT_AUTH0_API_SCOPES = ["create:session"];
+
 const DEFAULT_GOOGLE_SCOPES = [
   "https://www.googleapis.com/auth/userinfo.email",
 ];
@@ -34,12 +31,6 @@ export interface PersistedTokens {
 }
 
 abstract class BaseAuthProvider {
-  protected scopes: string[] | undefined;
-  protected email: string | undefined;
-  constructor(scopes?: string[], email?: string) {
-    this.scopes = scopes;
-    this.email = email;
-  }
   abstract generateToken(code: string): Promise<PersistedTokens>;
   abstract refreshToken(refreshToken: string): Promise<PersistedTokens>;
   abstract getTokens(): Promise<PersistedTokens | null>;
@@ -112,7 +103,7 @@ export class Auth0Provider extends BaseAuthProvider {
           if (authData) {
             const tokenPayload = parseJwt(authData.access_token as string);
             spinner.succeed(
-              `You are already logged in as ${tokenPayload["pcc/email"]}.`,
+              `You are already logged in as ${tokenPayload[AUTH0_PCC_CONTEXT_KEY].email}.`,
             );
             return resolve();
           }
@@ -123,7 +114,10 @@ export class Auth0Provider extends BaseAuthProvider {
               response_type: "code",
               client_id: apiConfig.auth0ClientId,
               redirect_uri: apiConfig.auth0RedirectUri,
-              scope: DEFAULT_AUTH0_SCOPES.join(" "),
+              scope: [
+                ...DEFAULT_AUTH0_SCOPES,
+                ...DEFAULT_AUTH0_API_SCOPES,
+              ].join(" "),
               audience: apiConfig.auth0Audience,
             },
           )}`;
@@ -134,8 +128,8 @@ export class Auth0Provider extends BaseAuthProvider {
                 throw new Error("No URL path provided");
               }
 
-              if (req.url.indexOf("/oauth-redirect") > -1) {
-                const qs = new url.URL(req.url, "http://localhost:3030")
+              if (req.url.indexOf("/auth/callback") > -1) {
+                const qs = new url.URL(req.url, "http://localhost:3000")
                   .searchParams;
                 const code = qs.get("code");
                 const currDir = dirname(fileURLToPath(import.meta.url));
@@ -150,13 +144,13 @@ export class Auth0Provider extends BaseAuthProvider {
 
                 res.end(
                   nunjucks.renderString(content.toString(), {
-                    email: tokenPayload["pcc/email"],
+                    email: tokenPayload[AUTH0_PCC_CONTEXT_KEY].email,
                   }),
                 );
                 server.destroy();
 
                 spinner.succeed(
-                  `You are successfully logged in as ${tokenPayload["pcc/email"]}`,
+                  `You are successfully logged in as ${tokenPayload[AUTH0_PCC_CONTEXT_KEY].email}`,
                 );
                 resolve();
               }
@@ -168,7 +162,7 @@ export class Auth0Provider extends BaseAuthProvider {
 
           destroyer(server);
 
-          server.listen(3030, () => {
+          server.listen(3000, () => {
             open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
           });
         } catch (e) {
@@ -181,15 +175,12 @@ export class Auth0Provider extends BaseAuthProvider {
 }
 
 export class GoogleAuthProvider extends BaseAuthProvider {
-  private domain: string | undefined;
-  constructor(scopes?: string[], email?: string, domain?: string) {
-    if (!email && !domain)
-      throw new Error("Either email or domain should be provided");
-
+  private email: string;
+  private scopes?: string[];
+  constructor(email: string, scopes?: string[]) {
     super();
-    this.scopes = [...DEFAULT_GOOGLE_SCOPES, ...(scopes || [])];
     this.email = email;
-    this.domain = domain;
+    this.scopes = [...DEFAULT_GOOGLE_SCOPES, ...(scopes || [])];
   }
   async generateToken(code: string): Promise<PersistedTokens> {
     const resp = await axios.post(
@@ -218,8 +209,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     // Return null if required given email
     const credIndex = (credentialArr || []).findIndex((acc) => {
       const payload = parseJwt(acc.id_token as string);
-      if (this.email) return payload.email === this.email;
-      else return (payload.email.split("@")[1] || "") === this.domain;
+      return payload.email === this.email;
     });
 
     if (credIndex === -1) return null;
@@ -263,15 +253,6 @@ export class GoogleAuthProvider extends BaseAuthProvider {
       async (resolve, reject) => {
         const spinner = ora("Connecting Google account...").start();
         try {
-          const authData = await this.getTokens();
-          if (authData) {
-            const tokenPayload = parseJwt(authData.id_token as string);
-            spinner.succeed(
-              `"${tokenPayload.email}" Google account is already connected.`,
-            );
-            return resolve();
-          }
-
           const apiConfig = await getApiConfig();
           const oAuth2Client = new OAuth2Client({
             clientId: apiConfig.googleClientId,
@@ -304,13 +285,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                 const credentials = await this.generateToken(code as string);
                 const tokenPayload = parseJwt(credentials.id_token as string);
 
-                if (
-                  (this.email && this.email !== tokenPayload.email) ||
-                  (this.domain &&
-                    this.domain !== tokenPayload.email.split("@")[1])
-                )
-                  throw new IncorrectAccount();
-
+                // TODO: Create account in BE API
                 const matchIndex = existingCredentials.findIndex((acc) => {
                   const currentPayload = parseJwt(acc.id_token);
                   return currentPayload.email === tokenPayload.email;
@@ -353,13 +328,4 @@ export class GoogleAuthProvider extends BaseAuthProvider {
       },
     );
   }
-}
-
-export function getAuthProvider(
-  authType: "auth0" | "google",
-  scope?: string[],
-  email?: string,
-): Auth0Provider | GoogleAuthProvider {
-  if (authType === "auth0") return new Auth0Provider(scope, email);
-  else return new GoogleAuthProvider(scope, email);
 }

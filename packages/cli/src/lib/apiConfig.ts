@@ -21,11 +21,11 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.production]: {
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
-    // TODO: Update with the Auth0 prod tenant
+    // TODO: update it with prod auth0 client
     auth0ClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
-    auth0RedirectUri: "http://localhost:3030/oauth-redirect",
-    auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
+    auth0RedirectUri: "http://localhost:3030/auth/callback",
+    auth0Audience: "https://addonapi-gfttxsojwq-uc.a.run.app",
     auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
     googleClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
@@ -33,15 +33,12 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
     playgroundUrl: "https://live-collabcms-fe-demo.appa.pantheon.site",
   },
   [TargetEnvironment.staging]: {
-    // TODO: Uncomment the correct one
-    // addOnApiEndpoint:
-    //   "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    addOnApiEndpoint: "http://localhost:8080",
-    // TODO: Update with the Auth0 staging tenant
-    auth0ClientId: "RAHxEbc251zD529hByapcv6Dcp3pmv4P",
-    auth0RedirectUri: "http://localhost:3030/oauth-redirect",
+    addOnApiEndpoint: "https://addonapi-cxog5ytt4a-uc.a.run.app",
+    // TODO: update it with new staging cli client app
+    auth0ClientId: "fTmdrlsHK0HJ75WMSqWTLrUgDiBR5VG4",
+    auth0RedirectUri: "http://localhost:3000/auth/callback",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
+    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId:
       "142470191541-bmomms4luuhoc68g903rscgr9qa3150b.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -50,9 +47,9 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.test]: {
     addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
     auth0ClientId: "test-google-com",
-    auth0RedirectUri: "http://localhost:3030/oauth-redirect",
+    auth0RedirectUri: "http://localhost:3000/auth/callback",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
+    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId: "test-google-com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://test-playground.site",

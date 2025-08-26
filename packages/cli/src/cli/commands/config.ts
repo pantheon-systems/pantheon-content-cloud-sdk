@@ -23,7 +23,7 @@ export const setTargetEnvironment = errorHandler<string>(
         }
 
         try {
-          await persistConfigDetails({
+          await LocalStorage.persistConfigDetails({
             targetEnvironment: target as "production" | "staging",
           });
 
