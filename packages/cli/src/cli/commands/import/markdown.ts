@@ -45,7 +45,7 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     try {
       tokens = await AddOnApiHelper.getGoogleTokens({
         scopes: ["https://www.googleapis.com/auth/drive"],
-        domain: site.domain,
+        email: site.accessorAccount,
       });
     } catch (e) {
       if (e instanceof IncorrectAccount) {
@@ -98,15 +98,15 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create PCC document
-    await AddOnApiHelper.getDocument(fileId, true, site.domain, title);
+    await AddOnApiHelper.getDocument(fileId, true, false, title);
     // Cannot set metadataFields(title,slug) in the same request since we reset metadataFields
     //  when changing the siteId.
     await AddOnApiHelper.updateDocument(fileId, site, title, [], null, verbose);
-    await AddOnApiHelper.getDocument(fileId, false, site.domain, title);
+    await AddOnApiHelper.getDocument(fileId, false, false, title);
 
     // Publish PCC document
     if (publish) {
-      await AddOnApiHelper.publishDocument(fileId, site.domain);
+      await AddOnApiHelper.publishDocument(fileId, site.accessorAccount);
     }
     spinner.succeed(
       `Successfully created document at below path${

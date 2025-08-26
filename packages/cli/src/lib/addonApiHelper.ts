@@ -55,27 +55,22 @@ class AddOnApiHelper {
   static async getDocument(
     documentId: string,
     insertIfMissing = false,
-    domain: string,
+    withSiteData = false,
     title?: string,
   ): Promise<Article> {
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
-    // TODO: email argument
-    const { access_token: googleAccessToken } = await this.getGoogleTokens({
-      email: "",
-    });
-
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
       {
         params: {
           insertIfMissing,
+          withSiteData: withSiteData ? "true" : "false",
           ...(title && {
             withMetadata: { title, slug: toKebabCase(title) },
           }),
         },
         headers: {
           Authorization: `Bearer ${auth0AccessToken}`,
-          "oauth-token": googleAccessToken,
         },
       },
     );
@@ -157,12 +152,11 @@ class AddOnApiHelper {
     return resp.data as Article;
   }
 
-  static async publishDocument(documentId: string) {
+  static async publishDocument(documentId: string, accessorAccount: string) {
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
-    // TODO: Add email argument
     const { access_token: googleAccessToken } = await this.getGoogleTokens({
       scopes: ["https://www.googleapis.com/auth/drive.file"],
-      email: "",
+      email: accessorAccount,
     });
 
     const resp = await axios.post<{ url: string }>(
@@ -199,10 +193,13 @@ class AddOnApiHelper {
     },
   ): Promise<string> {
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
-    // TODO: Add email argument
+    const {
+      site: { accessorAccount },
+    } = await this.getDocument(docId, false);
+
     const { access_token: googleAccessToken } = await this.getGoogleTokens({
       scopes: ["https://www.googleapis.com/auth/drive"],
-      email: "",
+      email: accessorAccount,
     });
 
     const resp = await axios.post<{ url: string }>(

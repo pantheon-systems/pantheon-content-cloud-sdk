@@ -4,6 +4,7 @@ declare type Article = {
   id: string;
   siteId: string;
   title: string;
+  site: Site;
 };
 
 declare type ApiKey = {

@@ -136,7 +136,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
     try {
       tokens = await AddOnApiHelper.getGoogleTokens({
         scopes: ["https://www.googleapis.com/auth/drive.file"],
-        domain: site.domain,
+        email: site.accessorAccount,
       });
     } catch (e) {
       if (e instanceof IncorrectAccount) {
@@ -226,7 +226,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true, site.domain);
+        await AddOnApiHelper.getDocument(fileId, true);
 
         try {
           await AddOnApiHelper.updateDocument(
@@ -242,7 +242,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
           );
 
           if (publish) {
-            await AddOnApiHelper.publishDocument(fileId, site.domain);
+            await AddOnApiHelper.publishDocument(fileId, site.accessorAccount);
           }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);
