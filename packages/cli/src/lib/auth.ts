@@ -20,6 +20,7 @@ const DEFAULT_AUTH0_API_SCOPES = ["create:session"];
 
 const DEFAULT_GOOGLE_SCOPES = [
   "https://www.googleapis.com/auth/userinfo.email",
+  "https://www.googleapis.com/auth/userinfo.profile",
 ];
 
 export interface PersistedTokens {
