@@ -7,8 +7,9 @@ import type { GaxiosResponse } from "gaxios";
 import type { drive_v3 } from "googleapis";
 import queryString from "query-string";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
+import { PersistedTokens } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
-import { errorHandler } from "../../exceptions";
+import { errorHandler, IncorrectAccount } from "../../exceptions";
 import { createFolder, getAuthedDrive, preprocessBaseURL } from "./utils";
 
 type DrupalImportParams = {
@@ -85,7 +86,29 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
       exit(1);
     }
 
-    const drive = await getAuthedDrive(logger);
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
+    let tokens: PersistedTokens;
+    try {
+      tokens = await AddOnApiHelper.getGoogleTokens({
+        scopes: ["https://www.googleapis.com/auth/drive.file"],
+        domain: site.domain,
+      });
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        logger.error(
+          chalk.red(
+            "ERROR: Selected account doesn't belong to domain of the site.",
+          ),
+        );
+        return;
+      }
+      throw e;
+    }
+
+    const drive = getAuthedDrive(tokens);
+
     const folder = await createFolder(
       drive,
       `PCC Import from Drupal on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
@@ -166,12 +189,12 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocument(fileId, true, site.domain);
 
         try {
           await AddOnApiHelper.updateDocument(
             fileId,
-            siteId,
+            site,
             post.attributes.title,
             post.relationships.field_topics?.data
               ?.map(
@@ -188,7 +211,7 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
           );
 
           if (publish) {
-            await AddOnApiHelper.publishDocument(fileId);
+            await AddOnApiHelper.publishDocument(fileId, site.domain);
           }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);

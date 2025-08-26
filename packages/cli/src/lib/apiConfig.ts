@@ -1,4 +1,4 @@
-import { getLocalConfigDetails } from "./localStorage";
+import { getConfigDetails } from "./localStorage";
 
 export enum TargetEnvironment {
   production = "production",
@@ -8,6 +8,10 @@ export enum TargetEnvironment {
 
 type ApiConfig = {
   addOnApiEndpoint: string;
+  auth0ClientId: string;
+  auth0RedirectUri: string;
+  auth0Audience: string;
+  auth0Issuer: string;
   googleClientId: string;
   googleRedirectUri: string;
   playgroundUrl: string;
@@ -17,6 +21,12 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.production]: {
     addOnApiEndpoint:
       "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
+    // TODO: update it with prod auth0 client
+    auth0ClientId:
+      "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
+    auth0RedirectUri: "http://localhost:3030/auth/callback",
+    auth0Audience: "https://addonapi-gfttxsojwq-uc.a.run.app",
+    auth0Issuer: "https://dev-m4eh6wq011fxmahi.us.auth0.com",
     googleClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -24,6 +34,11 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   },
   [TargetEnvironment.staging]: {
     addOnApiEndpoint: "https://addonapi-cxog5ytt4a-uc.a.run.app",
+    // TODO: update it with new staging cli client app
+    auth0ClientId: "fTmdrlsHK0HJ75WMSqWTLrUgDiBR5VG4",
+    auth0RedirectUri: "http://localhost:3000/auth/callback",
+    auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
+    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId:
       "142470191541-bmomms4luuhoc68g903rscgr9qa3150b.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -31,6 +46,10 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   },
   [TargetEnvironment.test]: {
     addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
+    auth0ClientId: "test-google-com",
+    auth0RedirectUri: "http://localhost:3000/auth/callback",
+    auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
+    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId: "test-google-com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://test-playground.site",
@@ -38,7 +57,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
 };
 
 export const getApiConfig = async () => {
-  const config = await getLocalConfigDetails();
+  const config = await getConfigDetails();
   const apiConfig =
     apiConfigMap[
       config?.targetEnvironment ||
@@ -49,9 +68,11 @@ export const getApiConfig = async () => {
   return {
     ...apiConfig,
 
+    ACCOUNT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/accounts`,
     API_KEY_ENDPOINT: `${apiConfig.addOnApiEndpoint}/api-key`,
     SITE_ENDPOINT: `${apiConfig.addOnApiEndpoint}/sites`,
     DOCUMENT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/articles`,
-    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth`,
+    AUTH0_ENDPOINT: `${apiConfig.addOnApiEndpoint}/auth0/`,
+    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth/`,
   };
 };
