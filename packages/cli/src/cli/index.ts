@@ -72,8 +72,8 @@ const LONG_LIVED_COMMANDS = ["site webhooks history"];
 
 /*
 We need to update all commands for below things:
-- Use Auth0 login: Done
-- Connect and list accounts 
+*- Use Auth0 login
+*- Connect and list accounts 
 - Persist tokens generated locally
 - Update site creation command to have accountId or accountEmail passed as param
 - Test that all commands are working fine

@@ -200,18 +200,9 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     return resp.data as PersistedTokens;
   }
 
-  async getTokens(email?: string): Promise<PersistedTokens | null> {
-    const credentialArr = await LocalStorage.getGoogleAuthDetails();
-    if (!credentialArr) return null;
-
-    // Return null if required given email
-    const credIndex = (credentialArr || []).findIndex((acc) => {
-      const payload = parseJwt(acc.id_token as string);
-      return payload.email === email;
-    });
-
-    if (credIndex === -1) return null;
-    const credentials = credentialArr[credIndex];
+  async getTokens(email: string): Promise<PersistedTokens | null> {
+    const credentials = await LocalStorage.getGoogleAuthDetails(email);
+    if (!credentials) return null;
 
     // Return null if required scope is not present
     const grantedScopes = new Set(credentials.scope?.split(" ") || []);
@@ -237,8 +228,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
       const newCred = await this.refreshToken(
         credentials.refresh_token as string,
       );
-      credentialArr[credIndex] = newCred;
-      await LocalStorage.persistGoogleAuthDetails(credentialArr);
+      await LocalStorage.persistGoogleAuthDetails(email, newCred);
       return newCred;
     } catch (_err) {
       return null;
@@ -260,11 +250,9 @@ export class GoogleAuthProvider extends BaseAuthProvider {
           // Generate the url that will be used for the consent dialog.
           const authorizeUrl = oAuth2Client.generateAuthUrl({
             access_type: "offline",
+            prompt: "consent",
             scope: this.scopes,
           });
-
-          const existingCredentials =
-            (await LocalStorage.getGoogleAuthDetails()) || [];
 
           const server = http.createServer(async (req, res) => {
             try {
@@ -281,19 +269,13 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                   join(currDir, "../templates/accountConnectSuccess.html"),
                 );
                 const credentials = await this.generateToken(code as string);
+
+                await AddOnApiHelper.connectAccount(credentials.access_token);
+
                 const tokenPayload = parseJwt(credentials.id_token as string);
-
-                // TODO: Create account in BE API
-                const matchIndex = existingCredentials.findIndex((acc) => {
-                  const currentPayload = parseJwt(acc.id_token);
-                  return currentPayload.email === tokenPayload.email;
-                });
-                if (matchIndex !== -1)
-                  existingCredentials[matchIndex] = credentials;
-                else existingCredentials.push(credentials);
-
                 await LocalStorage.persistGoogleAuthDetails(
-                  existingCredentials,
+                  tokenPayload.email,
+                  credentials,
                 );
 
                 res.end(
