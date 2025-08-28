@@ -17,7 +17,7 @@ export const createSite = errorHandler<{ url: string; accountEmail: string }>(
     } catch (e) {
       if (e instanceof IncorrectAccount) {
         spinner.fail(
-          "Given `accountEmail` is not connected to your user, please connect it with `pcc account connect` command first.",
+          "Given `accountEmail` is not connected to your user. Please connect an account first using  `pcc account connect` command.",
         );
         return;
       }
@@ -46,6 +46,13 @@ export const listSites = errorHandler<{
 }>(async ({ withStatus }) => {
   const spinner = ora("Fetching list of existing sites...").start();
   try {
+    const accounts = await AddOnApiHelper.listAccounts();
+    if (accounts.length === 0) {
+      spinner.fail(
+        "No sites found. Please connect at least one account using `pcc account connect` command.",
+      );
+      return;
+    }
     const sites = await AddOnApiHelper.listSites({
       withConnectionStatus: withStatus,
     });
