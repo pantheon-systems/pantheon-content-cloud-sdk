@@ -130,7 +130,7 @@ export class Auth0Provider extends BaseAuthProvider {
               }
 
               if (req.url.indexOf("/auth/callback") > -1) {
-                const qs = new url.URL(req.url, "http://localhost:3000")
+                const qs = new url.URL(req.url, "http://localhost:3030")
                   .searchParams;
                 const code = qs.get("code");
                 const currDir = dirname(fileURLToPath(import.meta.url));
@@ -163,7 +163,7 @@ export class Auth0Provider extends BaseAuthProvider {
 
           destroyer(server);
 
-          server.listen(3000, () => {
+          server.listen(3030, () => {
             open(authorizeUrl, { wait: true }).then((cp) => cp.kill());
           });
         } catch (e) {
