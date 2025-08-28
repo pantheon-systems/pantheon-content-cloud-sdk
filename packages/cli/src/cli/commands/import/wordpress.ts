@@ -226,7 +226,11 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocumentWithGoogle(
+          fileId,
+          site.accessorAccount,
+          true,
+        );
 
         try {
           await AddOnApiHelper.updateDocument(

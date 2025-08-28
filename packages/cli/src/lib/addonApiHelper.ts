@@ -45,14 +45,14 @@ class AddOnApiHelper {
     if (tokens) return tokens;
 
     // Login user if token is not found
-    await provider.login();
+    await provider.login(email);
     tokens = await provider.getTokens(email);
     if (tokens) return tokens;
 
     throw new UserNotLoggedIn();
   }
 
-  static async getDocument(
+  static async getDocumentWithAuth0(
     documentId: string,
     insertIfMissing = false,
     withSiteData = false,
@@ -63,14 +63,42 @@ class AddOnApiHelper {
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
       {
         params: {
-          insertIfMissing,
           withSiteData: withSiteData ? "true" : "false",
+          ...(insertIfMissing && { insertIfMissing }),
           ...(title && {
             withMetadata: { title, slug: toKebabCase(title) },
           }),
         },
         headers: {
           Authorization: `Bearer ${auth0AccessToken}`,
+        },
+      },
+    );
+
+    return resp.data as Article;
+  }
+  static async getDocumentWithGoogle(
+    documentId: string,
+    accountEmail: string,
+    insertIfMissing = false,
+    withSiteData = false,
+    title?: string,
+  ): Promise<Article> {
+    const { access_token: accessToken } = await this.getGoogleTokens({
+      email: accountEmail,
+    });
+    const resp = await axios.get(
+      `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
+      {
+        params: {
+          withSiteData: withSiteData ? "true" : "false",
+          ...(insertIfMissing && { insertIfMissing }),
+          ...(title && {
+            withMetadata: { title, slug: toKebabCase(title) },
+          }),
+        },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     );
@@ -195,7 +223,7 @@ class AddOnApiHelper {
     const { access_token: auth0AccessToken } = await this.getAuth0Tokens();
     const {
       site: { accessorAccount },
-    } = await this.getDocument(docId, false);
+    } = await this.getDocumentWithAuth0(docId, false, true);
 
     const { access_token: googleAccessToken } = await this.getGoogleTokens({
       scopes: ["https://www.googleapis.com/auth/drive"],

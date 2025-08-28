@@ -14,7 +14,7 @@ import AddOnApiHelper from "./addonApiHelper";
 import { getApiConfig } from "./apiConfig";
 import * as LocalStorage from "./localStorage";
 
-const AUTH0_PCC_CONTEXT_KEY = "pcc";
+export const AUTH0_PCC_CONTEXT_KEY = "pcc";
 const DEFAULT_AUTH0_SCOPES = ["openid", "profile", "offline_access"];
 const DEFAULT_AUTH0_API_SCOPES = ["create:session"];
 
@@ -35,7 +35,7 @@ abstract class BaseAuthProvider {
   abstract generateToken(code: string): Promise<PersistedTokens>;
   abstract refreshToken(refreshToken: string): Promise<PersistedTokens>;
   abstract getTokens(email?: string): Promise<PersistedTokens | null>;
-  abstract login(): Promise<void>;
+  abstract login(email?: string): Promise<void>;
 }
 
 export class Auth0Provider extends BaseAuthProvider {
@@ -236,7 +236,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     }
   }
 
-  login(): Promise<void> {
+  login(email: string): Promise<void> {
     return new Promise(
       // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
       async (resolve, reject) => {
@@ -253,6 +253,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
             access_type: "offline",
             prompt: "consent",
             scope: this.scopes,
+            login_hint: email,
           });
 
           const server = http.createServer(async (req, res) => {

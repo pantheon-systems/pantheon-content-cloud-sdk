@@ -98,11 +98,23 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create PCC document
-    await AddOnApiHelper.getDocument(fileId, true, false, title);
+    await AddOnApiHelper.getDocumentWithGoogle(
+      fileId,
+      site.accessorAccount,
+      true,
+      false,
+      title,
+    );
     // Cannot set metadataFields(title,slug) in the same request since we reset metadataFields
     //  when changing the siteId.
     await AddOnApiHelper.updateDocument(fileId, site, title, [], null, verbose);
-    await AddOnApiHelper.getDocument(fileId, false, false, title);
+    await AddOnApiHelper.getDocumentWithGoogle(
+      fileId,
+      site.accessorAccount,
+      false,
+      false,
+      title,
+    );
 
     // Publish PCC document
     if (publish) {

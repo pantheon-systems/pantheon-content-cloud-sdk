@@ -32,7 +32,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.staging]: {
     addOnApiEndpoint: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     auth0ClientId: "fTmdrlsHK0HJ75WMSqWTLrUgDiBR5VG4",
-    auth0RedirectUri: "http://localhost:3030/auth/callback",
+    auth0RedirectUri: "http://localhost:3000/auth/callback",
     auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
     auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId:

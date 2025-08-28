@@ -189,7 +189,11 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocumentWithGoogle(
+          fileId,
+          site.accessorAccount,
+          true,
+        );
 
         try {
           await AddOnApiHelper.updateDocument(
