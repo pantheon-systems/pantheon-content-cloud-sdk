@@ -4,6 +4,7 @@ declare type Article = {
   id: string;
   siteId: string;
   title: string;
+  site: Site;
 };
 
 declare type ApiKey = {
@@ -12,15 +13,25 @@ declare type ApiKey = {
   created: string;
 };
 
+declare type Account = {
+  id: string;
+  name: string;
+  accountEmail: string;
+  userEmail: string;
+  created: string;
+};
+
 declare type Site = {
   id: string;
   url: string;
+  domain: string;
   created?: number;
   __isPlayground: boolean;
   connectionStatus?: {
     connected: boolean;
     capabilities: Record<string, boolean>;
   } | null;
+  accessorAccount: string;
 };
 
 declare type AuthDetails = {

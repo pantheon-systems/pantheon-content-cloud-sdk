@@ -1,75 +1,13 @@
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { ensureFile, remove } from "fs-extra";
-import { Credentials } from "google-auth-library";
 import { PCC_ROOT_DIR } from "../constants";
 import { Config } from "../types/config";
-import AddOnApiHelper from "./addonApiHelper";
+import { PersistedTokens } from "./auth";
 
-export const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
-export const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
-
-export const getLocalAuthDetails = async (
-  requiredScopes?: string[],
-): Promise<Credentials | null> => {
-  let credentials: Credentials;
-  try {
-    credentials = JSON.parse(
-      readFileSync(AUTH_FILE_PATH).toString(),
-    ) as Credentials;
-  } catch (_err) {
-    return null;
-  }
-
-  // Return null if required scope is not present
-  const grantedScopes = new Set(credentials.scope?.split(" ") || []);
-  if (
-    requiredScopes &&
-    requiredScopes.length > 0 &&
-    !requiredScopes.every((i) => grantedScopes.has(i))
-  ) {
-    return null;
-  }
-
-  // Check if token is expired
-  if (credentials.expiry_date) {
-    const currentTime = await AddOnApiHelper.getCurrentTime();
-
-    if (currentTime < credentials.expiry_date) {
-      return credentials;
-    }
-  }
-
-  try {
-    const newCred = await AddOnApiHelper.refreshToken(
-      credentials.refresh_token as string,
-    );
-    persistAuthDetails(newCred);
-    return newCred;
-  } catch (_err) {
-    return null;
-  }
-};
-
-export const getLocalConfigDetails = async (): Promise<Config | null> => {
-  try {
-    return JSON.parse(readFileSync(CONFIG_FILE_PATH).toString());
-  } catch (_err) {
-    return null;
-  }
-};
-
-export const persistAuthDetails = async (
-  payload: Credentials,
-): Promise<void> => {
-  await persistDetailsToFile(payload, AUTH_FILE_PATH);
-};
-
-export const persistConfigDetails = async (payload: Config): Promise<void> => {
-  await persistDetailsToFile(payload, CONFIG_FILE_PATH);
-};
-
-export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
+const AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "auth.json");
+const GOOGLE_AUTH_FILE_PATH = path.join(PCC_ROOT_DIR, "google.json");
+const CONFIG_FILE_PATH = path.join(PCC_ROOT_DIR, "config.json");
 
 const persistDetailsToFile = async (payload: unknown, filePath: string) => {
   await new Promise<void>((resolve, reject) =>
@@ -84,3 +22,51 @@ const persistDetailsToFile = async (payload: unknown, filePath: string) => {
 
   writeFileSync(filePath, JSON.stringify(payload, null, 2));
 };
+const readFile = async <T>(path: string): Promise<T | null> => {
+  try {
+    return JSON.parse(readFileSync(path).toString()) as T;
+  } catch (_err) {
+    return null;
+  }
+};
+
+export const getConfigDetails = async (): Promise<Config | null> => {
+  return readFile<Config>(CONFIG_FILE_PATH);
+};
+export const getAuthDetails = async (): Promise<PersistedTokens | null> => {
+  return readFile<PersistedTokens>(AUTH_FILE_PATH);
+};
+export const getGoogleAuthDetails = async (
+  email: string,
+): Promise<PersistedTokens | null> => {
+  const authDetails =
+    (await readFile<{ [key: string]: PersistedTokens }>(
+      GOOGLE_AUTH_FILE_PATH,
+    )) || {};
+  return authDetails[email] || null;
+};
+
+export const persistConfigDetails = async (payload: Config): Promise<void> => {
+  await persistDetailsToFile(payload, CONFIG_FILE_PATH);
+};
+export const persistAuthDetails = async (
+  payload: PersistedTokens,
+): Promise<void> => {
+  await persistDetailsToFile(payload, AUTH_FILE_PATH);
+};
+export const persistGoogleAuthDetails = async (
+  email: string,
+  credentials: PersistedTokens,
+): Promise<void> => {
+  const authDetails =
+    (await readFile<{ [key: string]: PersistedTokens }>(
+      GOOGLE_AUTH_FILE_PATH,
+    )) || {};
+  authDetails[email] = credentials;
+  await persistDetailsToFile(authDetails, GOOGLE_AUTH_FILE_PATH);
+};
+
+export const deleteConfigDetails = async () => remove(CONFIG_FILE_PATH);
+export const deleteAuthDetails = async () => remove(AUTH_FILE_PATH);
+export const deleteGoogleAuthDetails = async () =>
+  remove(GOOGLE_AUTH_FILE_PATH);

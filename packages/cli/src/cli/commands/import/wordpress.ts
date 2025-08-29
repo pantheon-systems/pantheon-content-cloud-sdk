@@ -7,8 +7,9 @@ import type { GaxiosResponse } from "gaxios";
 import { drive_v3 } from "googleapis";
 import queryString from "query-string";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
+import { PersistedTokens } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
-import { errorHandler } from "../../exceptions";
+import { errorHandler, IncorrectAccount } from "../../exceptions";
 import { createFolder, getAuthedDrive, preprocessBaseURL } from "./utils";
 
 const DEFAULT_PAGE_SIZE = 50;
@@ -128,7 +129,28 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
       exit(1);
     }
 
-    const drive = await getAuthedDrive(logger);
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
+    let tokens: PersistedTokens;
+    try {
+      tokens = await AddOnApiHelper.getGoogleTokens({
+        scopes: ["https://www.googleapis.com/auth/drive.file"],
+        email: site.accessorAccount,
+      });
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        logger.error(
+          chalk.red(
+            "ERROR: Selected account doesn't belong to domain of the site.",
+          ),
+        );
+        return;
+      }
+      throw e;
+    }
+
+    const drive = getAuthedDrive(tokens);
     const folder = await createFolder(
       drive,
       `PCC Import from WordPress on ${new Date().toLocaleDateString()} unique id: ${randomUUID()}`,
@@ -204,12 +226,16 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
         }
 
         // Add it to the PCC site.
-        await AddOnApiHelper.getDocument(fileId, true);
+        await AddOnApiHelper.getDocumentWithGoogle(
+          fileId,
+          site.accessorAccount,
+          true,
+        );
 
         try {
           await AddOnApiHelper.updateDocument(
             fileId,
-            siteId,
+            site,
             post.title.rendered,
             (await getTagInfo(processedBaseURL, post.tags)).map((x) => x.name),
             {
@@ -220,7 +246,7 @@ export const importFromWordPress = errorHandler<WordPressImportParams>(
           );
 
           if (publish) {
-            await AddOnApiHelper.publishDocument(fileId);
+            await AddOnApiHelper.publishDocument(fileId, site.accessorAccount);
           }
         } catch (e) {
           console.error(e instanceof AxiosError ? e.response?.data : e);

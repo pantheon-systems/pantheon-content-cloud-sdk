@@ -3,14 +3,14 @@ import { exit } from "process";
 import chalk from "chalk";
 import { parseFromString } from "dom-parser";
 import type { GaxiosResponse } from "gaxios";
-import { OAuth2Client } from "google-auth-library";
-import { drive_v3, google } from "googleapis";
+import { drive_v3 } from "googleapis";
 import ora from "ora";
 import showdown from "showdown";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { getLocalAuthDetails } from "../../../lib/localStorage";
+import { PersistedTokens } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
-import { errorHandler } from "../../exceptions";
+import { errorHandler, IncorrectAccount } from "../../exceptions";
+import { getAuthedDrive } from "./utils";
 
 const HEADING_TAGS = ["h1", "h2", "h3", "title"];
 
@@ -37,24 +37,33 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     // Prepare article content and title
     const content = fs.readFileSync(filePath).toString();
 
+    // Get site details
+    const site = await AddOnApiHelper.getSite(siteId);
+
     // Check user has required permission to create drive file
-    await AddOnApiHelper.getIdToken([
-      "https://www.googleapis.com/auth/drive.file",
-    ]);
-    const authDetails = await getLocalAuthDetails();
-    if (!authDetails) {
-      logger.error(chalk.red(`ERROR: Failed to retrieve login details.`));
-      exit(1);
+    let tokens: PersistedTokens;
+    try {
+      tokens = await AddOnApiHelper.getGoogleTokens({
+        scopes: ["https://www.googleapis.com/auth/drive"],
+        email: site.accessorAccount,
+      });
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        logger.error(
+          chalk.red(
+            "ERROR: Selected account doesn't belong to domain of the site.",
+          ),
+        );
+        return;
+      }
+      throw e;
     }
 
     // Create Google Doc
     const spinner = ora("Creating document on the Google Drive...").start();
-    const oauth2Client = new OAuth2Client();
-    oauth2Client.setCredentials(authDetails);
-    const drive = google.drive({
-      version: "v3",
-      auth: oauth2Client,
-    });
+
+    const drive = getAuthedDrive(tokens);
+
     const converter = new showdown.Converter();
     const html = converter.makeHtml(content);
     const dom = parseFromString(html);
@@ -89,22 +98,27 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     }
 
     // Create PCC document
-    await AddOnApiHelper.getDocument(fileId, true, title);
+    await AddOnApiHelper.getDocumentWithGoogle(
+      fileId,
+      site.accessorAccount,
+      true,
+      false,
+      title,
+    );
     // Cannot set metadataFields(title,slug) in the same request since we reset metadataFields
     //  when changing the siteId.
-    await AddOnApiHelper.updateDocument(
+    await AddOnApiHelper.updateDocument(fileId, site, title, [], null, verbose);
+    await AddOnApiHelper.getDocumentWithGoogle(
       fileId,
-      siteId,
+      site.accessorAccount,
+      false,
+      false,
       title,
-      [],
-      null,
-      verbose,
     );
-    await AddOnApiHelper.getDocument(fileId, false, title);
 
     // Publish PCC document
     if (publish) {
-      await AddOnApiHelper.publishDocument(fileId);
+      await AddOnApiHelper.publishDocument(fileId, site.accessorAccount);
     }
     spinner.succeed(
       `Successfully created document at below path${
