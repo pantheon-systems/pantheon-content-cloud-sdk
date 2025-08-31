@@ -236,11 +236,14 @@ export class GoogleAuthProvider extends BaseAuthProvider {
     }
   }
 
-  login(email: string): Promise<void> {
+  login(email?: string): Promise<void> {
     return new Promise(
       // eslint-disable-next-line no-async-promise-executor -- Handling promise rejection in the executor
       async (resolve, reject) => {
-        const spinner = ora("Connecting Google account...").start();
+        const message = email
+          ? `Requesting access to ${email} account...`
+          : "Connecting Google account...";
+        const spinner = ora(message).start();
         try {
           const apiConfig = await getApiConfig();
           const oAuth2Client = new OAuth2Client({
@@ -253,7 +256,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
             access_type: "offline",
             prompt: "consent",
             scope: this.scopes,
-            login_hint: email,
+            ...(email && { login_hint: email }),
           });
 
           const server = http.createServer(async (req, res) => {
@@ -276,7 +279,8 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                   await AddOnApiHelper.connectAccount(credentials.access_token);
                 } catch (e) {
                   if (
-                    (e as any).response?.data.message ===
+                    (e as { response: { data: { message: string } } }).response
+                      ?.data.message ===
                     "account_already_connected_to_other_user"
                   ) {
                     spinner.fail(
@@ -285,8 +289,8 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                     resolve();
                     return;
                   } else if (
-                    (e as any).response?.data.message ===
-                    "cannot_connect_gmail_account"
+                    (e as { response: { data: { message: string } } }).response
+                      ?.data.message === "cannot_connect_gmail_account"
                   ) {
                     spinner.fail(
                       "Only Google Workspace accounts are supported. Please connect your work email.",

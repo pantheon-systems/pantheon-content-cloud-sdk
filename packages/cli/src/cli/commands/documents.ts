@@ -14,7 +14,7 @@ const GDOCS_URL_REGEX =
   /^(https|http):\/\/(www.)?docs.google.com\/document\/d\/(?<id>[^/]+).*$/;
 
 export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
-  async ({ documentId, baseUrl, domain }: GeneratePreviewParam) => {
+  async ({ documentId, baseUrl }: GeneratePreviewParam) => {
     const logger = new Logger();
 
     let cleanedId = documentId.trim();
