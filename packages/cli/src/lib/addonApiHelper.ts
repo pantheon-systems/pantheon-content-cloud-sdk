@@ -84,9 +84,10 @@ class AddOnApiHelper {
     withSiteData = false,
     title?: string,
   ): Promise<Article> {
-    const { access_token: accessToken } = await this.getGoogleTokens({
-      email: accountEmail,
-    });
+    const { access_token: accessToken, id_token: idToken } =
+      await this.getGoogleTokens({
+        email: accountEmail,
+      });
     const resp = await axios.get(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}`,
       {
@@ -98,7 +99,8 @@ class AddOnApiHelper {
           }),
         },
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${idToken}`,
+          "oauth-token": accessToken,
         },
       },
     );
