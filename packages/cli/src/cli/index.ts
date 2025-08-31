@@ -238,14 +238,14 @@ yargs(hideBin(process.argv))
   )
   .command(
     "account <cmd> [options]",
-    "Manage accounts for a PCC project.",
+    "Manage accounts for a logged in user.",
     (yargs) => {
       yargs
         .strictCommands()
         .demandCommand()
         .command(
           "connect",
-          "Connect new account.",
+          "Connect a new account.",
           async () => await connectAccount(),
         )
         .command(
@@ -778,11 +778,6 @@ yargs(hideBin(process.argv))
                 demandOption: true,
                 type: "string",
               })
-              .option("domain", {
-                describe: "Domain of the document's site",
-                type: "string",
-                demandOption: true,
-              })
               .option("baseUrl", {
                 describe: "Base URL for the generated preview link.",
                 type: "string",
@@ -793,7 +788,6 @@ yargs(hideBin(process.argv))
             await generatePreviewLink({
               documentId: args.id as string,
               baseUrl: args.baseUrl as string,
-              domain: args.domain as string,
             }),
         )
         .example(formatExamples(DOCUMENT_EXAMPLES));

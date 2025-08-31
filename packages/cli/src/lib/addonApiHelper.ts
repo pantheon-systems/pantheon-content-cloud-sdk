@@ -1,5 +1,6 @@
 import { SmartComponentMapZod } from "@pantheon-systems/pcc-sdk-core/types";
 import axios, { AxiosError, HttpStatusCode } from "axios";
+import ora from "ora";
 import queryString from "query-string";
 import {
   HTTPNotFound,
@@ -29,6 +30,7 @@ class AddOnApiHelper {
     if (tokens) return tokens;
 
     // Login user if token is not found
+    ora().clear();
     await provider.login();
     tokens = await provider.getTokens();
     if (tokens) return tokens;
@@ -45,6 +47,7 @@ class AddOnApiHelper {
     if (tokens) return tokens;
 
     // Login user if token is not found
+    ora().clear();
     await provider.login(email);
     tokens = await provider.getTokens(email);
     if (tokens) return tokens;
@@ -191,7 +194,7 @@ class AddOnApiHelper {
 
     const resp = await axios.post<{ url: string }>(
       `${(await getApiConfig()).DOCUMENT_ENDPOINT}/${documentId}/publish`,
-      {},
+      null,
       {
         headers: {
           Authorization: `Bearer ${auth0AccessToken}`,

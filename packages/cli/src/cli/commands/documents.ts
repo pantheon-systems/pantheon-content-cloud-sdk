@@ -7,7 +7,6 @@ import { errorHandler } from "../exceptions";
 type GeneratePreviewParam = {
   documentId: string;
   baseUrl: string;
-  domain: string;
 };
 
 const GDOCS_URL_REGEX =
