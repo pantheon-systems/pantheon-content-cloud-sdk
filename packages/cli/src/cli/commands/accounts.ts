@@ -38,5 +38,6 @@ export const listAccounts = errorHandler<void>(async () => {
 });
 
 export const ACCOUNT_EXAMPLES = [
-  { description: "Connect new account", command: "$0 token create" },
+  { description: "List connected accounts", command: "$0 account list" },
+  { description: "Connect new account", command: "$0 account connect" },
 ];
