@@ -1,5 +1,28 @@
 # @pantheon-systems/pcc-react-sdk
 
+## 5.0.0
+
+### Major Changes
+
+- a780941: Now requiring Next 15 and React 19
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- 45c39b4: Fixes issue with deprecated renderTitle prop which would cause
+  article elements to get removed from the body.
+- f88e3da: cdnURLOverride now allows you to provide a function to rewrite the
+  url.
+- bb12fa0: Multi-collection search through articlesv3 now supported
+- a7db2dc: Fixed issue with realtime updates not causing re-renders in
+  useArticle hook in React 19
+- Updated dependencies [654325d]
+- Updated dependencies [dd8541f]
+  - @pantheon-systems/pcc-sdk-core@5.0.0
+
 ## 5.0.0-beta.2
 
 ### Patch Changes
