@@ -7,9 +7,8 @@ import { drive_v3 } from "googleapis";
 import ora from "ora";
 import showdown from "showdown";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { PersistedTokens } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
-import { errorHandler, IncorrectAccount } from "../../exceptions";
+import { errorHandler } from "../../exceptions";
 import { getAuthedDrive } from "./utils";
 
 const HEADING_TAGS = ["h1", "h2", "h3", "title"];
@@ -41,23 +40,10 @@ export const importFromMarkdown = errorHandler<MarkdownImportParams>(
     const site = await AddOnApiHelper.getSite(siteId);
 
     // Check user has required permission to create drive file
-    let tokens: PersistedTokens;
-    try {
-      tokens = await AddOnApiHelper.getGoogleTokens({
-        scopes: ["https://www.googleapis.com/auth/drive"],
-        email: site.accessorAccount,
-      });
-    } catch (e) {
-      if (e instanceof IncorrectAccount) {
-        logger.error(
-          chalk.red(
-            "ERROR: Selected account doesn't belong to domain of the site.",
-          ),
-        );
-        return;
-      }
-      throw e;
-    }
+    const tokens = await AddOnApiHelper.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive"],
+      email: site.accessorAccount,
+    });
 
     // Create Google Doc
     const spinner = ora("Creating document on the Google Drive...").start();

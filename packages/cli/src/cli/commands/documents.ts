@@ -2,7 +2,7 @@ import { exit } from "process";
 import chalk from "chalk";
 import AddOnApiHelper from "../../lib/addonApiHelper";
 import { Logger, SpinnerLogger } from "../../lib/logger";
-import { errorHandler, IncorrectAccount } from "../exceptions";
+import { errorHandler } from "../exceptions";
 
 type GeneratePreviewParam = {
   documentId: string;
@@ -46,20 +46,9 @@ export const generatePreviewLink = errorHandler<GeneratePreviewParam>(
     const generateLinkLogger = new SpinnerLogger("Generating preview link");
     generateLinkLogger.start();
 
-    let previewLink: string;
-    try {
-      previewLink = await AddOnApiHelper.previewFile(cleanedId, {
-        baseUrl,
-      });
-    } catch (e) {
-      if (e instanceof IncorrectAccount) {
-        generateLinkLogger.fail(
-          "Selected account doesn't belong to domain of the site.",
-        );
-        return;
-      }
-      throw e;
-    }
+    const previewLink = await AddOnApiHelper.previewFile(cleanedId, {
+      baseUrl,
+    });
 
     generateLinkLogger.succeed(
       "Successfully generated preview link. Please copy it below:",

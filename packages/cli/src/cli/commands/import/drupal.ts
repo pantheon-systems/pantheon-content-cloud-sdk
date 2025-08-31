@@ -7,9 +7,8 @@ import type { GaxiosResponse } from "gaxios";
 import type { drive_v3 } from "googleapis";
 import queryString from "query-string";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
-import { PersistedTokens } from "../../../lib/auth";
 import { Logger } from "../../../lib/logger";
-import { errorHandler, IncorrectAccount } from "../../exceptions";
+import { errorHandler } from "../../exceptions";
 import { createFolder, getAuthedDrive, preprocessBaseURL } from "./utils";
 
 type DrupalImportParams = {
@@ -89,23 +88,10 @@ export const importFromDrupal = errorHandler<DrupalImportParams>(
     // Get site details
     const site = await AddOnApiHelper.getSite(siteId);
 
-    let tokens: PersistedTokens;
-    try {
-      tokens = await AddOnApiHelper.getGoogleTokens({
-        scopes: ["https://www.googleapis.com/auth/drive.file"],
-        email: site.accessorAccount,
-      });
-    } catch (e) {
-      if (e instanceof IncorrectAccount) {
-        logger.error(
-          chalk.red(
-            "ERROR: Selected account doesn't belong to domain of the site.",
-          ),
-        );
-        return;
-      }
-      throw e;
-    }
+    const tokens = await AddOnApiHelper.getGoogleTokens({
+      scopes: ["https://www.googleapis.com/auth/drive.file"],
+      email: site.accessorAccount,
+    });
 
     const drive = getAuthedDrive(tokens);
 
