@@ -243,6 +243,9 @@ export class GoogleAuthProvider extends BaseAuthProvider {
         const message = email
           ? `Requesting access to ${email} account...`
           : "Connecting Google account...";
+        const templateName = email
+          ? "../templates/accountAccessGranted.html"
+          : "../templates/accountConnectSuccess.html";
         const spinner = ora(message).start();
         try {
           const apiConfig = await getApiConfig();
@@ -270,9 +273,7 @@ export class GoogleAuthProvider extends BaseAuthProvider {
                   .searchParams;
                 const code = qs.get("code");
                 const currDir = dirname(fileURLToPath(import.meta.url));
-                const content = readFileSync(
-                  join(currDir, "../templates/accountConnectSuccess.html"),
-                );
+                const content = readFileSync(join(currDir, templateName));
                 const credentials = await this.generateToken(code as string);
 
                 try {
