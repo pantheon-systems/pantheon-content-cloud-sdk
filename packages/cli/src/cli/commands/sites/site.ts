@@ -49,7 +49,7 @@ export const listSites = errorHandler<{
     const accounts = await AddOnApiHelper.listAccounts();
     if (accounts.length === 0) {
       spinner.fail(
-        "No sites found. Please connect at least one account using `pcc account connect` command.",
+        "You don't have any connected accounts. Please connect at least one account using `pcc account connect` command.",
       );
       return;
     }
