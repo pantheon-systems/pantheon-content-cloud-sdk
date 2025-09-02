@@ -45,7 +45,7 @@ with the Pantheon Content Publisher API.
 #### Article Renderer
 
 The `<ArticleRenderer />` component will render the article received from
-Content Cloud by converting the raw article data into HTML elements you can
+Content Publisher by converting the raw article data into HTML elements you can
 style and render in your app.
 
 ```vue

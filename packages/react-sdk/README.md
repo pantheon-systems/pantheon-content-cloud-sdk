@@ -46,7 +46,7 @@ helper components to get you up and running with the Pantheon Content Publisher 
 #### Article Renderer
 
 The `<ArticleRenderer />` component will render the article received from
-Content Cloud by converting the raw article data into React elements you can
+Content Publisher by converting the raw article data into React elements you can
 style and render in your app.
 
 ```javascript
