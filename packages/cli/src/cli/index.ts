@@ -6,6 +6,11 @@ import { checkEnvironment } from "../lib/checkEnvironment";
 import checkUpdate, { getPackageDetails } from "../lib/checkUpdate";
 import { isProgramInstalled } from "../lib/utils";
 import {
+  ACCOUNT_EXAMPLES,
+  connectAccount,
+  listAccounts,
+} from "./commands/accounts";
+import {
   printConfigurationData,
   resetTargetEnvironment,
   setTargetEnvironment,
@@ -232,6 +237,32 @@ yargs(hideBin(process.argv))
     },
   )
   .command(
+    "account <cmd> [options]",
+    "Manage accounts for a logged in user.",
+    (yargs) => {
+      yargs
+        .strictCommands()
+        .demandCommand()
+        .command(
+          "connect",
+          "Connect a new account.",
+          async () => await connectAccount(),
+        )
+        .command(
+          "list",
+          "Lists connected accounts.",
+          () => {
+            // noop
+          },
+          async () => await listAccounts(),
+        )
+        .example(formatExamples(ACCOUNT_EXAMPLES));
+    },
+    async () => {
+      // noop
+    },
+  )
+  .command(
     "token <cmd> [options]",
     "Manage tokens for a PCC project.",
     (yargs) => {
@@ -325,75 +356,70 @@ yargs(hideBin(process.argv))
       yargs
         .strictCommands()
         .demandCommand()
-        .command(
-          "admins [options]",
-          "CRUD admins for a site",
-          (yargs) => {
-            yargs
-              .strictCommands()
-              .demandCommand()
-              .command(
-                "list [options]",
-                "List admins for a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await listAdminsSchema({
-                    siteId: args.siteId as string,
-                  }),
-              )
-              .command(
-                "remove [options]",
-                "Remove admin for a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
+        .command("admins [options]", "CRUD admins for a site", (yargs) => {
+          yargs
+            .strictCommands()
+            .demandCommand()
+            .command(
+              "list [options]",
+              "List admins for a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await listAdminsSchema({
+                  siteId: args.siteId as string,
+                }),
+            )
+            .command(
+              "remove [options]",
+              "Remove admin for a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
 
-                  yargs.option("email", {
-                    describe: "Email of admin to remove",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await removeAdminSchema({
-                    siteId: args.siteId as string,
-                    email: args.email as string,
-                  }),
-              )
-              .command(
-                "add [options]",
-                "Add admin to a site",
-                (yargs) => {
-                  yargs.option("siteId", {
-                    describe: "Site id",
-                    type: "string",
-                    demandOption: true,
-                  });
+                yargs.option("email", {
+                  describe: "Email of admin to remove",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await removeAdminSchema({
+                  siteId: args.siteId as string,
+                  email: args.email as string,
+                }),
+            )
+            .command(
+              "add [options]",
+              "Add admin to a site",
+              (yargs) => {
+                yargs.option("siteId", {
+                  describe: "Site id",
+                  type: "string",
+                  demandOption: true,
+                });
 
-                  yargs.option("email", {
-                    describe: "Email of admin to add",
-                    type: "string",
-                    demandOption: true,
-                  });
-                },
-                async (args) =>
-                  await addAdminSchema({
-                    siteId: args.siteId as string,
-                    email: args.email as string,
-                  }),
-              );
-          },
-          async (args) => await createSite(args.url as string),
-        )
+                yargs.option("email", {
+                  describe: "Email of admin to add",
+                  type: "string",
+                  demandOption: true,
+                });
+              },
+              async (args) =>
+                await addAdminSchema({
+                  siteId: args.siteId as string,
+                  email: args.email as string,
+                }),
+            );
+        })
         .command(
           "create [options]",
           "Creates new site.",
@@ -403,8 +429,17 @@ yargs(hideBin(process.argv))
               type: "string",
               demandOption: true,
             });
+            yargs.option("accountEmail", {
+              describe: "Account email site should be created with",
+              type: "string",
+              demandOption: true,
+            });
           },
-          async (args) => await createSite(args.url as string),
+          async (args) =>
+            await createSite({
+              url: args.url as string,
+              accountEmail: args.accountEmail as string,
+            }),
         )
         .command(
           "delete [options]",
@@ -718,7 +753,6 @@ yargs(hideBin(process.argv))
                   }),
               );
           },
-          async (args) => await createSite(args.url as string),
         )
         .example(formatExamples(SITE_EXAMPLES));
     },
@@ -896,7 +930,7 @@ yargs(hideBin(process.argv))
     () => {
       // noop
     },
-    async () => await login([]),
+    async () => await login(),
   )
   .command(
     "logout",

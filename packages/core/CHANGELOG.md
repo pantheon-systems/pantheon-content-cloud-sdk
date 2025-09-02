@@ -1,5 +1,16 @@
 # @pantheon-systems/pcc-sdk-core
 
+## 5.0.0
+
+### Minor Changes
+
+- 654325d: Added support for the DRAFT publishing level and versionIds
+
+### Patch Changes
+
+- dd8541f: `getArticleURLFromSite` only returns slugs in the url for published
+  articles
+
 ## 5.0.0-beta.2
 
 ## 5.0.0-beta.1
