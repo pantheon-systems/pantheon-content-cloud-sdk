@@ -28,7 +28,7 @@ const getSeoMetadata = (article) => {
 
   return {
     title: `Read ${articleTitle}`,
-    description: "Article hosted using Pantheon Content Cloud",
+    description: "Article hosted using Pantheon Content Publisher",
     tags,
     authors,
     publishedTime,

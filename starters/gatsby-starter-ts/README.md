@@ -12,12 +12,12 @@ in the future.
   </a>
 </p>
 <h1 align="center">
-  Pantheon Decoupled Kit Gatsby Pantheon Content Cloud Starter
+  Pantheon Decoupled Kit Gatsby Pantheon Content Publisher Starter
 </h1>
 
 ## Getting Started
 
-To get started with the Gatsby Pantheon Content Cloud Starter, use our
+To get started with the Gatsby Pantheon Content Publisher Starter, use our
 `create-pantheon-decoupled-kit`, or the "CLI". Full documentation for this npm
 package based on [npm init](https://docs.npmjs.com/cli/v8/commands/npm-init) can
 be found

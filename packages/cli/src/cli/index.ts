@@ -193,7 +193,7 @@ yargs(hideBin(process.argv))
 
       if (args.template === "vue" || args.template === "gatsby") {
         throw new Error(
-          `The ${args.template} starter kit is no longer supported or maintained. You may manually reference the deprecated source code for it in our github repo (https://github.com/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters).`,
+          `The ${args.template} starter kit is no longer supported or maintained. You may manually reference the deprecated source code for it in our github repo (https://github.com/pantheon-systems/content-publisher-sdk/tree/main/starters).`,
         );
       }
 

@@ -3,7 +3,7 @@
 <div align="center">
 	<h1>PCC Toolkit</h1>
 	<p>
-		<b>Pantheon Content Cloud toolkit for setting up projects.</b>
+		<b>Pantheon Content Publisher toolkit for setting up projects.</b>
 	</p>
 	<br>
 </div>
