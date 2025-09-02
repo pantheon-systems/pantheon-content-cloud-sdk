@@ -50,11 +50,11 @@ export class Auth0Provider extends BaseAuthProvider {
   }
 
   async refreshToken(refreshToken: string): Promise<PersistedTokens> {
-    const apiConfig = await getApiConfig();
-    const url = `${apiConfig.auth0Issuer}/oauth/token`;
+    const auth0Config = await AddOnApiHelper.getAuth0Config();
+    const url = `${auth0Config.issuerBaseUrl}/oauth/token`;
     const response = await axios.post(url, {
       grant_type: "refresh_token",
-      client_id: apiConfig.auth0ClientId,
+      client_id: auth0Config.clientId,
       refresh_token: refreshToken,
     });
     return {
@@ -109,17 +109,17 @@ export class Auth0Provider extends BaseAuthProvider {
             return resolve();
           }
 
-          const apiConfig = await getApiConfig();
-          const authorizeUrl = `${apiConfig.auth0Issuer}/authorize?${queryString.stringify(
+          const auth0Config = await AddOnApiHelper.getAuth0Config();
+          const authorizeUrl = `${auth0Config.issuerBaseUrl}/authorize?${queryString.stringify(
             {
               response_type: "code",
-              client_id: apiConfig.auth0ClientId,
-              redirect_uri: apiConfig.auth0RedirectUri,
+              client_id: auth0Config.clientId,
+              redirect_uri: auth0Config.redirectUri,
               scope: [
                 ...DEFAULT_AUTH0_SCOPES,
                 ...DEFAULT_AUTH0_API_SCOPES,
               ].join(" "),
-              audience: apiConfig.auth0Audience,
+              audience: auth0Config.audience,
             },
           )}`;
 

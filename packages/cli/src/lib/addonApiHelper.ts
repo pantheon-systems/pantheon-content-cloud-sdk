@@ -11,6 +11,13 @@ import { getApiConfig } from "./apiConfig";
 import { Auth0Provider, GoogleAuthProvider, PersistedTokens } from "./auth";
 import { toKebabCase } from "./utils";
 
+interface Auth0Config {
+  clientId: string;
+  redirectUri: string;
+  issuerBaseUrl: string;
+  audience: string;
+}
+
 class AddOnApiHelper {
   static async getCurrentTime(): Promise<number> {
     try {
@@ -22,6 +29,12 @@ class AddOnApiHelper {
       // If ping fails, return current time
       return Date.now();
     }
+  }
+
+  static async getAuth0Config(): Promise<Auth0Config> {
+    const apiConfig = await getApiConfig();
+    const resp = await axios.get(`${apiConfig.AUTH0_ENDPOINT}/config`);
+    return resp.data as Auth0Config;
   }
 
   static async getAuth0Tokens(): Promise<PersistedTokens> {

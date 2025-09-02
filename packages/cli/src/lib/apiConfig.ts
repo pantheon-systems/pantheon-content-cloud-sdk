@@ -8,10 +8,6 @@ export enum TargetEnvironment {
 
 type ApiConfig = {
   addOnApiEndpoint: string;
-  auth0ClientId: string;
-  auth0RedirectUri: string;
-  auth0Audience: string;
-  auth0Issuer: string;
   googleClientId: string;
   googleRedirectUri: string;
   playgroundUrl: string;
@@ -20,10 +16,6 @@ type ApiConfig = {
 const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.production]: {
     addOnApiEndpoint: "https://addonapi-gfttxsojwq-uc.a.run.app",
-    auth0ClientId: "rRRQ1hldtsVmjiVSKxLfTodZ1hx9y99o",
-    auth0RedirectUri: "http://localhost:3030/auth/callback",
-    auth0Audience: "https://addonapi-gfttxsojwq-uc.a.run.app",
-    auth0Issuer: "https://pantheon.auth0.com",
     googleClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -31,10 +23,6 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   },
   [TargetEnvironment.staging]: {
     addOnApiEndpoint: "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    auth0ClientId: "fTmdrlsHK0HJ75WMSqWTLrUgDiBR5VG4",
-    auth0RedirectUri: "http://localhost:3030/auth/callback",
-    auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId:
       "142470191541-bmomms4luuhoc68g903rscgr9qa3150b.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -42,10 +30,6 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   },
   [TargetEnvironment.test]: {
     addOnApiEndpoint: "https://test-jest.comxyz/addOnApi",
-    auth0ClientId: "test-google-com",
-    auth0RedirectUri: "http://localhost:3030/auth/callback",
-    auth0Audience: "https://addonapi-cxog5ytt4a-uc.a.run.app",
-    auth0Issuer: "https://pantheon-staging.us.auth0.com",
     googleClientId: "test-google-com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
     playgroundUrl: "https://test-playground.site",
