@@ -46,9 +46,9 @@ describe("Initialization", () => {
 
     expect(api).toBeDefined();
 
-    // Should be a function that accepts two arguments
-    expect(typeof api).toBe("function");
-    expect(api.length).toBe(2);
+    // Should expose a handler that accepts two arguments
+    expect(typeof api.handler).toBe("function");
+    expect(api.handler.length).toBe(2);
 
     // Should have default options
     expect(api.options).toBeDefined();
@@ -71,8 +71,8 @@ describe("Initialization", () => {
     });
 
     expect(api).toBeDefined();
-    expect(typeof api).toBe("function");
-    expect(api.length).toBe(2);
+    expect(typeof api.handler).toBe("function");
+    expect(api.handler.length).toBe(2);
 
     // Should have given options
     expect(api.options).toBeDefined();
@@ -88,7 +88,7 @@ describe("Request Handling", () => {
   it("sets Access-Control-Allow-Origin header to *", async () => {
     const api = PantheonAPI();
 
-    await api(mockRequest, mockResponse);
+    await api.handler(mockRequest, mockResponse);
 
     // Allow CORS access from any origin
     expect(mockResponse.setHeader).toHaveBeenCalledWith(
@@ -100,7 +100,7 @@ describe("Request Handling", () => {
   it("sets PCC-GRANT cookie correctly when pccGrant is provided", async () => {
     const api = PantheonAPI();
 
-    await api(
+    await api.handler(
       {
         ...mockRequest,
         query: {
@@ -126,7 +126,7 @@ describe("Request Handling", () => {
       siteId: "different-site-id",
     });
 
-    await api(
+    await api.handler(
       {
         ...mockRequest,
         query: {
@@ -152,7 +152,7 @@ describe("Request Handling", () => {
       throw new Error("Invalid JWT");
     });
 
-    await api(
+    await api.handler(
       {
         ...mockRequest,
         query: {
@@ -177,7 +177,7 @@ describe("Command Handling", () => {
       notFoundPath: "/my-custom-not-found-path",
     });
 
-    await api(mockRequest, mockResponse);
+    await api.handler(mockRequest, mockResponse);
 
     expect(mockResponse.redirect).toHaveBeenCalledWith(
       302,
@@ -196,12 +196,14 @@ describe("Command Handling", () => {
     it("returns smart component status for status command", async () => {
       const api = PantheonAPI();
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        smartComponents: false,
-        smartComponentPreview: false,
-      });
+      expect(mockResponse.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          smartComponents: false,
+          smartComponentPreview: false,
+        }),
+      );
     });
 
     it("returns truthy smartComponents status for api with smartComponents configured", async () => {
@@ -209,12 +211,14 @@ describe("Command Handling", () => {
         smartComponentMap: {},
       });
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        smartComponents: true,
-        smartComponentPreview: false,
-      });
+      expect(mockResponse.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          smartComponents: true,
+          smartComponentPreview: false,
+        }),
+      );
     });
 
     it("returns truthy smartComponentPreview status for api with smartComponentPreview configured", async () => {
@@ -222,12 +226,14 @@ describe("Command Handling", () => {
         componentPreviewPath: () => "/preview",
       });
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        smartComponents: false,
-        smartComponentPreview: true,
-      });
+      expect(mockResponse.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          smartComponents: false,
+          smartComponentPreview: true,
+        }),
+      );
     });
 
     it("returns truthy smartComponents and smartComponentPreview status for api with both configured", async () => {
@@ -236,12 +242,14 @@ describe("Command Handling", () => {
         componentPreviewPath: () => "/preview",
       });
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        smartComponents: true,
-        smartComponentPreview: true,
-      });
+      expect(mockResponse.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          smartComponents: true,
+          smartComponentPreview: true,
+        }),
+      );
     });
   });
 
@@ -256,7 +264,7 @@ describe("Command Handling", () => {
     it("redirects to notFoundPath for document command with invalid article ID", async () => {
       const api = PantheonAPI();
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
       expect(mockResponse.redirect).toHaveBeenCalledWith(302, "/404");
     });
@@ -282,7 +290,7 @@ describe("Command Handling", () => {
         resolvePath: ({ id }) => `/test-articles-path/${id}`,
       });
 
-      await api(
+      await api.handler(
         {
           ...request,
           query: {
@@ -325,7 +333,7 @@ describe("Command Handling", () => {
 
       const api = PantheonAPI();
 
-      await api(
+      await api.handler(
         {
           ...request,
           query: {
@@ -365,7 +373,7 @@ describe("Command Handling", () => {
         smartComponentMap: defaultSmartComponentMap,
       });
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
       expect(mockResponse.json).toHaveBeenCalledWith(defaultSmartComponentMap);
     });
@@ -375,7 +383,7 @@ describe("Command Handling", () => {
         smartComponentMap: defaultSmartComponentMap,
       });
 
-      await api(
+      await api.handler(
         {
           ...request,
           query: {
@@ -394,7 +402,7 @@ describe("Command Handling", () => {
     it("redirects to notFoundPath for component_schema command without smart component map", async () => {
       const api = PantheonAPI();
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
       expect(mockResponse.redirect).toHaveBeenCalledWith(302, "/404");
     });
@@ -411,7 +419,7 @@ describe("Command Handling", () => {
     it("redirects to notFoundPath for component command when PantheonAPI is configured without a preview path", async () => {
       const api = PantheonAPI();
 
-      await api(request, mockResponse);
+      await api.handler(request, mockResponse);
 
       expect(mockResponse.redirect).toHaveBeenCalledWith(302, "/404");
     });
@@ -421,7 +429,7 @@ describe("Command Handling", () => {
         componentPreviewPath: () => "/preview",
       });
 
-      await api(
+      await api.handler(
         {
           ...request,
           query: {
@@ -440,7 +448,7 @@ describe("Command Handling", () => {
           `/preview-component/${componentName}`,
       });
 
-      await api(
+      await api.handler(
         {
           ...request,
           query: {
@@ -461,7 +469,7 @@ describe("Command Handling", () => {
   it("redirects to notFoundPath for unknown commands", async () => {
     const api = PantheonAPI();
 
-    await api(
+    await api.handler(
       {
         ...mockRequest,
         query: {
@@ -515,7 +523,7 @@ describe("Edge Cases", () => {
   it("handles invalid commandInput type correctly", async () => {
     const api = PantheonAPI();
 
-    await api(
+    await api.handler(
       {
         ...mockRequest,
         query: {
@@ -527,5 +535,24 @@ describe("Edge Cases", () => {
     );
 
     expect(mockResponse.redirect).toHaveBeenCalledWith(302, "/404");
+  });
+});
+
+describe("Status builder", () => {
+  it("exposes buildStatus and returns core fields (basic)", () => {
+    const api = PantheonAPI();
+    const status = api.buildStatus();
+    expect(status).toEqual(
+      expect.objectContaining({
+        level: "basic",
+        timestamp: expect.any(String),
+        version: expect.any(String),
+        smartComponents: expect.any(Boolean),
+        smartComponentPreview: expect.any(Boolean),
+        resolvePathConfigured: expect.any(Boolean),
+        notFoundPath: expect.any(String),
+      }),
+    );
+    expect("siteId" in (status as Record<string, unknown>)).toBe(true);
   });
 });
