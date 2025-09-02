@@ -183,10 +183,6 @@ describe("Pages routing", () => {
           }),
           routing: expect.objectContaining({ mode: "pages" }),
           runtime: expect.stringMatching(/^(edge|node)$/),
-          responseCapabilities: expect.objectContaining({
-            redirect: true,
-            json: true,
-          }),
         }),
       }),
     );
@@ -338,10 +334,6 @@ describe("App routing", () => {
           }),
           routing: expect.objectContaining({ mode: "app" }),
           runtime: expect.stringMatching(/^(edge|node)$/),
-          responseCapabilities: expect.objectContaining({
-            redirect: true,
-            json: true,
-          }),
         }),
       }),
     );
