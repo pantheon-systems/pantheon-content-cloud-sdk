@@ -3,20 +3,28 @@ import dayjs from "dayjs";
 import ora from "ora";
 import AddOnApiHelper from "../../../lib/addonApiHelper";
 import { printTable } from "../../../lib/cliDisplay";
-import { errorHandler } from "../../exceptions";
+import { errorHandler, IncorrectAccount } from "../../exceptions";
 
-export const createSite = errorHandler<string>(async (url: string) => {
-  const spinner = ora("Creating site...").start();
-  try {
-    const siteId = await AddOnApiHelper.createSite(url);
-    spinner.succeed(
-      `Successfully created the site with given details. Id: ${siteId}`,
-    );
-  } catch (e) {
-    spinner.fail();
-    throw e;
-  }
-});
+export const createSite = errorHandler<{ url: string; accountEmail: string }>(
+  async ({ url, accountEmail }) => {
+    const spinner = ora("Creating site...").start();
+
+    try {
+      const siteId = await AddOnApiHelper.createSite(url, accountEmail);
+      spinner.succeed(
+        `Successfully created the site with given details. Id: ${siteId}`,
+      );
+    } catch (e) {
+      if (e instanceof IncorrectAccount) {
+        spinner.fail(
+          "Given `accountEmail` is not connected to your user. Please connect an account first using  `pcc account connect` command.",
+        );
+        return;
+      }
+      throw e;
+    }
+  },
+);
 
 export const deleteSite = errorHandler<{
   id: string;
@@ -38,6 +46,13 @@ export const listSites = errorHandler<{
 }>(async ({ withStatus }) => {
   const spinner = ora("Fetching list of existing sites...").start();
   try {
+    const accounts = await AddOnApiHelper.listAccounts();
+    if (accounts.length === 0) {
+      spinner.fail(
+        "You don't have any connected accounts. Please connect at least one account using `pcc account connect` command.",
+      );
+      return;
+    }
     const sites = await AddOnApiHelper.listSites({
       withConnectionStatus: withStatus,
     });
