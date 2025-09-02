@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest } from "next/server";
+import packageJson from "../../package.json";
 import { AppRouterParams, NextPantheonAPI } from "../../src/core/pantheon-api";
 
 beforeEach(() => {
@@ -12,7 +13,23 @@ beforeEach(() => {
  */
 const apiHandlerMock = jest.fn();
 jest.mock("@pantheon-systems/pcc-sdk-core", () => ({
-  PantheonAPI: jest.fn(() => apiHandlerMock),
+  PantheonAPI: jest.fn(() => ({
+    handler: apiHandlerMock,
+    buildStatus: jest.fn(() => ({
+      timestamp: new Date().toISOString(),
+      level: "basic",
+      version: "test",
+      siteId: "site",
+      smartComponents: false,
+      smartComponentsCount: null,
+      smartComponentPreview: false,
+      metadataGroups: false,
+      metadataGroupIdentifiers: null,
+      resolvePathConfigured: true,
+      notFoundPath: "/404",
+    })),
+    options: {},
+  })),
 }));
 
 describe("Pages routing", () => {
@@ -34,7 +51,7 @@ describe("Pages routing", () => {
     // @ts-expect-error - partial request object
     const testRequest = {
       ...request,
-      query: { command: "status", foo: "bar", 1: "2" },
+      query: { command: "test", foo: "bar", 1: "2" },
     } as NextApiRequest;
 
     await NextPantheonAPI()(testRequest, response);
@@ -43,7 +60,7 @@ describe("Pages routing", () => {
     expect(apiHandlerMock).toHaveBeenCalledWith(
       {
         query: {
-          command: "status",
+          command: "test",
           foo: "bar",
           1: "2",
         },
@@ -137,6 +154,41 @@ describe("Pages routing", () => {
     expect(testResponse.setHeader).toHaveBeenCalledWith(
       "Content-Type",
       "application/json",
+    );
+  });
+
+  it("adds platform diagnostics for status requests", async () => {
+    // @ts-expect-error - partial response object
+    const testResponse = {
+      ...response,
+      json: jest.fn(),
+    } as NextApiResponse;
+
+    // @ts-expect-error - partial request object
+    const statusRequest = {
+      ...request,
+      query: { command: "status" },
+    } as NextApiRequest;
+
+    await NextPantheonAPI()(statusRequest, testResponse);
+
+    expect(testResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        platform: expect.objectContaining({
+          name: "next",
+          version: null,
+          sdk: expect.objectContaining({
+            name: "pcc-react-sdk",
+            version: packageJson.version,
+          }),
+          routing: expect.objectContaining({ mode: "pages" }),
+          runtime: expect.stringMatching(/^(edge|node)$/),
+          responseCapabilities: expect.objectContaining({
+            redirect: true,
+            json: true,
+          }),
+        }),
+      }),
     );
   });
 });
@@ -264,5 +316,34 @@ describe("App routing", () => {
       "application/json",
     );
     expect(await (apiResponse as Response).json()).toEqual(responseData);
+  });
+
+  it("adds platform diagnostics for status requests", async () => {
+    const request = new NextRequest("http://localhost:3000/?command=status");
+    const params = { params: Promise.resolve({}) } satisfies AppRouterParams;
+
+    const apiResponse = await NextPantheonAPI()(request, params);
+
+    expect(apiResponse).toBeInstanceOf(Response);
+    const payload = await (apiResponse as Response).json();
+
+    expect(payload).toEqual(
+      expect.objectContaining({
+        platform: expect.objectContaining({
+          name: "next",
+          version: null,
+          sdk: expect.objectContaining({
+            name: "pcc-react-sdk",
+            version: packageJson.version,
+          }),
+          routing: expect.objectContaining({ mode: "app" }),
+          runtime: expect.stringMatching(/^(edge|node)$/),
+          responseCapabilities: expect.objectContaining({
+            redirect: true,
+            json: true,
+          }),
+        }),
+      }),
+    );
   });
 });
