@@ -1,4 +1,4 @@
-import { getLocalConfigDetails } from "./localStorage";
+import { getConfigDetails } from "./localStorage";
 
 export enum TargetEnvironment {
   production = "production",
@@ -15,8 +15,7 @@ type ApiConfig = {
 
 const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
   [TargetEnvironment.production]: {
-    addOnApiEndpoint:
-      "https://us-central1-pantheon-content-cloud.cloudfunctions.net/addOnApi",
+    addOnApiEndpoint: "https://addonapi-gfttxsojwq-uc.a.run.app",
     googleClientId:
       "432998952749-6eurouamlt7mvacb6u4e913m3kg4774c.apps.googleusercontent.com",
     googleRedirectUri: "http://localhost:3030/oauth-redirect",
@@ -38,7 +37,7 @@ const apiConfigMap: { [key in TargetEnvironment]: ApiConfig } = {
 };
 
 export const getApiConfig = async () => {
-  const config = await getLocalConfigDetails();
+  const config = await getConfigDetails();
   const apiConfig =
     apiConfigMap[
       config?.targetEnvironment ||
@@ -49,9 +48,11 @@ export const getApiConfig = async () => {
   return {
     ...apiConfig,
 
+    ACCOUNT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/accounts`,
     API_KEY_ENDPOINT: `${apiConfig.addOnApiEndpoint}/api-key`,
     SITE_ENDPOINT: `${apiConfig.addOnApiEndpoint}/sites`,
     DOCUMENT_ENDPOINT: `${apiConfig.addOnApiEndpoint}/articles`,
-    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth`,
+    AUTH0_ENDPOINT: `${apiConfig.addOnApiEndpoint}/auth0/`,
+    OAUTH_ENDPOINT: `${apiConfig.addOnApiEndpoint}/oauth/`,
   };
 };
