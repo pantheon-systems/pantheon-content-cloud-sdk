@@ -11,7 +11,7 @@
 ## Requirements
 
 1. A published Pantheon Content Publisher article
-2. A Pantheon Content Publisher Token. Obtain one from the [PCC CLI](https://github.com/pantheon-systems/pantheon-content-cloud-sdk/tree/main/packages/cli#readme).
+2. A Pantheon Content Publisher Token. Obtain one from the [PCC CLI](https://github.com/pantheon-systems/content-publisher-sdk/tree/main/packages/cli#readme).
 
 ## Usage
 

@@ -5,8 +5,8 @@
   "license": "GPL-3.0-or-later",
   "description": "A starter for building a Pantheon Content Publisher (PCC) powered site with Next.js App Router and TypeScript",
   "homepage": "https://pcc.pantheon.io/docs",
-  "repository": "https://github.com/pantheon-systems/pantheon-content-cloud-sdk/tree/main/starters/nextjs-starter-approuter-ts",
-  "bugs": "https://github.com/pantheon-systems/pantheon-content-cloud-sdk/issues",
+  "repository": "https://github.com/pantheon-systems/content-publisher-sdk/tree/main/starters/nextjs-starter-approuter-ts",
+  "bugs": "https://github.com/pantheon-systems/content-publisher-sdk/issues",
   "author": "@pantheon-systems",
   "scripts": {
     "dev": "next dev --turbopack -p 3002",
