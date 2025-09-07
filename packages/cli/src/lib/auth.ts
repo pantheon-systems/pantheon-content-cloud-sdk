@@ -4,6 +4,7 @@ import { dirname, join } from "path";
 import url, { fileURLToPath } from "url";
 import { parseJwt } from "@pantheon-systems/pcc-sdk-core";
 import axios from "axios";
+import chalk from "chalk";
 import { OAuth2Client } from "google-auth-library";
 import nunjucks from "nunjucks";
 import open from "open";
@@ -112,14 +113,40 @@ export class Auth0Provider extends BaseAuthProvider {
             },
           );
 
-          const { device_code, verification_uri_complete, interval } =
-            deviceResp.data;
+          const {
+            device_code,
+            verification_uri: verificationUri,
+            user_code: userCode,
+            verification_uri_complete: verificationUriComplete,
+            interval,
+          } = deviceResp.data;
 
           // Optionally auto-open browser
-          if (verification_uri_complete) {
-            await open(verification_uri_complete);
+          if (verificationUriComplete) {
+            await open(verificationUriComplete);
           }
 
+          spinner.stop();
+
+          console.log(
+            chalk.yellow(
+              "\n\nPlease open the following link in your browser (if not already opened):",
+            ),
+          );
+          console.log(
+            chalk.yellow(
+              "👉 ",
+              chalk.bold(verificationUriComplete || verificationUri),
+            ),
+          );
+          console.log(
+            chalk.yellow(
+              "\nWhen prompted, enter this code to confirm your login:",
+            ),
+          );
+          console.log(chalk.yellow("🔑 ", chalk.bold(userCode)), "\n\n");
+
+          spinner.start("Waiting for you to complete login in the browser...");
           let credentials: PersistedTokens;
           // eslint-disable-next-line no-constant-condition
           while (true) {
