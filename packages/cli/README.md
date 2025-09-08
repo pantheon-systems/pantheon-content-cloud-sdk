@@ -31,9 +31,6 @@ $ pcc login
 # Create project with nextjs template
 $ pcc init new_proj
 
-# Create project with gatsby template
-$ pcc init new_proj --template=gatsby
-
 # Create project using pnpm package manager
 $ pcc init new_proj --use-pnpm
 
