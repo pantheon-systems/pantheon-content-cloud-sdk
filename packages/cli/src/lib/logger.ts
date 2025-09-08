@@ -20,6 +20,9 @@ export class SpinnerLogger {
   succeed(message: string) {
     if (this.logger) this.logger.succeed(message);
   }
+  fail(message: string) {
+    if (this.logger) this.logger.fail(message);
+  }
 }
 
 export class Logger {
