@@ -4,6 +4,7 @@ import {
 } from "@pantheon-systems/pcc-sdk-core";
 import type { NextApiRequest, NextApiResponse } from "next";
 import type { NextRequest } from "next/server";
+import packageJson from "../../package.json";
 
 export interface AppRouterParams {
   params: Promise<Record<string, string>>;
@@ -23,24 +24,62 @@ export function NextPantheonAPI(options?: PantheonAPIOptions) {
   const handler: Handler = async (req, res) => {
     if (isPagesRouterResponse(res)) {
       // Pages router
-      // Intentionally voiding the return value, page router API routes should not return a value
-      // https://github.com/vercel/next.js/discussions/48951
-      return void (await api(req as NextApiRequest, res as NextApiResponse));
+      const nextReq = req as NextApiRequest;
+      const nextRes = res as NextApiResponse;
+      const command = nextReq.query.command?.toString();
+
+      // Handle status requests here
+      if (command === "status" && typeof api.buildStatus === "function") {
+        const level =
+          nextReq.query.level?.toString() === "debug" ? "debug" : "basic";
+        const coreStatus = api.buildStatus(level);
+        const platform = buildPlatformDiagnostics(
+          level,
+          "pages",
+          packageJson.version,
+        );
+        const payload = { ...coreStatus, platform };
+        return void nextRes.json(payload);
+      }
+
+      // Non-status flows: pass through to core
+      return void (await api.handler(
+        nextReq as NextApiRequest,
+        nextRes as NextApiResponse,
+      ));
     }
 
     // App router
     const appRouterParams = res as AppRouterParams;
+    const nextReq = req as NextRequest;
+    const command = nextReq.nextUrl.searchParams.get("command")?.split("/")[0];
+
+    // Handle status requests here
+    if (command === "status" && typeof api.buildStatus === "function") {
+      const levelParam = nextReq.nextUrl.searchParams.get("level");
+      const level = levelParam === "debug" ? "debug" : "basic";
+      const coreStatus = api.buildStatus(level);
+      const platform = buildPlatformDiagnostics(
+        level,
+        "app",
+        packageJson.version,
+      );
+      const payload = { ...coreStatus, platform };
+      return Response.json(payload);
+    }
+
+    // Non-status flows: pass through to core
     const headers = new Headers({
       ...((await appRouterParams.headers) || {}),
     });
 
-    return (await api(
+    return (await api.handler(
       {
         query: {
-          ...Object.fromEntries((req as NextRequest).nextUrl.searchParams),
+          ...Object.fromEntries(nextReq.nextUrl.searchParams),
           ...(await appRouterParams.params),
         },
-        cookies: cookiesToObj((req as NextRequest).cookies),
+        cookies: cookiesToObj(nextReq.cookies),
       },
       {
         getHeader: (key) => headers.get(key) || "",
@@ -82,4 +121,26 @@ function cookiesToObj(cookies: NextRequest["cookies"]) {
     },
     {} as Record<string, string>,
   );
+}
+
+function buildPlatformDiagnostics(
+  _level: "basic" | "debug",
+  routingMode: "app" | "pages",
+  reactSdkVersion: string | null,
+) {
+  const runtime =
+    typeof (globalThis as unknown as { EdgeRuntime?: unknown }).EdgeRuntime !==
+    "undefined"
+      ? "edge"
+      : "node";
+
+  const base = {
+    name: "next",
+    version: null as string | null,
+    sdk: { name: "pcc-react-sdk", version: reactSdkVersion },
+    routing: { mode: routingMode },
+    runtime,
+  };
+
+  return base;
 }
