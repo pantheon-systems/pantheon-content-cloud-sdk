@@ -1,4 +1,5 @@
 import queryString from "query-string";
+import packageJson from "../../package.json";
 import {
   getArticleBySlugOrId,
   getArticleURLFromSite,
@@ -9,9 +10,9 @@ import { parseJwt } from "../lib/jwt";
 import {
   Article,
   MetadataGroup,
+  PublishingLevel,
   Site,
   SmartComponentMap,
-  type PublishingLevel,
 } from "../types";
 import { PantheonClient, PantheonClientConfig } from "./pantheon-client";
 
@@ -105,6 +106,20 @@ export interface PantheonAPIOptions {
   metadataGroups?: MetadataGroup[];
 }
 
+export interface PantheonAPIStatus {
+  timestamp: string;
+  level: "basic" | "debug";
+  version: string;
+  siteId: string;
+  smartComponents: boolean;
+  smartComponentsCount: number | null;
+  smartComponentPreview: boolean;
+  metadataGroups: boolean;
+  metadataGroupIdentifiers: string[] | null;
+  resolvePathConfigured: boolean;
+  notFoundPath: string;
+}
+
 const defaultOptions = {
   getPantheonClient: (props?: Partial<PantheonClientConfig>) =>
     PCCConvenienceFunctions.buildPantheonClient({
@@ -123,6 +138,32 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
   const options = {
     ...defaultOptions,
     ...givenOptions,
+  };
+
+  const buildStatus = (levelParam?: string) => {
+    // We could expand with more detailed status information based on the level.
+    const level = levelParam === "debug" ? "debug" : "basic";
+    const timestamp = new Date().toISOString();
+
+    return {
+      timestamp,
+      level,
+      version: packageJson.version,
+      siteId: options.getSiteId(),
+      smartComponents: Boolean(options?.smartComponentMap),
+      smartComponentsCount: options?.smartComponentMap
+        ? Object.keys(options.smartComponentMap).length
+        : null,
+      smartComponentPreview: Boolean(options?.componentPreviewPath),
+      metadataGroups: Array.isArray(options?.metadataGroups)
+        ? options.metadataGroups.length > 0
+        : false,
+      metadataGroupIdentifiers: Array.isArray(options?.metadataGroups)
+        ? options.metadataGroups.map((x) => x.groupIdentifier)
+        : null,
+      resolvePathConfigured: typeof options?.resolvePath === "function",
+      notFoundPath: options?.notFoundPath,
+    } satisfies PantheonAPIStatus;
   };
 
   const handler = async (req: ApiRequest, res: ApiResponse) => {
@@ -177,12 +218,11 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
 
     switch (command[0]) {
       case "status": {
-        const smartComponentStatus = {
-          smartComponents: Boolean(options?.smartComponentMap),
-          smartComponentPreview: Boolean(options?.componentPreviewPath),
-        };
-
-        return await res.json(smartComponentStatus);
+        const levelParam = Array.isArray(req.query.level)
+          ? req.query.level[0]
+          : req.query.level?.toString();
+        const status = buildStatus(levelParam);
+        return await res.json(status);
       }
 
       case "document": {
@@ -315,9 +355,11 @@ export const PantheonAPI = (givenOptions?: PantheonAPIOptions) => {
     }
   };
 
-  handler.options = options;
-
-  return handler;
+  return {
+    handler,
+    buildStatus,
+    options,
+  };
 };
 
 export async function setCookie(res: ApiResponse, value: string) {
