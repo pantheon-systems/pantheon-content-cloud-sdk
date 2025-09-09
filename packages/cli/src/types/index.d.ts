@@ -4,11 +4,20 @@ declare type Article = {
   id: string;
   siteId: string;
   title: string;
+  site: Site;
 };
 
 declare type ApiKey = {
   id: string;
   keyMasked: string;
+  created: string;
+};
+
+declare type Account = {
+  id: string;
+  name: string;
+  accountEmail: string;
+  userEmail: string;
   created: string;
 };
 
@@ -21,6 +30,7 @@ declare type Site = {
     connected: boolean;
     capabilities: Record<string, boolean>;
   } | null;
+  accessorAccount: string;
 };
 
 declare type AuthDetails = {
