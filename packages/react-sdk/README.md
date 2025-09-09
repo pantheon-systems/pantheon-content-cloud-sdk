@@ -39,7 +39,8 @@ function App() {
 ## Usage
 
 We provide a set of helpers in the form of API helpers, React hooks and React
-helper components to get you up and running with the Pantheon Content Publisher API.
+helper components to get you up and running with the Pantheon Content Publisher
+API.
 
 ### React Components
 
@@ -127,8 +128,8 @@ function Articles() {
 
 ### API Helpers
 
-These helpers are used to fetch data from the Pantheon Content Publisher API outside
-of the React component lifecycle.
+These helpers are used to fetch data from the Pantheon Content Publisher API
+outside of the React component lifecycle.
 
 They are useful for fetching data in server-side rendered applications or in
 other contexts where React hooks cannot be used.
