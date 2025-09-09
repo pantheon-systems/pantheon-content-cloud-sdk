@@ -4,8 +4,9 @@
 
 This repository houses the Pantheon Content Publisher SDKs and starters.
 
-These SDKs are used to interact with the Pantheon Content Publisher APIs. Starters
-allow you to quickly get up and running with Pantheon Content Publisher.
+These SDKs are used to interact with the Pantheon Content Publisher APIs.
+Starters allow you to quickly get up and running with Pantheon Content
+Publisher.
 
 ## Development
 
